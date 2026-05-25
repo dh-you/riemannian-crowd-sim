@@ -27,6 +27,21 @@ renderer.shadowMap.enabled = false;
 renderer.setPixelRatio(1);
 renderer.toneMapping = THREE.NoToneMapping;
 
+interface BenchmarkConfig {
+    count: number;
+    seconds: number;
+    warmup: number;
+    spacing: number;
+}
+
+interface BenchmarkControls {
+    countInput: HTMLInputElement;
+    secondsInput: HTMLInputElement;
+    warmupInput: HTMLInputElement;
+    spacingInput: HTMLInputElement;
+    runButton: HTMLButtonElement;
+}
+
 let agents: Agent[] = [];
 let agentMeshes: THREE.Mesh[] = [];
 let anchors: Vec2[] = [];
@@ -36,7 +51,8 @@ let simulator: Simulator;
 let metricGrid: MetricGrid;
 let spatialHash: SpatialHash;
 
-let running = true;
+let started = false;
+let running = false;
 let finished = false;
 
 let renderFps = 0;
@@ -47,8 +63,18 @@ let benchmarkStartTime = performance.now();
 let samples: number[] = [];
 let finalStats: BenchmarkStats | null = null;
 
+const defaultConfig: BenchmarkConfig = {
+    count: defaultAgentCount,
+    seconds: DEFAULT_SECONDS,
+    warmup: DEFAULT_WARMUP_SECONDS,
+    spacing: DEFAULT_DENSE_SPACING,
+};
+
+let currentConfig: BenchmarkConfig = { ...defaultConfig };
+
 const overlay = createOverlay();
 const infoLabel = overlay.querySelector<HTMLDivElement>('.benchmark-info')!;
+const controls = createControlsPanel();
 
 interface BenchmarkStats {
     agents: number;
@@ -67,6 +93,22 @@ interface BenchmarkStats {
     realtime60Hz: boolean;
 }
 
+function clampCount(value: number): number {
+    return Math.min(maxAgentCount, Math.max(10, Math.round(value)));
+}
+
+function clampBenchmarkSeconds(value: number): number {
+    return Math.max(1, Math.round(value));
+}
+
+function clampWarmupSeconds(value: number): number {
+    return Math.max(0, Number(value.toFixed(1)));
+}
+
+function clampSpacing(value: number): number {
+    return Math.max(0.5, Number(value.toFixed(2)));
+}
+
 function getNumberParam(name: string, fallback: number): number {
     const params = new URL(window.location.href).searchParams;
     const parsed = Number(params.get(name));
@@ -78,26 +120,29 @@ function getNumberParam(name: string, fallback: number): number {
     return parsed;
 }
 
-function getAgentCount(): number {
-    const parsed = getNumberParam('count', defaultAgentCount);
-
-    if (!Number.isFinite(parsed) || parsed <= 0) {
-        return defaultAgentCount;
-    }
-
-    return Math.min(maxAgentCount, Math.max(10, Math.round(parsed)));
+function loadConfigFromURL(): BenchmarkConfig {
+    return {
+        count: clampCount(getNumberParam('count', defaultConfig.count)),
+        seconds: clampBenchmarkSeconds(getNumberParam('seconds', defaultConfig.seconds)),
+        warmup: clampWarmupSeconds(getNumberParam('warmup', defaultConfig.warmup)),
+        spacing: clampSpacing(getNumberParam('spacing', defaultConfig.spacing)),
+    };
 }
 
-function getBenchmarkSeconds(): number {
-    return Math.max(1, getNumberParam('seconds', DEFAULT_SECONDS));
+function fillControlsFromConfig(config: BenchmarkConfig): void {
+    controls.countInput.value = String(config.count);
+    controls.secondsInput.value = String(config.seconds);
+    controls.warmupInput.value = String(config.warmup.toFixed(1));
+    controls.spacingInput.value = String(config.spacing.toFixed(2));
 }
 
-function getWarmupSeconds(): number {
-    return Math.max(0, getNumberParam('warmup', DEFAULT_WARMUP_SECONDS));
-}
-
-function getDenseSpacing(): number {
-    return Math.max(0.5, getNumberParam('spacing', DEFAULT_DENSE_SPACING));
+function readConfigFromControls(): BenchmarkConfig {
+    return {
+        count: clampCount(Number(controls.countInput.value)),
+        seconds: clampBenchmarkSeconds(Number(controls.secondsInput.value)),
+        warmup: clampWarmupSeconds(Number(controls.warmupInput.value)),
+        spacing: clampSpacing(Number(controls.spacingInput.value)),
+    };
 }
 
 function createOverlay(): HTMLDivElement {
@@ -132,10 +177,10 @@ function createOverlay(): HTMLDivElement {
 
     const info = document.createElement('div');
     info.className = 'benchmark-info';
-    info.textContent = 'Initializing…';
+    info.textContent = 'Waiting for user input…';
 
     const hint = document.createElement('div');
-    hint.textContent = 'URL: ?count=1000&seconds=30&warmup=3&spacing=2.0';
+    hint.textContent = 'Set the values below and press Run to start the benchmark.';
     hint.style.marginTop = '10px';
     hint.style.color = '#7a8ebf';
     hint.style.fontSize = '12px';
@@ -147,6 +192,101 @@ function createOverlay(): HTMLDivElement {
     document.body.appendChild(container);
 
     return container;
+}
+
+function createControlsPanel(): BenchmarkControls {
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.top = '48px';
+    container.style.left = '16px';
+    container.style.zIndex = '10';
+    container.style.padding = '14px 16px';
+    container.style.background = 'rgba(8, 12, 24, 0.88)';
+    container.style.color = '#eef';
+    container.style.fontFamily = 'system-ui, sans-serif';
+    container.style.fontSize = '13px';
+    container.style.border = '1px solid rgba(120, 160, 240, 0.18)';
+    container.style.borderRadius = '12px';
+    container.style.maxWidth = '330px';
+    container.style.pointerEvents = 'auto';
+
+    const title = document.createElement('div');
+    title.textContent = 'Benchmark controls';
+    title.style.fontWeight = '700';
+    title.style.marginBottom = '10px';
+    title.style.color = '#c8d7ff';
+
+    const addField = (labelText: string, input: HTMLInputElement, step = '1') => {
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.justifyContent = 'space-between';
+        row.style.alignItems = 'center';
+        row.style.gap = '12px';
+        row.style.marginBottom = '10px';
+
+        const label = document.createElement('label');
+        label.textContent = labelText;
+        label.style.color = '#dbe7ff';
+        label.style.flex = '1';
+
+        input.style.width = '96px';
+        input.style.padding = '6px 8px';
+        input.style.borderRadius = '8px';
+        input.style.border = '1px solid rgba(120, 160, 240, 0.2)';
+        input.style.background = 'rgba(8, 12, 24, 0.92)';
+        input.style.color = '#eef';
+        input.style.fontSize = '13px';
+        input.step = step;
+
+        row.appendChild(label);
+        row.appendChild(input);
+        container.appendChild(row);
+    };
+
+    const countInput = document.createElement('input');
+    countInput.type = 'number';
+    countInput.min = '10';
+    countInput.max = String(maxAgentCount);
+    countInput.step = '10';
+
+    const secondsInput = document.createElement('input');
+    secondsInput.type = 'number';
+    secondsInput.min = '1';
+    secondsInput.step = '1';
+
+    const warmupInput = document.createElement('input');
+    warmupInput.type = 'number';
+    warmupInput.min = '0';
+    warmupInput.step = '0.1';
+
+    const spacingInput = document.createElement('input');
+    spacingInput.type = 'number';
+    spacingInput.min = '0.5';
+    spacingInput.step = '0.1';
+
+    addField('Agents', countInput);
+    addField('Seconds', secondsInput);
+    addField('Warmup', warmupInput);
+    addField('Spacing', spacingInput);
+
+    const runButton = document.createElement('button');
+    runButton.type = 'button';
+    runButton.textContent = 'Run benchmark';
+    runButton.style.marginTop = '6px';
+    runButton.style.padding = '10px 14px';
+    runButton.style.border = '1px solid rgba(120, 160, 240, 0.25)';
+    runButton.style.borderRadius = '10px';
+    runButton.style.background = 'rgba(24, 32, 52, 0.95)';
+    runButton.style.color = '#eef';
+    runButton.style.cursor = 'pointer';
+    runButton.style.fontFamily = 'system-ui, sans-serif';
+    runButton.style.fontSize = '13px';
+    runButton.style.width = '100%';
+
+    container.appendChild(runButton);
+    document.body.appendChild(container);
+
+    return { countInput, secondsInput, warmupInput, spacingInput, runButton };
 }
 
 function createAgentMesh(color: number): THREE.Mesh {
@@ -285,13 +425,12 @@ function std(values: number[], avg: number): number {
 function computeStats(): BenchmarkStats {
     const sorted = [...samples].sort((a, b) => a - b);
     const avg = mean(samples);
-    const spacing = getDenseSpacing();
 
     return {
         agents: agents.length,
-        spacing,
-        warmupSeconds: getWarmupSeconds(),
-        measuredSeconds: getBenchmarkSeconds(),
+        spacing: currentConfig.spacing,
+        warmupSeconds: currentConfig.warmup,
+        measuredSeconds: currentConfig.seconds,
         samples: samples.length,
         meanStepMs: avg,
         medianStepMs: percentile(sorted, 50),
@@ -320,10 +459,21 @@ function finishBenchmark(): void {
 }
 
 function updateOverlay(): void {
+    if (!started) {
+        infoLabel.textContent =
+            `Ready to run\n` +
+            `Agents: ${currentConfig.count}\n` +
+            `Spacing: ${currentConfig.spacing.toFixed(2)}\n` +
+            `Warmup: ${currentConfig.warmup.toFixed(1)}s\n` +
+            `Seconds: ${currentConfig.seconds.toFixed(0)}s\n` +
+            `Render fps: ${renderFps.toFixed(1)}`;
+        return;
+    }
+
     const now = performance.now();
     const elapsedSeconds = (now - benchmarkStartTime) / 1000;
-    const warmupSeconds = getWarmupSeconds();
-    const measuredSeconds = getBenchmarkSeconds();
+    const warmupSeconds = currentConfig.warmup;
+    const measuredSeconds = currentConfig.seconds;
 
     if (finalStats) {
         infoLabel.textContent =
@@ -346,7 +496,7 @@ function updateOverlay(): void {
         const remaining = Math.max(0, warmupSeconds - elapsedSeconds);
         infoLabel.textContent =
             `Agents: ${agents.length}\n` +
-            `Spacing: ${getDenseSpacing().toFixed(2)}\n` +
+            `Spacing: ${currentConfig.spacing.toFixed(2)}\n` +
             `Warmup: ${remaining.toFixed(1)}s left\n` +
             `Samples: ${samples.length}\n` +
             `Render fps: ${renderFps.toFixed(1)}`;
@@ -363,7 +513,7 @@ function updateOverlay(): void {
 
     infoLabel.textContent =
         `Agents: ${agents.length}\n` +
-        `Spacing: ${getDenseSpacing().toFixed(2)}\n` +
+        `Spacing: ${currentConfig.spacing.toFixed(2)}\n` +
         `Measuring: ${measureElapsed.toFixed(1)} / ${measuredSeconds.toFixed(1)}s\n` +
         `Samples: ${samples.length}\n` +
         `Current mean: ${currentMean.toFixed(3)} ms (${currentHz.toFixed(1)} Hz)\n` +
@@ -373,8 +523,8 @@ function updateOverlay(): void {
 function init(): void {
     clearBenchmarkAgents();
 
-    const agentCount = getAgentCount();
-    const spacing = getDenseSpacing();
+    const agentCount = currentConfig.count;
+    const spacing = currentConfig.spacing;
 
     const baseMesh = createAgentMesh(0x77caff);
 
@@ -414,15 +564,31 @@ function init(): void {
     updateOverlay();
 }
 
+function startBenchmark(): void {
+    currentConfig = readConfigFromControls();
+    started = true;
+    running = true;
+    finished = false;
+    finalStats = null;
+    samples = [];
+    renderFps = 0;
+    frameCount = 0;
+    fpsUpdateTime = performance.now();
+    clearBenchmarkAgents();
+    benchmarkStartTime = performance.now();
+    init();
+    updateOverlay();
+}
+
 function animate(): void {
     requestAnimationFrame(animate);
 
-    if (running && simulator) {
+    if (started && running && simulator) {
         const now = performance.now();
         const elapsedSeconds = (now - benchmarkStartTime) / 1000;
 
-        const warmupSeconds = getWarmupSeconds();
-        const measuredSeconds = getBenchmarkSeconds();
+        const warmupSeconds = currentConfig.warmup;
+        const measuredSeconds = currentConfig.seconds;
 
         resetAllAgentsToDenseState();
 
@@ -453,5 +619,9 @@ function animate(): void {
     }
 }
 
-init();
+const initialConfig = loadConfigFromURL();
+currentConfig = initialConfig;
+fillControlsFromConfig(currentConfig);
+updateOverlay();
+controls.runButton.addEventListener('click', startBenchmark);
 animate();
