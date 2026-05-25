@@ -103,7 +103,7 @@ function getDenseSpacing(): number {
 function createOverlay(): HTMLDivElement {
     const container = document.createElement('div');
     container.style.position = 'fixed';
-    container.style.top = '16px';
+    container.style.top = '84px';
     container.style.right = '16px';
     container.style.zIndex = '10';
     container.style.padding = '14px 16px';

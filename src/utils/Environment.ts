@@ -5,12 +5,24 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import type { MetricGrid } from "../sim/MetricGrid";
+import oipTextureUrl from '../../public/OIP.jpg?url';
 
 let renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera;
 let composer: EffectComposer;
 
 // Figure export resolution (long edge in pixels). 3000 is plenty for LNCS print.
 const FIGURE_LONG_EDGE = 3000;
+const DEFAULT_VIEW_TARGET = new THREE.Vector3(0, 0, 0);
+const DEFAULT_VIEW_POSITION = new THREE.Vector3(0, 120, 0);
+const DEFAULT_VIEW_UP = new THREE.Vector3(0, 1, 0);
+
+function applyTopDownView(camera: THREE.PerspectiveCamera, controls: OrbitControls) {
+    camera.position.copy(DEFAULT_VIEW_POSITION);
+    camera.up.copy(DEFAULT_VIEW_UP);
+    controls.target.copy(DEFAULT_VIEW_TARGET);
+    camera.lookAt(DEFAULT_VIEW_TARGET);
+    controls.update();
+}
 
 export function createScene(x: number, z: number) {
     renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -42,13 +54,48 @@ export function createScene(x: number, z: number) {
     screenshotButton.addEventListener('click', () => captureFigureScreenshot(renderer, scene, { x, z }));
     document.body.appendChild(screenshotButton);
 
+    const resetButton = document.createElement('button');
+    resetButton.type = 'button';
+    resetButton.textContent = 'Reset camera';
+    resetButton.style.position = 'fixed';
+    resetButton.style.bottom = '60px';
+    resetButton.style.right = '16px';
+    resetButton.style.zIndex = '20';
+    resetButton.style.padding = '10px 14px';
+    resetButton.style.border = '1px solid rgba(120, 160, 240, 0.25)';
+    resetButton.style.borderRadius = '10px';
+    resetButton.style.background = 'rgba(24, 32, 52, 0.95)';
+    resetButton.style.color = '#eef';
+    resetButton.style.cursor = 'pointer';
+    resetButton.style.fontFamily = 'system-ui, sans-serif';
+    resetButton.style.fontSize = '13px';
+    document.body.appendChild(resetButton);
+
+    const controlsHint = document.createElement('div');
+    controlsHint.textContent = 'drag to rotate · right-drag to pan · scroll to zoom';
+    controlsHint.style.position = 'fixed';
+    controlsHint.style.top = '16px';
+    controlsHint.style.right = '16px';
+    controlsHint.style.zIndex = '20';
+    controlsHint.style.padding = '6px 10px';
+    controlsHint.style.borderRadius = '999px';
+    controlsHint.style.background = 'rgba(11, 18, 32, 0.86)';
+    controlsHint.style.color = 'rgba(238, 238, 255, 0.95)';
+    controlsHint.style.fontFamily = 'system-ui, sans-serif';
+    controlsHint.style.fontSize = '12px';
+    controlsHint.style.pointerEvents = 'none';
+    controlsHint.style.backdropFilter = 'blur(6px)';
+    document.body.appendChild(controlsHint);
+
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0b1220);
     scene.fog = new THREE.FogExp2(0x0b1220, 0.0018);
 
     camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.5, 1200);
-    camera.position.set(-36, 34, 18);
-    camera.lookAt(0, 0, 0);
+
+    composer = new EffectComposer(renderer);
+    composer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    composer.setSize(window.innerWidth, window.innerHeight);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.addEventListener('change', render);
@@ -57,6 +104,13 @@ export function createScene(x: number, z: number) {
     controls.minDistance = 8;
     controls.maxDistance = 140;
     controls.maxPolarAngle = Math.PI * 0.48;
+    applyTopDownView(camera as THREE.PerspectiveCamera, controls);
+    controls.saveState();
+    resetButton.addEventListener('click', () => {
+        applyTopDownView(camera as THREE.PerspectiveCamera, controls);
+        controls.saveState();
+        render();
+    });
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
     scene.add(ambientLight);
@@ -110,7 +164,7 @@ export function createScene(x: number, z: number) {
     scene.add(ground);
 
     const textureLoader = new THREE.TextureLoader();
-    textureLoader.load('/OIP.jpg', (texture) => {
+    textureLoader.load(oipTextureUrl, (texture) => {
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.magFilter = THREE.NearestFilter;
@@ -127,10 +181,6 @@ export function createScene(x: number, z: number) {
 
     // ── Postprocessing pipeline ───────────────────────────────────────
     // RenderPass → UnrealBloomPass → OutputPass
-    composer = new EffectComposer(renderer);
-    composer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    composer.setSize(window.innerWidth, window.innerHeight);
-
     const renderPass = new RenderPass(scene, camera);
     composer.addPass(renderPass);
 
