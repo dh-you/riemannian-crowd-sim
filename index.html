@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Riemannian Crowd Sim</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 48px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            max-width: 960px;
+            width: 100%;
+        }
+        a.card {
+            display: block;
+            background: #161616;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        a.card:hover {
+            border-color: #4488ff;
+            background: #1a1a2a;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+        .card-tag {
+            display: inline-block;
+            font-size: 11px;
+            color: #4488ff;
+            background: #1a1a2e;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Agent-Induced Riemannian Metric Fields for Crowd Simulation</h1>
+    <div class="subtitle">Derek You</div>
+
+    <div class="grid">
+        <a class="card" href="./pages/two-agents.html">
+            <div class="card-title">Two Agents</div>
+        </a>
+
+        <a class="card" href="./pages/overtaking.html">
+            <div class="card-title">Overtaking</div>
+        </a>
+
+        <a class="card" href="./pages/bidirectional.html">
+            <div class="card-title">Bidirectional Flow</div>
+        </a>
+
+        <a class="card" href="./pages/bottleneck.html">
+            <div class="card-title">Bottleneck</div>
+        </a>
+
+        <a class="card" href="./pages/circle-antipodal.html">
+            <div class="card-title">Circle Antipodal</div>
+        </a>
+
+        <a class="card" href="./pages/fps-benchmark.html">
+            <div class="card-title">FPS Benchmark</div>
+        </a>
+    </div>
+</body>
+</html>
