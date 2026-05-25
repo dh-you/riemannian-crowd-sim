@@ -9,6 +9,7 @@ import oipTextureUrl from '../../public/OIP.jpg?url';
 
 let renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera;
 let composer: EffectComposer;
+let scenarioRestartHandler: (() => void) | null = null;
 
 // Figure export resolution (long edge in pixels). 3000 is plenty for LNCS print.
 const FIGURE_LONG_EDGE = 3000;
@@ -24,7 +25,17 @@ function applyTopDownView(camera: THREE.PerspectiveCamera, controls: OrbitContro
     controls.update();
 }
 
-export function createScene(x: number, z: number) {
+export function registerScenarioRestart(handler: () => void) {
+    scenarioRestartHandler = handler;
+}
+
+interface CreateSceneOptions {
+    showRestartButton?: boolean;
+}
+
+export function createScene(x: number, z: number, options: CreateSceneOptions = {}) {
+    const { showRestartButton = true } = options;
+
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -70,6 +81,26 @@ export function createScene(x: number, z: number) {
     resetButton.style.fontFamily = 'system-ui, sans-serif';
     resetButton.style.fontSize = '13px';
     document.body.appendChild(resetButton);
+
+    if (showRestartButton) {
+        const restartButton = document.createElement('button');
+        restartButton.type = 'button';
+        restartButton.textContent = 'Restart scenario';
+        restartButton.style.position = 'fixed';
+        restartButton.style.bottom = '104px';
+        restartButton.style.right = '16px';
+        restartButton.style.zIndex = '20';
+        restartButton.style.padding = '10px 14px';
+        restartButton.style.border = '1px solid rgba(120, 160, 240, 0.25)';
+        restartButton.style.borderRadius = '10px';
+        restartButton.style.background = 'rgba(24, 32, 52, 0.95)';
+        restartButton.style.color = '#eef';
+        restartButton.style.cursor = 'pointer';
+        restartButton.style.fontFamily = 'system-ui, sans-serif';
+        restartButton.style.fontSize = '13px';
+        restartButton.addEventListener('click', () => scenarioRestartHandler?.());
+        document.body.appendChild(restartButton);
+    }
 
     const controlsHint = document.createElement('div');
     controlsHint.textContent = 'drag to rotate · right-drag to pan · scroll to zoom';

@@ -22,7 +22,7 @@ const DEFAULT_SECONDS = 30;
 const DEFAULT_WARMUP_SECONDS = 3;
 const DEFAULT_DENSE_SPACING = 2.0;
 
-const { renderer, scene, camera } = createScene(world.x, world.z);
+const { renderer, scene, camera } = createScene(world.x, world.z, { showRestartButton: false });
 renderer.shadowMap.enabled = false;
 renderer.setPixelRatio(1);
 renderer.toneMapping = THREE.NoToneMapping;
@@ -246,6 +246,14 @@ function resetAllAgentsToDenseState(): void {
     }
 }
 
+function clearBenchmarkAgents(): void {
+    for (const mesh of agentMeshes) {
+        scene.remove(mesh);
+    }
+    agentMeshes = [];
+    agents = [];
+}
+
 function mean(values: number[]): number {
     if (values.length === 0) return 0;
     return values.reduce((sum, x) => sum + x, 0) / values.length;
@@ -363,6 +371,8 @@ function updateOverlay(): void {
 }
 
 function init(): void {
+    clearBenchmarkAgents();
+
     const agentCount = getAgentCount();
     const spacing = getDenseSpacing();
 

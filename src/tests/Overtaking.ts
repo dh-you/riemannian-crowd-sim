@@ -1,20 +1,20 @@
 import * as THREE from 'three';
-import { createScene } from '../utils/Environment';
+import { createScene, registerScenarioRestart } from '../utils/Environment';
 import { Agent } from '../utils/Agent';
 import { Simulator } from '../sim/Simulator';
 import { MetricGrid } from '../sim/MetricGrid';
-import { SpatialHash } from '../sim/SpatialHash'
+import { SpatialHash } from '../sim/SpatialHash';
 import { Linalg } from '../utils/Linalg';
 
 const world = {
     x: 100,
-    z: 100, 
+    z: 100,
     N: 50,
     cellSize: 1
 };
 
-const NORMAL_WALKING_SPEED = 2.5; // ~1.25 m/s if 1 unit = 0.25 m
-const FAST_WALKING_SPEED = 7.0;   // brisk pace for overtaking agents
+const NORMAL_WALKING_SPEED = 2.5;
+const FAST_WALKING_SPEED = 7.0;
 
 const agentGeometry = new THREE.CylinderGeometry(1, 1, 4, 16);
 const agentMaterial1 = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
@@ -22,19 +22,48 @@ const agentMaterial2 = new THREE.MeshLambertMaterial({ color: 0xff0000 });
 
 const { renderer, scene, camera } = createScene(world.x, world.z);
 
-let agent1: Agent, agent2: Agent, simulator: Simulator, metricGrid: MetricGrid, spatialHash: SpatialHash;
+let agent1: Agent | undefined;
+let agent2: Agent | undefined;
+let simulator: Simulator;
+let metricGrid: MetricGrid;
+let spatialHash: SpatialHash;
 let running = true;
+
+function clearAgents() {
+    if (agent1) {
+        scene.remove(agent1.mesh);
+        if (agent1.trailMesh) scene.remove(agent1.trailMesh);
+        if (agent1.trailGlowMesh) scene.remove(agent1.trailGlowMesh);
+    }
+
+    if (agent2) {
+        scene.remove(agent2.mesh);
+        if (agent2.trailMesh) scene.remove(agent2.trailMesh);
+        if (agent2.trailGlowMesh) scene.remove(agent2.trailGlowMesh);
+    }
+}
+
+function restartScenario() {
+    running = true;
+    clearAgents();
+    lastTime = performance.now();
+    init();
+}
 
 function init() {
     agent1 = new Agent(
-        1, new THREE.Mesh(agentGeometry, agentMaterial1), 1,
+        1,
+        new THREE.Mesh(agentGeometry, agentMaterial1),
+        1,
         new Linalg.vec2([-20, -20]),
         new Linalg.vec2([20, 20]),
         NORMAL_WALKING_SPEED
     );
 
     agent2 = new Agent(
-        2, new THREE.Mesh(agentGeometry, agentMaterial2), 1,
+        2,
+        new THREE.Mesh(agentGeometry, agentMaterial2),
+        1,
         new Linalg.vec2([-30, -30]),
         new Linalg.vec2([20, 20]),
         FAST_WALKING_SPEED
@@ -49,8 +78,7 @@ function init() {
 
     agent1.createTrail(scene);
     agent2.createTrail(scene);
-
-    }
+}
 
 let lastTime = performance.now();
 
@@ -60,10 +88,13 @@ function animate(now: number = performance.now()) {
     const realDt = (now - lastTime) / 1000;
     lastTime = now;
 
-    if (running && simulator) simulator.advance(realDt);
+    if (running && simulator) {
+        simulator.advance(realDt);
+    }
 
     renderer.render(scene, camera);
 }
 
+registerScenarioRestart(restartScenario);
 init();
 requestAnimationFrame(animate);
