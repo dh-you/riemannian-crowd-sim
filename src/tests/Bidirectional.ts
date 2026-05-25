@@ -20,7 +20,7 @@ let spatialHash: SpatialHash;
 let running = true;
 const ROWS = 8;
 const COLS = 15;
-const SPACING = 3.75;
+const SPACING = 3.7;
 const A_LEAD = -18;
 const B_LEAD = 18;
 const ROW_PHASE = 0.75;
