@@ -7,22 +7,34 @@ import { identifyMethod } from "../protocol/methodIdentity";
 import { parseMethodConfig, type MethodConfig } from "../protocol/methodConfig";
 import type { SuiteManifest } from "../generation/suite";
 import type { RunMetrics } from "../metrics/types";
+import { createExperimentEngine } from "../engines/factory";
+import type { EngineProvenance } from "../engines/ExperimentEngine";
+import { parseExperimentScenario } from "../protocol/schema";
 import {
   runExperiment,
   type ExperimentManifest,
   type ExperimentRunSummary,
 } from "./runExperiment";
 
-export const BATCH_MANIFEST_VERSION = 2 as const;
+export const BATCH_MANIFEST_VERSION = 3 as const;
 
 export interface BatchRunRecord {
   scenarioPath: string;
   methodPath: string;
   outputDirectory: string;
   scenarioSha256: string;
+  methodIdentityVersion: number;
+  methodConfigCanonicalSha256: string;
+  methodConfigSourceSha256: string;
+  /** @deprecated Canonical hash alias. */
   methodConfigSha256: string;
   methodId: string;
   methodKey: string;
+  engineId: string;
+  engineAdapterVersion: string;
+  thirdPartyLockSha256: string | null;
+  upstreamCommit: string | null;
+  runnerSha256: string | null;
   status: "completed" | "skipped" | "failed";
   error: string | null;
 }
@@ -59,9 +71,11 @@ export interface RunBatchResult {
 
 interface LoadedMethod {
   path: string;
-  hash: string;
+  canonicalHash: string;
+  sourceHash: string;
   key: string;
   config: MethodConfig;
+  identity: ReturnType<typeof identifyMethod>;
 }
 
 export function runBatch(options: RunBatchOptions): RunBatchResult {
@@ -87,7 +101,10 @@ export function runBatch(options: RunBatchOptions): RunBatchResult {
   outer: for (const scenario of scenarios) {
     const scenarioPath = resolve(dirname(suiteManifestPath), scenario.path);
     const actualScenarioHash = sha256File(scenarioPath);
+    const scenarioConfig = parseExperimentScenario(JSON.parse(readFileSync(scenarioPath, "utf8")) as unknown);
     for (const method of methods) {
+      const engine = createExperimentEngine(method.config, method.identity);
+      const provenance = engine.getProvenance(scenarioConfig, method.config);
       const runOutput = resolve(
         outputDirectory,
         scenario.split,
@@ -101,9 +118,17 @@ export function runBatch(options: RunBatchOptions): RunBatchResult {
         methodPath: method.path,
         outputDirectory: runOutput,
         scenarioSha256: actualScenarioHash,
-        methodConfigSha256: method.hash,
+        methodIdentityVersion: method.identity.methodIdentityVersion,
+        methodConfigCanonicalSha256: method.canonicalHash,
+        methodConfigSourceSha256: method.sourceHash,
+        methodConfigSha256: method.canonicalHash,
         methodId: method.config.id,
         methodKey: method.key,
+        engineId: provenance.engineId,
+        engineAdapterVersion: provenance.engineAdapterVersion,
+        thirdPartyLockSha256: provenance.thirdPartyLockSha256,
+        upstreamCommit: provenance.upstreamCommit,
+        runnerSha256: provenance.runnerSha256,
         status: "failed",
         error: null,
       };
@@ -116,8 +141,10 @@ export function runBatch(options: RunBatchOptions): RunBatchResult {
           completedRunMatches(
             runOutput,
             actualScenarioHash,
-            method.hash,
+            method.canonicalHash,
             method.key,
+            method.identity.methodIdentityVersion,
+            provenance,
             gitCommitSha,
             options.allowCrossCommitResume ?? false,
           )
@@ -199,9 +226,11 @@ function loadMethod(path: string): LoadedMethod {
   const identity = identifyMethod(config, bytes);
   return {
     path: absolutePath,
-    hash: identity.methodConfigSha256,
+    canonicalHash: identity.methodConfigCanonicalSha256,
+    sourceHash: identity.methodConfigSourceSha256,
     key: identity.methodKey,
     config,
+    identity,
   };
 }
 
@@ -216,6 +245,8 @@ function completedRunMatches(
   scenarioHash: string,
   methodHash: string,
   methodKey: string,
+  methodIdentityVersion: number,
+  provenance: EngineProvenance,
   gitCommitSha: string | null,
   allowCrossCommit: boolean,
 ): boolean {
@@ -231,11 +262,19 @@ function completedRunMatches(
     for (const line of trajectory.split(/\r?\n/u).filter(Boolean)) JSON.parse(line) as unknown;
     return (
       manifest.scenarioSha256 === scenarioHash &&
-      manifest.methodConfigSha256 === methodHash &&
+      manifest.methodIdentityVersion === methodIdentityVersion &&
+      manifest.methodConfigCanonicalSha256 === methodHash &&
       manifest.methodKey === methodKey &&
+      manifest.engineId === provenance.engineId &&
+      manifest.engineAdapterVersion === provenance.engineAdapterVersion &&
+      manifest.thirdPartyLockSha256 === provenance.thirdPartyLockSha256 &&
+      manifest.upstreamCommit === provenance.upstreamCommit &&
+      manifest.runnerSha256 === provenance.runnerSha256 &&
       summary.methodKey === methodKey &&
       metrics.identity.methodKey === methodKey &&
-      metrics.identity.methodConfigSha256 === methodHash &&
+      metrics.identity.methodIdentityVersion === methodIdentityVersion &&
+      metrics.identity.methodConfigCanonicalSha256 === methodHash &&
+      metrics.identity.engineId === provenance.engineId &&
       (allowCrossCommit || manifest.gitCommitSha === gitCommitSha)
     );
   } catch {

@@ -2,10 +2,14 @@ import { describe, expect, it } from "vitest";
 import { generateFreeSpaceScenario } from "../../experiments/generation/freeSpace";
 import {
   controllerParametersFromMethod,
+  ORCA_ENGINE_ID,
+  ORCA_METHOD_ID,
   parseMethodConfig,
+  SOCIAL_FORCE_ENGINE_ID,
+  SOCIAL_FORCE_METHOD_ID,
 } from "../../experiments/protocol/methodConfig";
 import { sha256Bytes } from "../../experiments/protocol/hash";
-import { createMethodKey, identifyMethod } from "../../experiments/protocol/methodIdentity";
+import { createMethodKey, identifyMethod, serializeCanonicalMethodConfig } from "../../experiments/protocol/methodIdentity";
 import {
   parseExperimentScenario,
   serializeExperimentScenario,
@@ -23,6 +27,31 @@ const goalConfig = {
   id: EUCLIDEAN_GOAL_CONTROLLER_ID,
   velocityTimeConstant: 0.04,
   parameters: {},
+};
+const orcaConfig = {
+  methodConfigVersion: 2,
+  id: ORCA_METHOD_ID,
+  engine: ORCA_ENGINE_ID,
+  parameters: { neighborDist: 5, maxNeighbors: 16, timeHorizon: 5, timeHorizonObst: 5 },
+};
+const socialForceConfig = {
+  methodConfigVersion: 2,
+  id: SOCIAL_FORCE_METHOD_ID,
+  engine: SOCIAL_FORCE_ENGINE_ID,
+  parameters: {
+    desiredFactor: 1,
+    relaxationTime: 0.5,
+    socialFactor: 5.1,
+    lambdaImportance: 2,
+    gamma: 0.35,
+    n: 2,
+    nPrime: 3,
+    obstacleFactor: 10,
+    obstacleSigma: 0.2,
+    obstacleThreshold: 3,
+    maxSpeedMultiplier: 1.3,
+    obstacleResolution: 10,
+  },
 };
 
 describe("controller-independent experiment scenario schema", () => {
@@ -77,21 +106,59 @@ describe("method configuration schema", () => {
     });
   });
 
-  it("derives a stable hash-qualified key from the exact config bytes", () => {
-    const bytes = `${JSON.stringify(riemannianConfig, null, 2)}\n`;
-    const config = parseMethodConfig(JSON.parse(bytes) as unknown);
-    const identity = identifyMethod(config, bytes);
-    const hash = sha256Bytes(bytes);
-    expect(identity).toEqual({
-      methodId: CONTROLLER_ID,
-      methodKey: `${CONTROLLER_ID}--${hash.slice(0, 12)}`,
-      methodConfigSha256: hash,
-    });
-    expect(() => createMethodKey(CONTROLLER_ID, "not-a-hash")).toThrow(/SHA-256/u);
+  it("strictly parses the ORCA and PySocialForce engine configurations", () => {
+    expect(parseMethodConfig(orcaConfig)).toEqual(orcaConfig);
+    expect(parseMethodConfig(socialForceConfig)).toEqual(socialForceConfig);
   });
 
   it.each([
-    [{ ...riemannianConfig, methodConfigVersion: 2 }, /version/iu],
+    [{ ...orcaConfig, engine: SOCIAL_FORCE_ENGINE_ID }, /requires engine/u],
+    [{ ...orcaConfig, velocityTimeConstant: 0.04 }, /not allowed/u],
+    [{ ...orcaConfig, parameters: { ...orcaConfig.parameters, maxNeighbors: 1.5 } }, /integer/u],
+    [{ ...orcaConfig, parameters: { ...orcaConfig.parameters, timeHorizon: 0 } }, /positive/u],
+    [{ ...orcaConfig, parameters: { ...orcaConfig.parameters, relaxationTime: 0.5 } }, /not allowed/u],
+    [{ ...socialForceConfig, engine: ORCA_ENGINE_ID }, /requires engine/u],
+    [{ ...socialForceConfig, parameters: { ...socialForceConfig.parameters, relaxationTime: 0 } }, /positive/u],
+    [{ ...socialForceConfig, parameters: { ...socialForceConfig.parameters, groupCoherenceFactor: 1 } }, /not allowed/u],
+  ])("rejects invalid external-engine configuration %#", (value, message) => {
+    expect(() => parseMethodConfig(value)).toThrow(message);
+  });
+
+  it("derives a stable hash-qualified key from canonical validated semantics", () => {
+    const bytes = `${JSON.stringify(riemannianConfig, null, 2)}\n`;
+    const config = parseMethodConfig(JSON.parse(bytes) as unknown);
+    const identity = identifyMethod(config, bytes);
+    const canonicalHash = sha256Bytes(serializeCanonicalMethodConfig(config));
+    expect(identity.methodIdentityVersion).toBe(2);
+    expect(identity.methodConfigCanonicalSha256).toBe(canonicalHash);
+    expect(identity.methodConfigSourceSha256).toBe(sha256Bytes(bytes));
+    expect(identity.methodConfigSha256).toBe(canonicalHash);
+    expect(identity.methodKey).toBe(`${CONTROLLER_ID}--${canonicalHash.slice(0, 12)}`);
+    expect(() => createMethodKey(CONTROLLER_ID, "not-a-hash")).toThrow(/SHA-256/u);
+  });
+
+  it("ignores LF/CRLF, whitespace, and generic parameter order but not values", () => {
+    const variants = [
+      `${JSON.stringify(riemannianConfig)}\n`,
+      `${JSON.stringify(riemannianConfig, null, 4)}\r\n`,
+      '{ "parameters": { "lambdaT": 1, "sigma": 2.4, "alpha": 10, "lambdaR": 10 }, "velocityTimeConstant": 0.04, "id": "conditioned_riemannian_metric_v1", "methodConfigVersion": 1 }\n',
+    ];
+    const keys = variants.map((source) => identifyMethod(parseMethodConfig(JSON.parse(source) as unknown), source).methodKey);
+    expect(new Set(keys).size).toBe(1);
+    const changed = { ...riemannianConfig, parameters: { ...riemannianConfig.parameters, alpha: 11 } };
+    expect(identifyMethod(parseMethodConfig(changed), JSON.stringify(changed)).methodKey).not.toBe(keys[0]);
+  });
+
+  it("canonicalizes reordered version-2 generic parameters", () => {
+    const sourceA = `${JSON.stringify(orcaConfig)}\n`;
+    const sourceB = '{ "parameters": { "timeHorizonObst": 5, "maxNeighbors": 16, "neighborDist": 5, "timeHorizon": 5 }, "engine": "orca_rvo2_engine_v1", "id": "orca_rvo2_v1", "methodConfigVersion": 2 }\r\n';
+    const keyA = identifyMethod(parseMethodConfig(JSON.parse(sourceA) as unknown), sourceA).methodKey;
+    const keyB = identifyMethod(parseMethodConfig(JSON.parse(sourceB) as unknown), sourceB).methodKey;
+    expect(keyB).toBe(keyA);
+  });
+
+  it.each([
+    [{ ...riemannianConfig, methodConfigVersion: 3 }, /version/iu],
     [{ ...riemannianConfig, velocityTimeConstant: -1 }, /nonnegative/u],
     [{ ...riemannianConfig, parameters: { ...riemannianConfig.parameters, goalGain: 1 } }, /not allowed/u],
     [{ ...goalConfig, parameters: { alpha: 10 } }, /not allowed/u],

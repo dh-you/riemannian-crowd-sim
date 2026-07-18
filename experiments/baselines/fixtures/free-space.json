@@ -1,0 +1,26 @@
+{
+  "experimentScenarioVersion": 1,
+  "name": "baseline-fixture-free-space",
+  "family": "free_space",
+  "variant": "single_agent",
+  "split": "baseline",
+  "seed": 0,
+  "simulation": {
+    "dt": 0.1,
+    "horizonSeconds": 0.5,
+    "goalTolerance": 0.05,
+    "correction": { "enabled": true, "iterations": 2, "padding": 0.001 }
+  },
+  "agents": [
+    {
+      "id": 0,
+      "radius": 0.3,
+      "preferredSpeed": 1.4,
+      "position": [-2, 0],
+      "velocity": [0, 0],
+      "goal": [2, 0]
+    }
+  ],
+  "walls": [],
+  "metadata": { "units": { "distance": "m", "time": "s" } }
+}

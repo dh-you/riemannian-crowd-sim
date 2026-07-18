@@ -14,6 +14,10 @@ dist-ssr
 /results/
 /experiments/tmp/
 /experiments/generated/
+/experiments/third_party/src/
+/experiments/third_party/build/
+/experiments/third_party/venv/
+/results/baseline-*/
 
 # Editor directories and files
 .vscode/*

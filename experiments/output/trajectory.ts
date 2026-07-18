@@ -1,6 +1,7 @@
 import type { SimulatorCore } from "../../src/core/SimulatorCore";
 import type { StepDiagnostics } from "../../src/core/types";
 import type { TrajectoryRecord } from "./types";
+import type { EngineStepRecord } from "../engines/engineStep";
 
 export function toTrajectoryRecord(
   diagnostic: StepDiagnostics,
@@ -42,6 +43,59 @@ export function toTrajectoryRecord(
       totalCorrectionDisplacement: diagnostic.totalCorrectionDisplacement,
       correctionRatio: diagnostic.correctionRatio,
       coincidentNeighborContributionsSkipped: diagnostic.coincidentNeighborContributionsSkipped,
+    },
+  };
+}
+
+export function engineStepToTrajectoryRecord(record: EngineStepRecord): TrajectoryRecord {
+  const maximumPre = Math.max(
+    record.diagnostics.maximumPreCorrectionAgentPenetration,
+    record.diagnostics.maximumPreCorrectionWallPenetration,
+  );
+  const maximumPost = Math.max(
+    record.diagnostics.maximumPostCorrectionAgentPenetration,
+    record.diagnostics.maximumPostCorrectionWallPenetration,
+  );
+  const ratio =
+    record.diagnostics.totalCorrectionDisplacement /
+    (record.diagnostics.intendedDisplacement + 1e-12);
+  return {
+    engineStepVersion: record.engineStepVersion,
+    stepIndex: record.stepIndex,
+    time: record.time,
+    agents: record.agents.map((agent) => ({
+      id: agent.id,
+      position: agent.postCorrectionPosition,
+      realizedVelocity: agent.realizedVelocity,
+      targetVelocity: agent.commandVelocity,
+      commandVelocity: agent.commandVelocity,
+      arrived: agent.arrived,
+    })),
+    diagnostics: {
+      preCorrectionOverlapPairs: record.diagnostics.preCorrectionOverlapPairs,
+      postCorrectionOverlapPairs: record.diagnostics.postCorrectionOverlapPairs,
+      preCorrectionWallContacts: record.diagnostics.preCorrectionWallContacts,
+      postCorrectionWallContacts: record.diagnostics.postCorrectionWallContacts,
+      maxPreCorrectionPenetration: maximumPre,
+      maxPostCorrectionPenetration: maximumPost,
+      maximumPreCorrectionAgentPenetration:
+        record.diagnostics.maximumPreCorrectionAgentPenetration,
+      maximumPreCorrectionWallPenetration:
+        record.diagnostics.maximumPreCorrectionWallPenetration,
+      maximumPostCorrectionAgentPenetration:
+        record.diagnostics.maximumPostCorrectionAgentPenetration,
+      maximumPostCorrectionWallPenetration:
+        record.diagnostics.maximumPostCorrectionWallPenetration,
+      minimumPreCorrectionAgentClearance:
+        record.diagnostics.minimumPreCorrectionAgentClearance,
+      minimumPreCorrectionWallClearance:
+        record.diagnostics.minimumPreCorrectionWallClearance,
+      intendedDisplacement: record.diagnostics.intendedDisplacement,
+      agentCorrectionDisplacement: record.diagnostics.agentCorrectionDisplacement,
+      wallCorrectionDisplacement: record.diagnostics.wallCorrectionDisplacement,
+      totalCorrectionDisplacement: record.diagnostics.totalCorrectionDisplacement,
+      correctionRatio: ratio,
+      coincidentNeighborContributionsSkipped: 0,
     },
   };
 }

@@ -1,0 +1,34 @@
+{
+  "experimentScenarioVersion": 1,
+  "name": "baseline-fixture-pairwise-offset-head-on",
+  "family": "pairwise",
+  "variant": "head_on",
+  "split": "baseline",
+  "seed": 1,
+  "simulation": {
+    "dt": 0.1,
+    "horizonSeconds": 1,
+    "goalTolerance": 0.05,
+    "correction": { "enabled": true, "iterations": 2, "padding": 0.001 }
+  },
+  "agents": [
+    {
+      "id": 0,
+      "radius": 0.3,
+      "preferredSpeed": 1.4,
+      "position": [-0.8, -0.1],
+      "velocity": [1.4, 0],
+      "goal": [3, -0.1]
+    },
+    {
+      "id": 1,
+      "radius": 0.3,
+      "preferredSpeed": 1.4,
+      "position": [0.8, 0.1],
+      "velocity": [-1.4, 0],
+      "goal": [-3, 0.1]
+    }
+  ],
+  "walls": [],
+  "metadata": { "units": { "distance": "m", "time": "s" } }
+}

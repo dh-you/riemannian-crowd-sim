@@ -23,8 +23,18 @@ export interface PairwiseMetrics {
 export interface RunMethodMetadata {
   methodId: string;
   methodKey: string;
+  methodIdentityVersion?: number;
+  methodConfigCanonicalSha256?: string;
+  methodConfigSourceSha256?: string;
+  engineId?: string;
+  engineAdapterVersion?: string;
+  correctionMode?: string;
+  commandVelocityMeaning?: string;
+  upstreamProject?: string | null;
+  upstreamCommit?: string | null;
+  upstreamLicense?: string | null;
   methodConfigSha256: string;
-  velocityTimeConstant: number;
+  velocityTimeConstant: number | null;
   methodParameters: Readonly<Record<string, number>>;
 }
 
@@ -37,8 +47,18 @@ export interface RunMetrics {
     seed: number;
     methodId: string;
     methodKey: string;
+    methodIdentityVersion: number;
+    methodConfigCanonicalSha256: string;
+    methodConfigSourceSha256: string;
     methodConfigSha256: string;
-    velocityTimeConstant: number;
+    engineId: string;
+    engineAdapterVersion: string;
+    correctionMode: string;
+    commandVelocityMeaning: string;
+    upstreamProject: string | null;
+    upstreamCommit: string | null;
+    upstreamLicense: string | null;
+    velocityTimeConstant: number | null;
     methodParameters: Readonly<Record<string, number>>;
     agentCount: number;
     simulatedDuration: number;

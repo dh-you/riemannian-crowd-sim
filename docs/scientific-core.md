@@ -156,6 +156,6 @@ Trajectory records are streamed incrementally through `trajectory.jsonl.tmp`; th
 
 The controller uses local spatial queries, but full contact measurement and positional correction have not been optimized with the same locality. They are not a basis for an $O(Nm)$ full-step performance claim. Later performance experiments must time the controller, diagnostics, and correction layers separately unless the latter layers are also optimized.
 
-## Deferred work
+## Baseline engines and deferred work
 
-ORCA/RVO2, Social Force, parameter tuning, parameter sweeps, final experiments, paper figures and tables, and any comparative or performance claims are intentionally deferred to later stages.
+ORCA/RVO2 and PySocialForce now run as engine-level adapters without changing this scientific core; see [baseline-engines.md](baseline-engines.md). Parameter tuning, parameter sweeps, frozen final experiments, confidence intervals, paper figures and tables, and any comparative or performance claims remain intentionally deferred.

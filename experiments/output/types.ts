@@ -22,10 +22,12 @@ export interface TrajectoryAgent {
   position: Vec2;
   realizedVelocity: Vec2;
   targetVelocity: Vec2;
+  commandVelocity?: Vec2;
   arrived: boolean;
 }
 
 export interface TrajectoryRecord {
+  engineStepVersion?: number;
   stepIndex: number;
   time: number;
   agents: TrajectoryAgent[];

@@ -1,0 +1,12 @@
+*.json text eol=lf
+*.jsonl text eol=lf
+*.toml text eol=lf
+*.py text eol=lf
+*.ts text eol=lf
+*.cpp text eol=lf
+*.hpp text eol=lf
+*.h text eol=lf
+CMakeLists.txt text eol=lf
+*.cmake text eol=lf
+# A unified diff represents a blank context line as one required space.
+*.patch text eol=lf -whitespace

@@ -2,13 +2,13 @@
 
 ## Architecture and scope
 
-Stage B separates five concerns that must remain independently auditable:
+Stages B and C separate five concerns that must remain independently auditable:
 
 1. An experiment scenario describes only the shared physical problem: agents, finite walls, units, fixed timestep, horizon, goal tolerance, and correction settings.
-2. A method configuration selects a controller, its parameters, and its velocity-smoothing time constant.
-3. A controller computes only an agent's target velocity from an immutable step snapshot.
-4. `SimulatorCore` supplies the same synchronous smoothing, goal-disk truncation, arrival recomputation, correction, wall handling, realized velocity, and diagnostics for every controller.
-5. `RunMetricsAccumulator` consumes every completed step online, independently of trajectory recording frequency.
+2. A method configuration selects an engine and its strictly validated native parameters.
+3. `ScientificCoreEngine` wraps the two `MotionController` implementations without changing `SimulatorCore`; ORCA and PySocialForce use separate external engine adapters that preserve native dynamics.
+4. Every engine emits the versioned common `EngineStepRecord` physical contract.
+5. `RunMetricsAccumulator` consumes every completed engine step online, independently of trajectory recording frequency.
 
 The same scenario JSON is passed unchanged to every method. This prevents method-specific configuration from changing initial states or physical settings and lets manifests verify shared input through the same scenario SHA-256.
 
@@ -16,12 +16,14 @@ The Stage A `schemaVersion: 1` format and `core:run` remain supported without re
 
 ## Methods and configuration
 
-Method configs use `methodConfigVersion: 1`. Stable machine IDs and display labels are:
+Scientific Core configs retain `methodConfigVersion: 1`; native baseline configs use version 2 and include an explicit engine ID. Stable machine IDs and display labels are:
 
 | Machine ID | Paper-facing label |
 | --- | --- |
 | `conditioned_riemannian_metric_v1` | Conditioned Riemannian |
 | `euclidean_goal_steering_v1` | Goal+Projection |
+| `orca_rvo2_v1` | ORCA/RVO2 |
+| `social_force_pysocialforce_v1` | PySocialForce |
 
 The Conditioned Riemannian implementation retains the Stage A equations and numerical operations documented in [scientific-core.md](scientific-core.md). The controller refactor delegates the same metric construction and inverse-metric target calculation through a common interface; it does not change goal-direction visibility, signed closing, Wendland weighting, tensor construction, solve-based steering, normalization, or ID-ordered accumulation.
 
@@ -38,10 +40,10 @@ The committed configs in `experiments/methods/` are provisional infrastructure d
 Every exact method-config file also has a stable run identity:
 
 ```text
-methodKey = <controller-id>--<first-12-hex-characters-of-method-config-SHA-256>
+methodKey = <method-id>--<first-12-hex-characters-of-canonical-SHA-256>
 ```
 
-The SHA-256 is computed from the exact config bytes, so even two configurations of the same controller receive distinct keys, output directories, metric identities, and CSV rows. Manifests and batch records retain both the key and the full config hash. The aggregate CSV additionally exposes `velocity_time_constant`, `alpha`, `sigma`, `lambda_r`, and `lambda_t`; parameters unavailable for a method are empty fields.
+Method identity version 2 parses and strictly validates the source, reconstructs a documented field order, sorts parameter keys lexicographically, serializes compact JSON with one trailing LF, and hashes those canonical UTF-8 bytes. Semantically identical whitespace, line endings, and parameter-key ordering therefore have the same key, while a value change does not. Manifests retain both `methodConfigCanonicalSha256` and the provenance-only `methodConfigSourceSha256`. Output directories, metrics, batch identity, and resume use the canonical hash. The aggregate CSV exposes applicable Scientific Core, ORCA, and Social Force parameters; unavailable values are empty fields.
 
 ## Experiment scenario version 1
 
@@ -80,9 +82,9 @@ Committed fixtures under `experiments/fixtures/protocol-v1/` include the exact d
 
 ## Online metrics
 
-Metrics consume every simulator step, even when `trajectory.jsonl` is subsampled.
+Metrics consume every common engine step, even when `trajectory.jsonl` is subsampled.
 
-First arrival is the first post-correction step for which `arrived` is true. It is recorded by the accumulator only; simulator arrival remains recomputed and unlatching. Success is the fraction that arrived at least once, while final-arrived fraction describes only the last state.
+First arrival is the first completed physical step for which `arrived` is true. Scientific Core arrival remains recomputed after its optional correction; native external engines permanently deactivate an agent after the shared analytic goal-entry wrapper first reaches the goal disk. Success is the fraction that arrived at least once, while final-arrived fraction describes only the last state.
 
 For successful agent \(i\), normalized travel time and path ratio are
 
@@ -111,10 +113,10 @@ Throughput is first arrivals divided by simulated seconds; it is `null` at zero 
 The unobstructed direction is \(u_i^0=(q_i-p_i)/\lVert q_i-p_i\rVert\). Avoidance onset is the first step-start time when
 
 \[
-\delta_i=\cos^{-1}\!\left(\frac{v_i^\star\cdot u_i^0}{\lVert v_i^\star\rVert}\right)>5^\circ.
+\delta_i=\cos^{-1}\!\left(\frac{v_i^{\mathrm{command}}\cdot u_i^0}{\lVert v_i^{\mathrm{command}}\rVert}\right)>5^\circ.
 \]
 
-Zero target velocity or an undefined goal direction does not declare onset. At onset, TTC solves \(\lVert r+tv\rVert^2=R^2\) and stores the earliest nonnegative finite root. Separating, stationary, invalid, or non-collision trajectories yield `null`; already overlapping circles yield zero.
+Zero command velocity or an undefined goal direction does not declare onset. `commandVelocity` is the controller target before Scientific Core smoothing, the selected integration velocity for ORCA, and the native post-force/pre-position velocity for PySocialForce. These are native behavioral commands, not the same mathematical object. At onset, TTC solves \(\lVert r+tv\rVert^2=R^2\) and stores the earliest nonnegative finite root. Separating, stationary, invalid, or non-collision trajectories yield `null`; already overlapping circles yield zero.
 
 Pairwise separation reports four explicitly qualified values: minimum pre-correction center distance, minimum pre-correction physical clearance, minimum post-correction center distance, and minimum post-correction physical clearance. “Center distance” is the raw center-to-center distance; “physical clearance” subtracts both radii. The pre-correction values measure controller output before the numerical safeguard, so correction cannot hide a controller collision.
 
@@ -126,45 +128,51 @@ Generate the deterministic protocol:
 npm run exp:generate -- --suite experiments/suites/protocol-v1.json --out experiments/generated/protocol-v1
 ```
 
-Run one scenario with either method:
+Run one scenario with any method (external methods require bootstrap and build first):
 
 ```bash
-npm run exp:run -- --scenario experiments/generated/protocol-v1/validation/pairwise/head_on/seed-0.json --method experiments/methods/riemannian-default.json --out results/stage-b-riemannian-example
-npm run exp:run -- --scenario experiments/generated/protocol-v1/validation/pairwise/head_on/seed-0.json --method experiments/methods/goal-projection.json --out results/stage-b-goal-example
+npm run exp:run -- --scenario experiments/generated/protocol-v1/validation/pairwise/head_on/seed-0.json --method experiments/methods/riemannian-default.json --out results/stage-c-riemannian-example
+npm run exp:run -- --scenario experiments/generated/protocol-v1/validation/pairwise/head_on/seed-0.json --method experiments/methods/goal-projection.json --out results/stage-c-goal-example
+npm run exp:run -- --scenario experiments/generated/protocol-v1/validation/pairwise/head_on/seed-0.json --method experiments/methods/orca-default.json --out results/stage-c-orca-example
+npm run exp:run -- --scenario experiments/generated/protocol-v1/validation/pairwise/head_on/seed-0.json --method experiments/methods/social-force-default.json --out results/stage-c-social-force-example
 ```
 
-The runner writes atomic `manifest.json`, `trajectory.jsonl`, `summary.json`, and `run-metrics.json`. The manifest records schema versions, controller ID/label, method key, exact method settings, scenario and config hashes, platform, Git SHA, arguments, and execution time. Trajectory records are controller-independent and ID-sorted. `--record-every N` changes trajectory density but not metrics.
+The runner writes atomic `manifest.json`, `trajectory.jsonl`, `summary.json`, and `run-metrics.json`. The manifest records engine, adapter, correction and command semantics, canonical/source method identity, exact method settings, scenario identity, platform, Git SHA, arguments, and execution time. External runs additionally require the pinned upstream, license, runner, build-manifest, and lock-file provenance. Trajectory records are engine-independent and ID-sorted. `--record-every N` changes trajectory density but not metrics.
 
 Run the CI-sized cross-method smoke suite:
 
 ```bash
 npm run exp:smoke
+npm run baselines:bootstrap
+npm run baselines:build
+npm run baselines:verify
+npm run baselines:smoke
 ```
 
 Run a split sequentially and aggregate it:
 
 ```bash
-npm run exp:batch -- --suite experiments/generated/protocol-v1/suite-manifest.json --methods experiments/methods/riemannian-default.json,experiments/methods/goal-projection.json --split validation --out results/protocol-v1-validation
+npm run exp:batch -- --suite experiments/generated/protocol-v1/suite-manifest.json --methods experiments/methods/riemannian-default.json,experiments/methods/goal-projection.json,experiments/methods/orca-default.json,experiments/methods/social-force-default.json --split validation --out results/protocol-v1-validation
 npm run exp:aggregate -- --input results/protocol-v1-validation --out results/protocol-v1-validation/aggregate
 ```
 
-Batch manifest version 2 paths are deterministic by split, family, variant, seed, and method key. Failures are recorded and make the CLI exit nonzero; `--fail-fast` stops after the first. Existing completed output requires `--resume` or `--force`. Resume skips only when all four artifacts are present and parseable and method key, scenario hash, full method-config hash, and Git SHA match. `--allow-cross-commit-resume` explicitly relaxes only the Git check. Aggregation writes one completed-run row to `run-metrics.csv` and failures to `failures.csv`; unavailable values are empty CSV fields.
+Batch manifest version 3 paths are deterministic by split, family, variant, seed, and canonical method key. Failures, including external-runner stderr excerpts, are recorded and make the CLI exit nonzero; `--fail-fast` stops after the first. Existing completed output requires `--resume` or `--force`. Resume verifies all artifacts plus scenario, canonical method identity, method-key, engine, adapter, lock, upstream, runner/adapter, and repository identities. `--allow-cross-commit-resume` relaxes only the repository Git SHA check. Aggregation writes one completed-run row to `run-metrics.csv` and failures to `failures.csv`; unavailable values are empty CSV fields.
 
 ## Deferred work and interpretation
 
-ORCA/RVO2 and Social Force adapters are deferred to Stage C. They must integrate above `MotionController`, because that target-velocity interface is intentionally specific to the shared scientific core. ORCA guarantees concern its selected velocity and must not be silently altered by the core's exponential smoothing. Social Force is an acceleration model with its own relaxation dynamics. The intended boundary is:
+ORCA/RVO2 and PySocialForce are integrated above `MotionController`, because that target-velocity interface is intentionally specific to the shared scientific core. ORCA is not passed through the core's exponential smoothing, and Social Force retains its acceleration and relaxation dynamics. The boundary is:
 
 ```text
 ExperimentScenario
         |
-EngineAdapter
-  |-- ScientificCoreAdapter
-  |-- OrcaAdapter
-  `-- SocialForceAdapter
+ExperimentEngine
+  |-- ScientificCoreEngine
+  |-- OrcaRvo2Engine
+  `-- PySocialForceEngine
         |
-common trajectory records + RunMetricsAccumulator
+EngineStepRecord + RunMetricsAccumulator
 ```
 
-Each adapter will own its native stepping semantics while emitting the same physical state and diagnostics needed by the common evaluator. Parameter tuning, sensitivity sweeps, full test execution, statistical tests, plots, paper tables, and scientific conclusions are also deferred. No comparative claim has been established.
+Each adapter owns its native stepping semantics while emitting the same physical state and diagnostics needed by the common evaluator. See [baseline-engines.md](baseline-engines.md) for exact pins, mappings, build steps, and limitations. Parameter tuning, sensitivity sweeps, frozen test execution, statistical tests, plots, paper tables, and scientific conclusions remain deferred. No comparative claim has been established.
 
 Full contact diagnostics and positional correction are global operations and have not been locality-optimized. Their existence is not evidence for an \(O(Nm)\) complete simulation step.

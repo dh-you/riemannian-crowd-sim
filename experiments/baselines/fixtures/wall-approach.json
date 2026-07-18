@@ -1,0 +1,28 @@
+{
+  "experimentScenarioVersion": 1,
+  "name": "baseline-fixture-wall-approach",
+  "family": "wall",
+  "variant": "approach",
+  "split": "baseline",
+  "seed": 4,
+  "simulation": {
+    "dt": 0.1,
+    "horizonSeconds": 0.5,
+    "goalTolerance": 0.05,
+    "correction": { "enabled": true, "iterations": 2, "padding": 0.001 }
+  },
+  "agents": [
+    {
+      "id": 0,
+      "radius": 0.3,
+      "preferredSpeed": 1.4,
+      "position": [-1, 0],
+      "velocity": [0, 0],
+      "goal": [2, 0]
+    }
+  ],
+  "walls": [
+    { "id": 0, "start": [0, -2], "end": [0, 2], "thickness": 0.2 }
+  ],
+  "metadata": { "units": { "distance": "m", "time": "s" } }
+}

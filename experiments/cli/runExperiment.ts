@@ -11,21 +11,20 @@ import {
 import { arch, platform } from "node:os";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { controllerLabel } from "../../src/core/controllerFactory";
-import { SimulatorCore } from "../../src/core/SimulatorCore";
 import type { AgentState } from "../../src/core/types";
+import { createExperimentEngine } from "../engines/factory";
+import type { EngineProvenance } from "../engines/ExperimentEngine";
 import { RunMetricsAccumulator } from "../metrics/RunMetricsAccumulator";
 import type { RunMetrics } from "../metrics/types";
-import { toTrajectoryRecord } from "../output/trajectory";
+import { engineStepToTrajectoryRecord } from "../output/trajectory";
 import { sha256Bytes } from "../protocol/hash";
 import { identifyMethod } from "../protocol/methodIdentity";
 import {
-  controllerParametersFromMethod,
   parseMethodConfig,
+  velocityTimeConstantForMethod,
   type MethodConfig,
 } from "../protocol/methodConfig";
 import { parseExperimentScenario, type ExperimentScenario } from "../protocol/schema";
-import { fixedStepCount } from "./runScenario";
 
 export interface RunExperimentOptions {
   scenarioPath: string;
@@ -38,6 +37,7 @@ export interface RunExperimentOptions {
 export interface ExperimentManifest {
   experimentScenarioVersion: number;
   methodConfigVersion: number;
+  methodIdentityVersion: number;
   scenarioName: string;
   family: string;
   variant: string;
@@ -45,14 +45,30 @@ export interface ExperimentManifest {
   seed: number;
   controllerId: string;
   controllerLabel: string;
+  engineId: string;
+  engineAdapterVersion: string;
+  correctionMode: string;
+  commandVelocityMeaning: string;
   methodKey: string;
   methodParameters: MethodConfig["parameters"];
-  velocityTimeConstant: number;
+  velocityTimeConstant: number | null;
   timestepSeconds: number;
   horizonSeconds: number;
   correction: ExperimentScenario["simulation"]["correction"];
   scenarioSha256: string;
+  methodConfigCanonicalSha256: string;
+  methodConfigSourceSha256: string;
+  /** @deprecated Identity-v2 alias for canonical SHA-256. */
   methodConfigSha256: string;
+  thirdPartyLockSha256: string | null;
+  upstreamProject: string | null;
+  upstreamRepository: string | null;
+  upstreamCommit: string | null;
+  upstreamLicense: string | null;
+  runnerPath: string | null;
+  runnerSha256: string | null;
+  buildManifestSha256: string | null;
+  implementationLimitations: string[];
   gitCommitSha: string | null;
   nodeVersion: string;
   operatingSystem: string;
@@ -89,19 +105,8 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
   const methodPath = resolve(options.methodPath);
   const outputDirectory = resolve(options.outputDirectory);
   mkdirSync(outputDirectory, { recursive: true });
-
-  const finalPaths = {
-    manifest: resolve(outputDirectory, "manifest.json"),
-    trajectory: resolve(outputDirectory, "trajectory.jsonl"),
-    summary: resolve(outputDirectory, "summary.json"),
-    metrics: resolve(outputDirectory, "run-metrics.json"),
-  };
-  const temporaryPaths = {
-    manifest: `${finalPaths.manifest}.tmp`,
-    trajectory: `${finalPaths.trajectory}.tmp`,
-    summary: `${finalPaths.summary}.tmp`,
-    metrics: `${finalPaths.metrics}.tmp`,
-  };
+  const finalPaths = artifactPaths(outputDirectory, "");
+  const temporaryPaths = artifactPaths(outputDirectory, ".tmp");
   const allArtifacts = [...Object.values(finalPaths), ...Object.values(temporaryPaths)];
   for (const path of allArtifacts) rmSync(path, { force: true });
 
@@ -114,74 +119,46 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
     const methodBytes = readFileSync(methodPath, "utf8");
     const scenario = parseExperimentScenario(JSON.parse(scenarioBytes) as unknown);
     const method = parseMethodConfig(JSON.parse(methodBytes) as unknown);
-    const methodIdentity = identifyMethod(method, methodBytes);
+    const identity = identifyMethod(method, methodBytes);
+    const engine = createExperimentEngine(method, identity);
+    const preliminaryProvenance = engine.getProvenance(scenario, method);
     const recordingInterval = options.recordingInterval ?? 1;
     if (!Number.isSafeInteger(recordingInterval) || recordingInterval < 1) {
       throw new Error("Recording interval must be a positive integer");
     }
-    const totalSteps = fixedStepCount(
-      scenario.simulation.horizonSeconds,
-      scenario.simulation.dt,
-    );
-    const simulator = new SimulatorCore({
-      agents: scenario.agents,
-      walls: scenario.walls,
-      simulation: {
-        dt: scenario.simulation.dt,
-        goalTolerance: scenario.simulation.goalTolerance,
-        velocityTimeConstant: method.velocityTimeConstant,
-        correction: scenario.simulation.correction,
-      },
-      controller: controllerParametersFromMethod(method),
-    });
     const accumulator = new RunMetricsAccumulator(scenario, {
-      ...methodIdentity,
-      velocityTimeConstant: method.velocityTimeConstant,
+      ...identity,
+      velocityTimeConstant: velocityTimeConstantForMethod(method),
       methodParameters: { ...method.parameters },
+      ...metricsProvenance(preliminaryProvenance),
     });
     trajectoryDescriptor = openSync(temporaryPaths.trajectory, "w");
-    let streamFailure: unknown;
-    try {
-      for (let step = 0; step < totalSteps; step += 1) {
-        const beforeStep = simulator.getAgents();
-        const diagnostic = simulator.step();
-        const afterStep = simulator.getAgents();
-        accumulator.observeStep(beforeStep, diagnostic, afterStep);
-        const shouldRecord =
-          (diagnostic.stepIndex + 1) % recordingInterval === 0 ||
-          diagnostic.stepIndex + 1 === totalSteps;
-        if (shouldRecord) {
-          writeFileSync(
-            trajectoryDescriptor,
-            `${JSON.stringify(toTrajectoryRecord(diagnostic, afterStep))}\n`,
-            "utf8",
-          );
-        }
+    const engineResult = engine.run(scenario, method, identity, (record) => {
+      accumulator.observeStep(record);
+      const shouldRecord =
+        (record.stepIndex + 1) % recordingInterval === 0 ||
+        record.stepIndex + 1 === expectedStepCount(scenario);
+      if (shouldRecord) {
+        writeFileSync(
+          trajectoryDescriptor as number,
+          `${JSON.stringify(engineStepToTrajectoryRecord(record))}\n`,
+          "utf8",
+        );
       }
-    } catch (error) {
-      streamFailure = error;
-      throw error;
-    } finally {
-      const descriptor = trajectoryDescriptor;
-      trajectoryDescriptor = undefined;
-      if (descriptor !== undefined) {
-        try {
-          closeSync(descriptor);
-        } catch (closeError) {
-          if (streamFailure === undefined) throw closeError;
-        }
-      }
-    }
+    });
+    closeSync(trajectoryDescriptor);
+    trajectoryDescriptor = undefined;
+    assertSameProvenance(preliminaryProvenance, engineResult.provenance);
 
-    const finalStates = simulator.getAgents();
+    const finalStates = engineResult.finalStates;
     const metrics = accumulator.finish(finalStates);
     const arrivedAgents = finalStates.filter((agent) => agent.arrived).length;
     const summary: ExperimentRunSummary = {
       scenarioName: scenario.name,
       methodId: method.id,
-      methodKey: methodIdentity.methodKey,
-      totalSteps,
-      simulatedDuration: totalSteps * scenario.simulation.dt,
+      methodKey: identity.methodKey,
+      totalSteps: engineResult.totalSteps,
+      simulatedDuration: engineResult.totalSteps * scenario.simulation.dt,
       arrivedAgents,
       arrivedFraction: finalStates.length === 0 ? 0 : arrivedAgents / finalStates.length,
       nonFiniteValueOccurred: containsNonFinite(finalStates) || containsNonFinite(metrics),
@@ -190,24 +167,41 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
     if (containsNonFinite(summary) || summary.nonFiniteValueOccurred) {
       throw new Error("Experiment output contains a non-finite value");
     }
+    const provenance = engineResult.provenance;
     const manifest: ExperimentManifest = {
       experimentScenarioVersion: scenario.experimentScenarioVersion,
       methodConfigVersion: method.methodConfigVersion,
+      methodIdentityVersion: identity.methodIdentityVersion,
       scenarioName: scenario.name,
       family: scenario.family,
       variant: scenario.variant,
       split: scenario.split,
       seed: scenario.seed,
       controllerId: method.id,
-      controllerLabel: controllerLabel(method.id),
-      methodKey: methodIdentity.methodKey,
+      controllerLabel: methodLabel(method.id),
+      engineId: provenance.engineId,
+      engineAdapterVersion: provenance.engineAdapterVersion,
+      correctionMode: provenance.correctionMode,
+      commandVelocityMeaning: provenance.commandVelocityMeaning,
+      methodKey: identity.methodKey,
       methodParameters: method.parameters,
-      velocityTimeConstant: method.velocityTimeConstant,
+      velocityTimeConstant: velocityTimeConstantForMethod(method),
       timestepSeconds: scenario.simulation.dt,
       horizonSeconds: scenario.simulation.horizonSeconds,
       correction: scenario.simulation.correction,
       scenarioSha256: sha256Bytes(scenarioBytes),
-      methodConfigSha256: methodIdentity.methodConfigSha256,
+      methodConfigCanonicalSha256: identity.methodConfigCanonicalSha256,
+      methodConfigSourceSha256: identity.methodConfigSourceSha256,
+      methodConfigSha256: identity.methodConfigCanonicalSha256,
+      thirdPartyLockSha256: provenance.thirdPartyLockSha256,
+      upstreamProject: provenance.upstreamProject,
+      upstreamRepository: provenance.upstreamRepository,
+      upstreamCommit: provenance.upstreamCommit,
+      upstreamLicense: provenance.upstreamLicense,
+      runnerPath: provenance.runnerPath,
+      runnerSha256: provenance.runnerSha256,
+      buildManifestSha256: provenance.buildManifestSha256,
+      implementationLimitations: provenance.limitations,
       gitCommitSha: readGitCommit(dirname(scenarioPath)),
       nodeVersion: process.version,
       operatingSystem: platform(),
@@ -220,10 +214,9 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
     writeJson(temporaryPaths.manifest, manifest);
     writeJson(temporaryPaths.summary, summary);
     writeJson(temporaryPaths.metrics, metrics);
-    renameSync(temporaryPaths.manifest, finalPaths.manifest);
-    renameSync(temporaryPaths.summary, finalPaths.summary);
-    renameSync(temporaryPaths.metrics, finalPaths.metrics);
-    renameSync(temporaryPaths.trajectory, finalPaths.trajectory);
+    for (const key of Object.keys(finalPaths) as (keyof typeof finalPaths)[]) {
+      renameSync(temporaryPaths[key], finalPaths[key]);
+    }
     finalized = true;
     result = {
       manifestPath: finalPaths.manifest,
@@ -238,11 +231,7 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
     failure = error;
   } finally {
     if (trajectoryDescriptor !== undefined) {
-      try {
-        closeSync(trajectoryDescriptor);
-      } catch (cleanupError) {
-        if (failure === undefined) failure = cleanupError;
-      }
+      try { closeSync(trajectoryDescriptor); } catch (cleanupError) { if (failure === undefined) failure = cleanupError; }
     }
     if (!finalized) for (const path of allArtifacts) removePreservingFailure(path);
   }
@@ -251,16 +240,54 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
   return result;
 }
 
+function artifactPaths(outputDirectory: string, suffix: string) {
+  return {
+    manifest: resolve(outputDirectory, `manifest.json${suffix}`),
+    trajectory: resolve(outputDirectory, `trajectory.jsonl${suffix}`),
+    summary: resolve(outputDirectory, `summary.json${suffix}`),
+    metrics: resolve(outputDirectory, `run-metrics.json${suffix}`),
+  };
+}
+
+function metricsProvenance(provenance: EngineProvenance) {
+  return {
+    engineId: provenance.engineId,
+    engineAdapterVersion: provenance.engineAdapterVersion,
+    correctionMode: provenance.correctionMode,
+    commandVelocityMeaning: provenance.commandVelocityMeaning,
+    upstreamProject: provenance.upstreamProject,
+    upstreamCommit: provenance.upstreamCommit,
+    upstreamLicense: provenance.upstreamLicense,
+  };
+}
+
+function assertSameProvenance(before: EngineProvenance, after: EngineProvenance): void {
+  if (JSON.stringify(before) !== JSON.stringify(after)) {
+    throw new Error("Engine provenance changed during simulation");
+  }
+}
+
+function expectedStepCount(scenario: ExperimentScenario): number {
+  const ratio = scenario.simulation.horizonSeconds / scenario.simulation.dt;
+  const nearest = Math.round(ratio);
+  if (Math.abs(ratio - nearest) > 1e-9) throw new Error("Horizon must be an integer multiple of dt");
+  return nearest;
+}
+
+function methodLabel(id: string): string {
+  if (id === "conditioned_riemannian_metric_v1") return "Conditioned Riemannian";
+  if (id === "euclidean_goal_steering_v1") return "Goal+Projection";
+  if (id === "orca_rvo2_v1") return "ORCA/RVO2";
+  if (id === "social_force_pysocialforce_v1") return "PySocialForce";
+  return id;
+}
+
 function writeJson(path: string, value: unknown): void {
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
 function removePreservingFailure(path: string): void {
-  try {
-    rmSync(path, { force: true });
-  } catch {
-    // Preserve the primary simulation or I/O failure.
-  }
+  try { rmSync(path, { force: true }); } catch { /* preserve primary failure */ }
 }
 
 function containsNonFinite(value: unknown): boolean {
@@ -277,9 +304,7 @@ function readGitCommit(startDirectory: string): string | null {
       encoding: "utf8",
       stdio: ["ignore", "pipe", "ignore"],
     }).trim();
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
 
 function parseArguments(arguments_: readonly string[]): RunExperimentOptions {
@@ -290,40 +315,22 @@ function parseArguments(arguments_: readonly string[]): RunExperimentOptions {
   for (let index = 0; index < arguments_.length; index += 1) {
     const argument = arguments_[index];
     const value = arguments_[index + 1];
-    if (argument === "--scenario" && value !== undefined) {
-      scenarioPath = value;
-      index += 1;
-    } else if (argument === "--method" && value !== undefined) {
-      methodPath = value;
-      index += 1;
-    } else if (argument === "--out" && value !== undefined) {
-      outputDirectory = value;
-      index += 1;
-    } else if (argument === "--record-every" && value !== undefined) {
-      recordingInterval = Number(value);
-      index += 1;
-    } else {
-      throw new Error(`Unknown or incomplete argument: ${argument}`);
-    }
+    if (argument === "--scenario" && value !== undefined) { scenarioPath = value; index += 1; }
+    else if (argument === "--method" && value !== undefined) { methodPath = value; index += 1; }
+    else if (argument === "--out" && value !== undefined) { outputDirectory = value; index += 1; }
+    else if (argument === "--record-every" && value !== undefined) { recordingInterval = Number(value); index += 1; }
+    else throw new Error(`Unknown or incomplete argument: ${argument}`);
   }
   if (scenarioPath === undefined) throw new Error("Missing required --scenario path");
   if (methodPath === undefined) throw new Error("Missing required --method path");
   if (outputDirectory === undefined) throw new Error("Missing required --out directory");
-  return {
-    scenarioPath,
-    methodPath,
-    outputDirectory,
-    recordingInterval,
-    commandArguments: arguments_,
-  };
+  return { scenarioPath, methodPath, outputDirectory, recordingInterval, commandArguments: arguments_ };
 }
 
 function main(): void {
   try {
     const result = runExperiment(parseArguments(process.argv.slice(2)));
-    console.log(
-      `exp:run wrote ${result.summary.totalSteps} steps for ${result.manifest.controllerId} to ${dirname(result.summaryPath)}`,
-    );
+    console.log(`exp:run wrote ${result.summary.totalSteps} steps for ${result.manifest.controllerId} to ${dirname(result.summaryPath)}`);
   } catch (error) {
     console.error(`exp:run failed: ${error instanceof Error ? error.message : String(error)}`);
     process.exitCode = 1;

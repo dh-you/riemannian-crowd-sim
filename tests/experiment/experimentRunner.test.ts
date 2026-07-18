@@ -13,6 +13,8 @@ import { runExperiment } from "../../experiments/cli/runExperiment";
 import { generateFreeSpaceScenario } from "../../experiments/generation/freeSpace";
 import { generatePairwiseScenario } from "../../experiments/generation/pairwise";
 import { sha256Bytes } from "../../experiments/protocol/hash";
+import { identifyMethod } from "../../experiments/protocol/methodIdentity";
+import { parseMethodConfig } from "../../experiments/protocol/methodConfig";
 import { serializeExperimentScenario } from "../../experiments/protocol/schema";
 
 const temporaryDirectories: string[] = [];
@@ -41,7 +43,11 @@ describe("common headless experiment runner", () => {
     });
 
     expect(result.manifest.scenarioSha256).toBe(sha256Bytes(scenarioBytes));
-    expect(result.manifest.methodConfigSha256).toBe(sha256Bytes(methodBytes));
+    const methodIdentity = identifyMethod(parseMethodConfig(JSON.parse(methodBytes) as unknown), methodBytes);
+    expect(result.manifest.methodIdentityVersion).toBe(2);
+    expect(result.manifest.methodConfigSourceSha256).toBe(sha256Bytes(methodBytes));
+    expect(result.manifest.methodConfigCanonicalSha256).toBe(methodIdentity.methodConfigCanonicalSha256);
+    expect(result.manifest.methodConfigSha256).toBe(methodIdentity.methodConfigCanonicalSha256);
     expect(result.manifest.methodKey).toBe(
       `${result.manifest.controllerId}--${result.manifest.methodConfigSha256.slice(0, 12)}`,
     );

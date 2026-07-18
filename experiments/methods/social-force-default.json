@@ -1,0 +1,19 @@
+{
+  "methodConfigVersion": 2,
+  "id": "social_force_pysocialforce_v1",
+  "engine": "pysocialforce_engine_v1",
+  "parameters": {
+    "desiredFactor": 1.0,
+    "relaxationTime": 0.5,
+    "socialFactor": 5.1,
+    "lambdaImportance": 2.0,
+    "gamma": 0.35,
+    "n": 2.0,
+    "nPrime": 3.0,
+    "obstacleFactor": 10.0,
+    "obstacleSigma": 0.2,
+    "obstacleThreshold": 3.0,
+    "maxSpeedMultiplier": 1.3,
+    "obstacleResolution": 10.0
+  }
+}

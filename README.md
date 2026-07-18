@@ -34,3 +34,19 @@ See [docs/experiment-protocol.md](docs/experiment-protocol.md) for the protocol 
 npm run exp:generate -- --suite experiments/suites/protocol-v1.json --out experiments/generated/protocol-v1
 npm run exp:smoke
 ```
+
+## Baseline engines
+
+Stage C adds engine-level adapters for pinned C++ RVO2/ORCA and PySocialForce while preserving each engine's native dynamics. They share the same controller-independent scenarios and common evaluator, but they do not pass through `MotionController`, Scientific Core smoothing, or Scientific Core positional correction.
+
+See [docs/baseline-engines.md](docs/baseline-engines.md) for exact upstream commits, licenses, the locked patch, parameter/state/wall mappings, common engine-step schema, provenance, and limitations.
+
+```bash
+npm run baselines:bootstrap
+npm run baselines:build
+npm run baselines:verify
+npm run test:baselines
+npm run baselines:smoke
+```
+
+The baseline defaults are provisional infrastructure settings. No tuning or comparative conclusion is included.

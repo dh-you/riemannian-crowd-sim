@@ -55,6 +55,7 @@ function options(): SimulatorCoreOptions {
 function walk(directory: string): string[] {
   const result: string[] = [];
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    if (entry.name === "third_party") continue;
     const path = join(directory, entry.name);
     if (entry.isDirectory()) result.push(...walk(path));
     else result.push(path);

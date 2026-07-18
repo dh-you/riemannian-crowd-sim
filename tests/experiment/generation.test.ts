@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -80,6 +80,35 @@ describe("deterministic scenario families", () => {
       );
     }
   });
+
+  it.each(["experiments", "generated", "descendant"])(
+    "rejects a symbolic-link or junction at the %s path level",
+    (level) => {
+      const root = mkdtempSync(resolve(tmpdir(), "generator-symlink-root-"));
+      const outside = mkdtempSync(resolve(tmpdir(), "generator-symlink-outside-"));
+      try {
+        if (level === "experiments") {
+          symlinkSync(outside, resolve(root, "experiments"), "junction");
+        } else {
+          mkdirSync(resolve(root, "experiments"), { recursive: true });
+          if (level === "generated") {
+            symlinkSync(outside, resolve(root, "experiments", "generated"), "junction");
+          } else {
+            mkdirSync(resolve(root, "experiments", "generated"), { recursive: true });
+            symlinkSync(outside, resolve(root, "experiments", "generated", "linked"), "junction");
+          }
+        }
+        const candidate =
+          level === "descendant"
+            ? resolve(root, "experiments", "generated", "linked", "suite")
+            : resolve(root, "experiments", "generated", "suite");
+        expect(() => assertSafeOutputDirectory(candidate, root)).toThrow(/symbolic|resolves/iu);
+      } finally {
+        rmSync(root, { recursive: true, force: true });
+        rmSync(outside, { recursive: true, force: true });
+      }
+    },
+  );
 
   it.each(representativeRequests)("generates $family byte-identically and physically valid", (request) => {
     const first = generateExperimentScenario(request);

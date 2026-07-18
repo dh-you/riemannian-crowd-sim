@@ -1,6 +1,10 @@
 import { dot, norm, scale, sub } from "../../src/core/math";
 import { CORRECTION_RATIO_EPSILON_METERS } from "../../src/core/SimulatorCore";
 import type { AgentState, StepDiagnostics, Vec2 } from "../../src/core/types";
+import {
+  scientificDiagnosticToEngineStep,
+  type EngineStepRecord,
+} from "../engines/engineStep";
 import type { ExperimentScenario } from "../protocol/schema";
 import { constantVelocityTimeToContact, relativeGeometry } from "./geometry";
 import type {
@@ -25,7 +29,8 @@ interface AgentAccumulator {
 
 export class RunMetricsAccumulator {
   private readonly scenario: ExperimentScenario;
-  private readonly method: RunMethodMetadata;
+  private readonly method: Required<Omit<RunMethodMetadata, "upstreamProject" | "upstreamCommit" | "upstreamLicense">> &
+    Pick<RunMethodMetadata, "upstreamProject" | "upstreamCommit" | "upstreamLicense">;
   private readonly agents = new Map<number, AgentAccumulator>();
   private readonly pairwiseOnset = new Map<number, { time: number; ttc: number | null }>();
   private minimumPreCorrectionAgentClearance: number | null = null;
@@ -53,6 +58,18 @@ export class RunMetricsAccumulator {
     this.scenario = scenario;
     this.method = {
       ...method,
+      methodIdentityVersion: method.methodIdentityVersion ?? 1,
+      methodConfigCanonicalSha256:
+        method.methodConfigCanonicalSha256 ?? method.methodConfigSha256,
+      methodConfigSourceSha256: method.methodConfigSourceSha256 ?? method.methodConfigSha256,
+      engineId: method.engineId ?? "scientific_core_engine_v1",
+      engineAdapterVersion: method.engineAdapterVersion ?? "stage-b-compatibility",
+      correctionMode: method.correctionMode ?? "shared_projection",
+      commandVelocityMeaning:
+        method.commandVelocityMeaning ?? "controller target velocity before Scientific Core smoothing",
+      upstreamProject: method.upstreamProject ?? null,
+      upstreamCommit: method.upstreamCommit ?? null,
+      upstreamLicense: method.upstreamLicense ?? null,
       methodParameters: { ...method.methodParameters },
     };
     for (const agent of scenario.agents) {
@@ -69,53 +86,72 @@ export class RunMetricsAccumulator {
     }
   }
 
+  observeStep(record: EngineStepRecord): void;
+  /** @deprecated Stage B compatibility overload. */
   observeStep(
     beforeStep: readonly AgentState[],
     diagnostic: StepDiagnostics,
     afterStep: readonly AgentState[],
+  ): void;
+  observeStep(
+    recordOrBefore: EngineStepRecord | readonly AgentState[],
+    diagnostic?: StepDiagnostics,
+    afterStep?: readonly AgentState[],
   ): void {
+    const record = Array.isArray(recordOrBefore)
+      ? scientificDiagnosticToEngineStep(
+          recordOrBefore,
+          requireDefined(diagnostic, "diagnostic"),
+          requireDefined(afterStep, "afterStep"),
+          this.scenario.simulation.correction.enabled ? "shared_projection" : "disabled",
+        )
+      : (recordOrBefore as EngineStepRecord);
+    this.observeEngineStep(record);
+  }
+
+  private observeEngineStep(record: EngineStepRecord): void {
     const dt = this.scenario.simulation.dt;
-    this.duration = diagnostic.time;
+    this.duration = record.time;
+    const diagnostics = record.diagnostics;
     this.minimumPreCorrectionAgentClearance = minimumNullable(
       this.minimumPreCorrectionAgentClearance,
-      diagnostic.minimumPreCorrectionAgentClearance,
+      diagnostics.minimumPreCorrectionAgentClearance,
     );
     this.minimumPreCorrectionWallClearance = minimumNullable(
       this.minimumPreCorrectionWallClearance,
-      diagnostic.minimumPreCorrectionWallClearance,
+      diagnostics.minimumPreCorrectionWallClearance,
     );
-    this.preOverlapPairSeconds += diagnostic.preCorrectionOverlapPairs * dt;
-    this.postOverlapPairSeconds += diagnostic.postCorrectionOverlapPairs * dt;
+    this.preOverlapPairSeconds += diagnostics.preCorrectionOverlapPairs * dt;
+    this.postOverlapPairSeconds += diagnostics.postCorrectionOverlapPairs * dt;
     this.maxPreAgentPenetration = Math.max(
       this.maxPreAgentPenetration,
-      diagnostic.maximumPreCorrectionAgentPenetration,
+      diagnostics.maximumPreCorrectionAgentPenetration,
     );
     this.maxPreWallPenetration = Math.max(
       this.maxPreWallPenetration,
-      diagnostic.maximumPreCorrectionWallPenetration,
+      diagnostics.maximumPreCorrectionWallPenetration,
     );
     this.maxPostAgentPenetration = Math.max(
       this.maxPostAgentPenetration,
-      diagnostic.maximumPostCorrectionAgentPenetration,
+      diagnostics.maximumPostCorrectionAgentPenetration,
     );
     this.maxPostWallPenetration = Math.max(
       this.maxPostWallPenetration,
-      diagnostic.maximumPostCorrectionWallPenetration,
+      diagnostics.maximumPostCorrectionWallPenetration,
     );
-    this.totalIntended += diagnostic.intendedDisplacement;
-    this.totalAgentCorrection += diagnostic.agentCorrectionDisplacement;
-    this.totalWallCorrection += diagnostic.wallCorrectionDisplacement;
+    this.totalIntended += diagnostics.intendedDisplacement;
+    this.totalAgentCorrection += diagnostics.agentCorrectionDisplacement;
+    this.totalWallCorrection += diagnostics.wallCorrectionDisplacement;
 
-    const beforeById = new Map(beforeStep.map((agent) => [agent.id, agent]));
-    const afterById = new Map(afterStep.map((agent) => [agent.id, agent]));
+    const stepById = new Map(record.agents.map((agent) => [agent.id, agent]));
     for (const [id, accumulated] of this.agents) {
-      const before = beforeById.get(id);
-      const after = afterById.get(id);
-      if (before === undefined || after === undefined) throw new Error(`Metrics missing agent ${id}`);
-      const activeBeforeStep = accumulated.firstArrivalTime === null;
-      if (activeBeforeStep) {
-        accumulated.pathLengthUntilArrival += norm(sub(after.position, accumulated.previousPosition));
-        const acceleration = scale(sub(after.velocity, accumulated.previousVelocity), 1 / dt);
+      const step = stepById.get(id);
+      if (step === undefined) throw new Error(`Metrics missing agent ${id}`);
+      if (accumulated.firstArrivalTime === null) {
+        accumulated.pathLengthUntilArrival += norm(
+          sub(step.postCorrectionPosition, accumulated.previousPosition),
+        );
+        const acceleration = scale(sub(step.realizedVelocity, accumulated.previousVelocity), 1 / dt);
         this.accelerationSquaredSum += dot(acceleration, acceleration);
         this.accelerationSampleCount += 1;
         if (accumulated.previousAcceleration !== null) {
@@ -124,14 +160,14 @@ export class RunMetricsAccumulator {
           this.jerkSampleCount += 1;
         }
         accumulated.previousAcceleration = acceleration;
-        if (after.arrived) accumulated.firstArrivalTime = diagnostic.time;
+        if (step.arrived) accumulated.firstArrivalTime = record.time;
       }
-      accumulated.previousPosition = after.position;
-      accumulated.previousVelocity = after.velocity;
+      accumulated.previousPosition = step.postCorrectionPosition;
+      accumulated.previousVelocity = step.realizedVelocity;
     }
 
-    if (this.scenario.family === "pairwise" && beforeStep.length === 2) {
-      this.observePairwise(beforeStep, diagnostic);
+    if (this.scenario.family === "pairwise" && record.agents.length === 2) {
+      this.observePairwise(record);
     }
   }
 
@@ -169,7 +205,17 @@ export class RunMetricsAccumulator {
         seed: this.scenario.seed,
         methodId: this.method.methodId,
         methodKey: this.method.methodKey,
-        methodConfigSha256: this.method.methodConfigSha256,
+        methodIdentityVersion: this.method.methodIdentityVersion,
+        methodConfigCanonicalSha256: this.method.methodConfigCanonicalSha256,
+        methodConfigSourceSha256: this.method.methodConfigSourceSha256,
+        methodConfigSha256: this.method.methodConfigCanonicalSha256,
+        engineId: this.method.engineId,
+        engineAdapterVersion: this.method.engineAdapterVersion,
+        correctionMode: this.method.correctionMode,
+        commandVelocityMeaning: this.method.commandVelocityMeaning,
+        upstreamProject: this.method.upstreamProject ?? null,
+        upstreamCommit: this.method.upstreamCommit ?? null,
+        upstreamLicense: this.method.upstreamLicense ?? null,
         velocityTimeConstant: this.method.velocityTimeConstant,
         methodParameters: { ...this.method.methodParameters },
         agentCount: this.scenario.agents.length,
@@ -178,8 +224,7 @@ export class RunMetricsAccumulator {
       completion: {
         agentsReachedGoal: reached,
         successFraction: this.scenario.agents.length === 0 ? 0 : reached / this.scenario.agents.length,
-        finalArrivedFraction:
-          finalStates.length === 0 ? 0 : finalArrived / finalStates.length,
+        finalArrivedFraction: finalStates.length === 0 ? 0 : finalArrived / finalStates.length,
         perAgent,
       },
       travelTime: {
@@ -207,8 +252,7 @@ export class RunMetricsAccumulator {
         totalAgentCorrectionDisplacement: this.totalAgentCorrection,
         totalWallCorrectionDisplacement: this.totalWallCorrection,
         totalCorrectionDisplacement: totalCorrection,
-        correctionRatio:
-          totalCorrection / (this.totalIntended + CORRECTION_RATIO_EPSILON_METERS),
+        correctionRatio: totalCorrection / (this.totalIntended + CORRECTION_RATIO_EPSILON_METERS),
       },
       smoothness: {
         rmsAcceleration:
@@ -225,68 +269,46 @@ export class RunMetricsAccumulator {
     };
   }
 
-  private observePairwise(
-    beforeStep: readonly AgentState[],
-    diagnostic: StepDiagnostics,
-  ): void {
-    const orderedBefore = [...beforeStep].sort((a, b) => a.id - b.id);
-    const [first, second] = orderedBefore;
-    const diagnosticsById = new Map(diagnostic.perAgent.map((entry) => [entry.id, entry]));
-    const firstDiagnostic = diagnosticsById.get(first.id);
-    const secondDiagnostic = diagnosticsById.get(second.id);
-    if (firstDiagnostic === undefined || secondDiagnostic === undefined) {
-      throw new Error("Pairwise metrics are missing per-agent positions");
-    }
-    const preCenterDistance = norm(
-      sub(firstDiagnostic.preCorrectionPosition, secondDiagnostic.preCorrectionPosition),
-    );
-    const postCenterDistance = norm(
-      sub(firstDiagnostic.postCorrectionPosition, secondDiagnostic.postCorrectionPosition),
-    );
-    const combinedRadius = first.radius + second.radius;
-    this.minimumPairwisePreCenterDistance = minimumNullable(
-      this.minimumPairwisePreCenterDistance,
-      preCenterDistance,
-    );
-    this.minimumPairwisePrePhysicalClearance = minimumNullable(
-      this.minimumPairwisePrePhysicalClearance,
-      preCenterDistance - combinedRadius,
-    );
-    this.minimumPairwisePostCenterDistance = minimumNullable(
-      this.minimumPairwisePostCenterDistance,
-      postCenterDistance,
-    );
-    this.minimumPairwisePostPhysicalClearance = minimumNullable(
-      this.minimumPairwisePostPhysicalClearance,
-      postCenterDistance - combinedRadius,
-    );
+  private observePairwise(record: EngineStepRecord): void {
+    const ordered = [...record.agents].sort((first, second) => first.id - second.id);
+    const [first, second] = ordered;
+    const preCenterDistance = norm(sub(first.preCorrectionPosition, second.preCorrectionPosition));
+    const postCenterDistance = norm(sub(first.postCorrectionPosition, second.postCorrectionPosition));
+    const radii = new Map(this.scenario.agents.map((agent) => [agent.id, agent.radius]));
+    const combinedRadius = requireNumber(radii.get(first.id)) + requireNumber(radii.get(second.id));
+    this.minimumPairwisePreCenterDistance = minimumNullable(this.minimumPairwisePreCenterDistance, preCenterDistance);
+    this.minimumPairwisePrePhysicalClearance = minimumNullable(this.minimumPairwisePrePhysicalClearance, preCenterDistance - combinedRadius);
+    this.minimumPairwisePostCenterDistance = minimumNullable(this.minimumPairwisePostCenterDistance, postCenterDistance);
+    this.minimumPairwisePostPhysicalClearance = minimumNullable(this.minimumPairwisePostPhysicalClearance, postCenterDistance - combinedRadius);
 
-    const targetById = new Map(diagnostic.perAgent.map((agent) => [agent.id, agent.targetVelocity]));
-    for (const controlled of orderedBefore) {
+    const scenarioById = new Map(this.scenario.agents.map((agent) => [agent.id, agent]));
+    for (const controlled of ordered) {
       if (this.pairwiseOnset.has(controlled.id)) continue;
-      const target = targetById.get(controlled.id);
-      if (target === undefined) continue;
-      const goalDirection = sub(controlled.goal, controlled.position);
-      const targetSpeed = norm(target);
+      const definition = scenarioById.get(controlled.id);
+      if (definition === undefined) throw new Error(`Pairwise scenario missing agent ${controlled.id}`);
+      const goalDirection = sub(definition.goal, controlled.positionBefore);
+      const targetSpeed = norm(controlled.commandVelocity);
       const goalDistance = norm(goalDirection);
       if (targetSpeed === 0 || goalDistance === 0) continue;
-      const cosine = Math.max(-1, Math.min(1, dot(target, goalDirection) / (targetSpeed * goalDistance)));
+      const cosine = Math.max(-1, Math.min(1, dot(controlled.commandVelocity, goalDirection) / (targetSpeed * goalDistance)));
       const deflectionDegrees = (Math.acos(cosine) * 180) / Math.PI;
       if (deflectionDegrees <= PAIRWISE_AVOIDANCE_THRESHOLD_DEGREES) continue;
-      const other = orderedBefore.find((agent) => agent.id !== controlled.id);
+      const other = ordered.find((agent) => agent.id !== controlled.id);
       if (other === undefined) continue;
+      const otherDefinition = scenarioById.get(other.id);
+      if (otherDefinition === undefined) throw new Error(`Pairwise scenario missing agent ${other.id}`);
       const relative = relativeGeometry(
-        controlled.position,
-        controlled.velocity,
-        other.position,
-        other.velocity,
+        controlled.positionBefore,
+        controlled.velocityBefore,
+        other.positionBefore,
+        other.velocityBefore,
       );
       this.pairwiseOnset.set(controlled.id, {
-        time: Math.max(0, diagnostic.time - this.scenario.simulation.dt),
+        time: Math.max(0, record.time - this.scenario.simulation.dt),
         ttc: constantVelocityTimeToContact(
           relative.relativePosition,
           relative.relativeVelocity,
-          controlled.radius + other.radius,
+          definition.radius + otherDefinition.radius,
         ),
       });
     }
@@ -296,19 +318,27 @@ export class RunMetricsAccumulator {
     if (this.scenario.family !== "pairwise" || this.scenario.agents.length !== 2) return null;
     return {
       avoidanceThresholdDegrees: PAIRWISE_AVOIDANCE_THRESHOLD_DEGREES,
-      perAgent: [...this.scenario.agents]
-        .sort((a, b) => a.id - b.id)
-        .map((agent) => ({
-          id: agent.id,
-          avoidanceOnsetTime: this.pairwiseOnset.get(agent.id)?.time ?? null,
-          ttcAtAvoidanceOnset: this.pairwiseOnset.get(agent.id)?.ttc ?? null,
-        })),
+      perAgent: [...this.scenario.agents].sort((a, b) => a.id - b.id).map((agent) => ({
+        id: agent.id,
+        avoidanceOnsetTime: this.pairwiseOnset.get(agent.id)?.time ?? null,
+        ttcAtAvoidanceOnset: this.pairwiseOnset.get(agent.id)?.ttc ?? null,
+      })),
       minimumPreCorrectionCenterDistance: this.minimumPairwisePreCenterDistance,
       minimumPreCorrectionPhysicalClearance: this.minimumPairwisePrePhysicalClearance,
       minimumPostCorrectionCenterDistance: this.minimumPairwisePostCenterDistance,
       minimumPostCorrectionPhysicalClearance: this.minimumPairwisePostPhysicalClearance,
     };
   }
+}
+
+function requireDefined<T>(value: T | undefined, name: string): T {
+  if (value === undefined) throw new Error(`Missing ${name}`);
+  return value;
+}
+
+function requireNumber(value: number | undefined): number {
+  if (value === undefined) throw new Error("Missing pairwise radius");
+  return value;
 }
 
 function minimumNullable(current: number | null, candidate: number | null): number | null {

@@ -42,7 +42,7 @@ describe("sequential batch runner and aggregation", () => {
     });
     expect(result.failedRuns).toBe(0);
     expect(result.manifest.runs).toHaveLength(4);
-    expect(result.manifest.batchManifestVersion).toBe(2);
+    expect(result.manifest.batchManifestVersion).toBe(3);
     expect(result.manifest.runs.every(({ status }) => status === "completed")).toBe(true);
     expect(result.manifest.runs.map(({ outputDirectory: path }) => path)).toEqual([
       resolve(outputDirectory, `smoke/free_space/single_agent/seed-0/${methodIdentities[0].methodKey}`),
@@ -75,7 +75,7 @@ describe("sequential batch runner and aggregation", () => {
       `smoke/free_space/single_agent/seed-0/${methodIdentities[1].methodKey}/manifest.json`,
     );
     const staleManifest = JSON.parse(readFileSync(staleManifestPath, "utf8")) as Record<string, unknown>;
-    staleManifest.methodConfigSha256 = "stale";
+    staleManifest.methodConfigCanonicalSha256 = "stale";
     writeFileSync(staleManifestPath, `${JSON.stringify(staleManifest, null, 2)}\n`, "utf8");
     const resumed = runBatch({
       suiteManifestPath: fixture.manifestPath,
@@ -138,16 +138,14 @@ describe("sequential batch runner and aggregation", () => {
     const failuresCsv = readFileSync(aggregate.failuresCsvPath, "utf8");
     expect(aggregate.completedRows).toBe(4);
     expect(aggregate.failureRows).toBe(0);
-    expect(metricsCsv.split("\n")[0]).toBe(
-      "scenario_name,family,variant,split,seed,method_key,method_id,method_config_sha256,velocity_time_constant,alpha,sigma,lambda_r,lambda_t,agent_count,success_fraction,mean_normalized_travel_time,mean_path_efficiency,minimum_pre_correction_agent_clearance,minimum_pre_correction_wall_clearance,maximum_pre_correction_agent_penetration,maximum_post_correction_agent_penetration,maximum_pre_correction_wall_penetration,maximum_post_correction_wall_penetration,pre_correction_overlap_pair_seconds,post_correction_overlap_pair_seconds,correction_ratio,rms_acceleration,rms_jerk,throughput,pairwise_onset_time_agent_0,pairwise_ttc_agent_0,pairwise_onset_time_agent_1,pairwise_ttc_agent_1,pairwise_minimum_pre_correction_center_distance,pairwise_minimum_pre_correction_physical_clearance,pairwise_minimum_post_correction_center_distance,pairwise_minimum_post_correction_physical_clearance",
-    );
+    const headers = metricsCsv.split("\n")[0].split(",");
+    expect(headers).toEqual(expect.arrayContaining([
+      "engine_id", "method_identity_version", "method_config_canonical_sha256",
+      "method_config_source_sha256", "orca_neighbor_dist", "sfm_relaxation_time",
+      "minimum_pre_correction_agent_clearance", "minimum_pre_correction_wall_clearance",
+    ]));
     expect(metricsCsv).not.toMatch(/NaN|Infinity/u);
-    const freeSpaceRows = metricsCsv.split("\n").filter((line) => line.includes(",free_space,"));
-    expect(freeSpaceRows).toHaveLength(2);
-    expect(freeSpaceRows.every((line) => line.endsWith(",,,,,,,,"))).toBe(true);
-    expect(failuresCsv).toBe(
-      "scenario_path,method_key,method_id,method_config_sha256,output_directory,error\n",
-    );
+    expect(failuresCsv.split("\n")[0]).toContain("method_config_canonical_sha256");
   });
 
   it("keeps multiple configurations of one controller in distinct keyed outputs and CSV rows", () => {

@@ -4,6 +4,7 @@ import {
   lstatSync,
   mkdirSync,
   readFileSync,
+  realpathSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -206,10 +207,17 @@ export function assertSafeOutputDirectory(
   outputDirectory: string,
   repositoryRoot = readRepositoryRoot(),
 ): void {
+  const lexicalRepositoryRoot = resolve(repositoryRoot);
+  if (!existsSync(lexicalRepositoryRoot)) throw new Error("Repository root does not exist");
+  const realRepositoryRoot = realpathSync.native(lexicalRepositoryRoot);
+  if (realRepositoryRoot !== lexicalRepositoryRoot) {
+    throw new Error(`Refusing generator repository root that resolves elsewhere: ${lexicalRepositoryRoot}`);
+  }
+  assertNoSymbolicLinkTraversal(realRepositoryRoot, resolve(realRepositoryRoot, "experiments"));
   const candidate = resolve(outputDirectory);
   const allowedRoots = [
-    resolve(repositoryRoot, "experiments", "generated"),
-    resolve(repositoryRoot, "experiments", "tmp"),
+    resolve(realRepositoryRoot, "experiments", "generated"),
+    resolve(realRepositoryRoot, "experiments", "tmp"),
   ];
   const allowedRoot = allowedRoots.find((root) => isStrictDescendant(root, candidate));
   if (allowedRoot === undefined) {
@@ -217,7 +225,16 @@ export function assertSafeOutputDirectory(
       `Refusing to clear generator output outside experiments/generated/** or experiments/tmp/**: ${candidate}`,
     );
   }
-  assertNoSymbolicLinkTraversal(allowedRoot, candidate);
+  assertNoSymbolicLinkTraversal(realRepositoryRoot, allowedRoot);
+  assertNoSymbolicLinkTraversal(realRepositoryRoot, candidate);
+  const resolvedCandidate = resolveThroughExistingAncestor(candidate);
+  if (!isStrictDescendant(realRepositoryRoot, resolvedCandidate)) {
+    throw new Error(`Refusing generator output that resolves outside the repository: ${candidate}`);
+  }
+  const resolvedAllowedRoot = resolveThroughExistingAncestor(allowedRoot);
+  if (!isStrictDescendant(resolvedAllowedRoot, resolvedCandidate)) {
+    throw new Error(`Refusing generator output that resolves outside its allowed root: ${candidate}`);
+  }
 }
 
 function isStrictDescendant(parent: string, candidate: string): boolean {
@@ -241,6 +258,19 @@ function assertNoSymbolicLinkTraversal(parent: string, candidate: string): void 
       throw new Error(`Refusing to clear generator output through a symbolic link: ${current}`);
     }
   }
+}
+
+/** Resolve the deepest existing ancestor and append only verified missing components. */
+function resolveThroughExistingAncestor(path: string): string {
+  const missing: string[] = [];
+  let current = resolve(path);
+  while (!existsSync(current)) {
+    const parent = dirname(current);
+    if (parent === current) throw new Error(`Cannot resolve generator path: ${path}`);
+    missing.unshift(current.slice(parent.length + (parent.endsWith(sep) ? 0 : 1)));
+    current = parent;
+  }
+  return resolve(realpathSync.native(current), ...missing);
 }
 
 function readRepositoryRoot(): string {

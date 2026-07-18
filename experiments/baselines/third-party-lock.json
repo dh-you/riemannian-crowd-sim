@@ -1,0 +1,41 @@
+{
+  "lockVersion": 1,
+  "adapterVersion": "1",
+  "dependencies": [
+    {
+      "id": "rvo2",
+      "project": "RVO2 Library",
+      "repository": "https://github.com/snape/RVO2.git",
+      "commit": "b577921d2bc1281a6b721c2d4778f397d37da97d",
+      "license": "Apache-2.0",
+      "licenseFile": "LICENSE",
+      "sourceType": "git",
+      "sourceDirectory": "experiments/third_party/src/rvo2",
+      "buildLocation": "experiments/third_party/build/rvo2",
+      "citation": "van den Berg, Guy, Lin, and Manocha, Reciprocal n-body collision avoidance, ISRR 2009",
+      "patch": null
+    },
+    {
+      "id": "pysocialforce",
+      "project": "PySocialForce",
+      "repository": "https://github.com/yuxiang-gao/PySocialForce.git",
+      "commit": "8c81cd1ed5db8d0e933417cec77954aa967d4459",
+      "license": "MIT",
+      "licenseFile": "LICENSE",
+      "sourceType": "git",
+      "sourceDirectory": "experiments/third_party/src/pysocialforce",
+      "buildLocation": "experiments/third_party/venv",
+      "citation": "Gao et al., PySocialForce: a Python implementation of the Social Force Model",
+      "patch": {
+        "path": "experiments/baselines/patches/pysocialforce-goal-threshold.patch",
+        "sha256": "50893cc5b9e8379196a333f26bfa53df280186333e85370b263dbb251958d52b",
+        "reason": "Use the upstream desired_force.goal_threshold configuration in native PedState integration so the common goal wrapper can set it to zero, and guarantee both endpoints for every finite obstacle segment so short thick-wall rectangle edges cannot become empty arrays."
+      }
+    }
+  ],
+  "runners": {
+    "orca": "experiments/third_party/build/rvo2/bin/orca_runner",
+    "socialForce": "experiments/baselines/social_force/runner.py",
+    "pythonEnvironment": "experiments/third_party/venv"
+  }
+}
