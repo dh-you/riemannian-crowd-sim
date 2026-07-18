@@ -144,9 +144,11 @@ export class RunMetricsAccumulator {
     this.totalWallCorrection += diagnostics.wallCorrectionDisplacement;
 
     const stepById = new Map(record.agents.map((agent) => [agent.id, agent]));
+    const arrivedBeforeStep = new Set<number>();
     for (const [id, accumulated] of this.agents) {
       const step = stepById.get(id);
       if (step === undefined) throw new Error(`Metrics missing agent ${id}`);
+      if (accumulated.firstArrivalTime !== null) arrivedBeforeStep.add(id);
       if (accumulated.firstArrivalTime === null) {
         accumulated.pathLengthUntilArrival += norm(
           sub(step.postCorrectionPosition, accumulated.previousPosition),
@@ -167,7 +169,7 @@ export class RunMetricsAccumulator {
     }
 
     if (this.scenario.family === "pairwise" && record.agents.length === 2) {
-      this.observePairwise(record);
+      this.observePairwise(record, arrivedBeforeStep);
     }
   }
 
@@ -269,7 +271,7 @@ export class RunMetricsAccumulator {
     };
   }
 
-  private observePairwise(record: EngineStepRecord): void {
+  private observePairwise(record: EngineStepRecord, arrivedBeforeStep: ReadonlySet<number>): void {
     const ordered = [...record.agents].sort((first, second) => first.id - second.id);
     const [first, second] = ordered;
     const preCenterDistance = norm(sub(first.preCorrectionPosition, second.preCorrectionPosition));
@@ -283,6 +285,7 @@ export class RunMetricsAccumulator {
 
     const scenarioById = new Map(this.scenario.agents.map((agent) => [agent.id, agent]));
     for (const controlled of ordered) {
+      if (arrivedBeforeStep.has(controlled.id)) continue;
       if (this.pairwiseOnset.has(controlled.id)) continue;
       const definition = scenarioById.get(controlled.id);
       if (definition === undefined) throw new Error(`Pairwise scenario missing agent ${controlled.id}`);

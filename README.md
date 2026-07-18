@@ -39,6 +39,8 @@ npm run exp:smoke
 
 Stage C adds engine-level adapters for pinned C++ RVO2/ORCA and PySocialForce while preserving each engine's native dynamics. They share the same controller-independent scenarios and common evaluator, but they do not pass through `MotionController`, Scientific Core smoothing, or Scientific Core positional correction.
 
+Stage C.1 hardens bounded native-trajectory ingestion, emitted-state continuity checks, post-arrival Social Force behavior, and build-manifest-aware batch resume without changing pre-arrival native dynamics.
+
 See [docs/baseline-engines.md](docs/baseline-engines.md) for exact upstream commits, licenses, the locked patch, parameter/state/wall mappings, common engine-step schema, provenance, and limitations.
 
 ```bash

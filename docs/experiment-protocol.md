@@ -137,7 +137,7 @@ npm run exp:run -- --scenario experiments/generated/protocol-v1/validation/pairw
 npm run exp:run -- --scenario experiments/generated/protocol-v1/validation/pairwise/head_on/seed-0.json --method experiments/methods/social-force-default.json --out results/stage-c-social-force-example
 ```
 
-The runner writes atomic `manifest.json`, `trajectory.jsonl`, `summary.json`, and `run-metrics.json`. The manifest records engine, adapter, correction and command semantics, canonical/source method identity, exact method settings, scenario identity, platform, Git SHA, arguments, and execution time. External runs additionally require the pinned upstream, license, runner, build-manifest, and lock-file provenance. Trajectory records are engine-independent and ID-sorted. `--record-every N` changes trajectory density but not metrics.
+The runner writes atomic `manifest.json`, `trajectory.jsonl`, `summary.json`, and `run-metrics.json`. The manifest records engine, adapter, correction and command semantics, canonical/source method identity, exact method settings, scenario identity, platform, Git SHA, arguments, and execution time. External runs additionally require the pinned upstream, license, runner, build-manifest, and lock-file provenance. Native JSONL and resume validation use a bounded line reader rather than loading complete trajectories. Native IDs must already be unique, ascending, and identical to the scenario, while step-zero and inter-step positions must be continuous; inconsistent output is rejected rather than sorted or repaired. Trajectory records are engine-independent and ID-sorted. `--record-every N` changes trajectory density but not metrics.
 
 Run the CI-sized cross-method smoke suite:
 
@@ -156,7 +156,7 @@ npm run exp:batch -- --suite experiments/generated/protocol-v1/suite-manifest.js
 npm run exp:aggregate -- --input results/protocol-v1-validation --out results/protocol-v1-validation/aggregate
 ```
 
-Batch manifest version 3 paths are deterministic by split, family, variant, seed, and canonical method key. Failures, including external-runner stderr excerpts, are recorded and make the CLI exit nonzero; `--fail-fast` stops after the first. Existing completed output requires `--resume` or `--force`. Resume verifies all artifacts plus scenario, canonical method identity, method-key, engine, adapter, lock, upstream, runner/adapter, and repository identities. `--allow-cross-commit-resume` relaxes only the repository Git SHA check. Aggregation writes one completed-run row to `run-metrics.csv` and failures to `failures.csv`; unavailable values are empty CSV fields.
+Batch manifest version 4 paths are deterministic by split, family, variant, seed, and canonical method key. Failures, including external-runner stderr excerpts, are recorded and make the CLI exit nonzero; `--fail-fast` stops after the first. Existing completed output requires `--resume` or `--force`. Resume verifies all artifacts plus scenario, canonical method identity, method-key, engine, adapter, lock, upstream, runner, build-manifest, and repository identities. `--allow-cross-commit-resume` relaxes only the repository Git SHA check. Aggregation also accepts existing version-3 batch manifests. It writes one completed-run row to `run-metrics.csv` and failures to `failures.csv`; unavailable values are empty CSV fields.
 
 ## Deferred work and interpretation
 

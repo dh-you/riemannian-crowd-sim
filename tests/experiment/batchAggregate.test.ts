@@ -42,7 +42,8 @@ describe("sequential batch runner and aggregation", () => {
     });
     expect(result.failedRuns).toBe(0);
     expect(result.manifest.runs).toHaveLength(4);
-    expect(result.manifest.batchManifestVersion).toBe(3);
+    expect(result.manifest.batchManifestVersion).toBe(4);
+    expect(result.manifest.runs.every((run) => run.buildManifestSha256 === null)).toBe(true);
     expect(result.manifest.runs.every(({ status }) => status === "completed")).toBe(true);
     expect(result.manifest.runs.map(({ outputDirectory: path }) => path)).toEqual([
       resolve(outputDirectory, `smoke/free_space/single_agent/seed-0/${methodIdentities[0].methodKey}`),
@@ -52,7 +53,7 @@ describe("sequential batch runner and aggregation", () => {
     ]);
   });
 
-  it("resumes only matching parseable artifacts and reruns a stale method hash", () => {
+  it("resumes only matching parseable artifacts and reruns stale method or build hashes", () => {
     const fixture = createSuiteFixture();
     const outputDirectory = join(fixture.root, "batch");
     runBatch({
@@ -86,6 +87,21 @@ describe("sequential batch runner and aggregation", () => {
     });
     expect(resumed.manifest.runs.filter(({ status }) => status === "completed")).toHaveLength(1);
     expect(resumed.manifest.runs.filter(({ status }) => status === "skipped")).toHaveLength(3);
+
+    const staleBuildManifest = JSON.parse(
+      readFileSync(staleManifestPath, "utf8"),
+    ) as Record<string, unknown>;
+    staleBuildManifest.buildManifestSha256 = "stale";
+    writeFileSync(staleManifestPath, `${JSON.stringify(staleBuildManifest, null, 2)}\n`, "utf8");
+    const buildResumed = runBatch({
+      suiteManifestPath: fixture.manifestPath,
+      methodPaths: methods,
+      split: "smoke",
+      outputDirectory,
+      resume: true,
+    });
+    expect(buildResumed.manifest.runs.filter(({ status }) => status === "completed")).toHaveLength(1);
+    expect(buildResumed.manifest.runs.filter(({ status }) => status === "skipped")).toHaveLength(3);
   });
 
   it("records stale scenario hashes as failures and exposes nonzero CLI semantics", () => {

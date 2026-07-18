@@ -14,7 +14,11 @@ import {
   readThirdPartyLock,
   repositoryPath,
 } from "../baselines/common/thirdParty";
-import type { EngineProvenance } from "./ExperimentEngine";
+import {
+  ORCA_ADAPTER_VERSION,
+  SOCIAL_FORCE_ADAPTER_VERSION,
+  type EngineProvenance,
+} from "./ExperimentEngine";
 
 export function baselineProvenance(kind: "orca" | "pysocialforce"): EngineProvenance {
   const lock = readThirdPartyLock();
@@ -37,7 +41,8 @@ export function baselineProvenance(kind: "orca" | "pysocialforce"): EngineProven
   }
   return {
     engineId: kind === "orca" ? "orca_rvo2_engine_v1" : "pysocialforce_engine_v1",
-    engineAdapterVersion: "1",
+    engineAdapterVersion:
+      kind === "orca" ? ORCA_ADAPTER_VERSION : SOCIAL_FORCE_ADAPTER_VERSION,
     correctionMode: "native_none",
     commandVelocityMeaning:
       kind === "orca"

@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync 
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { sha256Bytes, sha256File } from "../protocol/hash";
+import { forEachJsonLineSync } from "../protocol/jsonLines";
 import { identifyMethod } from "../protocol/methodIdentity";
 import { parseMethodConfig, type MethodConfig } from "../protocol/methodConfig";
 import type { SuiteManifest } from "../generation/suite";
@@ -16,7 +17,7 @@ import {
   type ExperimentRunSummary,
 } from "./runExperiment";
 
-export const BATCH_MANIFEST_VERSION = 3 as const;
+export const BATCH_MANIFEST_VERSION = 4 as const;
 
 export interface BatchRunRecord {
   scenarioPath: string;
@@ -35,6 +36,7 @@ export interface BatchRunRecord {
   thirdPartyLockSha256: string | null;
   upstreamCommit: string | null;
   runnerSha256: string | null;
+  buildManifestSha256: string | null;
   status: "completed" | "skipped" | "failed";
   error: string | null;
 }
@@ -129,6 +131,7 @@ export function runBatch(options: RunBatchOptions): RunBatchResult {
         thirdPartyLockSha256: provenance.thirdPartyLockSha256,
         upstreamCommit: provenance.upstreamCommit,
         runnerSha256: provenance.runnerSha256,
+        buildManifestSha256: provenance.buildManifestSha256,
         status: "failed",
         error: null,
       };
@@ -258,8 +261,9 @@ function completedRunMatches(
     const manifest = JSON.parse(readFileSync(paths[0], "utf8")) as ExperimentManifest;
     const summary = JSON.parse(readFileSync(paths[2], "utf8")) as ExperimentRunSummary;
     const metrics = JSON.parse(readFileSync(paths[3], "utf8")) as RunMetrics;
-    const trajectory = readFileSync(paths[1], "utf8");
-    for (const line of trajectory.split(/\r?\n/u).filter(Boolean)) JSON.parse(line) as unknown;
+    forEachJsonLineSync(paths[1], (line) => {
+      JSON.parse(line) as unknown;
+    });
     return (
       manifest.scenarioSha256 === scenarioHash &&
       manifest.methodIdentityVersion === methodIdentityVersion &&
@@ -270,6 +274,7 @@ function completedRunMatches(
       manifest.thirdPartyLockSha256 === provenance.thirdPartyLockSha256 &&
       manifest.upstreamCommit === provenance.upstreamCommit &&
       manifest.runnerSha256 === provenance.runnerSha256 &&
+      manifest.buildManifestSha256 === provenance.buildManifestSha256 &&
       summary.methodKey === methodKey &&
       metrics.identity.methodKey === methodKey &&
       metrics.identity.methodIdentityVersion === methodIdentityVersion &&

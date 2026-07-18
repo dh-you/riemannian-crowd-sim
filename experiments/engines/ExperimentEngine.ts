@@ -5,8 +5,8 @@ import type { ExperimentScenario } from "../protocol/schema";
 import type { CorrectionMode, EngineStepRecord } from "./engineStep";
 
 export const SCIENTIFIC_CORE_ADAPTER_VERSION = "1";
-export const ORCA_ADAPTER_VERSION = "1";
-export const SOCIAL_FORCE_ADAPTER_VERSION = "1";
+export const ORCA_ADAPTER_VERSION = "2";
+export const SOCIAL_FORCE_ADAPTER_VERSION = "2";
 
 export interface EngineProvenance {
   engineId: string;

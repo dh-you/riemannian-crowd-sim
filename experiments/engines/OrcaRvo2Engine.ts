@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { MethodIdentity } from "../protocol/methodIdentity";
 import {
@@ -61,8 +61,6 @@ export class OrcaRvo2Engine implements ExperimentEngine {
         },
       });
       const finalStates = consumeNativeOutput(scenario, outputPath, "orcaRvo2", sink);
-      // Force a complete read before cleanup; partial output is never accepted.
-      readFileSync(outputPath, "utf8");
       succeeded = true;
       return { finalStates, totalSteps: fixedStepCount(scenario), provenance };
     } finally {

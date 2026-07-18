@@ -163,6 +163,30 @@ describe("pairwise anticipation geometry and metrics", () => {
     expect(pairwise?.perAgent.every(({ avoidanceOnsetTime }) => avoidanceOnsetTime === null)).toBe(true);
   });
 
+  it("does not evaluate a new avoidance onset after an agent's first arrival", () => {
+    const first = agent(0, [-2, 0], [1, 0], [2, 0], false);
+    const second = agent(1, [2, 0], [-1, 0], [-2, 0], false);
+    const arrivedFirst = { ...first, arrived: true };
+    const accumulator = new RunMetricsAccumulator(
+      scenarioOf([first, second], "pairwise", 1),
+      methodMetadata,
+    );
+    accumulator.observeStep(
+      [first, second],
+      twoAgentDiagnostic(0, 1, first, second, [1, 0], [-1, 0]),
+      [arrivedFirst, second],
+    );
+    const deflected: Vec2 = [Math.cos(Math.PI / 30), Math.sin(Math.PI / 30)];
+    accumulator.observeStep(
+      [arrivedFirst, second],
+      twoAgentDiagnostic(1, 2, arrivedFirst, second, deflected, [-1, 0]),
+      [arrivedFirst, second],
+    );
+    const pairwise = accumulator.finish([arrivedFirst, second]).pairwise;
+    expect(pairwise?.perAgent[0].avoidanceOnsetTime).toBeNull();
+    expect(pairwise?.perAgent[1].avoidanceOnsetTime).toBeNull();
+  });
+
   it("reports controller overlap before correction separately from corrected clearance", () => {
     const first = agent(0, [-0.2, 0], [1, 0], [2, 0], false);
     const second = agent(1, [0.2, 0], [-1, 0], [-2, 0], false);

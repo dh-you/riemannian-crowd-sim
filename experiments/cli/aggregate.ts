@@ -2,7 +2,11 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import type { RunMetrics } from "../metrics/types";
-import type { BatchManifest, BatchRunRecord } from "./runBatch";
+import {
+  BATCH_MANIFEST_VERSION,
+  type BatchManifest,
+  type BatchRunRecord,
+} from "./runBatch";
 
 const RUN_HEADERS = [
   "scenario_name",
@@ -88,7 +92,10 @@ export function aggregateBatch(options: AggregateOptions): AggregateResult {
   const manifest = JSON.parse(
     readFileSync(resolve(inputDirectory, "batch-manifest.json"), "utf8"),
   ) as BatchManifest;
-  if (manifest.batchManifestVersion !== 3 || !Array.isArray(manifest.runs)) {
+  if (
+    ![3, BATCH_MANIFEST_VERSION].includes(manifest.batchManifestVersion) ||
+    !Array.isArray(manifest.runs)
+  ) {
     throw new Error("Unsupported or malformed batch manifest");
   }
   const completedRuns = manifest.runs.filter(

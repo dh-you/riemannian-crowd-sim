@@ -1,7 +1,6 @@
 import { spawnSync } from "node:child_process";
 import {
   mkdirSync,
-  readFileSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -10,6 +9,7 @@ import { requireFiniteNumber, requireVec2 } from "../../src/core/validation";
 import type { AgentState, Vec2 } from "../../src/core/types";
 import { THIRD_PARTY_ROOT } from "../baselines/common/thirdParty";
 import { requireSafeInteger, requireStrictObject } from "../protocol/validation";
+import { forEachJsonLineSync } from "../protocol/jsonLines";
 import type { ExperimentScenario } from "../protocol/schema";
 import {
   ENGINE_STEP_VERSION,
@@ -20,6 +20,8 @@ import {
 } from "./engineStep";
 
 export const NATIVE_ENGINE_STEP_VERSION = 1 as const;
+/** Scaled tolerance covering the pinned RVO2 adapter's float32 round-trip. */
+export const NATIVE_POSITION_CONTINUITY_TOLERANCE_METERS = 2e-7;
 
 interface NativeAgentStep {
   id: number;
@@ -75,14 +77,18 @@ export function consumeNativeOutput(
   engineNamespace: string,
   sink: (record: EngineStepRecord) => void,
 ): AgentState[] {
-  const lines = readFileSync(outputPath, "utf8").split(/\r?\n/u).filter(Boolean);
   const expectedSteps = fixedStepCount(scenario);
-  if (lines.length !== expectedSteps) {
-    throw new Error(`External engine emitted ${lines.length} records; expected ${expectedSteps}`);
-  }
-  const definitions = new Map(scenario.agents.map((agent) => [agent.id, agent]));
-  let finalStates = scenario.agents.map(cloneAgent);
-  for (const [index, line] of lines.entries()) {
+  const orderedDefinitions = [...scenario.agents].sort((first, second) => first.id - second.id);
+  const definitions = new Map(orderedDefinitions.map((agent) => [agent.id, agent]));
+  const expectedIds = orderedDefinitions.map((agent) => agent.id);
+  const expectedPositions = new Map(
+    orderedDefinitions.map((agent) => [agent.id, agent.position] as const),
+  );
+  let finalStates = orderedDefinitions.map(cloneAgent);
+  const emittedSteps = forEachJsonLineSync(outputPath, (line, index) => {
+    if (index >= expectedSteps) {
+      throw new Error(`External engine emitted more than ${expectedSteps} records`);
+    }
     const native = parseNativeStep(JSON.parse(line) as unknown);
     if (native.stepIndex !== index) throw new Error(`External engine step out of order at ${index}`);
     const expectedTime = (index + 1) * scenario.simulation.dt;
@@ -92,8 +98,18 @@ export function consumeNativeOutput(
     if (native.agents.length !== scenario.agents.length) {
       throw new Error(`External engine agent count mismatch at step ${index}`);
     }
-    const agents: EngineAgentStep[] = native.agents.map((agent) => {
-      if (!definitions.has(agent.id)) throw new Error(`External engine emitted unknown agent ${agent.id}`);
+    const agents: EngineAgentStep[] = native.agents.map((agent, agentIndex) => {
+      const expectedId = expectedIds[agentIndex];
+      if (agent.id !== expectedId) {
+        throw new Error(
+          `External engine agent ID mismatch at step ${index}, index ${agentIndex}: expected ${expectedId}, received ${agent.id}`,
+        );
+      }
+      const expectedPosition = expectedPositions.get(agent.id);
+      if (expectedPosition === undefined) {
+        throw new Error(`External engine emitted unknown agent ${agent.id}`);
+      }
+      assertPositionContinuity(agent.positionBefore, expectedPosition, agent.id, index);
       return {
         id: agent.id,
         positionBefore: agent.positionBefore,
@@ -124,6 +140,10 @@ export function consumeNativeOutput(
         arrived: agent.arrived,
       };
     });
+    for (const agent of agents) expectedPositions.set(agent.id, agent.postCorrectionPosition);
+  });
+  if (emittedSteps !== expectedSteps) {
+    throw new Error(`External engine emitted ${emittedSteps} records; expected ${expectedSteps}`);
   }
   return finalStates.sort((a, b) => a.id - b.id);
 }
@@ -160,15 +180,39 @@ function parseNativeStep(value: unknown): NativeStepRecord {
       realizedVelocity: requireVec2(agent.realizedVelocity, `${path}.realizedVelocity`),
       arrived: agent.arrived,
     };
-  }).sort((a, b) => a.id - b.id);
-  const ids = new Set(agents.map((agent) => agent.id));
-  if (ids.size !== agents.length) throw new Error("Native engine step contains duplicate agent IDs");
+  });
+  let previousId: number | null = null;
+  for (const agent of agents) {
+    if (previousId !== null && agent.id <= previousId) {
+      throw new Error("Native engine agents must be sorted by unique ascending ID");
+    }
+    previousId = agent.id;
+  }
   return {
     nativeEngineStepVersion: NATIVE_ENGINE_STEP_VERSION,
     stepIndex: requireSafeInteger(root.stepIndex, "nativeStep.stepIndex"),
     time: requireFiniteNumber(root.time, "nativeStep.time"),
     agents,
   };
+}
+
+function assertPositionContinuity(
+  actual: Vec2,
+  expected: Vec2,
+  agentId: number,
+  stepIndex: number,
+): void {
+  const matches = actual.every((value, component) => {
+    const expectedValue = expected[component];
+    const scale = Math.max(1, Math.abs(value), Math.abs(expectedValue));
+    return Math.abs(value - expectedValue) <= NATIVE_POSITION_CONTINUITY_TOLERANCE_METERS * scale;
+  });
+  if (!matches) {
+    const context = stepIndex === 0 ? "initial position" : "position continuity";
+    throw new Error(
+      `External engine ${context} mismatch for agent ${agentId} at step ${stepIndex}: expected [${expected.join(", ")}], received [${actual.join(", ")}]`,
+    );
+  }
 }
 
 export function makeTemporaryDirectory(engineId: string, methodKey: string): string {

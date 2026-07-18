@@ -65,6 +65,19 @@ describe("real pinned PySocialForce integration", () => {
     expect(result.metrics.correctionDependence.totalCorrectionDisplacement).toBe(0);
   });
 
+  it("disables native desired force after arrival inside the experiment goal disk", () => {
+    const scenario = shortened(loadFixture("free-space"), 2);
+    scenario.agents[0].position = [0, 0];
+    scenario.agents[0].velocity = [0, 0];
+    scenario.agents[0].goal = [0.04, 0];
+    const result = runFixture(scenario, "social-force-default.json");
+    for (const record of trajectory(result)) {
+      const agent = record.agents[0];
+      expect(Math.hypot(...agent.commandVelocity)).toBeCloseTo(0, 12);
+      expect(agent.realizedVelocity).toEqual([0, 0]);
+    }
+  });
+
   it("changes the native command for approaching pedestrians and stays finite while separating", () => {
     const approachingScenario = shortened(loadFixture("pairwise-offset-head-on"), 1);
     const isolatedScenario = {

@@ -1,4 +1,11 @@
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { resolve } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { SimulatorCore } from "../../src/core/SimulatorCore";
@@ -14,9 +21,16 @@ import {
   validateEngineStepRecord,
   type EngineStepRecord,
 } from "../../experiments/engines/engineStep";
-import { runExternalProcess } from "../../experiments/engines/externalProtocol";
+import {
+  consumeNativeOutput,
+  runExternalProcess,
+} from "../../experiments/engines/externalProtocol";
 import { RunMetricsAccumulator } from "../../experiments/metrics/RunMetricsAccumulator";
 import { identifyMethod } from "../../experiments/protocol/methodIdentity";
+import {
+  forEachJsonLineSync,
+  JSONL_READ_BUFFER_BYTES,
+} from "../../experiments/protocol/jsonLines";
 import {
   controllerParametersFromMethod,
   parseMethodConfig,
@@ -68,6 +82,79 @@ describe("common engine-step protocol", () => {
     const log = resolve(directory, "stderr.log");
     expect(existsSync(log)).toBe(true);
     expect(readFileSync(log, "utf8")).toContain("mock native failure");
+  });
+
+  it("reads JSONL in bounded chunks across long records and CRLF boundaries", () => {
+    const directory = temporaryDirectory("jsonl-reader-");
+    const path = resolve(directory, "records.jsonl");
+    const longRecord = { payload: "x".repeat(JSONL_READ_BUFFER_BYTES * 2 + 17) };
+    writeFileSync(
+      path,
+      `${JSON.stringify(longRecord)}\r\n\n${JSON.stringify({ value: 2 })}`,
+      "utf8",
+    );
+    const parsed: unknown[] = [];
+    const count = forEachJsonLineSync(path, (line) => parsed.push(JSON.parse(line) as unknown));
+    expect(count).toBe(2);
+    expect(parsed).toEqual([longRecord, { value: 2 }]);
+  });
+
+  it("accepts ordered native records with continuous positions", () => {
+    const scenario = shortened(generatePairwiseScenario("head_on", "test", 0), 2);
+    const directory = temporaryDirectory("native-continuity-valid-");
+    const outputPath = writeNativeOutput(directory, [
+      nativeRecord(scenario, 0),
+      nativeRecord(scenario, 1),
+    ]);
+    const records: EngineStepRecord[] = [];
+    const finalStates = consumeNativeOutput(scenario, outputPath, "mockNative", (record) => {
+      records.push(record);
+    });
+    expect(records).toHaveLength(2);
+    expect(records.every((record) => record.agents.map(({ id }) => id).join(",") === "0,1")).toBe(true);
+    expect(finalStates.map(({ id }) => id)).toEqual([0, 1]);
+  });
+
+  it("rejects native agents emitted out of ascending ID order", () => {
+    const scenario = shortened(generatePairwiseScenario("head_on", "test", 0), 1);
+    const record = nativeRecord(scenario, 0);
+    record.agents.reverse();
+    const outputPath = writeNativeOutput(temporaryDirectory("native-order-invalid-"), [record]);
+    expect(() => consumeNativeOutput(scenario, outputPath, "mockNative", () => undefined))
+      .toThrow(/sorted by unique ascending ID/u);
+  });
+
+  it("rejects initial-position and later position-continuity mismatches", () => {
+    const scenario = shortened(generatePairwiseScenario("head_on", "test", 0), 2);
+    const initialMismatch = nativeRecord(scenario, 0);
+    initialMismatch.agents[0].positionBefore[0] += 0.01;
+    const initialPath = writeNativeOutput(
+      temporaryDirectory("native-initial-invalid-"),
+      [initialMismatch, nativeRecord(scenario, 1)],
+    );
+    expect(() => consumeNativeOutput(scenario, initialPath, "mockNative", () => undefined))
+      .toThrow(/initial position mismatch/u);
+
+    const laterMismatch = nativeRecord(scenario, 1);
+    laterMismatch.agents[0].positionBefore[1] += 0.01;
+    const laterPath = writeNativeOutput(
+      temporaryDirectory("native-later-invalid-"),
+      [nativeRecord(scenario, 0), laterMismatch],
+    );
+    expect(() => consumeNativeOutput(scenario, laterPath, "mockNative", () => undefined))
+      .toThrow(/position continuity mismatch/u);
+  });
+
+  it("rejects native agent ID sets that change between steps", () => {
+    const scenario = shortened(generatePairwiseScenario("head_on", "test", 0), 2);
+    const changedIds = nativeRecord(scenario, 1);
+    changedIds.agents[1].id = 99;
+    const outputPath = writeNativeOutput(
+      temporaryDirectory("native-id-set-invalid-"),
+      [nativeRecord(scenario, 0), changedIds],
+    );
+    expect(() => consumeNativeOutput(scenario, outputPath, "mockNative", () => undefined))
+      .toThrow(/agent ID mismatch/u);
   });
 });
 
@@ -167,6 +254,49 @@ function fixtureRecord(): EngineStepRecord {
       wallCorrectionDisplacement: 0,
       totalCorrectionDisplacement: 0,
       correctionMode: "native_none",
+    },
+  };
+}
+
+function temporaryDirectory(prefix: string): string {
+  mkdirSync(resolve("experiments", "tmp"), { recursive: true });
+  const directory = mkdtempSync(resolve("experiments", "tmp", prefix));
+  temporaryDirectories.push(directory);
+  return directory;
+}
+
+function nativeRecord(scenario: ExperimentScenario, stepIndex: number) {
+  return {
+    nativeEngineStepVersion: 1,
+    stepIndex,
+    time: (stepIndex + 1) * scenario.simulation.dt,
+    agents: scenario.agents.map((agent) => ({
+      id: agent.id,
+      positionBefore: [...agent.position] as [number, number],
+      velocityBefore: [...agent.velocity] as [number, number],
+      proposedPosition: [...agent.position] as [number, number],
+      commandVelocity: [0, 0] as [number, number],
+      realizedVelocity: [0, 0] as [number, number],
+      arrived: false,
+    })),
+  };
+}
+
+function writeNativeOutput(
+  directory: string,
+  records: readonly ReturnType<typeof nativeRecord>[],
+): string {
+  const path = resolve(directory, "output.jsonl");
+  writeFileSync(path, `${records.map((record) => JSON.stringify(record)).join("\n")}\n`, "utf8");
+  return path;
+}
+
+function shortened(scenario: ExperimentScenario, steps: number): ExperimentScenario {
+  return {
+    ...scenario,
+    simulation: {
+      ...scenario.simulation,
+      horizonSeconds: scenario.simulation.dt * steps,
     },
   };
 }

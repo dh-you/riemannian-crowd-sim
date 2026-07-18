@@ -95,6 +95,7 @@ def run(input_path: Path, output_path: Path) -> None:
     preferred_speeds = np.array([agent["preferredSpeed"] for agent in agents], dtype=np.float64)
     simulator.peds.initial_speeds = preferred_speeds.copy()
     simulator.peds.max_speeds = preferred_speeds * parameters["maxSpeedMultiplier"]
+    goals = np.array([agent["goal"] for agent in agents], dtype=np.float64)
     arrived = [False] * len(agents)
     goal_tolerance = float(data["goalTolerance"])
     dt = float(data["dt"])
@@ -110,9 +111,14 @@ def run(input_path: Path, output_path: Path) -> None:
                         arrived[index] = True
                 if arrived[index]:
                     simulator.peds.state[index, 2:4] = 0.0
+                    # Disable DesiredForce for held agents during native force evaluation.
+                    simulator.peds.state[index, 4:6] = before_positions[index]
             simulator.step_once()
             proposed_positions = simulator.peds.pos().copy()
             command_velocities = simulator.peds.vel().copy()
+            for index in range(len(agents)):
+                if arrived[index]:
+                    simulator.peds.state[index, 4:6] = goals[index]
             output_agents = []
             for index, agent in enumerate(agents):
                 final_position = proposed_positions[index].copy()
