@@ -87,13 +87,22 @@ export function solveSymmetric2x2(matrix: Mat2, rightHandSide: Vec2): Vec2 {
   }
   const symmetryScale = Math.max(1, Math.abs(matrix.xy), Math.abs(matrix.yx));
   if (Math.abs(matrix.xy - matrix.yx) > 1e-12 * symmetryScale) {
-    throw new Error("Expected a symmetric 2x2 matrix");
+    throw new Error(
+      "Symmetric 2x2 solve failed: matrix is not symmetric positive definite (symmetry check failed)",
+    );
   }
   const offDiagonal = 0.5 * (matrix.xy + matrix.yx);
-  const det = matrix.xx * matrix.yy - offDiagonal * offDiagonal;
   const matrixScale = Math.max(1, Math.abs(matrix.xx), Math.abs(offDiagonal), Math.abs(matrix.yy));
+  if (matrix.xx <= NUMERICAL_EPSILON * matrixScale) {
+    throw new Error(
+      "Symmetric 2x2 solve failed: matrix is not symmetric positive definite (leading diagonal is nonpositive or numerically negligible)",
+    );
+  }
+  const det = matrix.xx * matrix.yy - offDiagonal * offDiagonal;
   if (!Number.isFinite(det) || det <= NUMERICAL_EPSILON * matrixScale * matrixScale) {
-    throw new Error("Symmetric 2x2 solve failed: matrix is singular or not positive definite");
+    throw new Error(
+      "Symmetric 2x2 solve failed: matrix is not symmetric positive definite (determinant is nonpositive or numerically negligible)",
+    );
   }
   const solution: Vec2 = [
     canonicalZero((matrix.yy * rightHandSide[0] - offDiagonal * rightHandSide[1]) / det),
@@ -120,6 +129,75 @@ export function closestPointOnSegment(point: Vec2, start: Vec2, end: Vec2): Vec2
   }
   const t = Math.max(0, Math.min(1, dot(sub(point, start), segment) / lengthSquared));
   return add(start, scale(segment, t));
+}
+
+/**
+ * Returns the first point at which a closed segment enters a closed disk.
+ * A start point already in the disk is its own first intersection.
+ */
+export function firstSegmentDiskIntersection(
+  start: Vec2,
+  end: Vec2,
+  center: Vec2,
+  radius: number,
+): Vec2 | null {
+  if (![...start, ...end, ...center, radius].every(Number.isFinite)) {
+    throw new Error("Segment-disk intersection requires finite inputs");
+  }
+  if (radius < 0) throw new Error("Segment-disk radius must be nonnegative");
+
+  const startOffset = sub(start, center);
+  const radiusSquared = radius * radius;
+  const startDistanceSquared = normSquared(startOffset);
+  if (![radiusSquared, startDistanceSquared].every(Number.isFinite)) {
+    throw new Error("Segment-disk intersection overflowed its finite input range");
+  }
+  if (startDistanceSquared <= radiusSquared) return [start[0], start[1]];
+
+  const direction = sub(end, start);
+  const a = normSquared(direction);
+  if (!Number.isFinite(a)) {
+    throw new Error("Segment-disk intersection overflowed its finite input range");
+  }
+  if (a === 0) return null;
+
+  // Solve a*t^2 + 2*b*t + c = 0 for the earliest t in [0, 1].
+  const b = dot(startOffset, direction);
+  const c = startDistanceSquared - radiusSquared;
+  const discriminant = b * b - a * c;
+  if (![b, c, discriminant].every(Number.isFinite)) {
+    throw new Error("Segment-disk intersection overflowed its finite input range");
+  }
+  const discriminantScale = Math.max(1, Math.abs(b * b), Math.abs(a * c));
+  if (discriminant < -NUMERICAL_EPSILON * discriminantScale) return null;
+  const squareRoot = Math.sqrt(Math.max(0, discriminant));
+  const firstRoot = (-b - squareRoot) / a;
+  const secondRoot = (-b + squareRoot) / a;
+  const parameter = firstParameterOnClosedSegment(firstRoot, secondRoot);
+  if (parameter === null) return null;
+
+  const intersection = add(start, scale(direction, parameter));
+  if (!isFiniteVec2(intersection)) {
+    throw new Error("Segment-disk intersection produced a non-finite result");
+  }
+  return clampToClosedDisk(intersection, center, radius);
+}
+
+function firstParameterOnClosedSegment(first: number, second: number): number | null {
+  const parameterTolerance = NUMERICAL_EPSILON;
+  for (const parameter of [first, second].sort((a, b) => a - b)) {
+    if (parameter >= -parameterTolerance && parameter <= 1 + parameterTolerance) {
+      return Math.max(0, Math.min(1, parameter));
+    }
+  }
+  return null;
+}
+
+function clampToClosedDisk(point: Vec2, center: Vec2, radius: number): Vec2 {
+  const offset = sub(point, center);
+  const distance = norm(offset);
+  if (distance <= radius || distance === 0) return point;
+  return add(center, scale(offset, radius / distance));
 }
 
 function canonicalZero(value: number): number {

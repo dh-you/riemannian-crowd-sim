@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   dot,
   quadraticForm,
+  solveSymmetric2x2,
   symmetricEigenvalues,
 } from "../../src/core/math";
 import {
@@ -75,6 +76,26 @@ describe("effective metric", () => {
     expect(metric.xy).toBeCloseTo(metric.yx, 15);
     expect(eigenvalues[0]).toBeGreaterThanOrEqual(1 - 1e-12);
     expect(eigenvalues[1]).toBeGreaterThan(0);
+  });
+});
+
+describe("symmetric positive-definite solve", () => {
+  it("rejects a symmetric negative-definite matrix", () => {
+    expect(() =>
+      solveSymmetric2x2({ xx: -1, xy: 0, yx: 0, yy: -1 }, [1, 2]),
+    ).toThrow(/not symmetric positive definite/u);
+  });
+
+  it("rejects a positive-semidefinite matrix with a zero leading diagonal", () => {
+    expect(() =>
+      solveSymmetric2x2({ xx: 0, xy: 0, yx: 0, yy: 1 }, [1, 2]),
+    ).toThrow(/not symmetric positive definite/u);
+  });
+
+  it("solves a valid symmetric positive-definite system", () => {
+    const solution = solveSymmetric2x2({ xx: 4, xy: 1, yx: 1, yy: 3 }, [1, 2]);
+    expect(solution[0]).toBeCloseTo(1 / 11, 15);
+    expect(solution[1]).toBeCloseTo(7 / 11, 15);
   });
 });
 

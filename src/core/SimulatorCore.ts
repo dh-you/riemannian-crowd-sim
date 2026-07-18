@@ -1,6 +1,6 @@
 import { correctPositions } from "./corrections";
 import { measureContacts, requirePosition } from "./diagnostics";
-import { add, isFiniteVec2, norm, scale, sub } from "./math";
+import { add, firstSegmentDiskIntersection, isFiniteVec2, norm, scale, sub } from "./math";
 import { RiemannianController } from "./RiemannianController";
 import { SpatialHash } from "./spatialHash";
 import type {
@@ -79,7 +79,7 @@ export class SimulatorCore {
     spatialHash.rebuild(snapshot);
 
     const targetById = new Map<number, Vec2>();
-    const arrivedById = new Map<number, boolean>();
+    const beginsWithinGoalById = new Map<number, boolean>();
     let coincidentNeighborContributionsSkipped = 0;
     for (const agent of snapshot) {
       const metricResult = this.controller.computeEffectiveMetric(
@@ -93,7 +93,7 @@ export class SimulatorCore {
         this.simulation.goalTolerance,
       );
       targetById.set(agent.id, target.targetVelocity);
-      arrivedById.set(agent.id, target.arrived);
+      beginsWithinGoalById.set(agent.id, target.arrived);
     }
 
     const eta = smoothingCoefficient(this.simulation.dt, this.simulation.velocityTimeConstant);
@@ -102,8 +102,22 @@ export class SimulatorCore {
     let intendedDisplacement = 0;
     for (const agent of snapshot) {
       const target = requirePosition(targetById, agent.id);
-      const smoothed = add(scale(agent.velocity, eta), scale(target, 1 - eta));
-      const preCorrectionPosition = add(agent.position, scale(smoothed, this.simulation.dt));
+      const beginsWithinGoal = beginsWithinGoalById.get(agent.id) ?? false;
+      const smoothed: Vec2 = beginsWithinGoal
+        ? [0, 0]
+        : add(scale(agent.velocity, eta), scale(target, 1 - eta));
+      const proposedPosition = beginsWithinGoal
+        ? agent.position
+        : add(agent.position, scale(smoothed, this.simulation.dt));
+      const goalIntersection = beginsWithinGoal
+        ? agent.position
+        : firstSegmentDiskIntersection(
+            agent.position,
+            proposedPosition,
+            agent.goal,
+            this.simulation.goalTolerance,
+          );
+      const preCorrectionPosition = goalIntersection ?? proposedPosition;
       if (!isFiniteVec2(smoothed) || !isFiniteVec2(preCorrectionPosition)) {
         throw new Error(`Non-finite integration result for agent ${agent.id}`);
       }
@@ -133,7 +147,7 @@ export class SimulatorCore {
         ...agent,
         position: postCorrectionPosition,
         velocity: realizedVelocity,
-        arrived: arrivedById.get(agent.id) ?? false,
+        arrived: norm(sub(postCorrectionPosition, agent.goal)) <= this.simulation.goalTolerance,
       });
       perAgent.push({
         id: agent.id,

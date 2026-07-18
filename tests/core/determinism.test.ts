@@ -11,8 +11,11 @@ describe("determinism and headless isolation", () => {
     expect(JSON.stringify(first)).toBe(JSON.stringify(second));
   });
 
-  it("keeps every scientific core source free of Three.js, DOM, and rendering imports", () => {
-    const files = walk(join(process.cwd(), "src", "core")).filter((path) => path.endsWith(".ts"));
+  it("keeps scientific core and headless experiment sources free of Three.js and DOM code", () => {
+    const files = [
+      ...walk(join(process.cwd(), "src", "core")),
+      ...walk(join(process.cwd(), "experiments")),
+    ].filter((path) => path.endsWith(".ts"));
     expect(files.length).toBeGreaterThan(0);
     for (const path of files) {
       const source = readFileSync(path, "utf8");

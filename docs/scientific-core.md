@@ -70,7 +70,7 @@ with determinant, symmetry, positive-definiteness, and finite-value guards; it d
 v_i^\star=-s_i\frac{x_i}{\sqrt{g_i^{\mathsf T}x_i}}.
 \]
 
-For every non-goal state, $\sqrt{(v_i^\star)^{\mathsf T}G_i v_i^\star}=s_i$. With $G_i=I$, the result points exactly at the goal with Euclidean magnitude $s_i$. Within `goalTolerance`, the target is zero and the agent is marked arrived.
+For every non-goal state, $\sqrt{(v_i^\star)^{\mathsf T}G_i v_i^\star}=s_i$. With $G_i=I$, the result points exactly at the goal with Euclidean magnitude $s_i$. Within `goalTolerance`, the controller target is zero.
 
 ## Time integration and synchronization
 
@@ -81,9 +81,13 @@ Velocity smoothing uses elapsed physical time:
 v_i^{\mathrm{smooth}}=\eta v_i+(1-\eta)v_i^\star.
 \]
 
-For `velocityTimeConstant = 0`, $\eta=0$ and target tracking is immediate. The pre-correction position is $p_i+\Delta t\,v_i^{\mathrm{smooth}}$.
+For `velocityTimeConstant = 0`, $\eta=0$ and target tracking is immediate. An agent that begins a step inside the closed goal-tolerance disk is held stationary before correction: both target and smoothed velocity are zero, its pre-correction position equals its old position, and its intended displacement is zero regardless of residual incoming velocity.
 
-Every fixed step snapshots all agents, builds neighbors from that snapshot, computes all metrics and targets from it, computes all smoothed velocities and pre-correction positions, measures contacts, applies optional corrections, measures contacts again, and only then commits all ID-sorted states. The realized velocity records the actual final motion:
+For an agent that begins outside the goal disk, the nominal pre-correction position is $p_i+\Delta t\,v_i^{\mathrm{smooth}}$. If the segment from the old position to that proposal intersects the closed goal disk, a deterministic analytic segment-circle solve truncates motion at the first intersection. This prevents a fixed step from passing completely through the goal region. The diagnostic `smoothedVelocity` remains the nominal smoothed velocity, while `preCorrectionPosition` and `intendedDisplacement` describe the truncated motion actually applied before correction.
+
+Every fixed step snapshots all agents, builds neighbors from that snapshot, computes all metrics and targets from it, computes all smoothed velocities and pre-correction positions, measures contacts, applies optional corrections, measures contacts again, and only then commits all ID-sorted states. Arrival is recomputed from each post-correction physical position and is not a permanent latch. Correction may therefore push an otherwise arrived agent outside the goal region; that agent becomes unarrived and resumes controller motion on the next step.
+
+The realized velocity always records the actual final motion, including a truncated arrival step or correction displacement; it is not overwritten with zero when the agent reaches the goal:
 
 \[
 v_i^{\mathrm{realized}}=(p_i^{\mathrm{post}}-p_i^{\mathrm{old}})/\Delta t.
@@ -104,6 +108,8 @@ agent.radius + wall.thickness / 2 + padding
 ```
 
 Wall contributions in each pass are also accumulated before simultaneous application. An agent exactly on a wall centerline receives a deterministic normal derived from stable agent and wall IDs. Zero-length wall segments are rejected by scenario validation.
+
+Because correction is applied after goal handling, it may displace an agent that was held inside its goal region. Post-correction arrival then reflects whether the final position remains inside that region.
 
 Diagnostics report physical overlap and wall penetration without counting padding. Correction counts can therefore be nonzero when padding alone triggered a safeguard. Displacement totals are sums over agents of Euclidean displacement magnitudes applied by each correction layer. The safe correction ratio is
 
@@ -145,6 +151,10 @@ The output directory contains:
 - `summary.json`: step count and duration, arrival count/fraction, minimum raw clearance, overlap exposure in pair-seconds, penetration-depth exposure in meter-seconds, intended and correction displacement totals, correction ratio, finite-value status, and ID-sorted final states.
 
 These are infrastructure diagnostics and preliminary run outputs, not final paper metrics or experimental claims. Generated `results/` content is ignored by Git.
+
+Trajectory records are streamed incrementally through `trajectory.jsonl.tmp`; the runner does not retain the full trajectory in memory. After a successful simulation and metadata write, it closes the temporary file and atomically renames it to `trajectory.jsonl`. Failed runs remove temporary and finalized output artifacts when possible while preserving the original failure.
+
+The controller uses local spatial queries, but full contact measurement and positional correction have not been optimized with the same locality. They are not a basis for an $O(Nm)$ full-step performance claim. Later performance experiments must time the controller, diagnostics, and correction layers separately unless the latter layers are also optimized.
 
 ## Deferred work
 
