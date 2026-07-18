@@ -4,10 +4,11 @@ import type {
   ControllerParameters,
   CorrectionParameters,
   SimulationParameters,
+  ScientificControllerParameters,
   Vec2,
   WallSegment,
 } from "./types";
-import { CONTROLLER_ID } from "./types";
+import { CONTROLLER_ID, EUCLIDEAN_GOAL_CONTROLLER_ID } from "./types";
 
 export function requireFiniteNumber(value: unknown, path: string): number {
   if (typeof value !== "number" || !Number.isFinite(value)) {
@@ -39,6 +40,22 @@ export function validateControllerParameters(parameters: ControllerParameters): 
   if (parameters.sigma <= 0) throw new Error("controller.sigma must be positive");
   if (parameters.lambdaR <= 0) throw new Error("controller.lambdaR must be positive");
   if (parameters.lambdaT <= 0) throw new Error("controller.lambdaT must be positive");
+}
+
+export function validateScientificControllerParameters(
+  parameters: ScientificControllerParameters,
+): void {
+  switch (parameters.id) {
+    case CONTROLLER_ID:
+      validateControllerParameters(parameters);
+      return;
+    case EUCLIDEAN_GOAL_CONTROLLER_ID:
+      return;
+    default:
+      throw new Error(
+        `Unsupported controller id: ${String((parameters as { id?: unknown }).id)}`,
+      );
+  }
 }
 
 export function validateCorrectionParameters(parameters: CorrectionParameters): void {

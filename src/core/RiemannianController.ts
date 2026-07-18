@@ -13,7 +13,9 @@ import {
   sub,
 } from "./math";
 import { smoothstep, wendlandC2 } from "./smoothstep";
+import type { MotionController, MotionControllerResult } from "./MotionController";
 import type { AgentState, ControllerParameters, Mat2, Vec2 } from "./types";
+import { CONTROLLER_ID } from "./types";
 import { validateControllerParameters } from "./validation";
 
 /** Below this physical separation, anisotropic neighbor tensors are undefined and skipped. */
@@ -65,12 +67,31 @@ export function riemannianSpeed(velocity: Vec2, metric: Mat2): number {
   return Math.sqrt(squared);
 }
 
-export class RiemannianController {
+export class RiemannianController implements MotionController {
+  readonly id = CONTROLLER_ID;
   readonly parameters: ControllerParameters;
 
   constructor(parameters: ControllerParameters) {
     validateControllerParameters(parameters);
     this.parameters = { ...parameters };
+  }
+
+  get interactionRadius(): number {
+    return this.parameters.sigma;
+  }
+
+  computeControl(
+    controlled: AgentState,
+    neighbors: readonly AgentState[],
+    goalTolerance: number,
+  ): MotionControllerResult {
+    const metricResult = this.computeEffectiveMetric(controlled, neighbors);
+    const targetResult = this.computeTargetVelocity(controlled, metricResult.metric, goalTolerance);
+    return {
+      ...targetResult,
+      coincidentNeighborContributionsSkipped:
+        metricResult.coincidentNeighborContributionsSkipped,
+    };
   }
 
   computeEffectiveMetric(controlled: AgentState, neighbors: readonly AgentState[]): EffectiveMetricResult {

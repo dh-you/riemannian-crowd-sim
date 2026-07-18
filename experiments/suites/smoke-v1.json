@@ -1,0 +1,23 @@
+{
+  "suiteVersion": 1,
+  "suiteId": "smoke-v1",
+  "generatorVersion": "protocol_v1",
+  "entries": [
+    {
+      "split": "smoke",
+      "family": "pairwise",
+      "variants": ["head_on", "separating"],
+      "seedStart": 0,
+      "seedEnd": 1,
+      "agentCount": 2
+    },
+    {
+      "split": "smoke",
+      "family": "circle_antipodal",
+      "variants": ["perturbed"],
+      "seedStart": 0,
+      "seedEnd": 1,
+      "agentCount": 8
+    }
+  ]
+}

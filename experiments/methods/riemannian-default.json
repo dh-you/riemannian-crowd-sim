@@ -1,0 +1,11 @@
+{
+  "methodConfigVersion": 1,
+  "id": "conditioned_riemannian_metric_v1",
+  "velocityTimeConstant": 0.04,
+  "parameters": {
+    "alpha": 10,
+    "sigma": 2.4,
+    "lambdaR": 10,
+    "lambdaT": 1
+  }
+}

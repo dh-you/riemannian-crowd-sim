@@ -8,6 +8,7 @@ export interface Mat2 {
 }
 
 export const CONTROLLER_ID = "conditioned_riemannian_metric_v1" as const;
+export const EUCLIDEAN_GOAL_CONTROLLER_ID = "euclidean_goal_steering_v1" as const;
 
 export interface AgentState {
   id: number;
@@ -26,13 +27,24 @@ export interface WallSegment {
   thickness: number;
 }
 
-export interface ControllerParameters {
+export interface RiemannianControllerParameters {
   id: typeof CONTROLLER_ID;
   alpha: number;
   sigma: number;
   lambdaR: number;
   lambdaT: number;
 }
+
+/** Backward-compatible Stage A name for the Riemannian parameter object. */
+export type ControllerParameters = RiemannianControllerParameters;
+
+export interface EuclideanGoalControllerParameters {
+  id: typeof EUCLIDEAN_GOAL_CONTROLLER_ID;
+}
+
+export type ScientificControllerParameters =
+  | RiemannianControllerParameters
+  | EuclideanGoalControllerParameters;
 
 export interface CorrectionParameters {
   enabled: boolean;

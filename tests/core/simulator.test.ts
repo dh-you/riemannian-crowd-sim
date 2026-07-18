@@ -12,6 +12,7 @@ import { CONTROLLER_ID, type AgentState } from "../../src/core/types";
 describe("synchronous deterministic simulation", () => {
   it("computes all target velocities from the same old snapshot", () => {
     const options = pairOptions();
+    if (options.controller.id !== CONTROLLER_ID) throw new Error("Expected Riemannian fixture");
     const controller = new RiemannianController(options.controller);
     const expectedTargets = new Map(
       options.agents.map((agent) => {

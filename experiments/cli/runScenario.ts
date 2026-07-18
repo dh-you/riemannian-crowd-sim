@@ -12,8 +12,8 @@ import { arch, platform } from "node:os";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { SimulatorCore, CORRECTION_RATIO_EPSILON_METERS } from "../../src/core/SimulatorCore";
-import type { StepDiagnostics } from "../../src/core/types";
-import type { RunManifest, RunSummary, TrajectoryRecord } from "../output/types";
+import { toTrajectoryRecord } from "../output/trajectory";
+import type { RunManifest, RunSummary } from "../output/types";
 import { parseScenario, type Scenario } from "../schema/scenario";
 
 export interface RunScenarioOptions {
@@ -218,35 +218,6 @@ function loadScenario(path: string): Scenario {
     throw new Error(`Failed to read scenario ${path}: ${errorMessage(error)}`);
   }
   return parseScenario(parsed);
-}
-
-function toTrajectoryRecord(diagnostic: StepDiagnostics, states: ReturnType<SimulatorCore["getAgents"]>): TrajectoryRecord {
-  const targetById = new Map(diagnostic.perAgent.map((entry) => [entry.id, entry.targetVelocity]));
-  return {
-    stepIndex: diagnostic.stepIndex,
-    time: diagnostic.time,
-    agents: states.map((agent) => ({
-      id: agent.id,
-      position: agent.position,
-      realizedVelocity: agent.velocity,
-      targetVelocity: targetById.get(agent.id) ?? [0, 0],
-      arrived: agent.arrived,
-    })),
-    diagnostics: {
-      preCorrectionOverlapPairs: diagnostic.preCorrectionOverlapPairs,
-      postCorrectionOverlapPairs: diagnostic.postCorrectionOverlapPairs,
-      preCorrectionWallContacts: diagnostic.preCorrectionWallContacts,
-      postCorrectionWallContacts: diagnostic.postCorrectionWallContacts,
-      maxPreCorrectionPenetration: diagnostic.maxPreCorrectionPenetration,
-      maxPostCorrectionPenetration: diagnostic.maxPostCorrectionPenetration,
-      intendedDisplacement: diagnostic.intendedDisplacement,
-      agentCorrectionDisplacement: diagnostic.agentCorrectionDisplacement,
-      wallCorrectionDisplacement: diagnostic.wallCorrectionDisplacement,
-      totalCorrectionDisplacement: diagnostic.totalCorrectionDisplacement,
-      correctionRatio: diagnostic.correctionRatio,
-      coincidentNeighborContributionsSkipped: diagnostic.coincidentNeighborContributionsSkipped,
-    },
-  };
 }
 
 function readGitCommit(startDirectory: string): string | null {

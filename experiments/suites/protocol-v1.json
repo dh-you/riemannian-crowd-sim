@@ -1,0 +1,79 @@
+{
+  "suiteVersion": 1,
+  "suiteId": "protocol-v1",
+  "generatorVersion": "protocol_v1",
+  "entries": [
+    {
+      "split": "validation",
+      "family": "pairwise",
+      "variants": ["head_on", "crossing", "overtaking", "separating"],
+      "seedStart": 0,
+      "seedEnd": 9,
+      "agentCount": 2
+    },
+    {
+      "split": "validation",
+      "family": "circle_antipodal",
+      "variants": ["perturbed"],
+      "seedStart": 0,
+      "seedEnd": 4,
+      "agentCount": 50
+    },
+    {
+      "split": "validation",
+      "family": "bidirectional",
+      "variants": ["corridor"],
+      "seedStart": 0,
+      "seedEnd": 4,
+      "agentCount": 120
+    },
+    {
+      "split": "validation",
+      "family": "bottleneck",
+      "variants": ["central_opening"],
+      "seedStart": 0,
+      "seedEnd": 4,
+      "agentCount": 112
+    },
+    {
+      "split": "test",
+      "family": "pairwise",
+      "variants": ["head_on", "crossing", "overtaking", "separating"],
+      "seedStart": 1000,
+      "seedEnd": 1049,
+      "agentCount": 2
+    },
+    {
+      "split": "test",
+      "family": "circle_antipodal",
+      "variants": ["perturbed"],
+      "seedStart": 1000,
+      "seedEnd": 1029,
+      "agentCount": 100
+    },
+    {
+      "split": "test",
+      "family": "bidirectional",
+      "variants": ["corridor"],
+      "seedStart": 1000,
+      "seedEnd": 1029,
+      "agentCount": 240
+    },
+    {
+      "split": "test",
+      "family": "bottleneck",
+      "variants": ["central_opening"],
+      "seedStart": 1000,
+      "seedEnd": 1029,
+      "agentCount": 224
+    },
+    {
+      "split": "diagnostic",
+      "family": "pairwise",
+      "variants": ["exact_symmetric_diagnostic"],
+      "seedStart": 0,
+      "seedEnd": 0,
+      "agentCount": 2
+    }
+  ]
+}

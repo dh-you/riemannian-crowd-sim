@@ -1,0 +1,61 @@
+{
+  "experimentScenarioVersion": 1,
+  "name": "pairwise-exact_symmetric_diagnostic",
+  "family": "pairwise",
+  "variant": "exact_symmetric_diagnostic",
+  "split": "diagnostic",
+  "seed": 0,
+  "simulation": {
+    "dt": 0.016666666666666666,
+    "horizonSeconds": 15,
+    "goalTolerance": 0.1,
+    "correction": {
+      "enabled": true,
+      "iterations": 2,
+      "padding": 0.001
+    }
+  },
+  "agents": [
+    {
+      "id": 0,
+      "radius": 0.3,
+      "preferredSpeed": 1.4,
+      "position": [
+        -5,
+        0
+      ],
+      "velocity": [
+        1.4,
+        0
+      ],
+      "goal": [
+        5,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "radius": 0.3,
+      "preferredSpeed": 1.4,
+      "position": [
+        5,
+        0
+      ],
+      "velocity": [
+        -1.4,
+        0
+      ],
+      "goal": [
+        -5,
+        0
+      ]
+    }
+  ],
+  "walls": [],
+  "metadata": {
+    "units": {
+      "distance": "m",
+      "time": "s"
+    }
+  }
+}

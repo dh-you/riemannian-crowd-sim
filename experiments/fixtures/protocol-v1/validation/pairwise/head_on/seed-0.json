@@ -1,0 +1,61 @@
+{
+  "experimentScenarioVersion": 1,
+  "name": "pairwise-head_on-validation-seed-0",
+  "family": "pairwise",
+  "variant": "head_on",
+  "split": "validation",
+  "seed": 0,
+  "simulation": {
+    "dt": 0.016666666666666666,
+    "horizonSeconds": 15,
+    "goalTolerance": 0.1,
+    "correction": {
+      "enabled": true,
+      "iterations": 2,
+      "padding": 0.001
+    }
+  },
+  "agents": [
+    {
+      "id": 0,
+      "radius": 0.3,
+      "preferredSpeed": 1.300936601422727,
+      "position": [
+        -4.899643813027069,
+        0.02001978474203497
+      ],
+      "velocity": [
+        1.300936601422727,
+        0
+      ],
+      "goal": [
+        4.899643813027069,
+        0.02001978474203497
+      ]
+    },
+    {
+      "id": 1,
+      "radius": 0.3,
+      "preferredSpeed": 1.3908517904207112,
+      "position": [
+        4.899643813027069,
+        -0.02001978474203497
+      ],
+      "velocity": [
+        -1.390851790420711,
+        0
+      ],
+      "goal": [
+        -4.899643813027069,
+        -0.02001978474203497
+      ]
+    }
+  ],
+  "walls": [],
+  "metadata": {
+    "units": {
+      "distance": "m",
+      "time": "s"
+    }
+  }
+}

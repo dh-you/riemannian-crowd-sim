@@ -1,21 +1,22 @@
 import { correctPositions } from "./corrections";
+import { createMotionController } from "./controllerFactory";
 import { measureContacts, requirePosition } from "./diagnostics";
 import { add, firstSegmentDiskIntersection, isFiniteVec2, norm, scale, sub } from "./math";
-import { RiemannianController } from "./RiemannianController";
+import type { MotionController } from "./MotionController";
 import { SpatialHash } from "./spatialHash";
 import type {
   AgentState,
-  ControllerParameters,
   CorrectionParameters,
   PerAgentStepDiagnostics,
   SimulationParameters,
+  ScientificControllerParameters,
   StepDiagnostics,
   Vec2,
   WallSegment,
 } from "./types";
 import {
   validateAgentStates,
-  validateControllerParameters,
+  validateScientificControllerParameters,
   validateSimulationParameters,
   validateWalls,
 } from "./validation";
@@ -26,7 +27,7 @@ export interface SimulatorCoreOptions {
   agents: readonly AgentState[];
   walls: readonly WallSegment[];
   simulation: SimulationParameters;
-  controller: ControllerParameters;
+  controller: ScientificControllerParameters;
 }
 
 export function smoothingCoefficient(dt: number, velocityTimeConstant: number): number {
@@ -39,9 +40,9 @@ export function smoothingCoefficient(dt: number, velocityTimeConstant: number): 
 
 export class SimulatorCore {
   readonly simulation: SimulationParameters;
-  readonly controllerParameters: ControllerParameters;
+  readonly controllerParameters: ScientificControllerParameters;
   readonly walls: readonly WallSegment[];
-  private readonly controller: RiemannianController;
+  private readonly controller: MotionController;
   private agents: AgentState[];
   private nextStepIndex = 0;
 
@@ -49,7 +50,7 @@ export class SimulatorCore {
     validateAgentStates(options.agents);
     validateWalls(options.walls);
     validateSimulationParameters(options.simulation);
-    validateControllerParameters(options.controller);
+    validateScientificControllerParameters(options.controller);
     this.agents = cloneAgents(options.agents).sort((a, b) => a.id - b.id);
     this.walls = options.walls.map(cloneWall).sort((a, b) => a.id - b.id);
     this.simulation = {
@@ -57,7 +58,7 @@ export class SimulatorCore {
       correction: { ...options.simulation.correction },
     };
     this.controllerParameters = { ...options.controller };
-    this.controller = new RiemannianController(this.controllerParameters);
+    this.controller = createMotionController(this.controllerParameters);
   }
 
   getAgents(): AgentState[] {
@@ -75,25 +76,25 @@ export class SimulatorCore {
   step(): StepDiagnostics {
     // Every calculation through pre-correction integration reads this one snapshot.
     const snapshot = cloneAgents(this.agents).sort((a, b) => a.id - b.id);
-    const spatialHash = new SpatialHash(this.controllerParameters.sigma);
-    spatialHash.rebuild(snapshot);
+    const spatialHash =
+      this.controller.interactionRadius > 0
+        ? new SpatialHash(this.controller.interactionRadius)
+        : null;
+    spatialHash?.rebuild(snapshot);
 
     const targetById = new Map<number, Vec2>();
     const beginsWithinGoalById = new Map<number, boolean>();
     let coincidentNeighborContributionsSkipped = 0;
     for (const agent of snapshot) {
-      const metricResult = this.controller.computeEffectiveMetric(
+      const controlResult = this.controller.computeControl(
         agent,
-        spatialHash.query(agent.position, this.controllerParameters.sigma),
-      );
-      coincidentNeighborContributionsSkipped += metricResult.coincidentNeighborContributionsSkipped;
-      const target = this.controller.computeTargetVelocity(
-        agent,
-        metricResult.metric,
+        spatialHash?.query(agent.position, this.controller.interactionRadius) ?? [],
         this.simulation.goalTolerance,
       );
-      targetById.set(agent.id, target.targetVelocity);
-      beginsWithinGoalById.set(agent.id, target.arrived);
+      coincidentNeighborContributionsSkipped +=
+        controlResult.coincidentNeighborContributionsSkipped;
+      targetById.set(agent.id, controlResult.targetVelocity);
+      beginsWithinGoalById.set(agent.id, controlResult.arrived);
     }
 
     const eta = smoothingCoefficient(this.simulation.dt, this.simulation.velocityTimeConstant);

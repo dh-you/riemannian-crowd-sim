@@ -9,7 +9,12 @@
     "preview": "vite preview",
     "test": "vitest run",
     "core:run": "tsx experiments/cli/runScenario.ts",
-    "core:smoke": "tsx experiments/cli/smoke.ts"
+    "core:smoke": "tsx experiments/cli/smoke.ts",
+    "exp:generate": "tsx experiments/generation/suite.ts",
+    "exp:run": "tsx experiments/cli/runExperiment.ts",
+    "exp:batch": "tsx experiments/cli/runBatch.ts",
+    "exp:aggregate": "tsx experiments/cli/aggregate.ts",
+    "exp:smoke": "tsx experiments/cli/experimentSmoke.ts"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
