@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "name": "free-space",
+  "seed": 1000,
+  "simulation": {
+    "dt": 0.05,
+    "horizonSeconds": 1,
+    "goalTolerance": 0.05,
+    "velocityTimeConstant": 0.04,
+    "correction": {
+      "enabled": true,
+      "iterations": 2,
+      "padding": 0.001
+    }
+  },
+  "controller": {
+    "id": "conditioned_riemannian_metric_v1",
+    "alpha": 10,
+    "sigma": 2.4,
+    "lambdaR": 10,
+    "lambdaT": 1
+  },
+  "agents": [
+    {
+      "id": 0,
+      "radius": 0.3,
+      "preferredSpeed": 1.4,
+      "position": [0, 0],
+      "velocity": [0, 0],
+      "goal": [10, 0]
+    }
+  ],
+  "walls": []
+}
