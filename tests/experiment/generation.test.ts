@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
@@ -8,6 +9,7 @@ import {
 import { generateExperimentScenario } from "../../experiments/generation/generateScenario";
 import { DeterministicRandom } from "../../experiments/generation/random";
 import {
+  assertSafeOutputDirectory,
   expandSuiteDefinition,
   parseSuiteDefinition,
 } from "../../experiments/generation/suite";
@@ -55,6 +57,30 @@ describe("repository-owned deterministic PRNG", () => {
 });
 
 describe("deterministic scenario families", () => {
+  it("permits only strict descendants of repository-owned generator directories", () => {
+    const repositoryRoot = resolve(".");
+    expect(() =>
+      assertSafeOutputDirectory(
+        resolve("experiments/generated/protocol-safety-test"),
+        repositoryRoot,
+      ),
+    ).not.toThrow();
+    expect(() =>
+      assertSafeOutputDirectory(resolve("experiments/tmp/protocol-safety-test"), repositoryRoot),
+    ).not.toThrow();
+    for (const unsafePath of [
+      repositoryRoot,
+      resolve("experiments/generated"),
+      resolve("experiments/tmp"),
+      resolve("results/mistyped-output"),
+      resolve(tmpdir(), "mistyped-output"),
+    ]) {
+      expect(() => assertSafeOutputDirectory(unsafePath, repositoryRoot)).toThrow(
+        /Refusing to clear generator output/u,
+      );
+    }
+  });
+
   it.each(representativeRequests)("generates $family byte-identically and physically valid", (request) => {
     const first = generateExperimentScenario(request);
     const second = generateExperimentScenario(request);

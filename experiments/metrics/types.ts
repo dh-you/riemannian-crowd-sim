@@ -14,8 +14,18 @@ export interface PairwiseAgentMetrics {
 export interface PairwiseMetrics {
   avoidanceThresholdDegrees: number;
   perAgent: PairwiseAgentMetrics[];
-  minimumCenterClearance: number | null;
-  minimumPhysicalClearance: number | null;
+  minimumPreCorrectionCenterDistance: number | null;
+  minimumPreCorrectionPhysicalClearance: number | null;
+  minimumPostCorrectionCenterDistance: number | null;
+  minimumPostCorrectionPhysicalClearance: number | null;
+}
+
+export interface RunMethodMetadata {
+  methodId: string;
+  methodKey: string;
+  methodConfigSha256: string;
+  velocityTimeConstant: number;
+  methodParameters: Readonly<Record<string, number>>;
 }
 
 export interface RunMetrics {
@@ -26,6 +36,10 @@ export interface RunMetrics {
     split: string;
     seed: number;
     methodId: string;
+    methodKey: string;
+    methodConfigSha256: string;
+    velocityTimeConstant: number;
+    methodParameters: Readonly<Record<string, number>>;
     agentCount: number;
     simulatedDuration: number;
   };
@@ -44,12 +58,15 @@ export interface RunMetrics {
     medianPathEfficiency: number | null;
   };
   separation: {
-    minimumPreCorrectionClearance: number | null;
+    minimumPreCorrectionAgentClearance: number | null;
+    minimumPreCorrectionWallClearance: number | null;
     totalPreCorrectionOverlapPairSeconds: number;
     totalPostCorrectionOverlapPairSeconds: number;
     preCorrectionOverlapPairSecondsPerAgentSecond: number | null;
-    maximumPreCorrectionPenetration: number;
-    maximumPostCorrectionPenetration: number;
+    maximumPreCorrectionAgentPenetration: number;
+    maximumPreCorrectionWallPenetration: number;
+    maximumPostCorrectionAgentPenetration: number;
+    maximumPostCorrectionWallPenetration: number;
   };
   correctionDependence: {
     totalIntendedDisplacement: number;

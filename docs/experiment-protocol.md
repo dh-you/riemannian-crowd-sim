@@ -35,6 +35,14 @@ and an agent inside receives zero. It ignores neighbors, has interaction radius 
 
 The committed configs in `experiments/methods/` are provisional infrastructure defaults. They are not tuned or selected paper parameters.
 
+Every exact method-config file also has a stable run identity:
+
+```text
+methodKey = <controller-id>--<first-12-hex-characters-of-method-config-SHA-256>
+```
+
+The SHA-256 is computed from the exact config bytes, so even two configurations of the same controller receive distinct keys, output directories, metric identities, and CSV rows. Manifests and batch records retain both the key and the full config hash. The aggregate CSV additionally exposes `velocity_time_constant`, `alpha`, `sigma`, `lambda_r`, and `lambda_t`; parameters unavailable for a method are empty fields.
+
 ## Experiment scenario version 1
 
 An `experimentScenarioVersion: 1` document contains:
@@ -52,6 +60,8 @@ It contains no controller parameters, smoothing time constant, or method label. 
 `DeterministicRandom` is a repository-owned Mulberry32 generator. Its state and output are unsigned 32-bit integers; `nextFloat()` is exactly the output integer divided by \(2^{32}\), producing a value in \([0,1)\). No generator uses `Math.random()`, time, the OS, or a platform-specific entropy source. A committed integer golden sequence prevents silent algorithm changes.
 
 Generator version `protocol_v1` writes ID-sorted, stable pretty JSON with no timestamp. Each scenario is checked for initial agent-agent and agent-wall physical overlap with a \(10^{-10}\) m numerical tolerance. `suite-manifest.json` records identity, population, generator and suite versions, scenario SHA-256, suite-definition hash, and Git SHA when available. Regenerating a suite produces byte-identical scenario files.
+
+Generation clears an existing output directory before writing, but only strict descendants of `<repository>/experiments/generated/` or `<repository>/experiments/tmp/` are accepted. The roots themselves, other repository paths, paths outside the repository, and symbolic-link traversal are rejected before recursive deletion.
 
 Defaults are metric-scale navigation fixtures, not human calibration: radius 0.3 m, preferred speed centered at 1.4 m/s with approximately ±10% variation, timestep 1/60 s, and correction padding 0.001 m.
 
@@ -84,7 +94,7 @@ E_i^{\mathrm{path}}=\frac{L_i^{\mathrm{realized}}}{\lVert q_i-p_i^0\rVert}.
 
 Realized path length stops at first arrival. Per-agent values plus mean and median are written; unavailable aggregates are `null`.
 
-Separation metrics are minimum pre-correction physical clearance, pre/post overlap pair-seconds, pre-correction pair-seconds per agent-second, and maximum pre/post penetration. Physical overlap excludes correction padding.
+Agent-agent and agent-wall safety are never combined in experiment metrics. The main safety fields are `minimumPreCorrectionAgentClearance`, agent overlap pair-seconds, and maximum pre/post agent penetration. Wall clearance and maximum pre/post wall penetration are reported in separate fields. Physical overlap and penetration exclude correction padding. The legacy core diagnostics retain combined aliases for Stage A compatibility, but experiment metrics and CSV columns do not use those aliases.
 
 Correction metrics sum intended, agent-correction, wall-correction, and total-correction displacement over all agents and steps. The ratio is
 
@@ -104,7 +114,9 @@ The unobstructed direction is \(u_i^0=(q_i-p_i)/\lVert q_i-p_i\rVert\). Avoidanc
 \delta_i=\cos^{-1}\!\left(\frac{v_i^\star\cdot u_i^0}{\lVert v_i^\star\rVert}\right)>5^\circ.
 \]
 
-Zero target velocity or an undefined goal direction does not declare onset. At onset, TTC solves \(\lVert r+tv\rVert^2=R^2\) and stores the earliest nonnegative finite root. Separating, stationary, invalid, or non-collision trajectories yield `null`; already overlapping circles yield zero. Pairwise output also reports minimum center distance and minimum physical clearance.
+Zero target velocity or an undefined goal direction does not declare onset. At onset, TTC solves \(\lVert r+tv\rVert^2=R^2\) and stores the earliest nonnegative finite root. Separating, stationary, invalid, or non-collision trajectories yield `null`; already overlapping circles yield zero.
+
+Pairwise separation reports four explicitly qualified values: minimum pre-correction center distance, minimum pre-correction physical clearance, minimum post-correction center distance, and minimum post-correction physical clearance. “Center distance” is the raw center-to-center distance; “physical clearance” subtracts both radii. The pre-correction values measure controller output before the numerical safeguard, so correction cannot hide a controller collision.
 
 ## Running experiments
 
@@ -121,7 +133,7 @@ npm run exp:run -- --scenario experiments/generated/protocol-v1/validation/pairw
 npm run exp:run -- --scenario experiments/generated/protocol-v1/validation/pairwise/head_on/seed-0.json --method experiments/methods/goal-projection.json --out results/stage-b-goal-example
 ```
 
-The runner writes atomic `manifest.json`, `trajectory.jsonl`, `summary.json`, and `run-metrics.json`. The manifest records schema versions, controller ID/label, exact method settings, scenario and config hashes, platform, Git SHA, arguments, and execution time. Trajectory records are controller-independent and ID-sorted. `--record-every N` changes trajectory density but not metrics.
+The runner writes atomic `manifest.json`, `trajectory.jsonl`, `summary.json`, and `run-metrics.json`. The manifest records schema versions, controller ID/label, method key, exact method settings, scenario and config hashes, platform, Git SHA, arguments, and execution time. Trajectory records are controller-independent and ID-sorted. `--record-every N` changes trajectory density but not metrics.
 
 Run the CI-sized cross-method smoke suite:
 
@@ -136,10 +148,23 @@ npm run exp:batch -- --suite experiments/generated/protocol-v1/suite-manifest.js
 npm run exp:aggregate -- --input results/protocol-v1-validation --out results/protocol-v1-validation/aggregate
 ```
 
-Batch paths are deterministic by split, family, variant, seed, and controller ID. Failures are recorded and make the CLI exit nonzero; `--fail-fast` stops after the first. Existing completed output requires `--resume` or `--force`. Resume skips only when all four artifacts are present and parseable and scenario hash, method-config hash, and Git SHA match. `--allow-cross-commit-resume` explicitly relaxes only the Git check. Aggregation writes one completed-run row to `run-metrics.csv` and failures to `failures.csv`; unavailable values are empty CSV fields.
+Batch manifest version 2 paths are deterministic by split, family, variant, seed, and method key. Failures are recorded and make the CLI exit nonzero; `--fail-fast` stops after the first. Existing completed output requires `--resume` or `--force`. Resume skips only when all four artifacts are present and parseable and method key, scenario hash, full method-config hash, and Git SHA match. `--allow-cross-commit-resume` explicitly relaxes only the Git check. Aggregation writes one completed-run row to `run-metrics.csv` and failures to `failures.csv`; unavailable values are empty CSV fields.
 
 ## Deferred work and interpretation
 
-ORCA/RVO2 and Social Force adapters are deferred to Stage C. Parameter tuning, sensitivity sweeps, full test execution, statistical tests, plots, paper tables, and scientific conclusions are also deferred. No comparative claim has been established.
+ORCA/RVO2 and Social Force adapters are deferred to Stage C. They must integrate above `MotionController`, because that target-velocity interface is intentionally specific to the shared scientific core. ORCA guarantees concern its selected velocity and must not be silently altered by the core's exponential smoothing. Social Force is an acceleration model with its own relaxation dynamics. The intended boundary is:
+
+```text
+ExperimentScenario
+        |
+EngineAdapter
+  |-- ScientificCoreAdapter
+  |-- OrcaAdapter
+  `-- SocialForceAdapter
+        |
+common trajectory records + RunMetricsAccumulator
+```
+
+Each adapter will own its native stepping semantics while emitting the same physical state and diagnostics needed by the common evaluator. Parameter tuning, sensitivity sweeps, full test execution, statistical tests, plots, paper tables, and scientific conclusions are also deferred. No comparative claim has been established.
 
 Full contact diagnostics and positional correction are global operations and have not been locality-optimized. Their existence is not evidence for an \(O(Nm)\) complete simulation step.

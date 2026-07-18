@@ -26,7 +26,7 @@ npm run core:run -- --scenario experiments/scenarios/pairwise-offset.json --out 
 
 ## Deterministic experiment protocol
 
-Stage B adds controller-independent physical scenarios, versioned method configs, deterministic scenario generators, the Goal+Projection negative control, shared online metrics, sequential batch execution, and CSV aggregation. The same scenario JSON is reused unchanged across methods.
+Stage B adds controller-independent physical scenarios, versioned method configs, deterministic scenario generators, the Goal+Projection negative control, shared online metrics, sequential batch execution, and CSV aggregation. Stage B.1 separates agent/wall safety outputs, records pairwise separation before and after correction, and gives every exact method config a hash-qualified run key. The same scenario JSON is reused unchanged across methods.
 
 See [docs/experiment-protocol.md](docs/experiment-protocol.md) for the protocol versions, scenario splits, exact metric definitions, reproducibility guarantees, and experiment commands.
 

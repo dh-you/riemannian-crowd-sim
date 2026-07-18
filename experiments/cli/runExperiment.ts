@@ -18,6 +18,7 @@ import { RunMetricsAccumulator } from "../metrics/RunMetricsAccumulator";
 import type { RunMetrics } from "../metrics/types";
 import { toTrajectoryRecord } from "../output/trajectory";
 import { sha256Bytes } from "../protocol/hash";
+import { identifyMethod } from "../protocol/methodIdentity";
 import {
   controllerParametersFromMethod,
   parseMethodConfig,
@@ -44,6 +45,7 @@ export interface ExperimentManifest {
   seed: number;
   controllerId: string;
   controllerLabel: string;
+  methodKey: string;
   methodParameters: MethodConfig["parameters"];
   velocityTimeConstant: number;
   timestepSeconds: number;
@@ -63,6 +65,7 @@ export interface ExperimentManifest {
 export interface ExperimentRunSummary {
   scenarioName: string;
   methodId: string;
+  methodKey: string;
   totalSteps: number;
   simulatedDuration: number;
   arrivedAgents: number;
@@ -111,6 +114,7 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
     const methodBytes = readFileSync(methodPath, "utf8");
     const scenario = parseExperimentScenario(JSON.parse(scenarioBytes) as unknown);
     const method = parseMethodConfig(JSON.parse(methodBytes) as unknown);
+    const methodIdentity = identifyMethod(method, methodBytes);
     const recordingInterval = options.recordingInterval ?? 1;
     if (!Number.isSafeInteger(recordingInterval) || recordingInterval < 1) {
       throw new Error("Recording interval must be a positive integer");
@@ -130,7 +134,11 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
       },
       controller: controllerParametersFromMethod(method),
     });
-    const accumulator = new RunMetricsAccumulator(scenario, method.id);
+    const accumulator = new RunMetricsAccumulator(scenario, {
+      ...methodIdentity,
+      velocityTimeConstant: method.velocityTimeConstant,
+      methodParameters: { ...method.parameters },
+    });
     trajectoryDescriptor = openSync(temporaryPaths.trajectory, "w");
     let streamFailure: unknown;
     try {
@@ -171,6 +179,7 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
     const summary: ExperimentRunSummary = {
       scenarioName: scenario.name,
       methodId: method.id,
+      methodKey: methodIdentity.methodKey,
       totalSteps,
       simulatedDuration: totalSteps * scenario.simulation.dt,
       arrivedAgents,
@@ -191,13 +200,14 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
       seed: scenario.seed,
       controllerId: method.id,
       controllerLabel: controllerLabel(method.id),
+      methodKey: methodIdentity.methodKey,
       methodParameters: method.parameters,
       velocityTimeConstant: method.velocityTimeConstant,
       timestepSeconds: scenario.simulation.dt,
       horizonSeconds: scenario.simulation.horizonSeconds,
       correction: scenario.simulation.correction,
       scenarioSha256: sha256Bytes(scenarioBytes),
-      methodConfigSha256: sha256Bytes(methodBytes),
+      methodConfigSha256: methodIdentity.methodConfigSha256,
       gitCommitSha: readGitCommit(dirname(scenarioPath)),
       nodeVersion: process.version,
       operatingSystem: platform(),

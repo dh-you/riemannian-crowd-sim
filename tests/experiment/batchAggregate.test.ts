@@ -15,6 +15,8 @@ import { generateFreeSpaceScenario } from "../../experiments/generation/freeSpac
 import { generatePairwiseScenario } from "../../experiments/generation/pairwise";
 import type { SuiteManifest } from "../../experiments/generation/suite";
 import { sha256Bytes } from "../../experiments/protocol/hash";
+import { identifyMethod } from "../../experiments/protocol/methodIdentity";
+import { parseMethodConfig } from "../../experiments/protocol/methodConfig";
 import { serializeExperimentScenario } from "../../experiments/protocol/schema";
 
 const temporaryDirectories: string[] = [];
@@ -22,6 +24,7 @@ const methods = [
   resolve("experiments/methods/riemannian-default.json"),
   resolve("experiments/methods/goal-projection.json"),
 ];
+const methodIdentities = methods.map(methodIdentityForPath);
 
 afterEach(() => {
   for (const directory of temporaryDirectories.splice(0)) rmSync(directory, { recursive: true, force: true });
@@ -39,12 +42,13 @@ describe("sequential batch runner and aggregation", () => {
     });
     expect(result.failedRuns).toBe(0);
     expect(result.manifest.runs).toHaveLength(4);
+    expect(result.manifest.batchManifestVersion).toBe(2);
     expect(result.manifest.runs.every(({ status }) => status === "completed")).toBe(true);
     expect(result.manifest.runs.map(({ outputDirectory: path }) => path)).toEqual([
-      resolve(outputDirectory, "smoke/free_space/single_agent/seed-0/conditioned_riemannian_metric_v1"),
-      resolve(outputDirectory, "smoke/free_space/single_agent/seed-0/euclidean_goal_steering_v1"),
-      resolve(outputDirectory, "smoke/pairwise/head_on/seed-1/conditioned_riemannian_metric_v1"),
-      resolve(outputDirectory, "smoke/pairwise/head_on/seed-1/euclidean_goal_steering_v1"),
+      resolve(outputDirectory, `smoke/free_space/single_agent/seed-0/${methodIdentities[0].methodKey}`),
+      resolve(outputDirectory, `smoke/free_space/single_agent/seed-0/${methodIdentities[1].methodKey}`),
+      resolve(outputDirectory, `smoke/pairwise/head_on/seed-1/${methodIdentities[0].methodKey}`),
+      resolve(outputDirectory, `smoke/pairwise/head_on/seed-1/${methodIdentities[1].methodKey}`),
     ]);
   });
 
@@ -68,7 +72,7 @@ describe("sequential batch runner and aggregation", () => {
 
     const staleManifestPath = resolve(
       outputDirectory,
-      "smoke/free_space/single_agent/seed-0/euclidean_goal_steering_v1/manifest.json",
+      `smoke/free_space/single_agent/seed-0/${methodIdentities[1].methodKey}/manifest.json`,
     );
     const staleManifest = JSON.parse(readFileSync(staleManifestPath, "utf8")) as Record<string, unknown>;
     staleManifest.methodConfigSha256 = "stale";
@@ -135,13 +139,52 @@ describe("sequential batch runner and aggregation", () => {
     expect(aggregate.completedRows).toBe(4);
     expect(aggregate.failureRows).toBe(0);
     expect(metricsCsv.split("\n")[0]).toBe(
-      "scenario_name,family,variant,split,seed,method_id,agent_count,success_fraction,mean_normalized_travel_time,mean_path_efficiency,minimum_pre_correction_clearance,pre_correction_overlap_pair_seconds,post_correction_overlap_pair_seconds,correction_ratio,rms_acceleration,rms_jerk,throughput,pairwise_onset_time_agent_0,pairwise_ttc_agent_0,pairwise_onset_time_agent_1,pairwise_ttc_agent_1,pairwise_minimum_center_clearance,pairwise_minimum_physical_clearance",
+      "scenario_name,family,variant,split,seed,method_key,method_id,method_config_sha256,velocity_time_constant,alpha,sigma,lambda_r,lambda_t,agent_count,success_fraction,mean_normalized_travel_time,mean_path_efficiency,minimum_pre_correction_agent_clearance,minimum_pre_correction_wall_clearance,maximum_pre_correction_agent_penetration,maximum_post_correction_agent_penetration,maximum_pre_correction_wall_penetration,maximum_post_correction_wall_penetration,pre_correction_overlap_pair_seconds,post_correction_overlap_pair_seconds,correction_ratio,rms_acceleration,rms_jerk,throughput,pairwise_onset_time_agent_0,pairwise_ttc_agent_0,pairwise_onset_time_agent_1,pairwise_ttc_agent_1,pairwise_minimum_pre_correction_center_distance,pairwise_minimum_pre_correction_physical_clearance,pairwise_minimum_post_correction_center_distance,pairwise_minimum_post_correction_physical_clearance",
     );
     expect(metricsCsv).not.toMatch(/NaN|Infinity/u);
     const freeSpaceRows = metricsCsv.split("\n").filter((line) => line.includes(",free_space,"));
     expect(freeSpaceRows).toHaveLength(2);
-    expect(freeSpaceRows.every((line) => line.endsWith(",,,,,,"))).toBe(true);
-    expect(failuresCsv).toBe("scenario_path,method_id,output_directory,error\n");
+    expect(freeSpaceRows.every((line) => line.endsWith(",,,,,,,,"))).toBe(true);
+    expect(failuresCsv).toBe(
+      "scenario_path,method_key,method_id,method_config_sha256,output_directory,error\n",
+    );
+  });
+
+  it("keeps multiple configurations of one controller in distinct keyed outputs and CSV rows", () => {
+    const fixture = createSuiteFixture();
+    const alternateMethodPath = join(fixture.root, "riemannian-alternate.json");
+    const alternate = JSON.parse(readFileSync(methods[0], "utf8")) as {
+      parameters: { alpha: number };
+    };
+    alternate.parameters.alpha = 20;
+    writeFileSync(alternateMethodPath, `${JSON.stringify(alternate, null, 2)}\n`, "utf8");
+    const outputDirectory = join(fixture.root, "multi-config-batch");
+    const batch = runBatch({
+      suiteManifestPath: fixture.manifestPath,
+      methodPaths: [methods[0], alternateMethodPath],
+      split: "smoke",
+      outputDirectory,
+    });
+    expect(batch.failedRuns).toBe(0);
+    expect(new Set(batch.manifest.runs.map(({ methodKey }) => methodKey)).size).toBe(2);
+    expect(new Set(batch.manifest.runs.map(({ outputDirectory: path }) => path)).size).toBe(4);
+    expect(
+      batch.manifest.runs.every(({ methodKey, methodConfigSha256 }) =>
+        methodKey.endsWith(methodConfigSha256.slice(0, 12)),
+      ),
+    ).toBe(true);
+
+    const aggregate = aggregateBatch({
+      inputDirectory: outputDirectory,
+      outputDirectory: join(outputDirectory, "aggregate"),
+    });
+    const lines = readFileSync(aggregate.runMetricsCsvPath, "utf8").trim().split("\n");
+    const headers = lines[0].split(",");
+    const alphaIndex = headers.indexOf("alpha");
+    const methodKeyIndex = headers.indexOf("method_key");
+    const rows = lines.slice(1).map((line) => line.split(","));
+    expect(new Set(rows.map((row) => row[alphaIndex]))).toEqual(new Set(["10", "20"]));
+    expect(new Set(rows.map((row) => row[methodKeyIndex])).size).toBe(2);
   });
 });
 
@@ -185,4 +228,9 @@ function createSuiteFixture(): { root: string; manifestPath: string } {
 function shortened<T extends { simulation: { dt: number; horizonSeconds: number } }>(scenario: T): T {
   scenario.simulation.horizonSeconds = scenario.simulation.dt * 2;
   return scenario;
+}
+
+function methodIdentityForPath(path: string) {
+  const bytes = readFileSync(path, "utf8");
+  return identifyMethod(parseMethodConfig(JSON.parse(bytes) as unknown), bytes);
 }

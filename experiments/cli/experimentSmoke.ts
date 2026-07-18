@@ -7,6 +7,8 @@ import { generateCircleAntipodalScenario } from "../generation/circleAntipodal";
 import { generateFreeSpaceScenario } from "../generation/freeSpace";
 import { generatePairwiseScenario } from "../generation/pairwise";
 import { serializeExperimentScenario, type ExperimentScenario } from "../protocol/schema";
+import { identifyMethod } from "../protocol/methodIdentity";
+import { parseMethodConfig } from "../protocol/methodConfig";
 import { runExperiment } from "./runExperiment";
 
 const METHOD_PATHS = [
@@ -38,9 +40,10 @@ export function runExperimentSmoke(outputDirectory = "results/experiment-smoke")
     const scenarioPath = resolve(scenarioDirectory, `${shortened.name}.json`);
     writeFileSync(scenarioPath, serializeExperimentScenario(shortened), "utf8");
     for (const methodPath of METHOD_PATHS) {
-      const methodId = JSON.parse(readFileSync(resolve(methodPath), "utf8")) as { id?: unknown };
-      if (typeof methodId.id !== "string") throw new Error(`Method config has no string id: ${methodPath}`);
-      const runDirectory = resolve(root, "runs", shortened.name, methodId.id);
+      const methodBytes = readFileSync(resolve(methodPath), "utf8");
+      const method = parseMethodConfig(JSON.parse(methodBytes) as unknown);
+      const methodIdentity = identifyMethod(method, methodBytes);
+      const runDirectory = resolve(root, "runs", shortened.name, methodIdentity.methodKey);
       const result = runExperiment({
         scenarioPath,
         methodPath,

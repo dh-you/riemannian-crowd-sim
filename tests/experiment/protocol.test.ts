@@ -4,6 +4,8 @@ import {
   controllerParametersFromMethod,
   parseMethodConfig,
 } from "../../experiments/protocol/methodConfig";
+import { sha256Bytes } from "../../experiments/protocol/hash";
+import { createMethodKey, identifyMethod } from "../../experiments/protocol/methodIdentity";
 import {
   parseExperimentScenario,
   serializeExperimentScenario,
@@ -73,6 +75,19 @@ describe("method configuration schema", () => {
     expect(controllerParametersFromMethod(parseMethodConfig(goalConfig))).toEqual({
       id: EUCLIDEAN_GOAL_CONTROLLER_ID,
     });
+  });
+
+  it("derives a stable hash-qualified key from the exact config bytes", () => {
+    const bytes = `${JSON.stringify(riemannianConfig, null, 2)}\n`;
+    const config = parseMethodConfig(JSON.parse(bytes) as unknown);
+    const identity = identifyMethod(config, bytes);
+    const hash = sha256Bytes(bytes);
+    expect(identity).toEqual({
+      methodId: CONTROLLER_ID,
+      methodKey: `${CONTROLLER_ID}--${hash.slice(0, 12)}`,
+      methodConfigSha256: hash,
+    });
+    expect(() => createMethodKey(CONTROLLER_ID, "not-a-hash")).toThrow(/SHA-256/u);
   });
 
   it.each([

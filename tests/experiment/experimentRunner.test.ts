@@ -42,6 +42,12 @@ describe("common headless experiment runner", () => {
 
     expect(result.manifest.scenarioSha256).toBe(sha256Bytes(scenarioBytes));
     expect(result.manifest.methodConfigSha256).toBe(sha256Bytes(methodBytes));
+    expect(result.manifest.methodKey).toBe(
+      `${result.manifest.controllerId}--${result.manifest.methodConfigSha256.slice(0, 12)}`,
+    );
+    expect(result.summary.methodKey).toBe(result.manifest.methodKey);
+    expect(result.metrics.identity.methodKey).toBe(result.manifest.methodKey);
+    expect(result.metrics.identity.methodConfigSha256).toBe(result.manifest.methodConfigSha256);
     expect(result.manifest.commandArguments).toEqual(["--fixture"]);
     expect(result.summary.totalSteps).toBe(4);
     expect(result.metrics.smoothness.accelerationSampleCount).toBe(4);

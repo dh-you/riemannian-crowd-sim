@@ -111,7 +111,7 @@ Wall contributions in each pass are also accumulated before simultaneous applica
 
 Because correction is applied after goal handling, it may displace an agent that was held inside its goal region. Post-correction arrival then reflects whether the final position remains inside that region.
 
-Diagnostics report physical overlap and wall penetration without counting padding. Correction counts can therefore be nonzero when padding alone triggered a safeguard. Displacement totals are sums over agents of Euclidean displacement magnitudes applied by each correction layer. The safe correction ratio is
+Diagnostics report physical overlap and wall penetration without counting padding. Agent-agent clearance/penetration and agent-wall clearance/penetration have separate fields. Legacy combined aliases remain available for Stage A output compatibility, but the experiment protocol does not use them as scientific safety metrics. Correction counts can therefore be nonzero when padding alone triggered a safeguard. Displacement totals are sums over agents of Euclidean displacement magnitudes applied by each correction layer. The safe correction ratio is
 
 \[
 C_{\mathrm{rel}}=D_{\mathrm{correction}}/(D_{\mathrm{intended}}+10^{-12}\text{ m}).
@@ -148,7 +148,7 @@ The output directory contains:
 
 - `manifest.json`: scenario/controller identity, exact parameters, timestep, horizon, seed, Node and OS metadata, Git SHA when available, timestamp, arguments, and recording interval.
 - `trajectory.jsonl`: one object per recorded post-step state, with ID-sorted agents, position, realized and target velocities, arrival state, and pre/post correction totals.
-- `summary.json`: step count and duration, arrival count/fraction, minimum raw clearance, overlap exposure in pair-seconds, penetration-depth exposure in meter-seconds, intended and correction displacement totals, correction ratio, finite-value status, and ID-sorted final states.
+- `summary.json`: step count and duration, arrival count/fraction, separate agent and wall clearances/penetrations, overlap exposure in pair-seconds, penetration-depth exposure in meter-seconds, intended and correction displacement totals, correction ratio, finite-value status, and ID-sorted final states.
 
 These are infrastructure diagnostics and preliminary run outputs, not final paper metrics or experimental claims. Generated `results/` content is ignored by Git.
 

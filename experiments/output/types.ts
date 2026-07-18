@@ -36,6 +36,12 @@ export interface TrajectoryRecord {
     postCorrectionWallContacts: number;
     maxPreCorrectionPenetration: number;
     maxPostCorrectionPenetration: number;
+    maximumPreCorrectionAgentPenetration: number;
+    maximumPreCorrectionWallPenetration: number;
+    maximumPostCorrectionAgentPenetration: number;
+    maximumPostCorrectionWallPenetration: number;
+    minimumPreCorrectionAgentClearance: number | null;
+    minimumPreCorrectionWallClearance: number | null;
     intendedDisplacement: number;
     agentCorrectionDisplacement: number;
     wallCorrectionDisplacement: number;
@@ -51,7 +57,14 @@ export interface RunSummary {
   simulatedDuration: number;
   arrivedAgents: number;
   arrivedFraction: number;
+  /** @deprecated Combined agent/wall minimum retained for Stage A compatibility. */
   minimumPreCorrectionClearance: number | null;
+  minimumPreCorrectionAgentClearance: number | null;
+  minimumPreCorrectionWallClearance: number | null;
+  maximumPreCorrectionAgentPenetration: number;
+  maximumPreCorrectionWallPenetration: number;
+  maximumPostCorrectionAgentPenetration: number;
+  maximumPostCorrectionWallPenetration: number;
   totalPreCorrectionOverlapExposure: number;
   totalPostCorrectionOverlapExposure: number;
   totalPreCorrectionPenetrationExposure: number;

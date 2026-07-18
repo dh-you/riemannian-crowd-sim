@@ -7,6 +7,14 @@ import {
 import type { ExperimentScenario } from "../../experiments/protocol/schema";
 import type { AgentState, StepDiagnostics, Vec2 } from "../../src/core/types";
 
+const methodMetadata = {
+  methodId: "analytical",
+  methodKey: "analytical--000000000000",
+  methodConfigSha256: "0".repeat(64),
+  velocityTimeConstant: 0,
+  methodParameters: {},
+} as const;
+
 describe("online common metrics", () => {
   it("computes analytical arrival, travel, path, exposure, correction, smoothness, and throughput", () => {
     const initial = agent(0, [0, 0], [0, 0], [1, 0], false);
@@ -15,14 +23,17 @@ describe("online common metrics", () => {
     const diagnostic = stepDiagnostic(0, 1, initial, after, [1, 0], {
       preCorrectionOverlapPairs: 2,
       postCorrectionOverlapPairs: 1,
-      maxPreCorrectionPenetration: 0.2,
-      maxPostCorrectionPenetration: 0.05,
-      minimumPreCorrectionClearance: -0.2,
+      maximumPreCorrectionAgentPenetration: 0.2,
+      maximumPostCorrectionAgentPenetration: 0.05,
+      maximumPreCorrectionWallPenetration: 0.3,
+      maximumPostCorrectionWallPenetration: 0.1,
+      minimumPreCorrectionAgentClearance: -0.2,
+      minimumPreCorrectionWallClearance: -0.3,
       intendedDisplacement: 1,
       agentCorrectionDisplacement: 0.25,
       wallCorrectionDisplacement: 0.25,
     });
-    const accumulator = new RunMetricsAccumulator(scenario, "analytical");
+    const accumulator = new RunMetricsAccumulator(scenario, methodMetadata);
     accumulator.observeStep([initial], diagnostic, [after]);
     const metrics = accumulator.finish([after]);
 
@@ -38,7 +49,12 @@ describe("online common metrics", () => {
     expect(metrics.separation.totalPreCorrectionOverlapPairSeconds).toBe(2);
     expect(metrics.separation.totalPostCorrectionOverlapPairSeconds).toBe(1);
     expect(metrics.separation.preCorrectionOverlapPairSecondsPerAgentSecond).toBe(2);
-    expect(metrics.separation.maximumPreCorrectionPenetration).toBe(0.2);
+    expect(metrics.separation.minimumPreCorrectionAgentClearance).toBe(-0.2);
+    expect(metrics.separation.minimumPreCorrectionWallClearance).toBe(-0.3);
+    expect(metrics.separation.maximumPreCorrectionAgentPenetration).toBe(0.2);
+    expect(metrics.separation.maximumPreCorrectionWallPenetration).toBe(0.3);
+    expect(metrics.separation.maximumPostCorrectionAgentPenetration).toBe(0.05);
+    expect(metrics.separation.maximumPostCorrectionWallPenetration).toBe(0.1);
     expect(metrics.correctionDependence.totalCorrectionDisplacement).toBe(0.5);
     expect(metrics.correctionDependence.correctionRatio).toBeCloseTo(0.5 / (1 + 1e-12), 15);
     expect(metrics.smoothness.rmsAcceleration).toBe(1);
@@ -50,7 +66,10 @@ describe("online common metrics", () => {
     const initial = agent(0, [0, 0], [0, 0], [20, 0], false);
     const first = agent(0, [1, 0], [1, 0], [20, 0], false);
     const second = agent(0, [4, 0], [3, 0], [20, 0], false);
-    const accumulator = new RunMetricsAccumulator(scenarioOf([initial], "free_space", 1), "analytical");
+    const accumulator = new RunMetricsAccumulator(
+      scenarioOf([initial], "free_space", 1),
+      methodMetadata,
+    );
     accumulator.observeStep([initial], stepDiagnostic(0, 1, initial, first, [1, 0]), [first]);
     accumulator.observeStep([first], stepDiagnostic(1, 2, first, second, [3, 0]), [second]);
     const metrics = accumulator.finish([second]);
@@ -67,7 +86,10 @@ describe("online common metrics", () => {
     const initial = agent(0, [0, 0], [0, 0], [1, 0], false);
     const arrived = agent(0, [1, 0], [1, 0], [1, 0], true);
     const later = agent(0, [2, 0], [100, 0], [1, 0], false);
-    const accumulator = new RunMetricsAccumulator(scenarioOf([initial], "free_space", 1), "analytical");
+    const accumulator = new RunMetricsAccumulator(
+      scenarioOf([initial], "free_space", 1),
+      methodMetadata,
+    );
     accumulator.observeStep([initial], stepDiagnostic(0, 1, initial, arrived, [1, 0]), [arrived]);
     accumulator.observeStep([arrived], stepDiagnostic(1, 2, arrived, later, [100, 0]), [later]);
     const metrics = accumulator.finish([later]);
@@ -78,9 +100,10 @@ describe("online common metrics", () => {
 
   it("uses explicit nulls for zero-duration and unavailable metrics", () => {
     const initial = agent(0, [0, 0], [0, 0], [10, 0], false);
-    const metrics = new RunMetricsAccumulator(scenarioOf([initial], "free_space", 1), "analytical").finish([
-      initial,
-    ]);
+    const metrics = new RunMetricsAccumulator(
+      scenarioOf([initial], "free_space", 1),
+      methodMetadata,
+    ).finish([initial]);
     expect(metrics.identity.simulatedDuration).toBe(0);
     expect(metrics.throughput).toBeNull();
     expect(metrics.smoothness.rmsAcceleration).toBeNull();
@@ -110,22 +133,27 @@ describe("pairwise anticipation geometry and metrics", () => {
     const scenario = scenarioOf([first, second], "pairwise", 1);
     const deflected: Vec2 = [Math.cos(Math.PI / 30), Math.sin(Math.PI / 30)];
     const diagnostic = twoAgentDiagnostic(0, 1, first, second, deflected, [-1, 0]);
-    const accumulator = new RunMetricsAccumulator(scenario, "analytical");
+    const accumulator = new RunMetricsAccumulator(scenario, methodMetadata);
     accumulator.observeStep([first, second], diagnostic, [first, second]);
     const pairwise = accumulator.finish([first, second]).pairwise;
     expect(PAIRWISE_AVOIDANCE_THRESHOLD_DEGREES).toBe(5);
     expect(pairwise?.perAgent[0].avoidanceOnsetTime).toBe(0);
     expect(pairwise?.perAgent[0].ttcAtAvoidanceOnset).toBeCloseTo(1.7, 15);
     expect(pairwise?.perAgent[1].avoidanceOnsetTime).toBeNull();
-    expect(pairwise?.minimumCenterClearance).toBe(4);
-    expect(pairwise?.minimumPhysicalClearance).toBeCloseTo(3.4, 15);
+    expect(pairwise?.minimumPreCorrectionCenterDistance).toBe(4);
+    expect(pairwise?.minimumPreCorrectionPhysicalClearance).toBeCloseTo(3.4, 15);
+    expect(pairwise?.minimumPostCorrectionCenterDistance).toBe(4);
+    expect(pairwise?.minimumPostCorrectionPhysicalClearance).toBeCloseTo(3.4, 15);
   });
 
   it("does not declare onset for zero target or deflection below the threshold", () => {
     const first = agent(0, [-2, 0], [1, 0], [2, 0], false);
     const second = agent(1, [2, 0], [-1, 0], [-2, 0], false);
     const angle = (4 * Math.PI) / 180;
-    const accumulator = new RunMetricsAccumulator(scenarioOf([first, second], "pairwise", 1), "analytical");
+    const accumulator = new RunMetricsAccumulator(
+      scenarioOf([first, second], "pairwise", 1),
+      methodMetadata,
+    );
     accumulator.observeStep(
       [first, second],
       twoAgentDiagnostic(0, 1, first, second, [Math.cos(angle), Math.sin(angle)], [0, 0]),
@@ -133,6 +161,26 @@ describe("pairwise anticipation geometry and metrics", () => {
     );
     const pairwise = accumulator.finish([first, second]).pairwise;
     expect(pairwise?.perAgent.every(({ avoidanceOnsetTime }) => avoidanceOnsetTime === null)).toBe(true);
+  });
+
+  it("reports controller overlap before correction separately from corrected clearance", () => {
+    const first = agent(0, [-0.2, 0], [1, 0], [2, 0], false);
+    const second = agent(1, [0.2, 0], [-1, 0], [-2, 0], false);
+    const diagnostic = twoAgentDiagnostic(0, 1, first, second, [1, 0], [-1, 0]);
+    diagnostic.perAgent[0].preCorrectionPosition = [-0.1, 0];
+    diagnostic.perAgent[1].preCorrectionPosition = [0.1, 0];
+    diagnostic.perAgent[0].postCorrectionPosition = [-0.301, 0];
+    diagnostic.perAgent[1].postCorrectionPosition = [0.301, 0];
+    const accumulator = new RunMetricsAccumulator(
+      scenarioOf([first, second], "pairwise", 1),
+      methodMetadata,
+    );
+    accumulator.observeStep([first, second], diagnostic, [first, second]);
+    const pairwise = accumulator.finish([first, second]).pairwise;
+    expect(pairwise?.minimumPreCorrectionCenterDistance).toBeCloseTo(0.2, 15);
+    expect(pairwise?.minimumPreCorrectionPhysicalClearance).toBeCloseTo(-0.4, 15);
+    expect(pairwise?.minimumPostCorrectionCenterDistance).toBeCloseTo(0.602, 15);
+    expect(pairwise?.minimumPostCorrectionPhysicalClearance).toBeCloseTo(0.002, 15);
   });
 });
 
@@ -171,9 +219,12 @@ type DiagnosticOverrides = Partial<
     StepDiagnostics,
     | "preCorrectionOverlapPairs"
     | "postCorrectionOverlapPairs"
-    | "maxPreCorrectionPenetration"
-    | "maxPostCorrectionPenetration"
-    | "minimumPreCorrectionClearance"
+    | "maximumPreCorrectionAgentPenetration"
+    | "maximumPreCorrectionWallPenetration"
+    | "maximumPostCorrectionAgentPenetration"
+    | "maximumPostCorrectionWallPenetration"
+    | "minimumPreCorrectionAgentClearance"
+    | "minimumPreCorrectionWallClearance"
     | "intendedDisplacement"
     | "agentCorrectionDisplacement"
     | "wallCorrectionDisplacement"
@@ -190,6 +241,18 @@ function stepDiagnostic(
 ): StepDiagnostics {
   const agentCorrection = overrides.agentCorrectionDisplacement ?? 0;
   const wallCorrection = overrides.wallCorrectionDisplacement ?? 0;
+  const maximumPreCorrectionAgentPenetration =
+    overrides.maximumPreCorrectionAgentPenetration ?? 0;
+  const maximumPreCorrectionWallPenetration =
+    overrides.maximumPreCorrectionWallPenetration ?? 0;
+  const maximumPostCorrectionAgentPenetration =
+    overrides.maximumPostCorrectionAgentPenetration ?? 0;
+  const maximumPostCorrectionWallPenetration =
+    overrides.maximumPostCorrectionWallPenetration ?? 0;
+  const minimumPreCorrectionAgentClearance =
+    overrides.minimumPreCorrectionAgentClearance ?? null;
+  const minimumPreCorrectionWallClearance =
+    overrides.minimumPreCorrectionWallClearance ?? null;
   return {
     stepIndex,
     time,
@@ -197,15 +260,32 @@ function stepDiagnostic(
     postCorrectionOverlapPairs: overrides.postCorrectionOverlapPairs ?? 0,
     preCorrectionWallContacts: 0,
     postCorrectionWallContacts: 0,
-    maxPreCorrectionPenetration: overrides.maxPreCorrectionPenetration ?? 0,
-    maxPostCorrectionPenetration: overrides.maxPostCorrectionPenetration ?? 0,
-    maxPreCorrectionWallPenetration: 0,
-    maxPostCorrectionWallPenetration: 0,
+    maxPreCorrectionPenetration: Math.max(
+      maximumPreCorrectionAgentPenetration,
+      maximumPreCorrectionWallPenetration,
+    ),
+    maxPostCorrectionPenetration: Math.max(
+      maximumPostCorrectionAgentPenetration,
+      maximumPostCorrectionWallPenetration,
+    ),
+    maxPreCorrectionWallPenetration: maximumPreCorrectionWallPenetration,
+    maxPostCorrectionWallPenetration: maximumPostCorrectionWallPenetration,
+    maximumPreCorrectionAgentPenetration,
+    maximumPreCorrectionWallPenetration,
+    maximumPostCorrectionAgentPenetration,
+    maximumPostCorrectionWallPenetration,
     totalPreCorrectionOverlapPenetration: 0,
     totalPostCorrectionOverlapPenetration: 0,
     totalPreCorrectionWallPenetration: 0,
     totalPostCorrectionWallPenetration: 0,
-    minimumPreCorrectionClearance: overrides.minimumPreCorrectionClearance ?? null,
+    minimumPreCorrectionClearance:
+      minimumPreCorrectionAgentClearance === null
+        ? minimumPreCorrectionWallClearance
+        : minimumPreCorrectionWallClearance === null
+          ? minimumPreCorrectionAgentClearance
+          : Math.min(minimumPreCorrectionAgentClearance, minimumPreCorrectionWallClearance),
+    minimumPreCorrectionAgentClearance,
+    minimumPreCorrectionWallClearance,
     correctedAgentPairs: 0,
     correctedWallContacts: 0,
     intendedDisplacement: overrides.intendedDisplacement ?? 0,
@@ -238,7 +318,7 @@ function twoAgentDiagnostic(
   secondTarget: Vec2,
 ): StepDiagnostics {
   const base = stepDiagnostic(stepIndex, time, first, first, firstTarget, {
-    minimumPreCorrectionClearance: 3.4,
+    minimumPreCorrectionAgentClearance: 3.4,
   });
   return {
     ...base,

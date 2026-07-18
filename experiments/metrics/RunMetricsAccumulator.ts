@@ -3,7 +3,12 @@ import { CORRECTION_RATIO_EPSILON_METERS } from "../../src/core/SimulatorCore";
 import type { AgentState, StepDiagnostics, Vec2 } from "../../src/core/types";
 import type { ExperimentScenario } from "../protocol/schema";
 import { constantVelocityTimeToContact, relativeGeometry } from "./geometry";
-import type { PairwiseMetrics, PerAgentOutcomeMetrics, RunMetrics } from "./types";
+import type {
+  PairwiseMetrics,
+  PerAgentOutcomeMetrics,
+  RunMethodMetadata,
+  RunMetrics,
+} from "./types";
 
 export const PAIRWISE_AVOIDANCE_THRESHOLD_DEGREES = 5;
 
@@ -20,16 +25,21 @@ interface AgentAccumulator {
 
 export class RunMetricsAccumulator {
   private readonly scenario: ExperimentScenario;
-  private readonly methodId: string;
+  private readonly method: RunMethodMetadata;
   private readonly agents = new Map<number, AgentAccumulator>();
   private readonly pairwiseOnset = new Map<number, { time: number; ttc: number | null }>();
-  private minimumPreCorrectionClearance: number | null = null;
-  private minimumPairwiseCenterDistance: number | null = null;
-  private minimumPairwisePhysicalClearance: number | null = null;
+  private minimumPreCorrectionAgentClearance: number | null = null;
+  private minimumPreCorrectionWallClearance: number | null = null;
+  private minimumPairwisePreCenterDistance: number | null = null;
+  private minimumPairwisePrePhysicalClearance: number | null = null;
+  private minimumPairwisePostCenterDistance: number | null = null;
+  private minimumPairwisePostPhysicalClearance: number | null = null;
   private preOverlapPairSeconds = 0;
   private postOverlapPairSeconds = 0;
-  private maxPrePenetration = 0;
-  private maxPostPenetration = 0;
+  private maxPreAgentPenetration = 0;
+  private maxPreWallPenetration = 0;
+  private maxPostAgentPenetration = 0;
+  private maxPostWallPenetration = 0;
   private totalIntended = 0;
   private totalAgentCorrection = 0;
   private totalWallCorrection = 0;
@@ -39,9 +49,12 @@ export class RunMetricsAccumulator {
   private jerkSampleCount = 0;
   private duration = 0;
 
-  constructor(scenario: ExperimentScenario, methodId: string) {
+  constructor(scenario: ExperimentScenario, method: RunMethodMetadata) {
     this.scenario = scenario;
-    this.methodId = methodId;
+    this.method = {
+      ...method,
+      methodParameters: { ...method.methodParameters },
+    };
     for (const agent of scenario.agents) {
       this.agents.set(agent.id, {
         initialPosition: agent.position,
@@ -63,16 +76,32 @@ export class RunMetricsAccumulator {
   ): void {
     const dt = this.scenario.simulation.dt;
     this.duration = diagnostic.time;
-    if (diagnostic.minimumPreCorrectionClearance !== null) {
-      this.minimumPreCorrectionClearance =
-        this.minimumPreCorrectionClearance === null
-          ? diagnostic.minimumPreCorrectionClearance
-          : Math.min(this.minimumPreCorrectionClearance, diagnostic.minimumPreCorrectionClearance);
-    }
+    this.minimumPreCorrectionAgentClearance = minimumNullable(
+      this.minimumPreCorrectionAgentClearance,
+      diagnostic.minimumPreCorrectionAgentClearance,
+    );
+    this.minimumPreCorrectionWallClearance = minimumNullable(
+      this.minimumPreCorrectionWallClearance,
+      diagnostic.minimumPreCorrectionWallClearance,
+    );
     this.preOverlapPairSeconds += diagnostic.preCorrectionOverlapPairs * dt;
     this.postOverlapPairSeconds += diagnostic.postCorrectionOverlapPairs * dt;
-    this.maxPrePenetration = Math.max(this.maxPrePenetration, diagnostic.maxPreCorrectionPenetration);
-    this.maxPostPenetration = Math.max(this.maxPostPenetration, diagnostic.maxPostCorrectionPenetration);
+    this.maxPreAgentPenetration = Math.max(
+      this.maxPreAgentPenetration,
+      diagnostic.maximumPreCorrectionAgentPenetration,
+    );
+    this.maxPreWallPenetration = Math.max(
+      this.maxPreWallPenetration,
+      diagnostic.maximumPreCorrectionWallPenetration,
+    );
+    this.maxPostAgentPenetration = Math.max(
+      this.maxPostAgentPenetration,
+      diagnostic.maximumPostCorrectionAgentPenetration,
+    );
+    this.maxPostWallPenetration = Math.max(
+      this.maxPostWallPenetration,
+      diagnostic.maximumPostCorrectionWallPenetration,
+    );
     this.totalIntended += diagnostic.intendedDisplacement;
     this.totalAgentCorrection += diagnostic.agentCorrectionDisplacement;
     this.totalWallCorrection += diagnostic.wallCorrectionDisplacement;
@@ -102,7 +131,7 @@ export class RunMetricsAccumulator {
     }
 
     if (this.scenario.family === "pairwise" && beforeStep.length === 2) {
-      this.observePairwise(beforeStep, diagnostic, afterStep);
+      this.observePairwise(beforeStep, diagnostic);
     }
   }
 
@@ -138,7 +167,11 @@ export class RunMetricsAccumulator {
         variant: this.scenario.variant,
         split: this.scenario.split,
         seed: this.scenario.seed,
-        methodId: this.methodId,
+        methodId: this.method.methodId,
+        methodKey: this.method.methodKey,
+        methodConfigSha256: this.method.methodConfigSha256,
+        velocityTimeConstant: this.method.velocityTimeConstant,
+        methodParameters: { ...this.method.methodParameters },
         agentCount: this.scenario.agents.length,
         simulatedDuration: this.duration,
       },
@@ -158,13 +191,16 @@ export class RunMetricsAccumulator {
         medianPathEfficiency: median(pathEfficiencies),
       },
       separation: {
-        minimumPreCorrectionClearance: this.minimumPreCorrectionClearance,
+        minimumPreCorrectionAgentClearance: this.minimumPreCorrectionAgentClearance,
+        minimumPreCorrectionWallClearance: this.minimumPreCorrectionWallClearance,
         totalPreCorrectionOverlapPairSeconds: this.preOverlapPairSeconds,
         totalPostCorrectionOverlapPairSeconds: this.postOverlapPairSeconds,
         preCorrectionOverlapPairSecondsPerAgentSecond:
           agentSeconds === 0 ? null : this.preOverlapPairSeconds / agentSeconds,
-        maximumPreCorrectionPenetration: this.maxPrePenetration,
-        maximumPostCorrectionPenetration: this.maxPostPenetration,
+        maximumPreCorrectionAgentPenetration: this.maxPreAgentPenetration,
+        maximumPreCorrectionWallPenetration: this.maxPreWallPenetration,
+        maximumPostCorrectionAgentPenetration: this.maxPostAgentPenetration,
+        maximumPostCorrectionWallPenetration: this.maxPostWallPenetration,
       },
       correctionDependence: {
         totalIntendedDisplacement: this.totalIntended,
@@ -192,21 +228,39 @@ export class RunMetricsAccumulator {
   private observePairwise(
     beforeStep: readonly AgentState[],
     diagnostic: StepDiagnostics,
-    afterStep: readonly AgentState[],
   ): void {
-    const [firstAfter, secondAfter] = [...afterStep].sort((a, b) => a.id - b.id);
-    const centerDistance = norm(sub(firstAfter.position, secondAfter.position));
-    const physicalClearance = centerDistance - firstAfter.radius - secondAfter.radius;
-    this.minimumPairwiseCenterDistance =
-      this.minimumPairwiseCenterDistance === null
-        ? centerDistance
-        : Math.min(this.minimumPairwiseCenterDistance, centerDistance);
-    this.minimumPairwisePhysicalClearance =
-      this.minimumPairwisePhysicalClearance === null
-        ? physicalClearance
-        : Math.min(this.minimumPairwisePhysicalClearance, physicalClearance);
-
     const orderedBefore = [...beforeStep].sort((a, b) => a.id - b.id);
+    const [first, second] = orderedBefore;
+    const diagnosticsById = new Map(diagnostic.perAgent.map((entry) => [entry.id, entry]));
+    const firstDiagnostic = diagnosticsById.get(first.id);
+    const secondDiagnostic = diagnosticsById.get(second.id);
+    if (firstDiagnostic === undefined || secondDiagnostic === undefined) {
+      throw new Error("Pairwise metrics are missing per-agent positions");
+    }
+    const preCenterDistance = norm(
+      sub(firstDiagnostic.preCorrectionPosition, secondDiagnostic.preCorrectionPosition),
+    );
+    const postCenterDistance = norm(
+      sub(firstDiagnostic.postCorrectionPosition, secondDiagnostic.postCorrectionPosition),
+    );
+    const combinedRadius = first.radius + second.radius;
+    this.minimumPairwisePreCenterDistance = minimumNullable(
+      this.minimumPairwisePreCenterDistance,
+      preCenterDistance,
+    );
+    this.minimumPairwisePrePhysicalClearance = minimumNullable(
+      this.minimumPairwisePrePhysicalClearance,
+      preCenterDistance - combinedRadius,
+    );
+    this.minimumPairwisePostCenterDistance = minimumNullable(
+      this.minimumPairwisePostCenterDistance,
+      postCenterDistance,
+    );
+    this.minimumPairwisePostPhysicalClearance = minimumNullable(
+      this.minimumPairwisePostPhysicalClearance,
+      postCenterDistance - combinedRadius,
+    );
+
     const targetById = new Map(diagnostic.perAgent.map((agent) => [agent.id, agent.targetVelocity]));
     for (const controlled of orderedBefore) {
       if (this.pairwiseOnset.has(controlled.id)) continue;
@@ -249,10 +303,17 @@ export class RunMetricsAccumulator {
           avoidanceOnsetTime: this.pairwiseOnset.get(agent.id)?.time ?? null,
           ttcAtAvoidanceOnset: this.pairwiseOnset.get(agent.id)?.ttc ?? null,
         })),
-      minimumCenterClearance: this.minimumPairwiseCenterDistance,
-      minimumPhysicalClearance: this.minimumPairwisePhysicalClearance,
+      minimumPreCorrectionCenterDistance: this.minimumPairwisePreCenterDistance,
+      minimumPreCorrectionPhysicalClearance: this.minimumPairwisePrePhysicalClearance,
+      minimumPostCorrectionCenterDistance: this.minimumPairwisePostCenterDistance,
+      minimumPostCorrectionPhysicalClearance: this.minimumPairwisePostPhysicalClearance,
     };
   }
+}
+
+function minimumNullable(current: number | null, candidate: number | null): number | null {
+  if (candidate === null) return current;
+  return current === null ? candidate : Math.min(current, candidate);
 }
 
 function nonNull(values: readonly (number | null)[]): number[] {

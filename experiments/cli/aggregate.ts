@@ -10,12 +10,24 @@ const RUN_HEADERS = [
   "variant",
   "split",
   "seed",
+  "method_key",
   "method_id",
+  "method_config_sha256",
+  "velocity_time_constant",
+  "alpha",
+  "sigma",
+  "lambda_r",
+  "lambda_t",
   "agent_count",
   "success_fraction",
   "mean_normalized_travel_time",
   "mean_path_efficiency",
-  "minimum_pre_correction_clearance",
+  "minimum_pre_correction_agent_clearance",
+  "minimum_pre_correction_wall_clearance",
+  "maximum_pre_correction_agent_penetration",
+  "maximum_post_correction_agent_penetration",
+  "maximum_pre_correction_wall_penetration",
+  "maximum_post_correction_wall_penetration",
   "pre_correction_overlap_pair_seconds",
   "post_correction_overlap_pair_seconds",
   "correction_ratio",
@@ -26,8 +38,10 @@ const RUN_HEADERS = [
   "pairwise_ttc_agent_0",
   "pairwise_onset_time_agent_1",
   "pairwise_ttc_agent_1",
-  "pairwise_minimum_center_clearance",
-  "pairwise_minimum_physical_clearance",
+  "pairwise_minimum_pre_correction_center_distance",
+  "pairwise_minimum_pre_correction_physical_clearance",
+  "pairwise_minimum_post_correction_center_distance",
+  "pairwise_minimum_post_correction_physical_clearance",
 ] as const;
 
 export interface AggregateOptions {
@@ -48,7 +62,7 @@ export function aggregateBatch(options: AggregateOptions): AggregateResult {
   const manifest = JSON.parse(
     readFileSync(resolve(inputDirectory, "batch-manifest.json"), "utf8"),
   ) as BatchManifest;
-  if (manifest.batchManifestVersion !== 1 || !Array.isArray(manifest.runs)) {
+  if (manifest.batchManifestVersion !== 2 || !Array.isArray(manifest.runs)) {
     throw new Error("Unsupported or malformed batch manifest");
   }
   const completedRuns = manifest.runs.filter(
@@ -64,10 +78,19 @@ export function aggregateBatch(options: AggregateOptions): AggregateResult {
     `${RUN_HEADERS.join(",")}\n${rows.map((row) => row.map(csvValue).join(",")).join("\n")}${rows.length > 0 ? "\n" : ""}`,
     "utf8",
   );
-  const failureHeaders = ["scenario_path", "method_id", "output_directory", "error"];
+  const failureHeaders = [
+    "scenario_path",
+    "method_key",
+    "method_id",
+    "method_config_sha256",
+    "output_directory",
+    "error",
+  ];
   const failureRows = failedRuns.map((run) => [
     run.scenarioPath,
+    run.methodKey,
     run.methodId,
+    run.methodConfigSha256,
     run.outputDirectory,
     run.error,
   ]);
@@ -85,7 +108,17 @@ export function aggregateBatch(options: AggregateOptions): AggregateResult {
 }
 
 function loadMetrics(run: BatchRunRecord): RunMetrics {
-  return JSON.parse(readFileSync(resolve(run.outputDirectory, "run-metrics.json"), "utf8")) as RunMetrics;
+  const metrics = JSON.parse(
+    readFileSync(resolve(run.outputDirectory, "run-metrics.json"), "utf8"),
+  ) as RunMetrics;
+  if (
+    metrics.identity.methodKey !== run.methodKey ||
+    metrics.identity.methodId !== run.methodId ||
+    metrics.identity.methodConfigSha256 !== run.methodConfigSha256
+  ) {
+    throw new Error(`Run metrics identity does not match batch record: ${run.outputDirectory}`);
+  }
+  return metrics;
 }
 
 function metricsRow(metrics: RunMetrics): unknown[] {
@@ -98,12 +131,24 @@ function metricsRow(metrics: RunMetrics): unknown[] {
     metrics.identity.variant,
     metrics.identity.split,
     metrics.identity.seed,
+    metrics.identity.methodKey,
     metrics.identity.methodId,
+    metrics.identity.methodConfigSha256,
+    metrics.identity.velocityTimeConstant,
+    numericParameter(metrics, "alpha"),
+    numericParameter(metrics, "sigma"),
+    numericParameter(metrics, "lambdaR"),
+    numericParameter(metrics, "lambdaT"),
     metrics.identity.agentCount,
     metrics.completion.successFraction,
     metrics.travelTime.meanNormalizedTravelTime,
     metrics.pathEfficiency.meanPathEfficiency,
-    metrics.separation.minimumPreCorrectionClearance,
+    metrics.separation.minimumPreCorrectionAgentClearance,
+    metrics.separation.minimumPreCorrectionWallClearance,
+    metrics.separation.maximumPreCorrectionAgentPenetration,
+    metrics.separation.maximumPostCorrectionAgentPenetration,
+    metrics.separation.maximumPreCorrectionWallPenetration,
+    metrics.separation.maximumPostCorrectionWallPenetration,
     metrics.separation.totalPreCorrectionOverlapPairSeconds,
     metrics.separation.totalPostCorrectionOverlapPairSeconds,
     metrics.correctionDependence.correctionRatio,
@@ -114,9 +159,18 @@ function metricsRow(metrics: RunMetrics): unknown[] {
     firstPair?.ttcAtAvoidanceOnset ?? null,
     secondPair?.avoidanceOnsetTime ?? null,
     secondPair?.ttcAtAvoidanceOnset ?? null,
-    pairwise?.minimumCenterClearance ?? null,
-    pairwise?.minimumPhysicalClearance ?? null,
+    pairwise?.minimumPreCorrectionCenterDistance ?? null,
+    pairwise?.minimumPreCorrectionPhysicalClearance ?? null,
+    pairwise?.minimumPostCorrectionCenterDistance ?? null,
+    pairwise?.minimumPostCorrectionPhysicalClearance ?? null,
   ];
+}
+
+function numericParameter(metrics: RunMetrics, key: string): number | null {
+  const value = metrics.identity.methodParameters[key];
+  if (value === undefined) return null;
+  if (!Number.isFinite(value)) throw new Error(`Non-finite method parameter: ${key}`);
+  return value;
 }
 
 function csvValue(value: unknown): string {

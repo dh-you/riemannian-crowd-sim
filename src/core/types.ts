@@ -81,15 +81,26 @@ export interface StepDiagnostics {
   preCorrectionWallContacts: number;
   postCorrectionWallContacts: number;
 
+  /** @deprecated Combined agent/wall maximum retained for Stage A compatibility. */
   maxPreCorrectionPenetration: number;
+  /** @deprecated Combined agent/wall maximum retained for Stage A compatibility. */
   maxPostCorrectionPenetration: number;
+  /** @deprecated Use maximumPreCorrectionWallPenetration. */
   maxPreCorrectionWallPenetration: number;
+  /** @deprecated Use maximumPostCorrectionWallPenetration. */
   maxPostCorrectionWallPenetration: number;
+  maximumPreCorrectionAgentPenetration: number;
+  maximumPreCorrectionWallPenetration: number;
+  maximumPostCorrectionAgentPenetration: number;
+  maximumPostCorrectionWallPenetration: number;
   totalPreCorrectionOverlapPenetration: number;
   totalPostCorrectionOverlapPenetration: number;
   totalPreCorrectionWallPenetration: number;
   totalPostCorrectionWallPenetration: number;
+  /** @deprecated Combined agent/wall minimum retained for Stage A compatibility. */
   minimumPreCorrectionClearance: number | null;
+  minimumPreCorrectionAgentClearance: number | null;
+  minimumPreCorrectionWallClearance: number | null;
 
   correctedAgentPairs: number;
   correctedWallContacts: number;
@@ -111,5 +122,8 @@ export interface ContactMeasurements {
   maxWallPenetration: number;
   totalAgentPenetration: number;
   totalWallPenetration: number;
+  /** @deprecated Combined agent/wall minimum retained for Stage A compatibility. */
   minimumClearance: number | null;
+  minimumAgentClearance: number | null;
+  minimumWallClearance: number | null;
 }

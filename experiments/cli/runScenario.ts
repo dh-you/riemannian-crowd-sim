@@ -71,6 +71,12 @@ export function runScenario(options: RunScenarioOptions): RunScenarioResult {
 
     trajectoryDescriptor = openSync(temporaryTrajectoryPath, "w");
     let minimumPreCorrectionClearance: number | null = null;
+    let minimumPreCorrectionAgentClearance: number | null = null;
+    let minimumPreCorrectionWallClearance: number | null = null;
+    let maximumPreCorrectionAgentPenetration = 0;
+    let maximumPreCorrectionWallPenetration = 0;
+    let maximumPostCorrectionAgentPenetration = 0;
+    let maximumPostCorrectionWallPenetration = 0;
     let totalPreCorrectionOverlapExposure = 0;
     let totalPostCorrectionOverlapExposure = 0;
     let totalPreCorrectionPenetrationExposure = 0;
@@ -94,6 +100,40 @@ export function runScenario(options: RunScenarioOptions): RunScenarioResult {
               ? diagnostic.minimumPreCorrectionClearance
               : Math.min(minimumPreCorrectionClearance, diagnostic.minimumPreCorrectionClearance);
         }
+        if (diagnostic.minimumPreCorrectionAgentClearance !== null) {
+          minimumPreCorrectionAgentClearance =
+            minimumPreCorrectionAgentClearance === null
+              ? diagnostic.minimumPreCorrectionAgentClearance
+              : Math.min(
+                  minimumPreCorrectionAgentClearance,
+                  diagnostic.minimumPreCorrectionAgentClearance,
+                );
+        }
+        if (diagnostic.minimumPreCorrectionWallClearance !== null) {
+          minimumPreCorrectionWallClearance =
+            minimumPreCorrectionWallClearance === null
+              ? diagnostic.minimumPreCorrectionWallClearance
+              : Math.min(
+                  minimumPreCorrectionWallClearance,
+                  diagnostic.minimumPreCorrectionWallClearance,
+                );
+        }
+        maximumPreCorrectionAgentPenetration = Math.max(
+          maximumPreCorrectionAgentPenetration,
+          diagnostic.maximumPreCorrectionAgentPenetration,
+        );
+        maximumPreCorrectionWallPenetration = Math.max(
+          maximumPreCorrectionWallPenetration,
+          diagnostic.maximumPreCorrectionWallPenetration,
+        );
+        maximumPostCorrectionAgentPenetration = Math.max(
+          maximumPostCorrectionAgentPenetration,
+          diagnostic.maximumPostCorrectionAgentPenetration,
+        );
+        maximumPostCorrectionWallPenetration = Math.max(
+          maximumPostCorrectionWallPenetration,
+          diagnostic.maximumPostCorrectionWallPenetration,
+        );
         const dt = scenario.simulation.dt;
         totalPreCorrectionOverlapExposure += diagnostic.preCorrectionOverlapPairs * dt;
         totalPostCorrectionOverlapExposure += diagnostic.postCorrectionOverlapPairs * dt;
@@ -141,6 +181,12 @@ export function runScenario(options: RunScenarioOptions): RunScenarioResult {
       arrivedAgents,
       arrivedFraction: finalStates.length === 0 ? 0 : arrivedAgents / finalStates.length,
       minimumPreCorrectionClearance,
+      minimumPreCorrectionAgentClearance,
+      minimumPreCorrectionWallClearance,
+      maximumPreCorrectionAgentPenetration,
+      maximumPreCorrectionWallPenetration,
+      maximumPostCorrectionAgentPenetration,
+      maximumPostCorrectionWallPenetration,
       totalPreCorrectionOverlapExposure,
       totalPostCorrectionOverlapExposure,
       totalPreCorrectionPenetrationExposure,

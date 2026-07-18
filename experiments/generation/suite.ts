@@ -1,6 +1,13 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { dirname, isAbsolute, relative, resolve } from "node:path";
+import {
+  existsSync,
+  lstatSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 import { sha256Bytes } from "../protocol/hash";
 import { serializeExperimentScenario } from "../protocol/schema";
@@ -195,14 +202,56 @@ function scenarioRelativePath(request: ScenarioGenerationRequest): string {
   return `${request.split}/${request.family}/${request.variant}/${filename}`;
 }
 
-function assertSafeOutputDirectory(outputDirectory: string): void {
-  const workingDirectory = resolve(".");
-  const relativePath = relative(workingDirectory, outputDirectory);
-  if (outputDirectory === workingDirectory || relativePath === "" || !isAbsolute(outputDirectory)) {
-    throw new Error("Refusing to generate a suite into the repository root");
+export function assertSafeOutputDirectory(
+  outputDirectory: string,
+  repositoryRoot = readRepositoryRoot(),
+): void {
+  const candidate = resolve(outputDirectory);
+  const allowedRoots = [
+    resolve(repositoryRoot, "experiments", "generated"),
+    resolve(repositoryRoot, "experiments", "tmp"),
+  ];
+  const allowedRoot = allowedRoots.find((root) => isStrictDescendant(root, candidate));
+  if (allowedRoot === undefined) {
+    throw new Error(
+      `Refusing to clear generator output outside experiments/generated/** or experiments/tmp/**: ${candidate}`,
+    );
   }
-  if (outputDirectory === resolve(outputDirectory, "..")) {
-    throw new Error("Refusing to generate a suite into a filesystem root");
+  assertNoSymbolicLinkTraversal(allowedRoot, candidate);
+}
+
+function isStrictDescendant(parent: string, candidate: string): boolean {
+  const relativePath = relative(parent, candidate);
+  return (
+    relativePath !== "" &&
+    relativePath !== ".." &&
+    !relativePath.startsWith(`..${sep}`) &&
+    !isAbsolute(relativePath)
+  );
+}
+
+function assertNoSymbolicLinkTraversal(parent: string, candidate: string): void {
+  if (existsSync(parent) && lstatSync(parent).isSymbolicLink()) {
+    throw new Error(`Refusing to clear a symbolic-link generator root: ${parent}`);
+  }
+  let current = parent;
+  for (const segment of relative(parent, candidate).split(sep)) {
+    current = resolve(current, segment);
+    if (existsSync(current) && lstatSync(current).isSymbolicLink()) {
+      throw new Error(`Refusing to clear generator output through a symbolic link: ${current}`);
+    }
+  }
+}
+
+function readRepositoryRoot(): string {
+  try {
+    return execFileSync("git", ["rev-parse", "--show-toplevel"], {
+      cwd: resolve("."),
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  } catch {
+    return resolve(".");
   }
 }
 

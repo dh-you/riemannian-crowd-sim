@@ -3,11 +3,17 @@ import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync 
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { sha256Bytes, sha256File } from "../protocol/hash";
+import { identifyMethod } from "../protocol/methodIdentity";
 import { parseMethodConfig, type MethodConfig } from "../protocol/methodConfig";
 import type { SuiteManifest } from "../generation/suite";
-import { runExperiment, type ExperimentManifest } from "./runExperiment";
+import type { RunMetrics } from "../metrics/types";
+import {
+  runExperiment,
+  type ExperimentManifest,
+  type ExperimentRunSummary,
+} from "./runExperiment";
 
-export const BATCH_MANIFEST_VERSION = 1 as const;
+export const BATCH_MANIFEST_VERSION = 2 as const;
 
 export interface BatchRunRecord {
   scenarioPath: string;
@@ -16,6 +22,7 @@ export interface BatchRunRecord {
   scenarioSha256: string;
   methodConfigSha256: string;
   methodId: string;
+  methodKey: string;
   status: "completed" | "skipped" | "failed";
   error: string | null;
 }
@@ -53,6 +60,7 @@ export interface RunBatchResult {
 interface LoadedMethod {
   path: string;
   hash: string;
+  key: string;
   config: MethodConfig;
 }
 
@@ -62,8 +70,12 @@ export function runBatch(options: RunBatchOptions): RunBatchResult {
   const outputDirectory = resolve(options.outputDirectory);
   const suiteBytes = readFileSync(suiteManifestPath, "utf8");
   const suite = parseSuiteManifest(JSON.parse(suiteBytes) as unknown);
-  const methods = options.methodPaths.map(loadMethod).sort((a, b) => a.config.id.localeCompare(b.config.id));
+  const methods = options.methodPaths.map(loadMethod).sort((a, b) => a.key.localeCompare(b.key));
   if (methods.length === 0) throw new Error("Batch requires at least one method configuration");
+  const methodKeys = new Set(methods.map((method) => method.key));
+  if (methodKeys.size !== methods.length) {
+    throw new Error("Batch method configurations must have unique method keys");
+  }
   const gitCommitSha = readGitCommit(dirname(suiteManifestPath));
   const scenarios = suite.scenarios
     .filter((scenario) => scenario.split === options.split)
@@ -82,7 +94,7 @@ export function runBatch(options: RunBatchOptions): RunBatchResult {
         scenario.family,
         scenario.variant,
         `seed-${scenario.seed}`,
-        method.config.id,
+        method.key,
       );
       const record: BatchRunRecord = {
         scenarioPath,
@@ -91,6 +103,7 @@ export function runBatch(options: RunBatchOptions): RunBatchResult {
         scenarioSha256: actualScenarioHash,
         methodConfigSha256: method.hash,
         methodId: method.config.id,
+        methodKey: method.key,
         status: "failed",
         error: null,
       };
@@ -104,6 +117,7 @@ export function runBatch(options: RunBatchOptions): RunBatchResult {
             runOutput,
             actualScenarioHash,
             method.hash,
+            method.key,
             gitCommitSha,
             options.allowCrossCommitResume ?? false,
           )
@@ -181,7 +195,14 @@ function parseSuiteManifest(value: unknown): SuiteManifest {
 function loadMethod(path: string): LoadedMethod {
   const absolutePath = resolve(path);
   const bytes = readFileSync(absolutePath, "utf8");
-  return { path: absolutePath, hash: sha256Bytes(bytes), config: parseMethodConfig(JSON.parse(bytes) as unknown) };
+  const config = parseMethodConfig(JSON.parse(bytes) as unknown);
+  const identity = identifyMethod(config, bytes);
+  return {
+    path: absolutePath,
+    hash: identity.methodConfigSha256,
+    key: identity.methodKey,
+    config,
+  };
 }
 
 function completedArtifactsExist(outputDirectory: string): boolean {
@@ -194,6 +215,7 @@ function completedRunMatches(
   outputDirectory: string,
   scenarioHash: string,
   methodHash: string,
+  methodKey: string,
   gitCommitSha: string | null,
   allowCrossCommit: boolean,
 ): boolean {
@@ -203,13 +225,17 @@ function completedRunMatches(
   if (!paths.every(existsSync)) return false;
   try {
     const manifest = JSON.parse(readFileSync(paths[0], "utf8")) as ExperimentManifest;
-    JSON.parse(readFileSync(paths[2], "utf8")) as unknown;
-    JSON.parse(readFileSync(paths[3], "utf8")) as unknown;
+    const summary = JSON.parse(readFileSync(paths[2], "utf8")) as ExperimentRunSummary;
+    const metrics = JSON.parse(readFileSync(paths[3], "utf8")) as RunMetrics;
     const trajectory = readFileSync(paths[1], "utf8");
     for (const line of trajectory.split(/\r?\n/u).filter(Boolean)) JSON.parse(line) as unknown;
     return (
       manifest.scenarioSha256 === scenarioHash &&
       manifest.methodConfigSha256 === methodHash &&
+      manifest.methodKey === methodKey &&
+      summary.methodKey === methodKey &&
+      metrics.identity.methodKey === methodKey &&
+      metrics.identity.methodConfigSha256 === methodHash &&
       (allowCrossCommit || manifest.gitCommitSha === gitCommitSha)
     );
   } catch {

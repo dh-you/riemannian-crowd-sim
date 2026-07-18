@@ -1,10 +1,26 @@
 import { describe, expect, it } from "vitest";
 import { correctPositions } from "../../src/core/corrections";
+import { measureContacts } from "../../src/core/diagnostics";
 import { norm, sub } from "../../src/core/math";
 import { SimulatorCore } from "../../src/core/SimulatorCore";
 import { CONTROLLER_ID, type AgentState, type Vec2, type WallSegment } from "../../src/core/types";
 
 describe("deterministic positional correction", () => {
+  it("keeps agent-agent and agent-wall safety measurements separate", () => {
+    const agents = [baseAgent(1, [0, 0.1]), baseAgent(2, [3, 0.1])];
+    const wall: WallSegment = { id: 3, start: [-2, 0], end: [4, 0], thickness: 0.2 };
+    const measured = measureContacts(
+      agents,
+      [wall],
+      new Map(agents.map((agent) => [agent.id, agent.position])),
+    );
+    expect(measured.minimumAgentClearance).toBe(2);
+    expect(measured.minimumWallClearance).toBeCloseTo(-0.5, 15);
+    expect(measured.minimumClearance).toBeCloseTo(-0.5, 15);
+    expect(measured.maxAgentPenetration).toBe(0);
+    expect(measured.maxWallPenetration).toBeCloseTo(0.5, 15);
+  });
+
   it("separates overlapping agents symmetrically and measures displacement", () => {
     const agents = overlappingAgents();
     const positions = new Map(agents.map((agent) => [agent.id, agent.position]));
