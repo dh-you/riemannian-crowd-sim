@@ -1,0 +1,26 @@
+{
+  "expectationsVersion": 1,
+  "scenarios": {
+    "single-free-space": "A single pedestrian starts on the horizontal goal line. Clearances are unavailable, no correction occurs, and every engine must progress toward the goal.",
+    "single-at-goal": "A pedestrian starts inside the closed goal disk and must remain stationary without late avoidance onset.",
+    "pairwise-separating": "The Conditioned Riemannian closing gate removes the separating interaction, so its command equals unobstructed goal steering.",
+    "pairwise-exact-symmetric": "The initial state is exactly mirror symmetric. The proposed controller must not invent a lateral direction.",
+    "goal-projection-head-on": "Goal steering creates a raw overlap that shared positional projection repairs; raw and corrected clearances must remain distinct.",
+    "correction-disabled-head-on": "With correction disabled, pre- and post-correction positions and contact measurements must be identical.",
+    "wall-approach": "Single-agent wall clearance is finite while agent-agent clearance remains null; wall and agent penetration fields remain separate."
+  },
+  "units": { "position": "m", "velocity": "m/s", "time": "s" },
+  "avoidanceOnsetThresholdDegrees": 5,
+  "machineChecks": [
+    "all values are finite",
+    "agent IDs and physical state are continuous",
+    "native external engines report zero positional correction",
+    "free-space command directions and progress have the expected signs",
+    "arrived agents remain stationary",
+    "separating Riemannian commands equal free goal steering",
+    "symmetric Riemannian first commands have zero lateral component",
+    "Goal+Projection raw overlap is visible before projection",
+    "disabled correction leaves pre/post states equal",
+    "wall and agent safety fields are not conflated"
+  ]
+}

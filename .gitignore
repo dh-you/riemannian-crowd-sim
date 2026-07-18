@@ -18,6 +18,8 @@ dist-ssr
 /experiments/third_party/build/
 /experiments/third_party/venv/
 /results/baseline-*/
+__pycache__/
+*.py[cod]
 
 # Editor directories and files
 .vscode/*

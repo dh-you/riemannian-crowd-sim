@@ -52,3 +52,23 @@ npm run baselines:smoke
 ```
 
 The baseline defaults are provisional infrastructure settings. No tuning or comparative conclusion is included.
+
+## Independent Stage D0 audit
+
+The audit harness under `experiments/audit` independently recomputes physical
+trajectory metrics with Python's standard library, compares the published
+Riemannian equations against the production controller, checks four-method
+scenario/provenance fairness, and generates an SVG packet for human review. It
+does not modify the scientific implementation or run validation/test tuning.
+
+See [docs/stage-d0-audit-guide.md](docs/stage-d0-audit-guide.md) for the critical
+path, hand calculations, evidence locations, current preserved discrepancy, and
+the limits of what the audit establishes.
+
+```bash
+npm run audit:metrics
+npm run audit:riemannian
+npm run audit:gold
+npm run audit:visuals
+npm run audit:d0
+```
