@@ -5,9 +5,28 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { sha256File } from "../../protocol/hash";
 import { AUDIT_RESULTS_ROOT, writeJson } from "./auditUtils";
-import { runFairnessAudit } from "./runFairnessAudit";
 
 const BASE_COMMIT = "8143c06faee3bcbb6a5bce217b5d97b222fb0876";
+
+export const READY_AFTER_HUMAN_VISUAL_REVIEW = "READY AFTER HUMAN VISUAL REVIEW" as const;
+export const BLOCKED_INCOMPLETE_REPRODUCTION = "BLOCKED — INCOMPLETE REPRODUCTION" as const;
+export const NOT_READY_AUDIT_MISMATCH = "NOT READY — AUDIT MISMATCH" as const;
+
+export type D0ReadinessDecision =
+  | typeof READY_AFTER_HUMAN_VISUAL_REVIEW
+  | typeof BLOCKED_INCOMPLETE_REPRODUCTION
+  | typeof NOT_READY_AUDIT_MISMATCH;
+
+export const REQUIRED_D0_COMMAND_IDS = [
+  "production-tests",
+  "baseline-verification",
+  "baseline-tests",
+  "metric-audit",
+  "riemannian-audit",
+  "gold-audit",
+  "fairness-audit",
+  "visual-audit",
+] as const;
 
 export interface CommandResult {
   id: string;
@@ -15,9 +34,22 @@ export interface CommandResult {
   status: "PASS" | "FAIL";
   exitCode: number;
   logPath: string;
+  repositoryCommit: string;
+}
+
+export interface D0ReadinessInputs {
+  commandResults: readonly CommandResult[];
+  metricsStatus: string | null;
+  riemannianStatus: string | null;
+  goldStatus: string | null;
+  fairnessStatus: string | null;
+  cleanClone: { status?: string; auditedCommit?: string } | null;
+  currentHead: string;
+  protectedScientificFileChanges: readonly string[];
 }
 
 function runCommand(id: string, arguments_: readonly string[]): CommandResult {
+  const repositoryCommit = git(["rev-parse", "HEAD"]);
   const logRoot = resolve(AUDIT_RESULTS_ROOT, "logs");
   mkdirSync(logRoot, { recursive: true });
   const npmCli = process.env.npm_execpath;
@@ -33,7 +65,7 @@ function runCommand(id: string, arguments_: readonly string[]): CommandResult {
   writeFileSync(logPath, output, "utf8");
   const status = result.status === 0 ? "PASS" : "FAIL";
   console.log(`${status} ${id}`);
-  return { id, command: `npm ${arguments_.join(" ")}`, status, exitCode: result.status ?? -1, logPath };
+  return { id, command: `npm ${arguments_.join(" ")}`, status, exitCode: result.status ?? -1, logPath, repositoryCommit };
 }
 
 function readOptional(path: string): unknown | null {
@@ -52,7 +84,38 @@ function pythonVersion(): string {
   }
 }
 
-export function writeFinalAuditReport(commandResults: readonly CommandResult[] = []): { readinessDecision: string; reportPath: string } {
+export function determineD0Readiness(inputs: D0ReadinessInputs): D0ReadinessDecision {
+  const machineMismatch = [
+    inputs.metricsStatus,
+    inputs.riemannianStatus,
+    inputs.goldStatus,
+    inputs.fairnessStatus,
+  ].some((status) => status === "FAIL");
+  if (machineMismatch) return NOT_READY_AUDIT_MISMATCH;
+
+  const requiredCommandsPass = REQUIRED_D0_COMMAND_IDS.every((id) => {
+    const matches = inputs.commandResults.filter((result) => result.id === id);
+    return matches.length === 1 && matches[0].status === "PASS" &&
+      matches[0].repositoryCommit === inputs.currentHead;
+  });
+  const auditReportsPass = inputs.metricsStatus === "PASS" &&
+    inputs.riemannianStatus === "PASS" && inputs.goldStatus === "PASS" &&
+    inputs.fairnessStatus === "PASS";
+  const cleanCloneIsCurrent = inputs.cleanClone?.status === "PASS" &&
+    inputs.cleanClone.auditedCommit === inputs.currentHead;
+  const protectedScienceIsUnchanged = inputs.protectedScientificFileChanges.length === 0;
+
+  return requiredCommandsPass && auditReportsPass && cleanCloneIsCurrent &&
+    protectedScienceIsUnchanged
+    ? READY_AFTER_HUMAN_VISUAL_REVIEW
+    : BLOCKED_INCOMPLETE_REPRODUCTION;
+}
+
+export function d0CliExitCode(decision: D0ReadinessDecision): 0 | 1 {
+  return decision === READY_AFTER_HUMAN_VISUAL_REVIEW ? 0 : 1;
+}
+
+export function writeFinalAuditReport(commandResults: readonly CommandResult[] = []): { readinessDecision: D0ReadinessDecision; reportPath: string } {
   mkdirSync(AUDIT_RESULTS_ROOT, { recursive: true });
   const metricsPath = resolve(AUDIT_RESULTS_ROOT, "metrics", "report.json");
   const riemannianPath = resolve(AUDIT_RESULTS_ROOT, "riemannian", "comparison.json");
@@ -65,15 +128,8 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
   const gold = readOptional(goldPath) as { status?: string; firstFailure?: unknown } | null;
   const fairness = readOptional(fairnessPath) as { status?: string } | null;
   const visual = readOptional(visualPath) as { status?: string } | null;
-  const cleanClone = readOptional(cleanClonePath) as { status?: string } | null;
-  const machineMismatch = [metrics, riemannian, gold, fairness].some((entry) => entry !== null && entry.status === "FAIL");
-  const incomplete = metrics?.status !== "PASS" || riemannian?.status !== "PASS" ||
-    gold?.status !== "PASS" || fairness?.status !== "PASS" || cleanClone?.status !== "PASS";
-  const readinessDecision = machineMismatch
-    ? "NOT READY — AUDIT MISMATCH"
-    : incomplete
-      ? "BLOCKED — INCOMPLETE REPRODUCTION"
-      : "READY AFTER HUMAN VISUAL REVIEW";
+  const cleanClone = readOptional(cleanClonePath) as { status?: string; auditedCommit?: string } | null;
+  const currentHead = git(["rev-parse", "HEAD"]);
   const protectedPaths = [
     "src/core",
     "experiments/engines/ScientificCoreEngine.ts",
@@ -89,26 +145,43 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
     "experiments/methods",
   ];
   const protectedChanges = git(["diff", "--name-only", BASE_COMMIT, "--", ...protectedPaths]).split(/\r?\n/u).filter(Boolean);
+  const readinessDecision = determineD0Readiness({
+    commandResults,
+    metricsStatus: metrics?.status ?? null,
+    riemannianStatus: riemannian?.status ?? null,
+    goldStatus: gold?.status ?? null,
+    fairnessStatus: fairness?.status ?? null,
+    cleanClone,
+    currentHead,
+    protectedScientificFileChanges: protectedChanges,
+  });
+  const requiredCommandsPass = REQUIRED_D0_COMMAND_IDS.every((id) => {
+    const matches = commandResults.filter((result) => result.id === id);
+    return matches.length === 1 && matches[0].status === "PASS" &&
+      matches[0].repositoryCommit === currentHead;
+  });
+  const cleanCloneIsCurrent = cleanClone?.status === "PASS" && cleanClone.auditedCommit === currentHead;
   const buildManifestPath = resolve("experiments", "third_party", "build", "build-manifest.json");
   const lockPath = resolve("experiments", "baselines", "third-party-lock.json");
   const lock = JSON.parse(readFileSync(lockPath, "utf8")) as { dependencies: { id: string; commit: string; license: string }[] };
   const checks = [
-    { id: "production-tests", description: "Existing production tests", status: commandResults.find((entry) => entry.id === "production-tests")?.status ?? "BLOCKED", evidence: commandResults.find((entry) => entry.id === "production-tests")?.logPath ?? null, maximumNumericalDiscrepancy: null },
+    { id: "required-current-commands", description: "All required commands passed at the current commit", status: requiredCommandsPass ? "PASS" : "BLOCKED", evidence: commandResults, maximumNumericalDiscrepancy: null },
+    { id: "production-tests", description: "Existing production tests", status: currentCommandStatus(commandResults, "production-tests", currentHead), evidence: commandResults.find((entry) => entry.id === "production-tests")?.logPath ?? null, maximumNumericalDiscrepancy: null },
     { id: "synthetic-and-real-metrics", description: "Independent metric agreement", status: metrics?.status ?? "BLOCKED", evidence: metricsPath, maximumNumericalDiscrepancy: metrics?.maximumAbsoluteDifference ?? null },
     { id: "riemannian-equations", description: "Independent Riemannian equation agreement", status: riemannian?.status ?? "BLOCKED", evidence: riemannianPath, maximumNumericalDiscrepancy: Math.max(riemannian?.maximumMetricEntryError ?? 0, riemannian?.maximumTargetVelocityError ?? 0, riemannian?.maximumInvariantError ?? 0) },
     { id: "scenario-fairness", description: "Four-method scenario/provenance agreement", status: fairness?.status ?? "BLOCKED", evidence: fairnessPath, maximumNumericalDiscrepancy: null },
     { id: "orca-provenance", description: "Pinned ORCA provenance and native semantics", status: fairness?.status ?? "BLOCKED", evidence: fairnessPath, maximumNumericalDiscrepancy: null },
     { id: "pysocialforce-provenance", description: "Pinned PySocialForce provenance and native semantics", status: fairness?.status ?? "BLOCKED", evidence: fairnessPath, maximumNumericalDiscrepancy: null },
     { id: "gold-expectations", description: "Human-readable gold expectations", status: gold?.status ?? "BLOCKED", evidence: goldPath, maximumNumericalDiscrepancy: null },
-    { id: "clean-clone", description: "Clean-clone reproduction", status: cleanClone?.status ?? "BLOCKED", evidence: cleanClonePath, maximumNumericalDiscrepancy: null },
+    { id: "clean-clone", description: "Clean-clone reproduction of the current commit", status: cleanCloneIsCurrent ? "PASS" : "BLOCKED", evidence: { path: cleanClonePath, auditedCommit: cleanClone?.auditedCommit ?? null, expectedCommit: currentHead }, maximumNumericalDiscrepancy: null },
     { id: "visual-review", description: "Human visual inspection", status: visual?.status ?? "PENDING HUMAN REVIEW", evidence: resolve(AUDIT_RESULTS_ROOT, "visual-checklist.md"), maximumNumericalDiscrepancy: null },
     { id: "protected-production", description: "Protected scientific implementation remained unchanged", status: protectedChanges.length === 0 ? "PASS" : "FAIL", evidence: protectedChanges, maximumNumericalDiscrepancy: null },
   ];
   const report = {
-    stageD0AuditReportVersion: 2,
+    stageD0AuditReportVersion: 3,
     readinessDecision,
     environment: {
-      repositoryCommit: git(["rev-parse", "HEAD"]),
+      repositoryCommit: currentHead,
       d0BaseCommit: BASE_COMMIT,
       branch: git(["branch", "--show-current"]),
       operatingSystem: platform(),
@@ -118,7 +191,7 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
       baselineBuildManifestSha256: existsSync(buildManifestPath) ? sha256File(buildManifestPath) : null,
       thirdPartyLockSha256: sha256File(lockPath),
       upstream: lock.dependencies.map((entry) => ({ id: entry.id, commit: entry.commit, license: entry.license })),
-      auditToolCommit: git(["rev-parse", "HEAD"]),
+      auditToolCommit: currentHead,
     },
     checks,
     commandResults,
@@ -187,7 +260,7 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
     "",
     "## Clean-clone reproduction",
     "",
-    `Status: **${cleanClone?.status ?? "BLOCKED"}**. A passing report requires a no-local clone, fresh dependency/bootstrap/build steps, and four-method byte/identity comparison.`,
+    `Status: **${cleanCloneIsCurrent ? "PASS" : "BLOCKED"}**. Audited commit: \`${cleanClone?.auditedCommit ?? "missing"}\`; current commit: \`${currentHead}\`. A passing report requires a no-local clone of the current commit, fresh dependency/bootstrap/build steps, and four-method byte/identity comparison.`,
     "",
     "## Discrepancies, resolved findings, and unresolved questions",
     "",
@@ -207,7 +280,7 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
     "",
     "## Stage D readiness",
     "",
-    readinessDecision === "READY AFTER HUMAN VISUAL REVIEW"
+    readinessDecision === READY_AFTER_HUMAN_VISUAL_REVIEW
       ? "All machine checks and clean-clone reproduction passed. Stage D remains gated on human visual review."
       : "Stage D must not begin while this readiness decision remains non-ready.",
     "",
@@ -216,7 +289,17 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
   return { readinessDecision, reportPath };
 }
 
-export function runD0Audit(): { readinessDecision: string; reportPath: string } {
+function currentCommandStatus(
+  commandResults: readonly CommandResult[],
+  id: string,
+  currentHead: string,
+): "PASS" | "FAIL" | "BLOCKED" {
+  const matches = commandResults.filter((result) => result.id === id);
+  if (matches.length !== 1 || matches[0].repositoryCommit !== currentHead) return "BLOCKED";
+  return matches[0].status;
+}
+
+export function runD0Audit(): { readinessDecision: D0ReadinessDecision; reportPath: string } {
   const commandResults = [
     runCommand("production-tests", ["test"]),
     runCommand("baseline-verification", ["run", "baselines:verify"]),
@@ -224,13 +307,9 @@ export function runD0Audit(): { readinessDecision: string; reportPath: string } 
     runCommand("metric-audit", ["run", "audit:metrics"]),
     runCommand("riemannian-audit", ["run", "audit:riemannian"]),
     runCommand("gold-audit", ["run", "audit:gold"]),
+    runCommand("fairness-audit", ["run", "audit:fairness"]),
+    runCommand("visual-audit", ["run", "audit:visuals"]),
   ];
-  try {
-    runFairnessAudit();
-  } catch (error) {
-    console.error(error);
-  }
-  commandResults.push(runCommand("visual-audit", ["run", "audit:visuals"]));
   return writeFinalAuditReport(commandResults);
 }
 
@@ -238,7 +317,7 @@ function main(): void {
   try {
     const result = runD0Audit();
     console.log(`audit:d0 completed with decision: ${result.readinessDecision}`);
-    if (result.readinessDecision === "NOT READY — AUDIT MISMATCH") process.exitCode = 1;
+    process.exitCode = d0CliExitCode(result.readinessDecision);
   } catch (error) {
     console.error(`audit:d0 failed: ${error instanceof Error ? error.message : String(error)}`);
     process.exitCode = 1;

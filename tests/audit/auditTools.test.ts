@@ -5,6 +5,16 @@ import { join, relative, resolve, sep } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { buildSnapshots } from "../../experiments/audit/cli/generateRiemannianSnapshots";
 import { parseSnapshot } from "../../experiments/audit/cli/evaluateRiemannianSnapshots";
+import {
+  BLOCKED_INCOMPLETE_REPRODUCTION,
+  NOT_READY_AUDIT_MISMATCH,
+  READY_AFTER_HUMAN_VISUAL_REVIEW,
+  REQUIRED_D0_COMMAND_IDS,
+  d0CliExitCode,
+  determineD0Readiness,
+  type CommandResult,
+  type D0ReadinessInputs,
+} from "../../experiments/audit/cli/runD0Audit";
 
 const python = process.platform === "win32" ? "python" : "python3";
 const temporaryDirectories: string[] = [];
@@ -176,6 +186,59 @@ describe("independent Stage D0 audit tooling", () => {
   });
 });
 
+describe("Stage D0 readiness gate", () => {
+  it("returns READY only when every current machine prerequisite passes", () => {
+    expect(determineD0Readiness(validReadinessInputs())).toBe(
+      READY_AFTER_HUMAN_VISUAL_REVIEW,
+    );
+  });
+
+  it("blocks a stale clean-clone PASS from another commit", () => {
+    const inputs = validReadinessInputs();
+    inputs.cleanClone = { status: "PASS", auditedCommit: "b".repeat(40) };
+    expect(determineD0Readiness(inputs)).toBe(BLOCKED_INCOMPLETE_REPRODUCTION);
+  });
+
+  it("blocks a failed required command even when generated reports say PASS", () => {
+    const inputs = validReadinessInputs();
+    inputs.commandResults = inputs.commandResults.map((result) =>
+      result.id === "baseline-verification"
+        ? { ...result, status: "FAIL", exitCode: 1 }
+        : result,
+    );
+    expect(determineD0Readiness(inputs)).toBe(BLOCKED_INCOMPLETE_REPRODUCTION);
+  });
+
+  it("blocks required command results from a different commit", () => {
+    const inputs = validReadinessInputs();
+    inputs.commandResults = inputs.commandResults.map((result) =>
+      result.id === "production-tests" ? { ...result, repositoryCommit: "c".repeat(40) } : result,
+    );
+    expect(determineD0Readiness(inputs)).toBe(BLOCKED_INCOMPLETE_REPRODUCTION);
+  });
+
+  it("blocks protected scientific-file changes", () => {
+    const inputs = validReadinessInputs();
+    inputs.protectedScientificFileChanges = ["src/core/RiemannianController.ts"];
+    expect(determineD0Readiness(inputs)).toBe(BLOCKED_INCOMPLETE_REPRODUCTION);
+  });
+
+  it.each(["metricsStatus", "goldStatus"] as const)(
+    "preserves NOT READY for a %s mismatch",
+    (status) => {
+      const inputs = validReadinessInputs();
+      inputs[status] = "FAIL";
+      expect(determineD0Readiness(inputs)).toBe(NOT_READY_AUDIT_MISMATCH);
+    },
+  );
+
+  it("returns a nonzero CLI exit code for BLOCKED and NOT READY", () => {
+    expect(d0CliExitCode(READY_AFTER_HUMAN_VISUAL_REVIEW)).toBe(0);
+    expect(d0CliExitCode(BLOCKED_INCOMPLETE_REPRODUCTION)).toBe(1);
+    expect(d0CliExitCode(NOT_READY_AUDIT_MISMATCH)).toBe(1);
+  });
+});
+
 function metricStep(
   positionBefore: number[],
   positionAfter: number[],
@@ -195,5 +258,27 @@ function metricStep(
       realizedVelocity,
       arrived: true,
     }],
+  };
+}
+
+function validReadinessInputs(): D0ReadinessInputs {
+  const currentHead = "a".repeat(40);
+  const commandResults: CommandResult[] = REQUIRED_D0_COMMAND_IDS.map((id) => ({
+    id,
+    command: `npm run ${id}`,
+    status: "PASS",
+    exitCode: 0,
+    logPath: `${id}.log`,
+    repositoryCommit: currentHead,
+  }));
+  return {
+    commandResults,
+    metricsStatus: "PASS",
+    riemannianStatus: "PASS",
+    goldStatus: "PASS",
+    fairnessStatus: "PASS",
+    cleanClone: { status: "PASS", auditedCommit: currentHead },
+    currentHead,
+    protectedScientificFileChanges: [],
   };
 }
