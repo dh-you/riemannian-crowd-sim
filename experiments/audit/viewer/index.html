@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stage D0 trajectory review</title>
+    <link rel="stylesheet" href="viewer.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <p class="eyebrow">Stage D0 audit · local review aid</p>
+        <h1>Interactive trajectory review</h1>
+      </div>
+      <div class="pending">PENDING HUMAN REVIEW</div>
+    </header>
+
+    <main>
+      <aside class="sidebar">
+        <label for="scenario-select">Scenario</label>
+        <select id="scenario-select"></select>
+
+        <div class="section-label">Method</div>
+        <div id="method-list" class="method-list" role="tablist" aria-label="Methods"></div>
+
+        <section class="run-details" aria-live="polite">
+          <h2 id="scenario-label">Scenario</h2>
+          <p id="method-label">Method</p>
+          <dl>
+            <div><dt>Engine</dt><dd id="engine-label"></dd></div>
+            <div><dt>Correction</dt><dd id="correction-label"></dd></div>
+            <div><dt>Agents</dt><dd id="agent-count"></dd></div>
+            <div><dt>Closest pre-correction encounter</dt><dd id="closest-label"></dd></div>
+            <div><dt>First avoidance markers</dt><dd id="onset-count"></dd></div>
+          </dl>
+          <button id="jump-closest" type="button">Jump to closest encounter</button>
+        </section>
+      </aside>
+
+      <section class="viewer-panel">
+        <div class="canvas-wrap" id="canvas-wrap">
+          <canvas id="trajectory-canvas" aria-label="Interactive crowd trajectory view"></canvas>
+          <div id="tooltip" class="tooltip" hidden></div>
+          <div class="canvas-badge" id="position-badge">Post-correction positions</div>
+        </div>
+
+        <div class="transport">
+          <button id="play-toggle" type="button" aria-label="Play trajectory">Play</button>
+          <input id="timeline" type="range" min="0" max="0" value="0" step="1" aria-label="Timeline" />
+          <output id="step-time">Step 0 · 0.000 s</output>
+        </div>
+
+        <div class="display-controls">
+          <label>
+            Speed
+            <select id="playback-speed">
+              <option value="0.25">0.25×</option>
+              <option value="0.5">0.5×</option>
+              <option value="1" selected>1×</option>
+              <option value="2">2×</option>
+              <option value="4">4×</option>
+            </select>
+          </label>
+          <label>
+            Position
+            <select id="position-mode">
+              <option value="post" selected>Post-correction</option>
+              <option value="pre">Pre-correction</option>
+            </select>
+          </label>
+          <label class="check"><input id="show-trails" type="checkbox" /> Trajectory trails</label>
+          <label class="check"><input id="show-ids" type="checkbox" /> Agent IDs</label>
+        </div>
+      </section>
+
+      <aside class="review-guide">
+        <h2>Legend</h2>
+        <ul class="legend">
+          <li><span class="symbol agent"></span> Agent circle is drawn at physical radius</li>
+          <li><span class="symbol goal">×</span> Goal center</li>
+          <li><span class="symbol wall"></span> Wall at physical thickness</li>
+          <li><span class="symbol overlap"></span> Current physical overlap</li>
+          <li><span class="symbol closest"></span> Globally closest pre-correction pair</li>
+          <li><span class="symbol onset">▲</span> First avoidance onset (&gt;5° command deflection)</li>
+        </ul>
+
+        <h2>Reviewer checklist</h2>
+        <p>Inspect every scenario and method. Playback speed is only a viewing control.</p>
+        <ul class="checklist">
+          <li>No teleportation or discontinuous jumps</li>
+          <li>Agents pursue the correct goals</li>
+          <li>No unexplained wall crossing</li>
+          <li>Physical overlaps are visible and interpretable</li>
+          <li>No extreme oscillation hidden by summary metrics</li>
+          <li>Arrival and post-arrival behavior are coherent</li>
+          <li>Pre/post toggling exposes projection dependence</li>
+        </ul>
+
+        <div class="notice">
+          This viewer does not edit trajectories, metrics, reports, or the D0 decision. It never records human approval.
+        </div>
+      </aside>
+    </main>
+
+    <script src="review-data.js"></script>
+    <script src="viewer.js"></script>
+  </body>
+</html>

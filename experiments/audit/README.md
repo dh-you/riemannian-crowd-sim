@@ -22,8 +22,17 @@ npm run audit:metrics
 npm run audit:riemannian
 npm run audit:gold
 npm run audit:visuals
+npm run audit:viewer
 npm run audit:d0
 ```
+
+`npm run audit:viewer` reads the existing Stage D0 scenario and engine-step
+evidence and writes a self-contained local review index under
+`results/stage-d0-audit/trajectory-review/`. Open the printed `file://` URL to
+play runs, switch methods, compare pre/post-correction positions, and inspect
+physical overlaps, the closest pre-correction encounter, and avoidance-onset
+markers. The page includes a reviewer legend and checklist. It is an inspection
+aid only: it does not edit audit evidence, record approval, or affect readiness.
 
 After committing the audit harness, run `npm run audit:clean-clone`. That command
 uses `git clone --no-local`, bootstraps both pinned baselines in the clone, and
