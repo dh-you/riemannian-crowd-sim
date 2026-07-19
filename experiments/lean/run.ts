@@ -3,7 +3,6 @@ import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { generateReviewIndex } from "../audit/viewer/generateReviewIndex";
-
 export type ScenarioSpec = { family: string; variant: string; agentCount?: number };
 export type Assignment = {
   phase: string; scenarioType: string; seed: number; method: string;
@@ -25,11 +24,9 @@ export type LeanStudy = {
   outputs: { root: string; raw: string; summary: string; auditRoot: string; benchmark: string };
   humanReviewGate: string;
 };
-
 export function loadStudy(path = resolve("experiments/lean/study.json")): LeanStudy {
   return JSON.parse(readFileSync(path, "utf8")) as LeanStudy;
 }
-
 function matrix(study: LeanStudy, phase: string, spec: Matrix, visual = false): Assignment[] {
   return spec.scenarioTypes.flatMap((scenarioType) => spec.seeds.flatMap((seed) =>
     Object.entries(study.methods).map(([method, methodConfig]) => ({
@@ -37,7 +34,6 @@ function matrix(study: LeanStudy, phase: string, spec: Matrix, visual = false): 
       methodConfig, outputRoot: study.outputs.root, visual,
     }))));
 }
-
 export function buildAssignments(study: LeanStudy, phase: "audit" | "test" | "ablation" | "runtime"): Assignment[] {
   let assignments: Assignment[];
   if (phase === "audit") assignments = [
@@ -227,6 +223,9 @@ async function main(): Promise<void> {
   const selectedJobs = phase === "audit" ? await benchmark(study) : jobs;
   await runPhase(study, phase as "audit" | "test" | "ablation" | "runtime", selectedJobs, resume);
   if (phase === "audit") {
+    const packaged = spawnSync(process.execPath, ["--import", "tsx", resolve("experiments/lean/worker.ts"), "--package-viewer", study.outputs.auditRoot], { encoding: "utf8" });
+    if (packaged.status !== 0) throw new Error(`Viewer packaging failed: ${packaged.stderr.trim()}`);
+    console.log(`viewer packaging: ${packaged.stdout.trim()}`);
     const result = generateReviewIndex({ auditRoot: study.outputs.auditRoot, outputDirectory: resolve(study.outputs.auditRoot, "viewer") });
     console.log(`viewer: ${result.runCount} runs across ${result.scenarioCount} scenarios at ${result.indexPath}`);
   }

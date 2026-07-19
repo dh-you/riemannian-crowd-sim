@@ -1,15 +1,15 @@
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { generateReviewIndex } from "../experiments/audit/viewer/generateReviewIndex";
+import { packageViewerTrajectories } from "../experiments/lean/worker";
 import {
   assertUniqueAssignments, assignmentIdentity, buildAssignments, buildBenchmarkAssignments,
   loadStudy, pendingAssignments, requireHumanReviewGate, runKey, runPool, validateWorkerRecord,
   type Assignment, type RunRecord,
 } from "../experiments/lean/run";
-
 const temporary: string[] = [];
 afterEach(() => temporary.splice(0).forEach((path) => rmSync(path, { recursive: true, force: true })));
 function directory(): string { const path = mkdtempSync(resolve(tmpdir(), "lean-test-")); temporary.push(path); return path; }
@@ -73,7 +73,12 @@ describe("camera-ready lean harness", () => {
   it("creates viewer artifacts and passes independent Python verification", async () => {
     const root = directory(); const [record] = await runPool([fixture(root, 4, true)], 1);
     expect(record.status).toBe("PASS"); const runDirectory = String(record.artifactDirectory);
-    expect(existsSync(resolve(runDirectory, "engine-steps.jsonl"))).toBe(true);
+    const packaged = packageViewerTrajectories(resolve(root, "audit")); expect(packaged.runCount).toBe(1);
+    const full = readFileSync(resolve(runDirectory, "engine-steps-full.jsonl"), "utf8").trim().split(/\r?\n/u);
+    const sampled = readFileSync(resolve(runDirectory, "engine-steps.jsonl"), "utf8").trim().split(/\r?\n/u);
+    expect(full.length).toBeGreaterThan(sampled.length);
+    expect(JSON.parse(sampled[0]).stepIndex).toBe(JSON.parse(full[0]).stepIndex);
+    expect(JSON.parse(sampled.at(-1) as string).stepIndex).toBe(JSON.parse(full.at(-1) as string).stepIndex);
     const viewer = generateReviewIndex({ auditRoot: resolve(root, "audit"), outputDirectory: resolve(root, "audit/viewer") });
     expect(viewer.runCount).toBe(1);
     expect(readFileSync(resolve(root, "audit/viewer/review-data.js"), "utf8")).toContain("free_space");

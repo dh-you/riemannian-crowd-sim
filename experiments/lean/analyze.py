@@ -2,7 +2,6 @@
 """Small standard-library summary and independent trajectory checker."""
 import csv, json, math, sys
 from pathlib import Path
-
 FIELDS = ["row_type", "scenario_type", "metric", "method", "comparator", "n",
           "total_runs", "failures", "median", "q1", "q3", "unit", "difference_definition"]
 METRICS = {
@@ -20,15 +19,13 @@ SELECTED = [
     ("circle_antipodal-perturbed-lean-seed-0", "conditioned_riemannian_metric_v1"),
     ("bottleneck-central_opening-lean-seed-0", "orca_rvo2_v1"),
 ]
-TOL = 1e-8
-
+TOL = 1e-8; ORCA_TOL = 1e-6  # RVO2 stores float; its runner emits float max_digits10.
 def finite(value, path="value"):
     if isinstance(value, float) and not math.isfinite(value): raise ValueError(f"{path} is non-finite")
     if isinstance(value, list):
         for index, entry in enumerate(value): finite(entry, f"{path}[{index}]")
     elif isinstance(value, dict):
         for key, entry in value.items(): finite(entry, f"{path}.{key}")
-
 def lines(path):
     with path.open(encoding="utf-8") as source:
         for number, line in enumerate(source, 1):
@@ -93,18 +90,19 @@ def row(kind, scenario, metric, method, comparator, values, total, failures, def
             "median": quantile(values, .5), "q1": quantile(values, .25), "q3": quantile(values, .75),
             "unit": METRICS[metric], "difference_definition": definition}
 
-def close(actual, expected, label):
+def close(actual, expected, label, tolerance=TOL):
     if actual is None or expected is None:
         if actual is not expected: raise ValueError(f"{label}: null mismatch {actual} != {expected}")
-    elif not math.isclose(actual, expected, rel_tol=TOL, abs_tol=TOL):
+    elif not math.isclose(actual, expected, rel_tol=tolerance, abs_tol=tolerance):
         raise ValueError(f"{label}: {actual} != {expected}")
 
 def verify_run(run_dir):
-    manifest = json.loads((run_dir / "audit-manifest.json").read_text(encoding="utf-8"))
+    manifest = json.loads((run_dir / "audit-manifest.json").read_text(encoding="utf-8")); tolerance = ORCA_TOL if manifest["methodId"] == "orca_rvo2_v1" else TOL
     audit_root = next(parent for parent in run_dir.parents if parent.name == "audit")
     scenario_path = audit_root / "visuals" / "scenarios" / f"{manifest['scenarioName']}.json"
     scenario = json.loads(scenario_path.read_text(encoding="utf-8")); metrics = json.loads((run_dir / "run-metrics.json").read_text(encoding="utf-8"))
-    steps = list(lines(run_dir / "engine-steps.jsonl")); agents = sorted(scenario["agents"], key=lambda item: item["id"])
+    full = run_dir / "engine-steps-full.jsonl"; trajectory = full if full.exists() else run_dir / "engine-steps.jsonl"
+    steps = list(lines(trajectory)); agents = sorted(scenario["agents"], key=lambda item: item["id"])
     ids = [agent["id"] for agent in agents]; definitions = {agent["id"]: agent for agent in agents}
     previous = {agent["id"]: agent["position"] for agent in agents}; arrived = set(); lengths = {agent_id: 0.0 for agent_id in ids}
     minimum = None; maximum = 0.0; correction = 0.0
@@ -116,7 +114,7 @@ def verify_run(run_dir):
         if [agent["id"] for agent in ordered] != ids: raise ValueError(f"{run_dir}: duplicate, missing, or unordered agent ID")
         for agent in ordered:
             agent_id = agent["id"]
-            for actual, expected in zip(agent["positionBefore"], previous[agent_id]): close(actual, expected, "position continuity")
+            for actual, expected in zip(agent["positionBefore"], previous[agent_id]): close(actual, expected, "position continuity", tolerance)
             if agent_id not in arrived:
                 lengths[agent_id] += math.dist(agent["positionBefore"], agent["postCorrectionPosition"])
                 if agent["arrived"]: arrived.add(agent_id)
@@ -127,13 +125,13 @@ def verify_run(run_dir):
                 clearance = math.dist(a["preCorrectionPosition"], b["preCorrectionPosition"]) - definitions[a["id"]]["radius"] - definitions[b["id"]]["radius"]
                 minimum = clearance if minimum is None else min(minimum, clearance); maximum = max(maximum, -clearance)
         correction += step["diagnostics"]["totalCorrectionDisplacement"]
-    close(len(arrived) / len(ids), metrics["completion"]["successFraction"], "completion")
-    close(minimum, metrics["separation"]["minimumPreCorrectionAgentClearance"], "minimum clearance")
-    close(maximum, metrics["separation"]["maximumPreCorrectionAgentPenetration"], "maximum penetration")
+    close(len(arrived) / len(ids), metrics["completion"]["successFraction"], "completion", tolerance)
+    close(minimum, metrics["separation"]["minimumPreCorrectionAgentClearance"], "minimum clearance", tolerance)
+    close(maximum, metrics["separation"]["maximumPreCorrectionAgentPenetration"], "maximum penetration", tolerance)
     expected_length = sum(entry["pathEfficiency"] * math.dist(definitions[entry["id"]]["position"], definitions[entry["id"]]["goal"])
                           for entry in metrics["completion"]["perAgent"] if entry["pathEfficiency"] is not None)
-    close(sum(lengths[agent_id] for agent_id in arrived), expected_length, "arrived path length")
-    close(correction, metrics["correctionDependence"]["totalCorrectionDisplacement"], "correction displacement")
+    close(sum(lengths[agent_id] for agent_id in arrived), expected_length, "arrived path length", tolerance)
+    close(correction, metrics["correctionDependence"]["totalCorrectionDisplacement"], "correction displacement", tolerance)
     return manifest["scenarioName"], manifest["methodId"]
 
 def verify_selected(audit_root):
@@ -150,7 +148,7 @@ def main():
         print(f"verified {verify_run(Path(sys.argv[2]).resolve())}"); return
     study = json.loads(Path("experiments/lean/study.json").read_text(encoding="utf-8")); outputs = study["outputs"]
     count, rows = summarize(Path(outputs["raw"]), Path(outputs["summary"])); checked = verify_selected(Path(outputs["auditRoot"]))
-    print(f"lean analysis: {count} source runs, {rows} summary rows, {len(checked)} trajectories independently verified at tolerance {TOL}")
+    print(f"lean analysis: {count} source runs, {rows} summary rows, {len(checked)} trajectories verified at {TOL} (ORCA float boundary {ORCA_TOL})")
 
 if __name__ == "__main__":
     try: main()

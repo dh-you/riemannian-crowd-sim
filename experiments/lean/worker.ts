@@ -1,25 +1,50 @@
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { closeSync, existsSync, mkdirSync, openSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { runAuditedEngine } from "../audit/cli/auditRun";
 import { runExperiment } from "../cli/runExperiment";
+import { validateEngineStepRecord, type EngineStepRecord } from "../engines/engineStep";
 import { generateExperimentScenario } from "../generation/generateScenario";
 import { RunMetricsAccumulator } from "../metrics/RunMetricsAccumulator";
 import type { RunMetrics } from "../metrics/types";
 import { identifyMethod } from "../protocol/methodIdentity";
+import { forEachJsonLineSync } from "../protocol/jsonLines";
 import { parseMethodConfig } from "../protocol/methodConfig";
 import { serializeExperimentScenario } from "../protocol/schema";
 import { runRiemannianAblation } from "../studies/stage-d/ablations/RiemannianAblationEngine";
 import { identifyRiemannianAblationConfig, parseRiemannianAblationConfig } from "../studies/stage-d/ablations/config";
 import { assignmentIdentity, runKey, validateWorkerRecord, type Assignment, type RunRecord } from "./run";
-
 const METRIC_FIELDS = {
   successFraction: null, normalizedTravelTime: null, pathRatio: null,
   preCorrectionOverlapExposure: null, maximumPhysicalPenetration: null,
   minimumPhysicalClearance: null, rmsAcceleration: null, correctionRatio: null,
   throughput: null, pairwiseAvoidanceOnsetRate: null,
 } as const;
-
+export function packageViewerTrajectories(auditRoot: string): { runCount: number; fullBytes: number; viewerBytes: number } {
+  const trajectories = findFiles(resolve(auditRoot, "visuals", "runs"), "engine-steps.jsonl");
+  let fullBytes = 0; let viewerBytes = 0;
+  for (const trajectory of trajectories) {
+    const full = resolve(dirname(trajectory), "engine-steps-full.jsonl");
+    if (!existsSync(full)) renameSync(trajectory, full);
+    const manifest = JSON.parse(readFileSync(resolve(dirname(trajectory), "audit-manifest.json"), "utf8")) as { scenarioName: string };
+    const interval = manifest.scenarioName.startsWith("pairwise-") ? 3 : 12;
+    const count = forEachJsonLineSync(full, () => {}); if (count === 0) throw new Error(`Empty full trajectory: ${full}`);
+    const temporary = `${trajectory}.tmp`; const descriptor = openSync(temporary, "w");
+    try {
+      forEachJsonLineSync(full, (line, index) => {
+        if (index !== 0 && index !== count - 1 && index % interval !== 0) return;
+        validateEngineStepRecord(JSON.parse(line) as EngineStepRecord); writeFileSync(descriptor, `${line}\n`, "utf8");
+      });
+    } finally { closeSync(descriptor); }
+    renameSync(temporary, trajectory); fullBytes += statSync(full).size; viewerBytes += statSync(trajectory).size;
+  }
+  return { runCount: trajectories.length, fullBytes, viewerBytes };
+}
+function findFiles(directory: string, name: string): string[] {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = resolve(directory, entry.name); return entry.isDirectory() ? findFiles(path, name) : entry.name === name ? [path] : [];
+  }).sort();
+}
 export function executeAssignment(assignment: Assignment): RunRecord {
   const started = performance.now(); let failure: unknown; let record: RunRecord | undefined;
   const root = resolve(assignment.outputRoot); const work = resolve(root, "work", runKey(assignment).replaceAll("/", "--"));
@@ -106,6 +131,11 @@ function failureRecord(assignment: Assignment, error: unknown, runtimeSeconds: n
 }
 
 function main(): void {
+  if (process.argv[2] === "--package-viewer") {
+    try { process.stdout.write(`${JSON.stringify(packageViewerTrajectories(process.argv[3] ?? "results/lean/audit"))}\n`); }
+    catch (error) { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; }
+    return;
+  }
   let record: RunRecord;
   try {
     const source = process.argv[2]; if (source === undefined) throw new Error("Worker requires one assignment JSON argument");
