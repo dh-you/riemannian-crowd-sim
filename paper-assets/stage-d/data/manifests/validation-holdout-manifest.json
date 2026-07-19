@@ -1,0 +1,1400 @@
+{
+  "phaseManifestVersion": 1,
+  "phase": "validation-holdout",
+  "status": "PASS",
+  "repositoryCommit": "0e9639024632ef50f3218f3bd90dee9e67242e83",
+  "planHashes": {
+    "studyPlanSha256": "af31236180c7c369df38ef2de19806cd9b06e3b6cbf933cb08a34526fb75b7a9",
+    "metricPolicySha256": "52dc0d398bd74a071121b0f51ac34a7e57e5c96190f76ec9f9cc499c0f6f82e1",
+    "candidateSpaceSha256": "7f3aeadc07488c5c87af7a3703fc83e858737b7d751e54fc667e005d1245909f",
+    "scenarioPartitionsSha256": "fb144e36f5798e79a519b35315ba441184c0cc6b69d45840e94b47f204dc45d3"
+  },
+  "candidateManifestSha256": "7a7c969afd7ca5672d4e39cab45265882ea066a68c26680148725d52cdd1e45d",
+  "scenarioManifestSha256": "867eda96bf32d7dbf4ba5cb89f8edbbbc2f72b4ed5bc13f67f9ea538cb388619",
+  "expectedRunCount": 132,
+  "completedRuns": [
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\conditioned_riemannian_metric_v1--ba99cff92ad5\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\conditioned_riemannian_metric_v1--ba99cff92ad5\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\conditioned_riemannian_metric_v1--45386d3d5316\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\conditioned_riemannian_metric_v1--45386d3d5316\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\orca_rvo2_v1--459bb9deff5a\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\orca_rvo2_v1--459bb9deff5a\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\orca_rvo2_v1--1ab544afd1fc\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\orca_rvo2_v1--1ab544afd1fc\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\social_force_pysocialforce_v1--a27575969af7\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\social_force_pysocialforce_v1--a27575969af7\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-3\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bidirectional\\corridor\\seed-4\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-3\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\bottleneck\\central_opening\\seed-4\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-3\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\circle_antipodal\\perturbed\\seed-4\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-6\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-7\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-8\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\crossing\\seed-9\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-6\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-7\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-8\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\head_on\\seed-9\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-6\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-7\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-8\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\overtaking\\seed-9\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-6\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-7\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-8\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "manifestPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\social_force_pysocialforce_v1--bf0e6d47115e\\manifest.json",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\runs\\validation-holdout\\pairwise\\separating\\seed-9\\social_force_pysocialforce_v1--bf0e6d47115e\\run-metrics.json"
+    }
+  ],
+  "failures": [],
+  "invalidCandidateIds": [],
+  "selection": {
+    "conditioned_riemannian_metric_v1": {
+      "ranked": [
+        {
+          "candidateId": "riemannian-14-corner-hllh",
+          "methodId": "conditioned_riemannian_metric_v1",
+          "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+          "macroSuccess": 0.36315476190476187,
+          "macroOverlapExposure": 0.4323642609126975,
+          "macroMaximumPenetration": 0.03636498513968221,
+          "macroNormalizedTravelTime": 1.4700446198212505,
+          "macroRmsAcceleration": 2.514687537454314,
+          "runCount": 22
+        },
+        {
+          "candidateId": "riemannian-06-rho-high",
+          "methodId": "conditioned_riemannian_metric_v1",
+          "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+          "macroSuccess": 0.3695535714285715,
+          "macroOverlapExposure": 0.45377752356150813,
+          "macroMaximumPenetration": 0.056360603675496376,
+          "macroNormalizedTravelTime": 1.5745343273129175,
+          "macroRmsAcceleration": 2.705404965931766,
+          "runCount": 22
+        }
+      ],
+      "trace": [
+        {
+          "candidateId": "riemannian-14-corner-hllh",
+          "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+          "rank": 1,
+          "firstFrontExclusion": null,
+          "score": {
+            "candidateId": "riemannian-14-corner-hllh",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+            "macroSuccess": 0.36315476190476187,
+            "macroOverlapExposure": 0.4323642609126975,
+            "macroMaximumPenetration": 0.03636498513968221,
+            "macroNormalizedTravelTime": 1.4700446198212505,
+            "macroRmsAcceleration": 2.514687537454314,
+            "runCount": 22
+          }
+        },
+        {
+          "candidateId": "riemannian-06-rho-high",
+          "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+          "rank": 2,
+          "firstFrontExclusion": "maximumPenetration",
+          "score": {
+            "candidateId": "riemannian-06-rho-high",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+            "macroSuccess": 0.3695535714285715,
+            "macroOverlapExposure": 0.45377752356150813,
+            "macroMaximumPenetration": 0.056360603675496376,
+            "macroNormalizedTravelTime": 1.5745343273129175,
+            "macroRmsAcceleration": 2.705404965931766,
+            "runCount": 22
+          }
+        }
+      ]
+    },
+    "orca_rvo2_v1": {
+      "ranked": [
+        {
+          "candidateId": "orca-n8-m10-h5",
+          "methodId": "orca_rvo2_v1",
+          "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+          "macroSuccess": 0.49828869047619045,
+          "macroOverlapExposure": 0.08897293526785713,
+          "macroMaximumPenetration": 0.009583040460373855,
+          "macroNormalizedTravelTime": 1.3279712684511837,
+          "macroRmsAcceleration": 1.7215022216552078,
+          "runCount": 22
+        },
+        {
+          "candidateId": "orca-n3-m20-h8",
+          "methodId": "orca_rvo2_v1",
+          "methodKey": "orca_rvo2_v1--459bb9deff5a",
+          "macroSuccess": 0.485922619047619,
+          "macroOverlapExposure": 0.08362356150793651,
+          "macroMaximumPenetration": 0.013779985927506015,
+          "macroNormalizedTravelTime": 1.3434228648041995,
+          "macroRmsAcceleration": 1.6388944515950845,
+          "runCount": 22
+        }
+      ],
+      "trace": [
+        {
+          "candidateId": "orca-n8-m10-h5",
+          "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+          "rank": 1,
+          "firstFrontExclusion": null,
+          "score": {
+            "candidateId": "orca-n8-m10-h5",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+            "macroSuccess": 0.49828869047619045,
+            "macroOverlapExposure": 0.08897293526785713,
+            "macroMaximumPenetration": 0.009583040460373855,
+            "macroNormalizedTravelTime": 1.3279712684511837,
+            "macroRmsAcceleration": 1.7215022216552078,
+            "runCount": 22
+          }
+        },
+        {
+          "candidateId": "orca-n3-m20-h8",
+          "methodKey": "orca_rvo2_v1--459bb9deff5a",
+          "rank": 2,
+          "firstFrontExclusion": "success",
+          "score": {
+            "candidateId": "orca-n3-m20-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--459bb9deff5a",
+            "macroSuccess": 0.485922619047619,
+            "macroOverlapExposure": 0.08362356150793651,
+            "macroMaximumPenetration": 0.013779985927506015,
+            "macroNormalizedTravelTime": 1.3434228648041995,
+            "macroRmsAcceleration": 1.6388944515950845,
+            "runCount": 22
+          }
+        }
+      ]
+    },
+    "social_force_pysocialforce_v1": {
+      "ranked": [
+        {
+          "candidateId": "sfm-r0.3-s2.55-o10",
+          "methodId": "social_force_pysocialforce_v1",
+          "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+          "macroSuccess": 0.6798363095238096,
+          "macroOverlapExposure": 1.395348381696429,
+          "macroMaximumPenetration": 0.4909610011242893,
+          "macroNormalizedTravelTime": 0.9379072351388484,
+          "macroRmsAcceleration": 2.04763493707766,
+          "runCount": 22
+        },
+        {
+          "candidateId": "sfm-r0.3-s2.55-o20",
+          "methodId": "social_force_pysocialforce_v1",
+          "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+          "macroSuccess": 0.6820684523809524,
+          "macroOverlapExposure": 1.3892614211309526,
+          "macroMaximumPenetration": 0.49009472885727107,
+          "macroNormalizedTravelTime": 0.9616024519784379,
+          "macroRmsAcceleration": 2.0622454131293315,
+          "runCount": 22
+        }
+      ],
+      "trace": [
+        {
+          "candidateId": "sfm-r0.3-s2.55-o10",
+          "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+          "rank": 1,
+          "firstFrontExclusion": null,
+          "score": {
+            "candidateId": "sfm-r0.3-s2.55-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+            "macroSuccess": 0.6798363095238096,
+            "macroOverlapExposure": 1.395348381696429,
+            "macroMaximumPenetration": 0.4909610011242893,
+            "macroNormalizedTravelTime": 0.9379072351388484,
+            "macroRmsAcceleration": 2.04763493707766,
+            "runCount": 22
+          }
+        },
+        {
+          "candidateId": "sfm-r0.3-s2.55-o20",
+          "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+          "rank": 2,
+          "firstFrontExclusion": "normalizedTravelTime",
+          "score": {
+            "candidateId": "sfm-r0.3-s2.55-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+            "macroSuccess": 0.6820684523809524,
+            "macroOverlapExposure": 1.3892614211309526,
+            "macroMaximumPenetration": 0.49009472885727107,
+            "macroNormalizedTravelTime": 0.9616024519784379,
+            "macroRmsAcceleration": 2.0622454131293315,
+            "runCount": 22
+          }
+        }
+      ]
+    }
+  },
+  "retainedCandidateIds": [
+    "orca-n8-m10-h5",
+    "riemannian-14-corner-hllh",
+    "sfm-r0.3-s2.55-o10"
+  ]
+}

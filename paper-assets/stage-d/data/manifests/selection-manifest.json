@@ -1,0 +1,2080 @@
+{
+  "selectionManifestVersion": 1,
+  "status": "PASS",
+  "repositoryCommit": "0e9639024632ef50f3218f3bd90dee9e67242e83",
+  "planHashes": {
+    "studyPlanSha256": "af31236180c7c369df38ef2de19806cd9b06e3b6cbf933cb08a34526fb75b7a9",
+    "metricPolicySha256": "52dc0d398bd74a071121b0f51ac34a7e57e5c96190f76ec9f9cc499c0f6f82e1",
+    "candidateSpaceSha256": "7f3aeadc07488c5c87af7a3703fc83e858737b7d751e54fc667e005d1245909f",
+    "scenarioPartitionsSha256": "fb144e36f5798e79a519b35315ba441184c0cc6b69d45840e94b47f204dc45d3"
+  },
+  "phaseManifestHashes": {
+    "screening": "91860d6291deb5e069092d1c81a88a38389b4535ccf49fe025f3b2e77c14de9c",
+    "validation-tuning": "fcb2647ce6d55c7bfda874c4012711972606683b44824a493b2239dbc6dcd105",
+    "validation-holdout": "b7472cc9ab8ade339acb8e05531e55860dabf4fd7be71e8d323008686a064043"
+  },
+  "selected": {
+    "conditioned_riemannian_metric_v1": {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316"
+    },
+    "orca_rvo2_v1": {
+      "candidateId": "orca-n8-m10-h5",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc"
+    },
+    "social_force_pysocialforce_v1": {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7"
+    }
+  },
+  "eliminationTraces": {
+    "screening": {
+      "conditioned_riemannian_metric_v1": {
+        "ranked": [
+          {
+            "candidateId": "riemannian-00-default",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--6ea0faf92d4b",
+            "macroSuccess": 0.4583333333333333,
+            "macroOverlapExposure": 0.3385662615740756,
+            "macroMaximumPenetration": 0.028811469831321768,
+            "macroNormalizedTravelTime": 1.3375661863145085,
+            "macroRmsAcceleration": 1.729771268493311,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-15-corner-hlhl",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--710552248cd7",
+            "macroSuccess": 0.44479166666666664,
+            "macroOverlapExposure": 0.35003612764550374,
+            "macroMaximumPenetration": 0.054475828932987365,
+            "macroNormalizedTravelTime": 1.4226910903351984,
+            "macroRmsAcceleration": 25.22985046933293,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-06-rho-high",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+            "macroSuccess": 0.41250000000000003,
+            "macroOverlapExposure": 0.3049407035383619,
+            "macroMaximumPenetration": 0.026289455643006054,
+            "macroNormalizedTravelTime": 1.3625902139340946,
+            "macroRmsAcceleration": 2.3610065123719504,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-14-corner-hllh",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+            "macroSuccess": 0.421875,
+            "macroOverlapExposure": 0.344465153769841,
+            "macroMaximumPenetration": 0.018164675563317696,
+            "macroNormalizedTravelTime": 1.2304110893903575,
+            "macroRmsAcceleration": 2.0051530016612844,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-07-tau-immediate",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--e7de29b5aa31",
+            "macroSuccess": 0.41354166666666664,
+            "macroOverlapExposure": 0.331011904761905,
+            "macroMaximumPenetration": 0.0537351173301821,
+            "macroNormalizedTravelTime": 1.554024262242589,
+            "macroRmsAcceleration": 24.34737692522119,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-03-sigma-low",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--7a4a62762f6b",
+            "macroSuccess": 0.415625,
+            "macroOverlapExposure": 0.3986750785383628,
+            "macroMaximumPenetration": 0.03284208929423352,
+            "macroNormalizedTravelTime": 1.2241606414002724,
+            "macroRmsAcceleration": 1.7051994339472967,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-04-sigma-high",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--0510794280eb",
+            "macroSuccess": 0.38958333333333334,
+            "macroOverlapExposure": 0.2943187210648158,
+            "macroMaximumPenetration": 0.026965037637694207,
+            "macroNormalizedTravelTime": 1.49768015679681,
+            "macroRmsAcceleration": 2.2031907804414335,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-01-alpha-low",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--420e71740c9e",
+            "macroSuccess": 0.3989583333333333,
+            "macroOverlapExposure": 0.37534525876323455,
+            "macroMaximumPenetration": 0.032748876448310704,
+            "macroNormalizedTravelTime": 1.2862813874943293,
+            "macroRmsAcceleration": 1.6220323059356987,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-12-corner-lhlh",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--67c0a26f878a",
+            "macroSuccess": 0.38125,
+            "macroOverlapExposure": 0.31817811673280405,
+            "macroMaximumPenetration": 0.018354608276177353,
+            "macroNormalizedTravelTime": 1.3430156271307825,
+            "macroRmsAcceleration": 1.8375245703168384,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-13-corner-lhhl",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--c53721cea968",
+            "macroSuccess": 0.38645833333333335,
+            "macroOverlapExposure": 0.31310978835978864,
+            "macroMaximumPenetration": 0.05499301258943564,
+            "macroNormalizedTravelTime": 1.7247822134532191,
+            "macroRmsAcceleration": 26.968997314374327,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-05-rho-low",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--69f42796b315",
+            "macroSuccess": 0.38958333333333334,
+            "macroOverlapExposure": 0.3941683821097876,
+            "macroMaximumPenetration": 0.03273434265136776,
+            "macroNormalizedTravelTime": 1.2987948614183156,
+            "macroRmsAcceleration": 1.5937787921356592,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-08-tau-slow",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--a508a7bc9f1d",
+            "macroSuccess": 0.37395833333333334,
+            "macroOverlapExposure": 0.28373296957671923,
+            "macroMaximumPenetration": 0.013701256394182973,
+            "macroNormalizedTravelTime": 1.3658535309845967,
+            "macroRmsAcceleration": 1.5329937405137262,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-02-alpha-high",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--d79d42418421",
+            "macroSuccess": 0.3729166666666667,
+            "macroOverlapExposure": 0.2989656911375703,
+            "macroMaximumPenetration": 0.027866501061248418,
+            "macroNormalizedTravelTime": 1.420370426587616,
+            "macroRmsAcceleration": 2.245344009962646,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-11-corner-llhh",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--cca967fddd60",
+            "macroSuccess": 0.3770833333333334,
+            "macroOverlapExposure": 0.34487996031745816,
+            "macroMaximumPenetration": 0.016862901756014785,
+            "macroNormalizedTravelTime": 1.2227661973196673,
+            "macroRmsAcceleration": 1.8273143146284254,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-10-corner-hhhh",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--ef8a5629ea8c",
+            "macroSuccess": 0.36458333333333326,
+            "macroOverlapExposure": 0.16653027860449765,
+            "macroMaximumPenetration": 0.010073710004984061,
+            "macroNormalizedTravelTime": 1.684624652766608,
+            "macroRmsAcceleration": 1.3867393375075827,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-16-corner-hhll",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--42bde5f1dc30",
+            "macroSuccess": 0.34375,
+            "macroOverlapExposure": 0.35243991815476244,
+            "macroMaximumPenetration": 0.06055000238238463,
+            "macroNormalizedTravelTime": 1.7358626907632777,
+            "macroRmsAcceleration": 24.023920430984813,
+            "runCount": 18
+          },
+          {
+            "candidateId": "riemannian-09-corner-llll",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--93d3d7ef9e3f",
+            "macroSuccess": 0.35208333333333336,
+            "macroOverlapExposure": 0.5269735036375613,
+            "macroMaximumPenetration": 0.09312797768432636,
+            "macroNormalizedTravelTime": 1.2297379882772015,
+            "macroRmsAcceleration": 2.9100666420836196,
+            "runCount": 18
+          }
+        ],
+        "trace": [
+          {
+            "candidateId": "riemannian-00-default",
+            "methodKey": "conditioned_riemannian_metric_v1--6ea0faf92d4b",
+            "rank": 1,
+            "firstFrontExclusion": null,
+            "score": {
+              "candidateId": "riemannian-00-default",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--6ea0faf92d4b",
+              "macroSuccess": 0.4583333333333333,
+              "macroOverlapExposure": 0.3385662615740756,
+              "macroMaximumPenetration": 0.028811469831321768,
+              "macroNormalizedTravelTime": 1.3375661863145085,
+              "macroRmsAcceleration": 1.729771268493311,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-15-corner-hlhl",
+            "methodKey": "conditioned_riemannian_metric_v1--710552248cd7",
+            "rank": 2,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-15-corner-hlhl",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--710552248cd7",
+              "macroSuccess": 0.44479166666666664,
+              "macroOverlapExposure": 0.35003612764550374,
+              "macroMaximumPenetration": 0.054475828932987365,
+              "macroNormalizedTravelTime": 1.4226910903351984,
+              "macroRmsAcceleration": 25.22985046933293,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-06-rho-high",
+            "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+            "rank": 3,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-06-rho-high",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+              "macroSuccess": 0.41250000000000003,
+              "macroOverlapExposure": 0.3049407035383619,
+              "macroMaximumPenetration": 0.026289455643006054,
+              "macroNormalizedTravelTime": 1.3625902139340946,
+              "macroRmsAcceleration": 2.3610065123719504,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-14-corner-hllh",
+            "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+            "rank": 4,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-14-corner-hllh",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+              "macroSuccess": 0.421875,
+              "macroOverlapExposure": 0.344465153769841,
+              "macroMaximumPenetration": 0.018164675563317696,
+              "macroNormalizedTravelTime": 1.2304110893903575,
+              "macroRmsAcceleration": 2.0051530016612844,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-07-tau-immediate",
+            "methodKey": "conditioned_riemannian_metric_v1--e7de29b5aa31",
+            "rank": 5,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-07-tau-immediate",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--e7de29b5aa31",
+              "macroSuccess": 0.41354166666666664,
+              "macroOverlapExposure": 0.331011904761905,
+              "macroMaximumPenetration": 0.0537351173301821,
+              "macroNormalizedTravelTime": 1.554024262242589,
+              "macroRmsAcceleration": 24.34737692522119,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-03-sigma-low",
+            "methodKey": "conditioned_riemannian_metric_v1--7a4a62762f6b",
+            "rank": 6,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-03-sigma-low",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--7a4a62762f6b",
+              "macroSuccess": 0.415625,
+              "macroOverlapExposure": 0.3986750785383628,
+              "macroMaximumPenetration": 0.03284208929423352,
+              "macroNormalizedTravelTime": 1.2241606414002724,
+              "macroRmsAcceleration": 1.7051994339472967,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-04-sigma-high",
+            "methodKey": "conditioned_riemannian_metric_v1--0510794280eb",
+            "rank": 7,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-04-sigma-high",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--0510794280eb",
+              "macroSuccess": 0.38958333333333334,
+              "macroOverlapExposure": 0.2943187210648158,
+              "macroMaximumPenetration": 0.026965037637694207,
+              "macroNormalizedTravelTime": 1.49768015679681,
+              "macroRmsAcceleration": 2.2031907804414335,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-01-alpha-low",
+            "methodKey": "conditioned_riemannian_metric_v1--420e71740c9e",
+            "rank": 8,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-01-alpha-low",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--420e71740c9e",
+              "macroSuccess": 0.3989583333333333,
+              "macroOverlapExposure": 0.37534525876323455,
+              "macroMaximumPenetration": 0.032748876448310704,
+              "macroNormalizedTravelTime": 1.2862813874943293,
+              "macroRmsAcceleration": 1.6220323059356987,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-12-corner-lhlh",
+            "methodKey": "conditioned_riemannian_metric_v1--67c0a26f878a",
+            "rank": 9,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-12-corner-lhlh",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--67c0a26f878a",
+              "macroSuccess": 0.38125,
+              "macroOverlapExposure": 0.31817811673280405,
+              "macroMaximumPenetration": 0.018354608276177353,
+              "macroNormalizedTravelTime": 1.3430156271307825,
+              "macroRmsAcceleration": 1.8375245703168384,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-13-corner-lhhl",
+            "methodKey": "conditioned_riemannian_metric_v1--c53721cea968",
+            "rank": 10,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-13-corner-lhhl",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--c53721cea968",
+              "macroSuccess": 0.38645833333333335,
+              "macroOverlapExposure": 0.31310978835978864,
+              "macroMaximumPenetration": 0.05499301258943564,
+              "macroNormalizedTravelTime": 1.7247822134532191,
+              "macroRmsAcceleration": 26.968997314374327,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-05-rho-low",
+            "methodKey": "conditioned_riemannian_metric_v1--69f42796b315",
+            "rank": 11,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-05-rho-low",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--69f42796b315",
+              "macroSuccess": 0.38958333333333334,
+              "macroOverlapExposure": 0.3941683821097876,
+              "macroMaximumPenetration": 0.03273434265136776,
+              "macroNormalizedTravelTime": 1.2987948614183156,
+              "macroRmsAcceleration": 1.5937787921356592,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-08-tau-slow",
+            "methodKey": "conditioned_riemannian_metric_v1--a508a7bc9f1d",
+            "rank": 12,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-08-tau-slow",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--a508a7bc9f1d",
+              "macroSuccess": 0.37395833333333334,
+              "macroOverlapExposure": 0.28373296957671923,
+              "macroMaximumPenetration": 0.013701256394182973,
+              "macroNormalizedTravelTime": 1.3658535309845967,
+              "macroRmsAcceleration": 1.5329937405137262,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-02-alpha-high",
+            "methodKey": "conditioned_riemannian_metric_v1--d79d42418421",
+            "rank": 13,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-02-alpha-high",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--d79d42418421",
+              "macroSuccess": 0.3729166666666667,
+              "macroOverlapExposure": 0.2989656911375703,
+              "macroMaximumPenetration": 0.027866501061248418,
+              "macroNormalizedTravelTime": 1.420370426587616,
+              "macroRmsAcceleration": 2.245344009962646,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-11-corner-llhh",
+            "methodKey": "conditioned_riemannian_metric_v1--cca967fddd60",
+            "rank": 14,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-11-corner-llhh",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--cca967fddd60",
+              "macroSuccess": 0.3770833333333334,
+              "macroOverlapExposure": 0.34487996031745816,
+              "macroMaximumPenetration": 0.016862901756014785,
+              "macroNormalizedTravelTime": 1.2227661973196673,
+              "macroRmsAcceleration": 1.8273143146284254,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-10-corner-hhhh",
+            "methodKey": "conditioned_riemannian_metric_v1--ef8a5629ea8c",
+            "rank": 15,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-10-corner-hhhh",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--ef8a5629ea8c",
+              "macroSuccess": 0.36458333333333326,
+              "macroOverlapExposure": 0.16653027860449765,
+              "macroMaximumPenetration": 0.010073710004984061,
+              "macroNormalizedTravelTime": 1.684624652766608,
+              "macroRmsAcceleration": 1.3867393375075827,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-16-corner-hhll",
+            "methodKey": "conditioned_riemannian_metric_v1--42bde5f1dc30",
+            "rank": 16,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-16-corner-hhll",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--42bde5f1dc30",
+              "macroSuccess": 0.34375,
+              "macroOverlapExposure": 0.35243991815476244,
+              "macroMaximumPenetration": 0.06055000238238463,
+              "macroNormalizedTravelTime": 1.7358626907632777,
+              "macroRmsAcceleration": 24.023920430984813,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "riemannian-09-corner-llll",
+            "methodKey": "conditioned_riemannian_metric_v1--93d3d7ef9e3f",
+            "rank": 17,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-09-corner-llll",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--93d3d7ef9e3f",
+              "macroSuccess": 0.35208333333333336,
+              "macroOverlapExposure": 0.5269735036375613,
+              "macroMaximumPenetration": 0.09312797768432636,
+              "macroNormalizedTravelTime": 1.2297379882772015,
+              "macroRmsAcceleration": 2.9100666420836196,
+              "runCount": 18
+            }
+          }
+        ]
+      },
+      "orca_rvo2_v1": {
+        "ranked": [
+          {
+            "candidateId": "orca-n5-m20-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--b5fe64c2721a",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.02510069444444395,
+            "macroMaximumPenetration": 0.007457629102190291,
+            "macroNormalizedTravelTime": 1.1222283889477194,
+            "macroRmsAcceleration": 1.7151174034077834,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n8-m20-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--8c9d27e8857f",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.028026227678570798,
+            "macroMaximumPenetration": 0.006427212937060875,
+            "macroNormalizedTravelTime": 1.0933056079895036,
+            "macroRmsAcceleration": 1.6340811360434626,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n3-m20-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--459bb9deff5a",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.02846397569444377,
+            "macroMaximumPenetration": 0.006951484017108975,
+            "macroNormalizedTravelTime": 1.1080965809035872,
+            "macroRmsAcceleration": 1.7693814007680033,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n8-m10-h5",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+            "macroSuccess": 0.5187499999999999,
+            "macroOverlapExposure": 0.033703249007936226,
+            "macroMaximumPenetration": 0.005597032397017934,
+            "macroNormalizedTravelTime": 1.0973727548308394,
+            "macroRmsAcceleration": 1.7164668515514272,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n3-m20-h5",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--569519354735",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.033367249503967786,
+            "macroMaximumPenetration": 0.006200368570321094,
+            "macroNormalizedTravelTime": 1.0905247188299017,
+            "macroRmsAcceleration": 1.7768349750522732,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n5-m10-h5",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--61a8afce609f",
+            "macroSuccess": 0.5187499999999999,
+            "macroOverlapExposure": 0.033491133432539386,
+            "macroMaximumPenetration": 0.006058274174420647,
+            "macroNormalizedTravelTime": 1.0910417309099363,
+            "macroRmsAcceleration": 1.9063786794321242,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n8-m20-h5",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--8f475247a736",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.03525062003968226,
+            "macroMaximumPenetration": 0.00713767459109671,
+            "macroNormalizedTravelTime": 1.0647228682787828,
+            "macroRmsAcceleration": 1.6514181756647872,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n3-m10-h5",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--e49ae70d625e",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.03621478174603134,
+            "macroMaximumPenetration": 0.008269462199257296,
+            "macroNormalizedTravelTime": 1.101549962053683,
+            "macroRmsAcceleration": 1.9296267597844503,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n5-m20-h5",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--9d442b8349e9",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.03587357390872997,
+            "macroMaximumPenetration": 0.009133636078877239,
+            "macroNormalizedTravelTime": 1.0624086298268676,
+            "macroRmsAcceleration": 1.7604202606050943,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n3-m10-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--3f9bfef528a4",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.039426463293650515,
+            "macroMaximumPenetration": 0.008203594662060693,
+            "macroNormalizedTravelTime": 1.11535824574124,
+            "macroRmsAcceleration": 1.8993892570765372,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n5-m10-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--00311d61b585",
+            "macroSuccess": 0.521875,
+            "macroOverlapExposure": 0.0421161334325394,
+            "macroMaximumPenetration": 0.006652894670196877,
+            "macroNormalizedTravelTime": 1.1345476796723475,
+            "macroRmsAcceleration": 1.9073462708532518,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n8-m10-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--4e21e58c4d3d",
+            "macroSuccess": 0.521875,
+            "macroOverlapExposure": 0.04237307787698384,
+            "macroMaximumPenetration": 0.007238502461959798,
+            "macroNormalizedTravelTime": 1.127281638774235,
+            "macroRmsAcceleration": 1.7708636429755908,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n8-m10-h2",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--8007f1a69d57",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.04763006365740689,
+            "macroMaximumPenetration": 0.005209030704132159,
+            "macroNormalizedTravelTime": 1.1248551832823912,
+            "macroRmsAcceleration": 1.8841654657475233,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n5-m10-h2",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--6f48164dde9d",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.04763006365740689,
+            "macroMaximumPenetration": 0.005209030704132159,
+            "macroNormalizedTravelTime": 1.1247981720322329,
+            "macroRmsAcceleration": 1.9234367322686134,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n3-m10-h2",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--3d9716ec4790",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.051841311177248134,
+            "macroMaximumPenetration": 0.005787853354960765,
+            "macroNormalizedTravelTime": 1.101429993876069,
+            "macroRmsAcceleration": 1.9630269082028111,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n3-m20-h2",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--6c4f03ba0fea",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.05537008101851808,
+            "macroMaximumPenetration": 0.004096291384366693,
+            "macroNormalizedTravelTime": 1.0983173110648006,
+            "macroRmsAcceleration": 1.8167209264109436,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n8-m20-h2",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--62b0676477db",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.05839333250661331,
+            "macroMaximumPenetration": 0.0048158130113428455,
+            "macroNormalizedTravelTime": 1.1888983143929464,
+            "macroRmsAcceleration": 1.7027305042019587,
+            "runCount": 18
+          },
+          {
+            "candidateId": "orca-n5-m20-h2",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--210f92bd3985",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.05576089203042306,
+            "macroMaximumPenetration": 0.005331120304400264,
+            "macroNormalizedTravelTime": 1.144222946967472,
+            "macroRmsAcceleration": 1.709977961867138,
+            "runCount": 18
+          }
+        ],
+        "trace": [
+          {
+            "candidateId": "orca-n5-m20-h8",
+            "methodKey": "orca_rvo2_v1--b5fe64c2721a",
+            "rank": 1,
+            "firstFrontExclusion": null,
+            "score": {
+              "candidateId": "orca-n5-m20-h8",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--b5fe64c2721a",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.02510069444444395,
+              "macroMaximumPenetration": 0.007457629102190291,
+              "macroNormalizedTravelTime": 1.1222283889477194,
+              "macroRmsAcceleration": 1.7151174034077834,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n8-m20-h8",
+            "methodKey": "orca_rvo2_v1--8c9d27e8857f",
+            "rank": 2,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n8-m20-h8",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--8c9d27e8857f",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.028026227678570798,
+              "macroMaximumPenetration": 0.006427212937060875,
+              "macroNormalizedTravelTime": 1.0933056079895036,
+              "macroRmsAcceleration": 1.6340811360434626,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n3-m20-h8",
+            "methodKey": "orca_rvo2_v1--459bb9deff5a",
+            "rank": 3,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n3-m20-h8",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--459bb9deff5a",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.02846397569444377,
+              "macroMaximumPenetration": 0.006951484017108975,
+              "macroNormalizedTravelTime": 1.1080965809035872,
+              "macroRmsAcceleration": 1.7693814007680033,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n8-m10-h5",
+            "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+            "rank": 4,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n8-m10-h5",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+              "macroSuccess": 0.5187499999999999,
+              "macroOverlapExposure": 0.033703249007936226,
+              "macroMaximumPenetration": 0.005597032397017934,
+              "macroNormalizedTravelTime": 1.0973727548308394,
+              "macroRmsAcceleration": 1.7164668515514272,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n3-m20-h5",
+            "methodKey": "orca_rvo2_v1--569519354735",
+            "rank": 5,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n3-m20-h5",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--569519354735",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.033367249503967786,
+              "macroMaximumPenetration": 0.006200368570321094,
+              "macroNormalizedTravelTime": 1.0905247188299017,
+              "macroRmsAcceleration": 1.7768349750522732,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n5-m10-h5",
+            "methodKey": "orca_rvo2_v1--61a8afce609f",
+            "rank": 6,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n5-m10-h5",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--61a8afce609f",
+              "macroSuccess": 0.5187499999999999,
+              "macroOverlapExposure": 0.033491133432539386,
+              "macroMaximumPenetration": 0.006058274174420647,
+              "macroNormalizedTravelTime": 1.0910417309099363,
+              "macroRmsAcceleration": 1.9063786794321242,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n8-m20-h5",
+            "methodKey": "orca_rvo2_v1--8f475247a736",
+            "rank": 7,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n8-m20-h5",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--8f475247a736",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.03525062003968226,
+              "macroMaximumPenetration": 0.00713767459109671,
+              "macroNormalizedTravelTime": 1.0647228682787828,
+              "macroRmsAcceleration": 1.6514181756647872,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n3-m10-h5",
+            "methodKey": "orca_rvo2_v1--e49ae70d625e",
+            "rank": 8,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n3-m10-h5",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--e49ae70d625e",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.03621478174603134,
+              "macroMaximumPenetration": 0.008269462199257296,
+              "macroNormalizedTravelTime": 1.101549962053683,
+              "macroRmsAcceleration": 1.9296267597844503,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n5-m20-h5",
+            "methodKey": "orca_rvo2_v1--9d442b8349e9",
+            "rank": 9,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n5-m20-h5",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--9d442b8349e9",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.03587357390872997,
+              "macroMaximumPenetration": 0.009133636078877239,
+              "macroNormalizedTravelTime": 1.0624086298268676,
+              "macroRmsAcceleration": 1.7604202606050943,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n3-m10-h8",
+            "methodKey": "orca_rvo2_v1--3f9bfef528a4",
+            "rank": 10,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n3-m10-h8",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--3f9bfef528a4",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.039426463293650515,
+              "macroMaximumPenetration": 0.008203594662060693,
+              "macroNormalizedTravelTime": 1.11535824574124,
+              "macroRmsAcceleration": 1.8993892570765372,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n5-m10-h8",
+            "methodKey": "orca_rvo2_v1--00311d61b585",
+            "rank": 11,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n5-m10-h8",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--00311d61b585",
+              "macroSuccess": 0.521875,
+              "macroOverlapExposure": 0.0421161334325394,
+              "macroMaximumPenetration": 0.006652894670196877,
+              "macroNormalizedTravelTime": 1.1345476796723475,
+              "macroRmsAcceleration": 1.9073462708532518,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n8-m10-h8",
+            "methodKey": "orca_rvo2_v1--4e21e58c4d3d",
+            "rank": 12,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n8-m10-h8",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--4e21e58c4d3d",
+              "macroSuccess": 0.521875,
+              "macroOverlapExposure": 0.04237307787698384,
+              "macroMaximumPenetration": 0.007238502461959798,
+              "macroNormalizedTravelTime": 1.127281638774235,
+              "macroRmsAcceleration": 1.7708636429755908,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n8-m10-h2",
+            "methodKey": "orca_rvo2_v1--8007f1a69d57",
+            "rank": 13,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n8-m10-h2",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--8007f1a69d57",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.04763006365740689,
+              "macroMaximumPenetration": 0.005209030704132159,
+              "macroNormalizedTravelTime": 1.1248551832823912,
+              "macroRmsAcceleration": 1.8841654657475233,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n5-m10-h2",
+            "methodKey": "orca_rvo2_v1--6f48164dde9d",
+            "rank": 14,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n5-m10-h2",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--6f48164dde9d",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.04763006365740689,
+              "macroMaximumPenetration": 0.005209030704132159,
+              "macroNormalizedTravelTime": 1.1247981720322329,
+              "macroRmsAcceleration": 1.9234367322686134,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n3-m10-h2",
+            "methodKey": "orca_rvo2_v1--3d9716ec4790",
+            "rank": 15,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n3-m10-h2",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--3d9716ec4790",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.051841311177248134,
+              "macroMaximumPenetration": 0.005787853354960765,
+              "macroNormalizedTravelTime": 1.101429993876069,
+              "macroRmsAcceleration": 1.9630269082028111,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n3-m20-h2",
+            "methodKey": "orca_rvo2_v1--6c4f03ba0fea",
+            "rank": 16,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n3-m20-h2",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--6c4f03ba0fea",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.05537008101851808,
+              "macroMaximumPenetration": 0.004096291384366693,
+              "macroNormalizedTravelTime": 1.0983173110648006,
+              "macroRmsAcceleration": 1.8167209264109436,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n8-m20-h2",
+            "methodKey": "orca_rvo2_v1--62b0676477db",
+            "rank": 17,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n8-m20-h2",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--62b0676477db",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.05839333250661331,
+              "macroMaximumPenetration": 0.0048158130113428455,
+              "macroNormalizedTravelTime": 1.1888983143929464,
+              "macroRmsAcceleration": 1.7027305042019587,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "orca-n5-m20-h2",
+            "methodKey": "orca_rvo2_v1--210f92bd3985",
+            "rank": 18,
+            "firstFrontExclusion": "overlapExposure",
+            "score": {
+              "candidateId": "orca-n5-m20-h2",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--210f92bd3985",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.05576089203042306,
+              "macroMaximumPenetration": 0.005331120304400264,
+              "macroNormalizedTravelTime": 1.144222946967472,
+              "macroRmsAcceleration": 1.709977961867138,
+              "runCount": 18
+            }
+          }
+        ]
+      },
+      "social_force_pysocialforce_v1": {
+        "ranked": [
+          {
+            "candidateId": "sfm-r0.3-s2.55-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+            "macroSuccess": 0.784375,
+            "macroOverlapExposure": 1.2189914434523808,
+            "macroMaximumPenetration": 0.47252049816164876,
+            "macroNormalizedTravelTime": 0.8959954875072256,
+            "macroRmsAcceleration": 2.337205574859391,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.3-s2.55-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+            "macroSuccess": 0.79375,
+            "macroOverlapExposure": 1.1905550595238092,
+            "macroMaximumPenetration": 0.4728337465286832,
+            "macroNormalizedTravelTime": 0.921634169176633,
+            "macroRmsAcceleration": 2.3966879751815053,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.3-s5.1-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--7363a8f7776d",
+            "macroSuccess": 0.696875,
+            "macroOverlapExposure": 0.657082444609788,
+            "macroMaximumPenetration": 0.4303154050421142,
+            "macroNormalizedTravelTime": 0.9568649969042482,
+            "macroRmsAcceleration": 2.309920596883556,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.5-s2.55-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--11ae13302428",
+            "macroSuccess": 0.70625,
+            "macroOverlapExposure": 0.736940496858466,
+            "macroMaximumPenetration": 0.4367999606856082,
+            "macroNormalizedTravelTime": 0.9397759004629604,
+            "macroRmsAcceleration": 2.066553461535812,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.3-s5.1-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--90075863e44c",
+            "macroSuccess": 0.6875,
+            "macroOverlapExposure": 0.6651933077050265,
+            "macroMaximumPenetration": 0.4299240307307269,
+            "macroNormalizedTravelTime": 0.9269223014170194,
+            "macroRmsAcceleration": 2.272583817604304,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.5-s2.55-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--eda8eca5b49b",
+            "macroSuccess": 0.690625,
+            "macroOverlapExposure": 0.7311261367394184,
+            "macroMaximumPenetration": 0.4328915752900415,
+            "macroNormalizedTravelTime": 0.9407515167155373,
+            "macroRmsAcceleration": 2.098472490044193,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.3-s10.2-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--4d270d003f6d",
+            "macroSuccess": 0.628125,
+            "macroOverlapExposure": 0.27399010003306873,
+            "macroMaximumPenetration": 0.3837488895366217,
+            "macroNormalizedTravelTime": 1.0280477945776108,
+            "macroRmsAcceleration": 2.2762926756067663,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.3-s10.2-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--ef1ff03d20aa",
+            "macroSuccess": 0.621875,
+            "macroOverlapExposure": 0.270721498842592,
+            "macroMaximumPenetration": 0.3842433355427044,
+            "macroNormalizedTravelTime": 1.030086793604002,
+            "macroRmsAcceleration": 2.2782042488719356,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.5-s5.1-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--894f0e48d466",
+            "macroSuccess": 0.6312500000000001,
+            "macroOverlapExposure": 0.3391406870039689,
+            "macroMaximumPenetration": 0.3830713264011891,
+            "macroNormalizedTravelTime": 1.0067357900367202,
+            "macroRmsAcceleration": 1.8615204151250588,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.5-s5.1-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--43a883a44adf",
+            "macroSuccess": 0.615625,
+            "macroOverlapExposure": 0.33402368551587547,
+            "macroMaximumPenetration": 0.385343635060013,
+            "macroNormalizedTravelTime": 0.9539539139487081,
+            "macroRmsAcceleration": 1.8584675428943571,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.8-s2.55-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--bce90ed0156f",
+            "macroSuccess": 0.6197916666666666,
+            "macroOverlapExposure": 0.4064716435185203,
+            "macroMaximumPenetration": 0.40395682091202956,
+            "macroNormalizedTravelTime": 0.9417043498553206,
+            "macroRmsAcceleration": 1.8525756705661243,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.8-s2.55-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--3f09ba2a4edc",
+            "macroSuccess": 0.6010416666666667,
+            "macroOverlapExposure": 0.40509887566137487,
+            "macroMaximumPenetration": 0.4181513945727517,
+            "macroNormalizedTravelTime": 0.9353411420221132,
+            "macroRmsAcceleration": 1.8645622349831414,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.5-s10.2-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--b16efad73969",
+            "macroSuccess": 0.55,
+            "macroOverlapExposure": 0.1206234705687832,
+            "macroMaximumPenetration": 0.3411992240399635,
+            "macroNormalizedTravelTime": 1.0039822529444593,
+            "macroRmsAcceleration": 1.9068438554820004,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.5-s10.2-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--0c2e8f23fe0b",
+            "macroSuccess": 0.553125,
+            "macroOverlapExposure": 0.11769582919973488,
+            "macroMaximumPenetration": 0.33750511427184493,
+            "macroNormalizedTravelTime": 1.0293065854790573,
+            "macroRmsAcceleration": 1.8843319760437034,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.8-s5.1-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--021978ab89bb",
+            "macroSuccess": 0.5437500000000001,
+            "macroOverlapExposure": 0.15688454861111162,
+            "macroMaximumPenetration": 0.34027236804763805,
+            "macroNormalizedTravelTime": 0.9566134534889771,
+            "macroRmsAcceleration": 1.865842109427444,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.8-s5.1-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--6e792829a53e",
+            "macroSuccess": 0.553125,
+            "macroOverlapExposure": 0.16041840277777825,
+            "macroMaximumPenetration": 0.3432179842452876,
+            "macroNormalizedTravelTime": 1.0583802690980098,
+            "macroRmsAcceleration": 1.842569012581529,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.8-s10.2-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--67b161932353",
+            "macroSuccess": 0.525,
+            "macroOverlapExposure": 0.05059877232142813,
+            "macroMaximumPenetration": 0.3058922892558906,
+            "macroNormalizedTravelTime": 0.9616243229606637,
+            "macroRmsAcceleration": 1.8265649205743444,
+            "runCount": 18
+          },
+          {
+            "candidateId": "sfm-r0.8-s10.2-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--26b328deec19",
+            "macroSuccess": 0.5187499999999999,
+            "macroOverlapExposure": 0.051396019345237756,
+            "macroMaximumPenetration": 0.302912629658032,
+            "macroNormalizedTravelTime": 0.9619642728640632,
+            "macroRmsAcceleration": 1.8447600077240713,
+            "runCount": 18
+          }
+        ],
+        "trace": [
+          {
+            "candidateId": "sfm-r0.3-s2.55-o10",
+            "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+            "rank": 1,
+            "firstFrontExclusion": null,
+            "score": {
+              "candidateId": "sfm-r0.3-s2.55-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+              "macroSuccess": 0.784375,
+              "macroOverlapExposure": 1.2189914434523808,
+              "macroMaximumPenetration": 0.47252049816164876,
+              "macroNormalizedTravelTime": 0.8959954875072256,
+              "macroRmsAcceleration": 2.337205574859391,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.3-s2.55-o20",
+            "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+            "rank": 2,
+            "firstFrontExclusion": "normalizedTravelTime",
+            "score": {
+              "candidateId": "sfm-r0.3-s2.55-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+              "macroSuccess": 0.79375,
+              "macroOverlapExposure": 1.1905550595238092,
+              "macroMaximumPenetration": 0.4728337465286832,
+              "macroNormalizedTravelTime": 0.921634169176633,
+              "macroRmsAcceleration": 2.3966879751815053,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.3-s5.1-o20",
+            "methodKey": "social_force_pysocialforce_v1--7363a8f7776d",
+            "rank": 3,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.3-s5.1-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--7363a8f7776d",
+              "macroSuccess": 0.696875,
+              "macroOverlapExposure": 0.657082444609788,
+              "macroMaximumPenetration": 0.4303154050421142,
+              "macroNormalizedTravelTime": 0.9568649969042482,
+              "macroRmsAcceleration": 2.309920596883556,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.5-s2.55-o10",
+            "methodKey": "social_force_pysocialforce_v1--11ae13302428",
+            "rank": 4,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.5-s2.55-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--11ae13302428",
+              "macroSuccess": 0.70625,
+              "macroOverlapExposure": 0.736940496858466,
+              "macroMaximumPenetration": 0.4367999606856082,
+              "macroNormalizedTravelTime": 0.9397759004629604,
+              "macroRmsAcceleration": 2.066553461535812,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.3-s5.1-o10",
+            "methodKey": "social_force_pysocialforce_v1--90075863e44c",
+            "rank": 5,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.3-s5.1-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--90075863e44c",
+              "macroSuccess": 0.6875,
+              "macroOverlapExposure": 0.6651933077050265,
+              "macroMaximumPenetration": 0.4299240307307269,
+              "macroNormalizedTravelTime": 0.9269223014170194,
+              "macroRmsAcceleration": 2.272583817604304,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.5-s2.55-o20",
+            "methodKey": "social_force_pysocialforce_v1--eda8eca5b49b",
+            "rank": 6,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.5-s2.55-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--eda8eca5b49b",
+              "macroSuccess": 0.690625,
+              "macroOverlapExposure": 0.7311261367394184,
+              "macroMaximumPenetration": 0.4328915752900415,
+              "macroNormalizedTravelTime": 0.9407515167155373,
+              "macroRmsAcceleration": 2.098472490044193,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.3-s10.2-o10",
+            "methodKey": "social_force_pysocialforce_v1--4d270d003f6d",
+            "rank": 7,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.3-s10.2-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--4d270d003f6d",
+              "macroSuccess": 0.628125,
+              "macroOverlapExposure": 0.27399010003306873,
+              "macroMaximumPenetration": 0.3837488895366217,
+              "macroNormalizedTravelTime": 1.0280477945776108,
+              "macroRmsAcceleration": 2.2762926756067663,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.3-s10.2-o20",
+            "methodKey": "social_force_pysocialforce_v1--ef1ff03d20aa",
+            "rank": 8,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.3-s10.2-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--ef1ff03d20aa",
+              "macroSuccess": 0.621875,
+              "macroOverlapExposure": 0.270721498842592,
+              "macroMaximumPenetration": 0.3842433355427044,
+              "macroNormalizedTravelTime": 1.030086793604002,
+              "macroRmsAcceleration": 2.2782042488719356,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.5-s5.1-o10",
+            "methodKey": "social_force_pysocialforce_v1--894f0e48d466",
+            "rank": 9,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.5-s5.1-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--894f0e48d466",
+              "macroSuccess": 0.6312500000000001,
+              "macroOverlapExposure": 0.3391406870039689,
+              "macroMaximumPenetration": 0.3830713264011891,
+              "macroNormalizedTravelTime": 1.0067357900367202,
+              "macroRmsAcceleration": 1.8615204151250588,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.5-s5.1-o20",
+            "methodKey": "social_force_pysocialforce_v1--43a883a44adf",
+            "rank": 10,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.5-s5.1-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--43a883a44adf",
+              "macroSuccess": 0.615625,
+              "macroOverlapExposure": 0.33402368551587547,
+              "macroMaximumPenetration": 0.385343635060013,
+              "macroNormalizedTravelTime": 0.9539539139487081,
+              "macroRmsAcceleration": 1.8584675428943571,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.8-s2.55-o10",
+            "methodKey": "social_force_pysocialforce_v1--bce90ed0156f",
+            "rank": 11,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.8-s2.55-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--bce90ed0156f",
+              "macroSuccess": 0.6197916666666666,
+              "macroOverlapExposure": 0.4064716435185203,
+              "macroMaximumPenetration": 0.40395682091202956,
+              "macroNormalizedTravelTime": 0.9417043498553206,
+              "macroRmsAcceleration": 1.8525756705661243,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.8-s2.55-o20",
+            "methodKey": "social_force_pysocialforce_v1--3f09ba2a4edc",
+            "rank": 12,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.8-s2.55-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--3f09ba2a4edc",
+              "macroSuccess": 0.6010416666666667,
+              "macroOverlapExposure": 0.40509887566137487,
+              "macroMaximumPenetration": 0.4181513945727517,
+              "macroNormalizedTravelTime": 0.9353411420221132,
+              "macroRmsAcceleration": 1.8645622349831414,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.5-s10.2-o20",
+            "methodKey": "social_force_pysocialforce_v1--b16efad73969",
+            "rank": 13,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.5-s10.2-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--b16efad73969",
+              "macroSuccess": 0.55,
+              "macroOverlapExposure": 0.1206234705687832,
+              "macroMaximumPenetration": 0.3411992240399635,
+              "macroNormalizedTravelTime": 1.0039822529444593,
+              "macroRmsAcceleration": 1.9068438554820004,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.5-s10.2-o10",
+            "methodKey": "social_force_pysocialforce_v1--0c2e8f23fe0b",
+            "rank": 14,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.5-s10.2-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--0c2e8f23fe0b",
+              "macroSuccess": 0.553125,
+              "macroOverlapExposure": 0.11769582919973488,
+              "macroMaximumPenetration": 0.33750511427184493,
+              "macroNormalizedTravelTime": 1.0293065854790573,
+              "macroRmsAcceleration": 1.8843319760437034,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.8-s5.1-o20",
+            "methodKey": "social_force_pysocialforce_v1--021978ab89bb",
+            "rank": 15,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.8-s5.1-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--021978ab89bb",
+              "macroSuccess": 0.5437500000000001,
+              "macroOverlapExposure": 0.15688454861111162,
+              "macroMaximumPenetration": 0.34027236804763805,
+              "macroNormalizedTravelTime": 0.9566134534889771,
+              "macroRmsAcceleration": 1.865842109427444,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.8-s5.1-o10",
+            "methodKey": "social_force_pysocialforce_v1--6e792829a53e",
+            "rank": 16,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.8-s5.1-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--6e792829a53e",
+              "macroSuccess": 0.553125,
+              "macroOverlapExposure": 0.16041840277777825,
+              "macroMaximumPenetration": 0.3432179842452876,
+              "macroNormalizedTravelTime": 1.0583802690980098,
+              "macroRmsAcceleration": 1.842569012581529,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.8-s10.2-o10",
+            "methodKey": "social_force_pysocialforce_v1--67b161932353",
+            "rank": 17,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.8-s10.2-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--67b161932353",
+              "macroSuccess": 0.525,
+              "macroOverlapExposure": 0.05059877232142813,
+              "macroMaximumPenetration": 0.3058922892558906,
+              "macroNormalizedTravelTime": 0.9616243229606637,
+              "macroRmsAcceleration": 1.8265649205743444,
+              "runCount": 18
+            }
+          },
+          {
+            "candidateId": "sfm-r0.8-s10.2-o20",
+            "methodKey": "social_force_pysocialforce_v1--26b328deec19",
+            "rank": 18,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.8-s10.2-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--26b328deec19",
+              "macroSuccess": 0.5187499999999999,
+              "macroOverlapExposure": 0.051396019345237756,
+              "macroMaximumPenetration": 0.302912629658032,
+              "macroNormalizedTravelTime": 0.9619642728640632,
+              "macroRmsAcceleration": 1.8447600077240713,
+              "runCount": 18
+            }
+          }
+        ]
+      }
+    },
+    "validation-tuning": {
+      "conditioned_riemannian_metric_v1": {
+        "ranked": [
+          {
+            "candidateId": "riemannian-14-corner-hllh",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+            "macroSuccess": 0.3825396825396825,
+            "macroOverlapExposure": 0.448417861276455,
+            "macroMaximumPenetration": 0.03834256580484431,
+            "macroNormalizedTravelTime": 1.4819345089192635,
+            "macroRmsAcceleration": 2.5152271960667973,
+            "runCount": 33
+          },
+          {
+            "candidateId": "riemannian-06-rho-high",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+            "macroSuccess": 0.38024801587301593,
+            "macroOverlapExposure": 0.4351413029100526,
+            "macroMaximumPenetration": 0.051546454646528975,
+            "macroNormalizedTravelTime": 1.5946153390153466,
+            "macroRmsAcceleration": 2.606336705693232,
+            "runCount": 33
+          },
+          {
+            "candidateId": "riemannian-00-default",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--6ea0faf92d4b",
+            "macroSuccess": 0.36436507936507934,
+            "macroOverlapExposure": 0.46008953373015815,
+            "macroMaximumPenetration": 0.05482161058231314,
+            "macroNormalizedTravelTime": 1.5414560584165968,
+            "macroRmsAcceleration": 1.8460166294857194,
+            "runCount": 33
+          },
+          {
+            "candidateId": "riemannian-15-corner-hlhl",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--710552248cd7",
+            "macroSuccess": 0.3579265873015873,
+            "macroOverlapExposure": 0.5195487847222204,
+            "macroMaximumPenetration": 0.0925433724649455,
+            "macroNormalizedTravelTime": 1.8432775691482055,
+            "macroRmsAcceleration": 27.487806681077057,
+            "runCount": 33
+          }
+        ],
+        "trace": [
+          {
+            "candidateId": "riemannian-14-corner-hllh",
+            "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+            "rank": 1,
+            "firstFrontExclusion": null,
+            "score": {
+              "candidateId": "riemannian-14-corner-hllh",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+              "macroSuccess": 0.3825396825396825,
+              "macroOverlapExposure": 0.448417861276455,
+              "macroMaximumPenetration": 0.03834256580484431,
+              "macroNormalizedTravelTime": 1.4819345089192635,
+              "macroRmsAcceleration": 2.5152271960667973,
+              "runCount": 33
+            }
+          },
+          {
+            "candidateId": "riemannian-06-rho-high",
+            "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+            "rank": 2,
+            "firstFrontExclusion": "maximumPenetration",
+            "score": {
+              "candidateId": "riemannian-06-rho-high",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+              "macroSuccess": 0.38024801587301593,
+              "macroOverlapExposure": 0.4351413029100526,
+              "macroMaximumPenetration": 0.051546454646528975,
+              "macroNormalizedTravelTime": 1.5946153390153466,
+              "macroRmsAcceleration": 2.606336705693232,
+              "runCount": 33
+            }
+          },
+          {
+            "candidateId": "riemannian-00-default",
+            "methodKey": "conditioned_riemannian_metric_v1--6ea0faf92d4b",
+            "rank": 3,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-00-default",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--6ea0faf92d4b",
+              "macroSuccess": 0.36436507936507934,
+              "macroOverlapExposure": 0.46008953373015815,
+              "macroMaximumPenetration": 0.05482161058231314,
+              "macroNormalizedTravelTime": 1.5414560584165968,
+              "macroRmsAcceleration": 1.8460166294857194,
+              "runCount": 33
+            }
+          },
+          {
+            "candidateId": "riemannian-15-corner-hlhl",
+            "methodKey": "conditioned_riemannian_metric_v1--710552248cd7",
+            "rank": 4,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "riemannian-15-corner-hlhl",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--710552248cd7",
+              "macroSuccess": 0.3579265873015873,
+              "macroOverlapExposure": 0.5195487847222204,
+              "macroMaximumPenetration": 0.0925433724649455,
+              "macroNormalizedTravelTime": 1.8432775691482055,
+              "macroRmsAcceleration": 27.487806681077057,
+              "runCount": 33
+            }
+          }
+        ]
+      },
+      "orca_rvo2_v1": {
+        "ranked": [
+          {
+            "candidateId": "orca-n8-m10-h5",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+            "macroSuccess": 0.4923809523809523,
+            "macroOverlapExposure": 0.09584377480158729,
+            "macroMaximumPenetration": 0.007065051083227511,
+            "macroNormalizedTravelTime": 1.3812137713039978,
+            "macroRmsAcceleration": 1.813527679302286,
+            "runCount": 33
+          },
+          {
+            "candidateId": "orca-n3-m20-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--459bb9deff5a",
+            "macroSuccess": 0.47960317460317453,
+            "macroOverlapExposure": 0.08592660383597878,
+            "macroMaximumPenetration": 0.010996528765555912,
+            "macroNormalizedTravelTime": 1.355768718400597,
+            "macroRmsAcceleration": 1.5982967645413604,
+            "runCount": 33
+          },
+          {
+            "candidateId": "orca-n5-m20-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--b5fe64c2721a",
+            "macroSuccess": 0.4739980158730158,
+            "macroOverlapExposure": 0.08736702628968246,
+            "macroMaximumPenetration": 0.012697074060557156,
+            "macroNormalizedTravelTime": 1.3367365624242575,
+            "macroRmsAcceleration": 1.6724920097448697,
+            "runCount": 33
+          },
+          {
+            "candidateId": "orca-n8-m20-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--8c9d27e8857f",
+            "macroSuccess": 0.4780257936507937,
+            "macroOverlapExposure": 0.08897269345238096,
+            "macroMaximumPenetration": 0.013417059334870179,
+            "macroNormalizedTravelTime": 1.3382805127718203,
+            "macroRmsAcceleration": 1.493255926002065,
+            "runCount": 33
+          }
+        ],
+        "trace": [
+          {
+            "candidateId": "orca-n8-m10-h5",
+            "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+            "rank": 1,
+            "firstFrontExclusion": null,
+            "score": {
+              "candidateId": "orca-n8-m10-h5",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+              "macroSuccess": 0.4923809523809523,
+              "macroOverlapExposure": 0.09584377480158729,
+              "macroMaximumPenetration": 0.007065051083227511,
+              "macroNormalizedTravelTime": 1.3812137713039978,
+              "macroRmsAcceleration": 1.813527679302286,
+              "runCount": 33
+            }
+          },
+          {
+            "candidateId": "orca-n3-m20-h8",
+            "methodKey": "orca_rvo2_v1--459bb9deff5a",
+            "rank": 2,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "orca-n3-m20-h8",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--459bb9deff5a",
+              "macroSuccess": 0.47960317460317453,
+              "macroOverlapExposure": 0.08592660383597878,
+              "macroMaximumPenetration": 0.010996528765555912,
+              "macroNormalizedTravelTime": 1.355768718400597,
+              "macroRmsAcceleration": 1.5982967645413604,
+              "runCount": 33
+            }
+          },
+          {
+            "candidateId": "orca-n5-m20-h8",
+            "methodKey": "orca_rvo2_v1--b5fe64c2721a",
+            "rank": 3,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "orca-n5-m20-h8",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--b5fe64c2721a",
+              "macroSuccess": 0.4739980158730158,
+              "macroOverlapExposure": 0.08736702628968246,
+              "macroMaximumPenetration": 0.012697074060557156,
+              "macroNormalizedTravelTime": 1.3367365624242575,
+              "macroRmsAcceleration": 1.6724920097448697,
+              "runCount": 33
+            }
+          },
+          {
+            "candidateId": "orca-n8-m20-h8",
+            "methodKey": "orca_rvo2_v1--8c9d27e8857f",
+            "rank": 4,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "orca-n8-m20-h8",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--8c9d27e8857f",
+              "macroSuccess": 0.4780257936507937,
+              "macroOverlapExposure": 0.08897269345238096,
+              "macroMaximumPenetration": 0.013417059334870179,
+              "macroNormalizedTravelTime": 1.3382805127718203,
+              "macroRmsAcceleration": 1.493255926002065,
+              "runCount": 33
+            }
+          }
+        ]
+      },
+      "social_force_pysocialforce_v1": {
+        "ranked": [
+          {
+            "candidateId": "sfm-r0.3-s2.55-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+            "macroSuccess": 0.680952380952381,
+            "macroOverlapExposure": 1.3697656704695784,
+            "macroMaximumPenetration": 0.4951427064674375,
+            "macroNormalizedTravelTime": 0.9543818285054527,
+            "macroRmsAcceleration": 1.9776666543717292,
+            "runCount": 33
+          },
+          {
+            "candidateId": "sfm-r0.3-s2.55-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+            "macroSuccess": 0.6879960317460317,
+            "macroOverlapExposure": 1.345349747850532,
+            "macroMaximumPenetration": 0.4935475669383344,
+            "macroNormalizedTravelTime": 0.9843241612505595,
+            "macroRmsAcceleration": 1.9795837729031864,
+            "runCount": 33
+          },
+          {
+            "candidateId": "sfm-r0.3-s5.1-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--7363a8f7776d",
+            "macroSuccess": 0.5990079365079366,
+            "macroOverlapExposure": 0.7260490244708995,
+            "macroMaximumPenetration": 0.46075381073866434,
+            "macroNormalizedTravelTime": 1.0837538141436125,
+            "macroRmsAcceleration": 1.9229009227844773,
+            "runCount": 33
+          },
+          {
+            "candidateId": "sfm-r0.5-s2.55-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--11ae13302428",
+            "macroSuccess": 0.607390873015873,
+            "macroOverlapExposure": 0.8271530175264572,
+            "macroMaximumPenetration": 0.46849499413348716,
+            "macroNormalizedTravelTime": 1.0313017030391607,
+            "macroRmsAcceleration": 1.8539842969541422,
+            "runCount": 33
+          }
+        ],
+        "trace": [
+          {
+            "candidateId": "sfm-r0.3-s2.55-o20",
+            "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+            "rank": 1,
+            "firstFrontExclusion": null,
+            "score": {
+              "candidateId": "sfm-r0.3-s2.55-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+              "macroSuccess": 0.680952380952381,
+              "macroOverlapExposure": 1.3697656704695784,
+              "macroMaximumPenetration": 0.4951427064674375,
+              "macroNormalizedTravelTime": 0.9543818285054527,
+              "macroRmsAcceleration": 1.9776666543717292,
+              "runCount": 33
+            }
+          },
+          {
+            "candidateId": "sfm-r0.3-s2.55-o10",
+            "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+            "rank": 2,
+            "firstFrontExclusion": "normalizedTravelTime",
+            "score": {
+              "candidateId": "sfm-r0.3-s2.55-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+              "macroSuccess": 0.6879960317460317,
+              "macroOverlapExposure": 1.345349747850532,
+              "macroMaximumPenetration": 0.4935475669383344,
+              "macroNormalizedTravelTime": 0.9843241612505595,
+              "macroRmsAcceleration": 1.9795837729031864,
+              "runCount": 33
+            }
+          },
+          {
+            "candidateId": "sfm-r0.3-s5.1-o20",
+            "methodKey": "social_force_pysocialforce_v1--7363a8f7776d",
+            "rank": 3,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.3-s5.1-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--7363a8f7776d",
+              "macroSuccess": 0.5990079365079366,
+              "macroOverlapExposure": 0.7260490244708995,
+              "macroMaximumPenetration": 0.46075381073866434,
+              "macroNormalizedTravelTime": 1.0837538141436125,
+              "macroRmsAcceleration": 1.9229009227844773,
+              "runCount": 33
+            }
+          },
+          {
+            "candidateId": "sfm-r0.5-s2.55-o10",
+            "methodKey": "social_force_pysocialforce_v1--11ae13302428",
+            "rank": 4,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "sfm-r0.5-s2.55-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--11ae13302428",
+              "macroSuccess": 0.607390873015873,
+              "macroOverlapExposure": 0.8271530175264572,
+              "macroMaximumPenetration": 0.46849499413348716,
+              "macroNormalizedTravelTime": 1.0313017030391607,
+              "macroRmsAcceleration": 1.8539842969541422,
+              "runCount": 33
+            }
+          }
+        ]
+      }
+    },
+    "validation-holdout": {
+      "conditioned_riemannian_metric_v1": {
+        "ranked": [
+          {
+            "candidateId": "riemannian-14-corner-hllh",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+            "macroSuccess": 0.36315476190476187,
+            "macroOverlapExposure": 0.4323642609126975,
+            "macroMaximumPenetration": 0.03636498513968221,
+            "macroNormalizedTravelTime": 1.4700446198212505,
+            "macroRmsAcceleration": 2.514687537454314,
+            "runCount": 22
+          },
+          {
+            "candidateId": "riemannian-06-rho-high",
+            "methodId": "conditioned_riemannian_metric_v1",
+            "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+            "macroSuccess": 0.3695535714285715,
+            "macroOverlapExposure": 0.45377752356150813,
+            "macroMaximumPenetration": 0.056360603675496376,
+            "macroNormalizedTravelTime": 1.5745343273129175,
+            "macroRmsAcceleration": 2.705404965931766,
+            "runCount": 22
+          }
+        ],
+        "trace": [
+          {
+            "candidateId": "riemannian-14-corner-hllh",
+            "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+            "rank": 1,
+            "firstFrontExclusion": null,
+            "score": {
+              "candidateId": "riemannian-14-corner-hllh",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+              "macroSuccess": 0.36315476190476187,
+              "macroOverlapExposure": 0.4323642609126975,
+              "macroMaximumPenetration": 0.03636498513968221,
+              "macroNormalizedTravelTime": 1.4700446198212505,
+              "macroRmsAcceleration": 2.514687537454314,
+              "runCount": 22
+            }
+          },
+          {
+            "candidateId": "riemannian-06-rho-high",
+            "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+            "rank": 2,
+            "firstFrontExclusion": "maximumPenetration",
+            "score": {
+              "candidateId": "riemannian-06-rho-high",
+              "methodId": "conditioned_riemannian_metric_v1",
+              "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+              "macroSuccess": 0.3695535714285715,
+              "macroOverlapExposure": 0.45377752356150813,
+              "macroMaximumPenetration": 0.056360603675496376,
+              "macroNormalizedTravelTime": 1.5745343273129175,
+              "macroRmsAcceleration": 2.705404965931766,
+              "runCount": 22
+            }
+          }
+        ]
+      },
+      "orca_rvo2_v1": {
+        "ranked": [
+          {
+            "candidateId": "orca-n8-m10-h5",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+            "macroSuccess": 0.49828869047619045,
+            "macroOverlapExposure": 0.08897293526785713,
+            "macroMaximumPenetration": 0.009583040460373855,
+            "macroNormalizedTravelTime": 1.3279712684511837,
+            "macroRmsAcceleration": 1.7215022216552078,
+            "runCount": 22
+          },
+          {
+            "candidateId": "orca-n3-m20-h8",
+            "methodId": "orca_rvo2_v1",
+            "methodKey": "orca_rvo2_v1--459bb9deff5a",
+            "macroSuccess": 0.485922619047619,
+            "macroOverlapExposure": 0.08362356150793651,
+            "macroMaximumPenetration": 0.013779985927506015,
+            "macroNormalizedTravelTime": 1.3434228648041995,
+            "macroRmsAcceleration": 1.6388944515950845,
+            "runCount": 22
+          }
+        ],
+        "trace": [
+          {
+            "candidateId": "orca-n8-m10-h5",
+            "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+            "rank": 1,
+            "firstFrontExclusion": null,
+            "score": {
+              "candidateId": "orca-n8-m10-h5",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+              "macroSuccess": 0.49828869047619045,
+              "macroOverlapExposure": 0.08897293526785713,
+              "macroMaximumPenetration": 0.009583040460373855,
+              "macroNormalizedTravelTime": 1.3279712684511837,
+              "macroRmsAcceleration": 1.7215022216552078,
+              "runCount": 22
+            }
+          },
+          {
+            "candidateId": "orca-n3-m20-h8",
+            "methodKey": "orca_rvo2_v1--459bb9deff5a",
+            "rank": 2,
+            "firstFrontExclusion": "success",
+            "score": {
+              "candidateId": "orca-n3-m20-h8",
+              "methodId": "orca_rvo2_v1",
+              "methodKey": "orca_rvo2_v1--459bb9deff5a",
+              "macroSuccess": 0.485922619047619,
+              "macroOverlapExposure": 0.08362356150793651,
+              "macroMaximumPenetration": 0.013779985927506015,
+              "macroNormalizedTravelTime": 1.3434228648041995,
+              "macroRmsAcceleration": 1.6388944515950845,
+              "runCount": 22
+            }
+          }
+        ]
+      },
+      "social_force_pysocialforce_v1": {
+        "ranked": [
+          {
+            "candidateId": "sfm-r0.3-s2.55-o10",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+            "macroSuccess": 0.6798363095238096,
+            "macroOverlapExposure": 1.395348381696429,
+            "macroMaximumPenetration": 0.4909610011242893,
+            "macroNormalizedTravelTime": 0.9379072351388484,
+            "macroRmsAcceleration": 2.04763493707766,
+            "runCount": 22
+          },
+          {
+            "candidateId": "sfm-r0.3-s2.55-o20",
+            "methodId": "social_force_pysocialforce_v1",
+            "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+            "macroSuccess": 0.6820684523809524,
+            "macroOverlapExposure": 1.3892614211309526,
+            "macroMaximumPenetration": 0.49009472885727107,
+            "macroNormalizedTravelTime": 0.9616024519784379,
+            "macroRmsAcceleration": 2.0622454131293315,
+            "runCount": 22
+          }
+        ],
+        "trace": [
+          {
+            "candidateId": "sfm-r0.3-s2.55-o10",
+            "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+            "rank": 1,
+            "firstFrontExclusion": null,
+            "score": {
+              "candidateId": "sfm-r0.3-s2.55-o10",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+              "macroSuccess": 0.6798363095238096,
+              "macroOverlapExposure": 1.395348381696429,
+              "macroMaximumPenetration": 0.4909610011242893,
+              "macroNormalizedTravelTime": 0.9379072351388484,
+              "macroRmsAcceleration": 2.04763493707766,
+              "runCount": 22
+            }
+          },
+          {
+            "candidateId": "sfm-r0.3-s2.55-o20",
+            "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+            "rank": 2,
+            "firstFrontExclusion": "normalizedTravelTime",
+            "score": {
+              "candidateId": "sfm-r0.3-s2.55-o20",
+              "methodId": "social_force_pysocialforce_v1",
+              "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+              "macroSuccess": 0.6820684523809524,
+              "macroOverlapExposure": 1.3892614211309526,
+              "macroMaximumPenetration": 0.49009472885727107,
+              "macroNormalizedTravelTime": 0.9616024519784379,
+              "macroRmsAcceleration": 2.0622454131293315,
+              "runCount": 22
+            }
+          }
+        ]
+      }
+    }
+  }
+}

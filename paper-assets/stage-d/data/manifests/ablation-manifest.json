@@ -1,0 +1,950 @@
+{
+  "ablationManifestVersion": 1,
+  "status": "PASS",
+  "repositoryCommit": "0e9639024632ef50f3218f3bd90dee9e67242e83",
+  "planHashes": {
+    "studyPlanSha256": "af31236180c7c369df38ef2de19806cd9b06e3b6cbf933cb08a34526fb75b7a9",
+    "metricPolicySha256": "52dc0d398bd74a071121b0f51ac34a7e57e5c96190f76ec9f9cc499c0f6f82e1",
+    "candidateSpaceSha256": "7f3aeadc07488c5c87af7a3703fc83e858737b7d751e54fc667e005d1245909f",
+    "scenarioPartitionsSha256": "fb144e36f5798e79a519b35315ba441184c0cc6b69d45840e94b47f204dc45d3"
+  },
+  "selectionManifestSha256": "6ed76152ac804a5105dbbae076b5ab325d072a47dcc191bca9b024ab971a96a3",
+  "selectedRiemannianCandidateId": "riemannian-14-corner-hllh",
+  "scenarioCount": 22,
+  "ablations": [
+    "full",
+    "isotropic",
+    "no_closing",
+    "no_visibility",
+    "no_conditioning",
+    "goal_projection"
+  ],
+  "expectedRunCount": 132,
+  "runs": [
+    {
+      "ablation": "full",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-3\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-3\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-3\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-3\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-3\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "bidirectional/corridor/seed-3",
+      "scenarioSha256": "d4de9530e95d227f896dbcf3eb5e50ead036609a08eba7b9bfa5b0c35336b808",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-3\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-4\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-4\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-4\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-4\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-4\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "bidirectional/corridor/seed-4",
+      "scenarioSha256": "7a1c08a15be7d87119dbad2f8080d1fe0d8bffee13d8931a3999755a2f278bbe",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bidirectional\\corridor\\seed-4\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-3\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-3\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-3\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-3\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-3\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "bottleneck/central_opening/seed-3",
+      "scenarioSha256": "875b18abb138361c10d1abb3f410d0d376e1039a80e5fcb92a1e704c5bde900c",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-3\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-4\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-4\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-4\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-4\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-4\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "bottleneck/central_opening/seed-4",
+      "scenarioSha256": "ea2896cdb56c1230cf1cc5c11a7ac9f9b0936b8ed96993957b28a993d8411a09",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\bottleneck\\central_opening\\seed-4\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-3\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-3\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-3\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-3\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-3\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "circle_antipodal/perturbed/seed-3",
+      "scenarioSha256": "04793cd54862b7ab8156dccb36444f1eaf27363f020d1714f5b16c0d4a7d560e",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-3\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-4\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-4\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-4\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-4\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-4\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "circle_antipodal/perturbed/seed-4",
+      "scenarioSha256": "28751c10f7c7619c60eb67b7dde3a43cb96430d9bd91a0f558e3ac4052cee9a5",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\circle_antipodal\\perturbed\\seed-4\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-6\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-6\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-6\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-6\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-6\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/crossing/seed-6",
+      "scenarioSha256": "3de062a9d58b12902904505666a3d5ab5cf14e17266621c9e75f272e552e302f",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-6\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-7\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-7\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-7\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-7\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-7\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/crossing/seed-7",
+      "scenarioSha256": "e1798cbf93911d4647330c2f16aad35305315a22e0b89a211c49c4f41da48ed5",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-7\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-8\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-8\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-8\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-8\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-8\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/crossing/seed-8",
+      "scenarioSha256": "4c89148b18116dd96c2521e22189129210cb8935062a88f20ae707a54b57075d",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-8\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-9\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-9\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-9\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-9\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-9\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/crossing/seed-9",
+      "scenarioSha256": "4043f2ea4e3a3558e3694465f02b2e5f34db58247d183c18eef988e3468b2ad9",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\crossing\\seed-9\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-6\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-6\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-6\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-6\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-6\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/head_on/seed-6",
+      "scenarioSha256": "25c622f43e4d0b358854f77c0a2811c9567ad08cc1c7e90087f703e934e4a9af",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-6\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-7\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-7\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-7\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-7\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-7\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/head_on/seed-7",
+      "scenarioSha256": "671f5380ee14192bc5dca49ffb06089359ff9c34213c592c51e2ef0781e69432",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-7\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-8\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-8\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-8\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-8\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-8\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/head_on/seed-8",
+      "scenarioSha256": "f754c527bac495238221eece886d2322f8c289bc1b7643453f9677d1807b6f3b",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-8\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-9\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-9\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-9\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-9\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-9\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/head_on/seed-9",
+      "scenarioSha256": "429e0e6ecf5260fd820267b7d7d721bde74a6934b9e017d8e600892b9bdc2a7a",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\head_on\\seed-9\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-6\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-6\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-6\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-6\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-6\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/overtaking/seed-6",
+      "scenarioSha256": "8518e2e93daa68803dc46da6a9a016f04dd40c3017b55e872e5f895ecf41fac0",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-6\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-7\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-7\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-7\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-7\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-7\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/overtaking/seed-7",
+      "scenarioSha256": "64f5c9feb311f366435c8dc1f3ec70feb7a9847d10a619efd1a727dd7d75730d",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-7\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-8\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-8\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-8\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-8\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-8\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/overtaking/seed-8",
+      "scenarioSha256": "e2cd5410b58abd2d0b6f5641d097383347c0605c4b37df294eabe749491bd493",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-8\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-9\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-9\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-9\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-9\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-9\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/overtaking/seed-9",
+      "scenarioSha256": "c7da6865e71da46c4fd36b9fbd712ab6b3c66c96e58ada8778dd017fc8264e5a",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\overtaking\\seed-9\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-6\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-6\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-6\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-6\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-6\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/separating/seed-6",
+      "scenarioSha256": "919c8da0e43a61d5439d5e649bb2c26adfa74c9b9fe6a8f6610f6cc29a01d751",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-6\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-7\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-7\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-7\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-7\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-7\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/separating/seed-7",
+      "scenarioSha256": "28932a51a8c0eb4b5b3b4463111f7fcf6725f5e1f6ecb00a72bc258c533e1cef",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-7\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-8\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-8\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-8\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-8\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-8\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/separating/seed-8",
+      "scenarioSha256": "026e04a30f5f1f1c037512aa4fcceb6c8d147374522532a049335abb8f8cdf27",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-8\\goal_projection\\run-metrics.json"
+    },
+    {
+      "ablation": "full",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "methodKey": "riemannian_ablation_v1--b0d06c27f2a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-9\\full\\run-metrics.json"
+    },
+    {
+      "ablation": "isotropic",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "methodKey": "riemannian_ablation_v1--ac898d07f5a5",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-9\\isotropic\\run-metrics.json"
+    },
+    {
+      "ablation": "no_closing",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "methodKey": "riemannian_ablation_v1--e164f8b6f683",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-9\\no_closing\\run-metrics.json"
+    },
+    {
+      "ablation": "no_visibility",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "methodKey": "riemannian_ablation_v1--f3a87c3c5dae",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-9\\no_visibility\\run-metrics.json"
+    },
+    {
+      "ablation": "no_conditioning",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "methodKey": "riemannian_ablation_v1--398a05790a7c",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-9\\no_conditioning\\run-metrics.json"
+    },
+    {
+      "ablation": "goal_projection",
+      "scenarioId": "pairwise/separating/seed-9",
+      "scenarioSha256": "7bb9aa9dd50c5a19bec50518c079ae32df539ce247dcf7660be48dff91e89cbd",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "metricsPath": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\ablations\\runs\\pairwise\\separating\\seed-9\\goal_projection\\run-metrics.json"
+    }
+  ],
+  "fullModeParityMaximumAbsoluteDifference": 0
+}

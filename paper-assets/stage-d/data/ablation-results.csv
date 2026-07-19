@@ -1,0 +1,49 @@
+ablation,methodKey,scenarioSet,metric,unit,estimator,estimate,contributingScenarios
+full,riemannian_ablation_v1--b0d06c27f2a1,validation_holdout_22,success_fraction,fraction,mean,0.36315476190476187,22
+full,riemannian_ablation_v1--b0d06c27f2a1,validation_holdout_22,pre_correction_overlap_exposure,pair-s per agent-s,mean,0.4323642609126975,22
+full,riemannian_ablation_v1--b0d06c27f2a1,validation_holdout_22,maximum_pre_correction_penetration,m,median,0.03636498513968221,22
+full,riemannian_ablation_v1--b0d06c27f2a1,validation_holdout_22,normalized_travel_time,ratio conditional on success,median,1.4700446198212505,22
+full,riemannian_ablation_v1--b0d06c27f2a1,validation_holdout_22,path_ratio,path length / straight-line distance,median,0.9655869505805199,22
+full,riemannian_ablation_v1--b0d06c27f2a1,validation_holdout_22,rms_acceleration,m/s^2,median,2.514687537454314,22
+full,riemannian_ablation_v1--b0d06c27f2a1,validation_holdout_22,rms_jerk,m/s^3,median,170.60501556295804,22
+full,riemannian_ablation_v1--b0d06c27f2a1,validation_holdout_22,correction_ratio,ratio,median,0.461845423298118,22
+goal_projection,euclidean_goal_steering_v1--bdb72f7142a1,validation_holdout_22,success_fraction,fraction,mean,0.360625,22
+goal_projection,euclidean_goal_steering_v1--bdb72f7142a1,validation_holdout_22,pre_correction_overlap_exposure,pair-s per agent-s,mean,0.5273152963789673,22
+goal_projection,euclidean_goal_steering_v1--bdb72f7142a1,validation_holdout_22,maximum_pre_correction_penetration,m,median,0.055770682289431286,22
+goal_projection,euclidean_goal_steering_v1--bdb72f7142a1,validation_holdout_22,normalized_travel_time,ratio conditional on success,median,1.5775259233024912,20
+goal_projection,euclidean_goal_steering_v1--bdb72f7142a1,validation_holdout_22,path_ratio,path length / straight-line distance,median,0.9581647447565824,20
+goal_projection,euclidean_goal_steering_v1--bdb72f7142a1,validation_holdout_22,rms_acceleration,m/s^2,median,3.968560656834999,22
+goal_projection,euclidean_goal_steering_v1--bdb72f7142a1,validation_holdout_22,rms_jerk,m/s^3,median,291.0719174940408,22
+goal_projection,euclidean_goal_steering_v1--bdb72f7142a1,validation_holdout_22,correction_ratio,ratio,median,0.6077786909488437,22
+isotropic,riemannian_ablation_v1--ac898d07f5a5,validation_holdout_22,success_fraction,fraction,mean,0.3519345238095238,22
+isotropic,riemannian_ablation_v1--ac898d07f5a5,validation_holdout_22,pre_correction_overlap_exposure,pair-s per agent-s,mean,0.486830623759921,22
+isotropic,riemannian_ablation_v1--ac898d07f5a5,validation_holdout_22,maximum_pre_correction_penetration,m,median,0.03821075580967736,22
+isotropic,riemannian_ablation_v1--ac898d07f5a5,validation_holdout_22,normalized_travel_time,ratio conditional on success,median,1.4908409582852478,20
+isotropic,riemannian_ablation_v1--ac898d07f5a5,validation_holdout_22,path_ratio,path length / straight-line distance,median,0.9649572786302789,20
+isotropic,riemannian_ablation_v1--ac898d07f5a5,validation_holdout_22,rms_acceleration,m/s^2,median,2.362206832050803,22
+isotropic,riemannian_ablation_v1--ac898d07f5a5,validation_holdout_22,rms_jerk,m/s^3,median,161.17999315186535,22
+isotropic,riemannian_ablation_v1--ac898d07f5a5,validation_holdout_22,correction_ratio,ratio,median,0.5605944284364963,22
+no_closing,riemannian_ablation_v1--e164f8b6f683,validation_holdout_22,success_fraction,fraction,mean,0.18936011904761907,22
+no_closing,riemannian_ablation_v1--e164f8b6f683,validation_holdout_22,pre_correction_overlap_exposure,pair-s per agent-s,mean,0.19593654513888842,22
+no_closing,riemannian_ablation_v1--e164f8b6f683,validation_holdout_22,maximum_pre_correction_penetration,m,median,0.006361887640608299,22
+no_closing,riemannian_ablation_v1--e164f8b6f683,validation_holdout_22,normalized_travel_time,ratio conditional on success,median,,20
+no_closing,riemannian_ablation_v1--e164f8b6f683,validation_holdout_22,path_ratio,path length / straight-line distance,median,,20
+no_closing,riemannian_ablation_v1--e164f8b6f683,validation_holdout_22,rms_acceleration,m/s^2,median,1.0410194044582237,22
+no_closing,riemannian_ablation_v1--e164f8b6f683,validation_holdout_22,rms_jerk,m/s^3,median,59.30217637184203,22
+no_closing,riemannian_ablation_v1--e164f8b6f683,validation_holdout_22,correction_ratio,ratio,median,0.1817805120402191,22
+no_conditioning,riemannian_ablation_v1--398a05790a7c,validation_holdout_22,success_fraction,fraction,mean,0.09032738095238095,22
+no_conditioning,riemannian_ablation_v1--398a05790a7c,validation_holdout_22,pre_correction_overlap_exposure,pair-s per agent-s,mean,0.05153467261904772,22
+no_conditioning,riemannian_ablation_v1--398a05790a7c,validation_holdout_22,maximum_pre_correction_penetration,m,median,0.00482636518137446,22
+no_conditioning,riemannian_ablation_v1--398a05790a7c,validation_holdout_22,normalized_travel_time,ratio conditional on success,median,,13
+no_conditioning,riemannian_ablation_v1--398a05790a7c,validation_holdout_22,path_ratio,path length / straight-line distance,median,,13
+no_conditioning,riemannian_ablation_v1--398a05790a7c,validation_holdout_22,rms_acceleration,m/s^2,median,0.8430524279137682,22
+no_conditioning,riemannian_ablation_v1--398a05790a7c,validation_holdout_22,rms_jerk,m/s^3,median,47.26697723566445,22
+no_conditioning,riemannian_ablation_v1--398a05790a7c,validation_holdout_22,correction_ratio,ratio,median,0.08318146318109691,22
+no_visibility,riemannian_ablation_v1--f3a87c3c5dae,validation_holdout_22,success_fraction,fraction,mean,0.3235565476190476,22
+no_visibility,riemannian_ablation_v1--f3a87c3c5dae,validation_holdout_22,pre_correction_overlap_exposure,pair-s per agent-s,mean,0.4992382006448429,22
+no_visibility,riemannian_ablation_v1--f3a87c3c5dae,validation_holdout_22,maximum_pre_correction_penetration,m,median,0.03405614742938051,22
+no_visibility,riemannian_ablation_v1--f3a87c3c5dae,validation_holdout_22,normalized_travel_time,ratio conditional on success,median,1.4822895645380356,20
+no_visibility,riemannian_ablation_v1--f3a87c3c5dae,validation_holdout_22,path_ratio,path length / straight-line distance,median,0.9668325316906454,20
+no_visibility,riemannian_ablation_v1--f3a87c3c5dae,validation_holdout_22,rms_acceleration,m/s^2,median,2.6164988219720686,22
+no_visibility,riemannian_ablation_v1--f3a87c3c5dae,validation_holdout_22,rms_jerk,m/s^3,median,185.9032041247281,22
+no_visibility,riemannian_ablation_v1--f3a87c3c5dae,validation_holdout_22,correction_ratio,ratio,median,0.6017280651725226,22

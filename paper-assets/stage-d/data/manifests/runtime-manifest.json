@@ -1,0 +1,758 @@
+{
+  "runtimeManifestVersion": 1,
+  "status": "PASS",
+  "repositoryCommit": "6bdc66c489e09c7bbdce2a82ebf344b63b006411",
+  "freezeManifestSha256": "a53a6aadce6ba4e0b54397975b02dd6e9affed77b50a379e1747c2d0fcb81890",
+  "protocol": {
+    "populationSizes": [
+      50,
+      100,
+      200
+    ],
+    "horizonSeconds": 10,
+    "warmups": 1,
+    "repetitions": 5
+  },
+  "hardware": {
+    "cpuModel": "AMD Ryzen 5 4600H with Radeon Graphics         ",
+    "logicalCoreCount": 12,
+    "physicalCoreCount": null,
+    "memoryBytes": 16505966592,
+    "operatingSystem": "win32 10.0.26200",
+    "nodeVersion": "v22.17.0",
+    "pythonVersion": "Python 3.12.10",
+    "compiler": "g++ (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders, r3) 15.2.0",
+    "baselineBuildManifestSha256": "85f7c5898c8218b0d0e494572162e199a86c15d74a6c634c0185d1690973ddb9",
+    "powerMode": "Power Scheme GUID: b3e2ac52-62c2-4f76-8e82-ced79ec8b0fa  (Energy Star)"
+  },
+  "instrumentation": {
+    "endToEnd": "measured",
+    "controllerOnly": "unavailable without modifying frozen implementation",
+    "contactDiagnostics": "unavailable without modifying frozen implementation",
+    "positionalCorrection": "unavailable without modifying frozen implementation"
+  },
+  "measurements": [
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 50,
+      "repetition": 0,
+      "wallClockSeconds": 0.6845094999999999,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 43827.00313143938,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 50,
+      "repetition": 1,
+      "wallClockSeconds": 0.672241,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 44626.85257221741,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 50,
+      "repetition": 2,
+      "wallClockSeconds": 0.7250588000000002,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 41375.95461223282,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 50,
+      "repetition": 3,
+      "wallClockSeconds": 0.7485475000000001,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 40077.61698489407,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 50,
+      "repetition": 4,
+      "wallClockSeconds": 0.7591666999999998,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 39517.012534928115,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 50,
+      "repetition": 0,
+      "wallClockSeconds": 0.8065640999999996,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 37194.81191885433,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 50,
+      "repetition": 1,
+      "wallClockSeconds": 2.3812174999999987,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 12598.597146207778,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 50,
+      "repetition": 2,
+      "wallClockSeconds": 1.1463341999999994,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 26170.378585930714,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 50,
+      "repetition": 3,
+      "wallClockSeconds": 1.4784970999999987,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 20290.875105537933,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 50,
+      "repetition": 4,
+      "wallClockSeconds": 1.0773562,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 27845.943616419525,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 50,
+      "repetition": 0,
+      "wallClockSeconds": 2.6462879000000012,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 11336.63498971521,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 50,
+      "repetition": 1,
+      "wallClockSeconds": 1.809400600000001,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 16580.076297089756,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 50,
+      "repetition": 2,
+      "wallClockSeconds": 1.731581100000003,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 17325.206425503227,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 50,
+      "repetition": 3,
+      "wallClockSeconds": 1.8944362000000001,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 15835.84604221562,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 50,
+      "repetition": 4,
+      "wallClockSeconds": 2.2733880999999965,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 13196.163030852518,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 50,
+      "repetition": 0,
+      "wallClockSeconds": 6.931977100000004,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 4327.769634438057,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 50,
+      "repetition": 1,
+      "wallClockSeconds": 6.518855499999998,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 4602.034820376063,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 50,
+      "repetition": 2,
+      "wallClockSeconds": 6.9816970000000005,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 4296.949581169162,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 50,
+      "repetition": 3,
+      "wallClockSeconds": 6.507102000000006,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 4610.347279019135,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 50,
+      "repetition": 4,
+      "wallClockSeconds": 6.4903796,
+      "agentSteps": 30000,
+      "agentStepsPerSecond": 4622.225794004406,
+      "scenarioSha256": "45cdd2544353ee62a5d55f334e16cbc8844dc5481bed20d461eeb0a5358a4c37"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 100,
+      "repetition": 0,
+      "wallClockSeconds": 1.7403684999999969,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 34475.45735285378,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 100,
+      "repetition": 1,
+      "wallClockSeconds": 1.6938448000000061,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 35422.37163640954,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 100,
+      "repetition": 2,
+      "wallClockSeconds": 1.7102476000000024,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 35082.63949617583,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 100,
+      "repetition": 3,
+      "wallClockSeconds": 1.7487886,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 34309.46427715734,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 100,
+      "repetition": 4,
+      "wallClockSeconds": 1.7214945000000006,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 34853.436940983534,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 100,
+      "repetition": 0,
+      "wallClockSeconds": 1.211077099999995,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 49542.67568926888,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 100,
+      "repetition": 1,
+      "wallClockSeconds": 1.2869698999999963,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 46621.136982302516,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 100,
+      "repetition": 2,
+      "wallClockSeconds": 1.2415362000000023,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 48327.22557747401,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 100,
+      "repetition": 3,
+      "wallClockSeconds": 1.2755804000000062,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 47037.411361917846,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 100,
+      "repetition": 4,
+      "wallClockSeconds": 1.2335348000000086,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 48640.70312406231,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 100,
+      "repetition": 0,
+      "wallClockSeconds": 2.0944006999999982,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 28647.813190665976,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 100,
+      "repetition": 1,
+      "wallClockSeconds": 2.180448600000003,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 27517.273280369882,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 100,
+      "repetition": 2,
+      "wallClockSeconds": 1.9172926000000006,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 31294.12798025715,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 100,
+      "repetition": 3,
+      "wallClockSeconds": 1.975424100000004,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 30373.224666034945,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 100,
+      "repetition": 4,
+      "wallClockSeconds": 2.053125800000009,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 29223.73290521201,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 100,
+      "repetition": 0,
+      "wallClockSeconds": 10.119252299999992,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 5929.291831176109,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 100,
+      "repetition": 1,
+      "wallClockSeconds": 9.801890000000014,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 6121.268449248044,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 100,
+      "repetition": 2,
+      "wallClockSeconds": 9.599974199999997,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 6250.016796920144,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 100,
+      "repetition": 3,
+      "wallClockSeconds": 10.148449900000006,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 5912.232960818968,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 100,
+      "repetition": 4,
+      "wallClockSeconds": 11.078266499999998,
+      "agentSteps": 60000,
+      "agentStepsPerSecond": 5416.009806227356,
+      "scenarioSha256": "a92d7c8a3d94ccb8bfd3e7d3474c599e756579645fa3b40e2ba47eb3daf38a36"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 200,
+      "repetition": 0,
+      "wallClockSeconds": 4.9331685,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 24325.13707974905,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 200,
+      "repetition": 1,
+      "wallClockSeconds": 4.782494800000015,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 25091.50663373426,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 200,
+      "repetition": 2,
+      "wallClockSeconds": 4.493925999999978,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 26702.70939040843,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 200,
+      "repetition": 3,
+      "wallClockSeconds": 4.532023199999996,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 26478.240446783264,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 200,
+      "repetition": 4,
+      "wallClockSeconds": 4.953549200000008,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 24225.05463355442,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 200,
+      "repetition": 0,
+      "wallClockSeconds": 3.900777999999991,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 30763.093926391164,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 200,
+      "repetition": 1,
+      "wallClockSeconds": 3.926707800000004,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 30559.951519692877,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 200,
+      "repetition": 2,
+      "wallClockSeconds": 3.9141408999999987,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 30658.06854321469,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 200,
+      "repetition": 3,
+      "wallClockSeconds": 3.9132163,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 30665.31231611194,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 200,
+      "repetition": 4,
+      "wallClockSeconds": 3.905810299999983,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 30723.458330784913,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 200,
+      "repetition": 0,
+      "wallClockSeconds": 4.134424299999984,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 29024.597209338302,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 200,
+      "repetition": 1,
+      "wallClockSeconds": 4.270382299999998,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 28100.528610752266,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 200,
+      "repetition": 2,
+      "wallClockSeconds": 4.186945700000011,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 28660.510213925074,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 200,
+      "repetition": 3,
+      "wallClockSeconds": 4.193432400000019,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 28616.17609479038,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 200,
+      "repetition": 4,
+      "wallClockSeconds": 4.135567699999985,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 29016.57250103787,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 200,
+      "repetition": 0,
+      "wallClockSeconds": 23.374328700000014,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 5133.837276789897,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 200,
+      "repetition": 1,
+      "wallClockSeconds": 23.460556500000006,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 5114.968180742003,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 200,
+      "repetition": 2,
+      "wallClockSeconds": 24.16573960000003,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 4965.707732777186,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 200,
+      "repetition": 3,
+      "wallClockSeconds": 23.601789899999975,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 5084.360148464847,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 200,
+      "repetition": 4,
+      "wallClockSeconds": 23.771493900000003,
+      "agentSteps": 120000,
+      "agentStepsPerSecond": 5048.06305000461,
+      "scenarioSha256": "6fc90a35202ef8f1aceadfccaf6e288c077b5576034aa1cea8f9769bd555b6db"
+    }
+  ],
+  "summaries": [
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 50,
+      "medianWallClockSeconds": 0.7250588000000002,
+      "firstQuartileWallClockSeconds": 0.6845094999999999,
+      "thirdQuartileWallClockSeconds": 0.7485475000000001,
+      "interquartileRangeSeconds": 0.06403800000000026,
+      "medianAgentStepsPerSecond": 41375.95461223282
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 100,
+      "medianWallClockSeconds": 1.7214945000000006,
+      "firstQuartileWallClockSeconds": 1.7102476000000024,
+      "thirdQuartileWallClockSeconds": 1.7403684999999969,
+      "interquartileRangeSeconds": 0.030120899999994455,
+      "medianAgentStepsPerSecond": 34853.436940983534
+    },
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "population": 200,
+      "medianWallClockSeconds": 4.782494800000015,
+      "firstQuartileWallClockSeconds": 4.532023199999996,
+      "thirdQuartileWallClockSeconds": 4.9331685,
+      "interquartileRangeSeconds": 0.40114530000000403,
+      "medianAgentStepsPerSecond": 25091.50663373426
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 50,
+      "medianWallClockSeconds": 1.1463341999999994,
+      "firstQuartileWallClockSeconds": 1.0773562,
+      "thirdQuartileWallClockSeconds": 1.4784970999999987,
+      "interquartileRangeSeconds": 0.4011408999999986,
+      "medianAgentStepsPerSecond": 26170.378585930714
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 100,
+      "medianWallClockSeconds": 1.2415362000000023,
+      "firstQuartileWallClockSeconds": 1.2335348000000086,
+      "thirdQuartileWallClockSeconds": 1.2755804000000062,
+      "interquartileRangeSeconds": 0.042045599999997574,
+      "medianAgentStepsPerSecond": 48327.22557747401
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "population": 200,
+      "medianWallClockSeconds": 3.9132163,
+      "firstQuartileWallClockSeconds": 3.905810299999983,
+      "thirdQuartileWallClockSeconds": 3.9141408999999987,
+      "interquartileRangeSeconds": 0.008330600000015842,
+      "medianAgentStepsPerSecond": 30665.31231611194
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 50,
+      "medianWallClockSeconds": 1.8944362000000001,
+      "firstQuartileWallClockSeconds": 1.809400600000001,
+      "thirdQuartileWallClockSeconds": 2.2733880999999965,
+      "interquartileRangeSeconds": 0.46398749999999556,
+      "medianAgentStepsPerSecond": 15835.84604221562
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 100,
+      "medianWallClockSeconds": 2.053125800000009,
+      "firstQuartileWallClockSeconds": 1.975424100000004,
+      "thirdQuartileWallClockSeconds": 2.0944006999999982,
+      "interquartileRangeSeconds": 0.11897659999999433,
+      "medianAgentStepsPerSecond": 29223.73290521201
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "population": 200,
+      "medianWallClockSeconds": 4.186945700000011,
+      "firstQuartileWallClockSeconds": 4.135567699999985,
+      "thirdQuartileWallClockSeconds": 4.193432400000019,
+      "interquartileRangeSeconds": 0.0578647000000343,
+      "medianAgentStepsPerSecond": 28660.510213925074
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 50,
+      "medianWallClockSeconds": 6.518855499999998,
+      "firstQuartileWallClockSeconds": 6.507102000000006,
+      "thirdQuartileWallClockSeconds": 6.931977100000004,
+      "interquartileRangeSeconds": 0.42487509999999773,
+      "medianAgentStepsPerSecond": 4602.034820376063
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 100,
+      "medianWallClockSeconds": 10.119252299999992,
+      "firstQuartileWallClockSeconds": 9.801890000000014,
+      "thirdQuartileWallClockSeconds": 10.148449900000006,
+      "interquartileRangeSeconds": 0.3465598999999919,
+      "medianAgentStepsPerSecond": 5929.291831176109
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "population": 200,
+      "medianWallClockSeconds": 23.601789899999975,
+      "firstQuartileWallClockSeconds": 23.460556500000006,
+      "thirdQuartileWallClockSeconds": 23.771493900000003,
+      "interquartileRangeSeconds": 0.3109373999999967,
+      "medianAgentStepsPerSecond": 5084.360148464847
+    }
+  ]
+}

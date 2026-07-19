@@ -1,0 +1,13 @@
+axis,candidateId,methodKey,status,fixedReference,macroSuccess,macroOverlapExposure,macroMaximumPenetration,macroNormalizedTravelTime,macroRmsAcceleration
+alpha,riemannian-01-alpha-low,conditioned_riemannian_metric_v1--420e71740c9e,VALID,preregistered_default,0.3989583333333333,0.37534525876323455,0.032748876448310704,1.2862813874943293,1.6220323059356987
+alpha,riemannian-00-default,conditioned_riemannian_metric_v1--6ea0faf92d4b,VALID,preregistered_default,0.4583333333333333,0.3385662615740756,0.028811469831321768,1.3375661863145085,1.729771268493311
+alpha,riemannian-02-alpha-high,conditioned_riemannian_metric_v1--d79d42418421,VALID,preregistered_default,0.3729166666666667,0.2989656911375703,0.027866501061248418,1.420370426587616,2.245344009962646
+sigma,riemannian-03-sigma-low,conditioned_riemannian_metric_v1--7a4a62762f6b,VALID,preregistered_default,0.415625,0.3986750785383628,0.03284208929423352,1.2241606414002724,1.7051994339472967
+sigma,riemannian-00-default,conditioned_riemannian_metric_v1--6ea0faf92d4b,VALID,preregistered_default,0.4583333333333333,0.3385662615740756,0.028811469831321768,1.3375661863145085,1.729771268493311
+sigma,riemannian-04-sigma-high,conditioned_riemannian_metric_v1--0510794280eb,VALID,preregistered_default,0.38958333333333334,0.2943187210648158,0.026965037637694207,1.49768015679681,2.2031907804414335
+rho,riemannian-05-rho-low,conditioned_riemannian_metric_v1--69f42796b315,VALID,preregistered_default,0.38958333333333334,0.3941683821097876,0.03273434265136776,1.2987948614183156,1.5937787921356592
+rho,riemannian-00-default,conditioned_riemannian_metric_v1--6ea0faf92d4b,VALID,preregistered_default,0.4583333333333333,0.3385662615740756,0.028811469831321768,1.3375661863145085,1.729771268493311
+rho,riemannian-06-rho-high,conditioned_riemannian_metric_v1--ba99cff92ad5,VALID,preregistered_default,0.41250000000000003,0.3049407035383619,0.026289455643006054,1.3625902139340946,2.3610065123719504
+velocityTimeConstant,riemannian-07-tau-immediate,conditioned_riemannian_metric_v1--e7de29b5aa31,VALID,preregistered_default,0.41354166666666664,0.331011904761905,0.0537351173301821,1.554024262242589,24.34737692522119
+velocityTimeConstant,riemannian-00-default,conditioned_riemannian_metric_v1--6ea0faf92d4b,VALID,preregistered_default,0.4583333333333333,0.3385662615740756,0.028811469831321768,1.3375661863145085,1.729771268493311
+velocityTimeConstant,riemannian-08-tau-slow,conditioned_riemannian_metric_v1--a508a7bc9f1d,VALID,preregistered_default,0.37395833333333334,0.28373296957671923,0.013701256394182973,1.3658535309845967,1.5329937405137262

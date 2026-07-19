@@ -1,0 +1,437 @@
+{
+  "candidateManifestVersion": 1,
+  "repositoryCommit": "0e9639024632ef50f3218f3bd90dee9e67242e83",
+  "planHashes": {
+    "studyPlanSha256": "af31236180c7c369df38ef2de19806cd9b06e3b6cbf933cb08a34526fb75b7a9",
+    "metricPolicySha256": "52dc0d398bd74a071121b0f51ac34a7e57e5c96190f76ec9f9cc499c0f6f82e1",
+    "candidateSpaceSha256": "7f3aeadc07488c5c87af7a3703fc83e858737b7d751e54fc667e005d1245909f",
+    "scenarioPartitionsSha256": "fb144e36f5798e79a519b35315ba441184c0cc6b69d45840e94b47f204dc45d3"
+  },
+  "candidateSpaceSha256": "7f3aeadc07488c5c87af7a3703fc83e858737b7d751e54fc667e005d1245909f",
+  "candidates": [
+    {
+      "candidateId": "riemannian-00-default",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--6ea0faf92d4b",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-00-default.json",
+      "methodConfigCanonicalSha256": "6ea0faf92d4b068c186e6c7de8748e4a6357ef7e0d8ebd94c702c21b97170a9d",
+      "methodConfigSourceSha256": "d523976248d88fb5e1c9d308793465e37f19f171a0b54c71ec61e12b8a0e9f3b"
+    },
+    {
+      "candidateId": "riemannian-01-alpha-low",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--420e71740c9e",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-01-alpha-low.json",
+      "methodConfigCanonicalSha256": "420e71740c9e77f4ed049adb5a70ffb41ae8fb969218d39294ada63e9d28765d",
+      "methodConfigSourceSha256": "8d395a48f9d5517d3e66e3926e46db8ed267e07370efab24a14899e975f63a0c"
+    },
+    {
+      "candidateId": "riemannian-02-alpha-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--d79d42418421",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-02-alpha-high.json",
+      "methodConfigCanonicalSha256": "d79d42418421f3c3f1f524b21dd277a0561d0ecc2098761382fb1653a10578fa",
+      "methodConfigSourceSha256": "9e280fdf7296e182660afd6f89c7fc31b0275f502e21eac133bcc210da5eb614"
+    },
+    {
+      "candidateId": "riemannian-03-sigma-low",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--7a4a62762f6b",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-03-sigma-low.json",
+      "methodConfigCanonicalSha256": "7a4a62762f6b57a2978eb6a1a906bc9a8c085543f5ef50b3d30fcd58a0255525",
+      "methodConfigSourceSha256": "4e35b2005f83d0e272a5663cc31437532e2368616eeb84ae01dcd1996c803489"
+    },
+    {
+      "candidateId": "riemannian-04-sigma-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--0510794280eb",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-04-sigma-high.json",
+      "methodConfigCanonicalSha256": "0510794280eb9bda6d73f32976ec5bbd51280820f3eb2eb53340fa4a55448a16",
+      "methodConfigSourceSha256": "dab601d75084373f889eafa528a53b6cb437053fb0789d0ed153bd9e3f24a9c6"
+    },
+    {
+      "candidateId": "riemannian-05-rho-low",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--69f42796b315",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-05-rho-low.json",
+      "methodConfigCanonicalSha256": "69f42796b3152793e31efb769bc446e1a3e9b8cd8ea116aabb308df0895ca07e",
+      "methodConfigSourceSha256": "92948f06694601ca124f2cd4b5c236f22da9fbb9e53d7da503889e07db16e164"
+    },
+    {
+      "candidateId": "riemannian-06-rho-high",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ba99cff92ad5",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-06-rho-high.json",
+      "methodConfigCanonicalSha256": "ba99cff92ad5522c99cf0054b19ef5c693f677486ba2c03c2b76c758fa928927",
+      "methodConfigSourceSha256": "01ff0f7231b8ebf0cfe6133d47e18792eab2ff60ae57daae01b18537cc5af19f"
+    },
+    {
+      "candidateId": "riemannian-07-tau-immediate",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--e7de29b5aa31",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-07-tau-immediate.json",
+      "methodConfigCanonicalSha256": "e7de29b5aa31f925e56524c4a4e3679454b6b88ce200ac5c9602206fe75689ef",
+      "methodConfigSourceSha256": "3d86052f093d51612f87632c0b821c93f33e27bd617be90a32e90789b868f226"
+    },
+    {
+      "candidateId": "riemannian-08-tau-slow",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--a508a7bc9f1d",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-08-tau-slow.json",
+      "methodConfigCanonicalSha256": "a508a7bc9f1d2853d3e68757f95a7833a08a5cf8d290f8460ced830db332fdb2",
+      "methodConfigSourceSha256": "09b071d8f2f541f16147382103401173dfff97a8ac820884bab36ec1c850b390"
+    },
+    {
+      "candidateId": "riemannian-09-corner-llll",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--93d3d7ef9e3f",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-09-corner-llll.json",
+      "methodConfigCanonicalSha256": "93d3d7ef9e3fe1b567d1a93a66a4b6a0004b807712e3e55c1468b5da17d10abd",
+      "methodConfigSourceSha256": "ff337813c729acb79b55ee609fd62778ebcfc9c3dd2c10024c4d8a572117f0b3"
+    },
+    {
+      "candidateId": "riemannian-10-corner-hhhh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--ef8a5629ea8c",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-10-corner-hhhh.json",
+      "methodConfigCanonicalSha256": "ef8a5629ea8c68be36cec23bf0ea118ab220a96b15518e352283fa2ab5321db3",
+      "methodConfigSourceSha256": "47d0f00d250c427795b65590f2cc74df2ff849cacbd5289cfec5375707b369e6"
+    },
+    {
+      "candidateId": "riemannian-11-corner-llhh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--cca967fddd60",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-11-corner-llhh.json",
+      "methodConfigCanonicalSha256": "cca967fddd605f70891c3646c8682aed97d4ad6a77d9fe2fb36b00be0bc63358",
+      "methodConfigSourceSha256": "94d841a4055462f11ff482b14f52f0f5efd4b77a6d69ca911b88a62a672b3e0b"
+    },
+    {
+      "candidateId": "riemannian-12-corner-lhlh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--67c0a26f878a",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-12-corner-lhlh.json",
+      "methodConfigCanonicalSha256": "67c0a26f878a80945a87bfe2b004d002a14ce67d1938a17687eb574236f0a426",
+      "methodConfigSourceSha256": "5fefcb9f17ea43bec22f58cf72f72bd72ba7c303cf1359885ddd8ca3be3a8c83"
+    },
+    {
+      "candidateId": "riemannian-13-corner-lhhl",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--c53721cea968",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-13-corner-lhhl.json",
+      "methodConfigCanonicalSha256": "c53721cea96875d1fb1a07d0555c03f3d23a0b2ecb5f7d94d3b99939f7947c87",
+      "methodConfigSourceSha256": "b18ecd7a6f676824e8da9703bdcd805907eeba91aa4f0e90134cc664df28e5e7"
+    },
+    {
+      "candidateId": "riemannian-14-corner-hllh",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-14-corner-hllh.json",
+      "methodConfigCanonicalSha256": "45386d3d53167df602a2d685d6220493cd0bf6d5c882b2e20a96739f3d1993bd",
+      "methodConfigSourceSha256": "7abb2f44348c278b7b42d54ea384b27af490a1dc2c27a67a78b421ccca92b1f4"
+    },
+    {
+      "candidateId": "riemannian-15-corner-hlhl",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--710552248cd7",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-15-corner-hlhl.json",
+      "methodConfigCanonicalSha256": "710552248cd7091884ce6b98cf5650b2ade228779bcf3d69a4ddcb1774d5bd95",
+      "methodConfigSourceSha256": "d5718622d46f7dfca00f4e591afc83bd4e1e77e152121aaa27195516353332d1"
+    },
+    {
+      "candidateId": "riemannian-16-corner-hhll",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--42bde5f1dc30",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\conditioned_riemannian_metric_v1\\riemannian-16-corner-hhll.json",
+      "methodConfigCanonicalSha256": "42bde5f1dc30a32236cf4fb25011964d59e0b7e5361f79e9e5ca769322a7548b",
+      "methodConfigSourceSha256": "a49f60df2b1186cee567e2d4da861f7d78d633f0c8103b62d32f3706289d5971"
+    },
+    {
+      "candidateId": "orca-n3-m10-h2",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--3d9716ec4790",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n3-m10-h2.json",
+      "methodConfigCanonicalSha256": "3d9716ec4790b74a58791a06bc7fe3b39087352ebed7ada23acaf0018032c57e",
+      "methodConfigSourceSha256": "945e6b3287185c3405c3ea3eb98e157b5e1da92deb0f9c424e2ec01a60701761"
+    },
+    {
+      "candidateId": "orca-n3-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--e49ae70d625e",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n3-m10-h5.json",
+      "methodConfigCanonicalSha256": "e49ae70d625e73e76a0d481d1a37065e0bdab65db88c6b2fa0ea1a6c34345440",
+      "methodConfigSourceSha256": "8e8a3965f086c840afada769ab9c746252ddc96ad63a12b1b47bb9656a8d23c9"
+    },
+    {
+      "candidateId": "orca-n3-m10-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--3f9bfef528a4",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n3-m10-h8.json",
+      "methodConfigCanonicalSha256": "3f9bfef528a401e3c6c3de65aee712f46e75059b24ad5e818e11b4d38bbc912d",
+      "methodConfigSourceSha256": "c599341042db7e6c1aafab55a8b25abdb5e69df75341421b261a15cd1c837fde"
+    },
+    {
+      "candidateId": "orca-n3-m20-h2",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--6c4f03ba0fea",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n3-m20-h2.json",
+      "methodConfigCanonicalSha256": "6c4f03ba0fea4681874bf36a949e70c7972faccd570786927e249d5509c8c2c4",
+      "methodConfigSourceSha256": "2b30b368b78e9ad0de1257150355cdd46eee0158a04335a290970e056815d2f1"
+    },
+    {
+      "candidateId": "orca-n3-m20-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--569519354735",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n3-m20-h5.json",
+      "methodConfigCanonicalSha256": "5695193547358c312710ecf5165365f68f1b1e141affa2effcffcd332e31db88",
+      "methodConfigSourceSha256": "8c68fd421e49d6c8a445a7fffa30eace2599397b6c110c02d559136567451d0f"
+    },
+    {
+      "candidateId": "orca-n3-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--459bb9deff5a",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n3-m20-h8.json",
+      "methodConfigCanonicalSha256": "459bb9deff5af027f8aa39443017bc435346a547e3ba898467d5876933194cee",
+      "methodConfigSourceSha256": "bfa1b89eb232a9d9cdf7be67dd181a71de60aac3f6f137dacb66438ede586451"
+    },
+    {
+      "candidateId": "orca-n5-m10-h2",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--6f48164dde9d",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n5-m10-h2.json",
+      "methodConfigCanonicalSha256": "6f48164dde9d26edf5dcae265a6254ce5c8a20760d1f9a24353a1d983aca9fed",
+      "methodConfigSourceSha256": "7c0190ca8d6c4109b3db5767f950b3243a12e6980e46be09d16c35702cda58d4"
+    },
+    {
+      "candidateId": "orca-n5-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--61a8afce609f",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n5-m10-h5.json",
+      "methodConfigCanonicalSha256": "61a8afce609f313d663d723af97efe2aedd12c3e27317039ec21221d0b1585b2",
+      "methodConfigSourceSha256": "254d5352d0ecf6214c14e1ac80416ce7a713193c1896e4735f7d3329911c7ebe"
+    },
+    {
+      "candidateId": "orca-n5-m10-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--00311d61b585",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n5-m10-h8.json",
+      "methodConfigCanonicalSha256": "00311d61b58592b31acb879a17350e71d3ff41d2e5ba60db241b36d6d93ced13",
+      "methodConfigSourceSha256": "c5d423ab475eb40a2914efb54c593df5b8fa9b22991eca237fbac58cda3d28c8"
+    },
+    {
+      "candidateId": "orca-n5-m20-h2",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--210f92bd3985",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n5-m20-h2.json",
+      "methodConfigCanonicalSha256": "210f92bd39854dc615b6a6c652be11987f81d63551d4ac5afeadeeed81cd696f",
+      "methodConfigSourceSha256": "a6545ca95719d211bc3c0a89f792db41024e99534c3d259dc1c1626ab8cf7934"
+    },
+    {
+      "candidateId": "orca-n5-m20-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--9d442b8349e9",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n5-m20-h5.json",
+      "methodConfigCanonicalSha256": "9d442b8349e97f0ba014d8dd831ab11591aeebb500de0d62a10a10e078bfafe6",
+      "methodConfigSourceSha256": "8080ab5d443f03b279e5190081aa4ed6920957ca5cd98813c7f6a4d4d0db3b6b"
+    },
+    {
+      "candidateId": "orca-n5-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--b5fe64c2721a",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n5-m20-h8.json",
+      "methodConfigCanonicalSha256": "b5fe64c2721a6bda7bcaaa9afad073e2823d9ce8b38a2034123145c6879beab9",
+      "methodConfigSourceSha256": "dbce2eee0a66831d33314bbfec3bf4753e2e8999b678ec8d2c53a90673fde6e0"
+    },
+    {
+      "candidateId": "orca-n8-m10-h2",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--8007f1a69d57",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n8-m10-h2.json",
+      "methodConfigCanonicalSha256": "8007f1a69d57a0645d1296786c8f248cae2a3cce3ebd5bd12e2d4de567511d4c",
+      "methodConfigSourceSha256": "b1bdaaacd2a3a0e327ce8d5a74d420485a691e71af6dccbc5b37e3bfdb8ae4db"
+    },
+    {
+      "candidateId": "orca-n8-m10-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n8-m10-h5.json",
+      "methodConfigCanonicalSha256": "1ab544afd1fc33d961d4b70b7429cc45b0f95ce5f8f52af0f155eeb51f12e8cb",
+      "methodConfigSourceSha256": "81d5e4e8f6b133ced0af97bbd9b193f8c161fd8f5f40dd197c1fe092c072af8d"
+    },
+    {
+      "candidateId": "orca-n8-m10-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--4e21e58c4d3d",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n8-m10-h8.json",
+      "methodConfigCanonicalSha256": "4e21e58c4d3db1c794efaee1a020ac9b9c14bf805f0319c94445bc9de747cf48",
+      "methodConfigSourceSha256": "776e131e5e108bb845f720237a9d577a3b47b118472af05d45f624575834802e"
+    },
+    {
+      "candidateId": "orca-n8-m20-h2",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--62b0676477db",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n8-m20-h2.json",
+      "methodConfigCanonicalSha256": "62b0676477db830475f3e4cc9721824c266f60679ce21ed3827f0dd035a81b95",
+      "methodConfigSourceSha256": "10913cfb850951fc56061fcebb7c220df2bb0ecdd44a7490939f5be5be9b5c35"
+    },
+    {
+      "candidateId": "orca-n8-m20-h5",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--8f475247a736",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n8-m20-h5.json",
+      "methodConfigCanonicalSha256": "8f475247a736f32d421ac289b67f87a28297c0b68dd34fb7a7f90e89aa5222a7",
+      "methodConfigSourceSha256": "caa7c7095111ed4e7bd6bf48a0771c016c3c888ff7a2797011b6f8304e1d60d0"
+    },
+    {
+      "candidateId": "orca-n8-m20-h8",
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--8c9d27e8857f",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\orca_rvo2_v1\\orca-n8-m20-h8.json",
+      "methodConfigCanonicalSha256": "8c9d27e8857f02cbc196ed53f90fe09b41514039749223c15918e14ac4246d66",
+      "methodConfigSourceSha256": "ce180c8bd92ca1b9a4a684e58ddd1e2226418e77066e23852014bac167b0643f"
+    },
+    {
+      "candidateId": "sfm-r0.3-s10.2-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--4d270d003f6d",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.3-s10.2-o10.json",
+      "methodConfigCanonicalSha256": "4d270d003f6d6cec7267c369e538829f7961a72ffafcfffa912ee5913bd5b225",
+      "methodConfigSourceSha256": "2afc68cf424011985747e39fcf0c208c9c122d76000b03daffb347798ecf81bb"
+    },
+    {
+      "candidateId": "sfm-r0.3-s10.2-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--ef1ff03d20aa",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.3-s10.2-o20.json",
+      "methodConfigCanonicalSha256": "ef1ff03d20aaf4c4d01f766b6dc797b78ff75a9b3b2219287ac7df5ad4f122be",
+      "methodConfigSourceSha256": "10e2a3d8f963311ac9aaa5b607d75e8dc559acf697f0f8f0523c9d87b5659929"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.3-s2.55-o10.json",
+      "methodConfigCanonicalSha256": "a27575969af717dadc246085d7307517dff859b30189607de0ce1bf0ebd4ef10",
+      "methodConfigSourceSha256": "e8794f49838a1dbd163d80f03ee7266ca185ed554ec1497ba088ad22c09a16ac"
+    },
+    {
+      "candidateId": "sfm-r0.3-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bf0e6d47115e",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.3-s2.55-o20.json",
+      "methodConfigCanonicalSha256": "bf0e6d47115e06df873239b068ebb62d8239f201e6b6786fa0be42d2ceba394e",
+      "methodConfigSourceSha256": "32ee080617a2fabad2684f2a2bf4cd61e35b1894d8887f3c0da5d6ea8bc1a6ad"
+    },
+    {
+      "candidateId": "sfm-r0.3-s5.1-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--90075863e44c",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.3-s5.1-o10.json",
+      "methodConfigCanonicalSha256": "90075863e44c777c98e80e2707d1f53a7ba2cd77273289ad4a2c60e582e2356d",
+      "methodConfigSourceSha256": "36861411004dfd89eff5daf76d499f35d67878364f613e9fc11bf71e3166772e"
+    },
+    {
+      "candidateId": "sfm-r0.3-s5.1-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--7363a8f7776d",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.3-s5.1-o20.json",
+      "methodConfigCanonicalSha256": "7363a8f7776d7bc9735e23911732925bad2e9cea3b9eddb8c3c18b2e601fc153",
+      "methodConfigSourceSha256": "6de965009b95b8dd6865ef6c2900d5f7f4c7b28fe901791cbaa789492ddcdfc4"
+    },
+    {
+      "candidateId": "sfm-r0.5-s10.2-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--0c2e8f23fe0b",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.5-s10.2-o10.json",
+      "methodConfigCanonicalSha256": "0c2e8f23fe0b44af63bb43c8304a66b0a396312c3f85de6aa38a22d3e4525e40",
+      "methodConfigSourceSha256": "64d93b567718e1dbe7cc7a352eea6320c543c53f546bd70091efd9b4c511796f"
+    },
+    {
+      "candidateId": "sfm-r0.5-s10.2-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--b16efad73969",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.5-s10.2-o20.json",
+      "methodConfigCanonicalSha256": "b16efad73969036fc42bfc603b6dfa849affc41107731bd0a399c1e6bd7bcda6",
+      "methodConfigSourceSha256": "46427c3c7950cca434f098e63494b01bee429e792324d5104102a8881c173a21"
+    },
+    {
+      "candidateId": "sfm-r0.5-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--11ae13302428",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.5-s2.55-o10.json",
+      "methodConfigCanonicalSha256": "11ae13302428e21de4f56704d4691407c4708df3f60065752a1f17d0e452f575",
+      "methodConfigSourceSha256": "b35983ac128f7e65f5eb200b3b469689b6f2b102579eae3766300b76d779c30a"
+    },
+    {
+      "candidateId": "sfm-r0.5-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--eda8eca5b49b",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.5-s2.55-o20.json",
+      "methodConfigCanonicalSha256": "eda8eca5b49bad9a563f1ef0f2754d810c9d7b6d0d9920b61929a4264af5a224",
+      "methodConfigSourceSha256": "132e9ce9ce75a47b5de2e2a6e6abced9c1ef2367d828a55b1784ee0eeda54b53"
+    },
+    {
+      "candidateId": "sfm-r0.5-s5.1-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--894f0e48d466",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.5-s5.1-o10.json",
+      "methodConfigCanonicalSha256": "894f0e48d466ec4c09b2d83e24fb7e5dc7a4362a4d51158f0cd74da1583633e4",
+      "methodConfigSourceSha256": "8f0795b513eadb80a185e3b37c91140dfebd2e5e5a3d7679e16c018e5a7b3bd1"
+    },
+    {
+      "candidateId": "sfm-r0.5-s5.1-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--43a883a44adf",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.5-s5.1-o20.json",
+      "methodConfigCanonicalSha256": "43a883a44adf01f30e88dd58fd27a604498345cd05761e4bdb6b740ea1c18ad0",
+      "methodConfigSourceSha256": "69b8572ab2059eb5e0b6da8fbf96a66f5d840340c3667c42fac2ddeac6f45ea7"
+    },
+    {
+      "candidateId": "sfm-r0.8-s10.2-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--67b161932353",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.8-s10.2-o10.json",
+      "methodConfigCanonicalSha256": "67b1619323539bf5d5da724b61a3c05c8abf39370c8196478e8d6b996e525b0f",
+      "methodConfigSourceSha256": "83eb98ed3e773da2c3d7b12f3e49ae75f563300c844447414072d1eeb02e0eab"
+    },
+    {
+      "candidateId": "sfm-r0.8-s10.2-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--26b328deec19",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.8-s10.2-o20.json",
+      "methodConfigCanonicalSha256": "26b328deec1945b3f5aba5c2a61575f5ec05d56252ad1e9be375ecbabc442140",
+      "methodConfigSourceSha256": "d2e9116dd777d38f7d96b97a404a26c45f54c87346801d0e54714577e8619fae"
+    },
+    {
+      "candidateId": "sfm-r0.8-s2.55-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--bce90ed0156f",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.8-s2.55-o10.json",
+      "methodConfigCanonicalSha256": "bce90ed0156f5b1be610f7eb3b58d543dbe925c9654743780c31e61063d3dcd6",
+      "methodConfigSourceSha256": "e28b48ed6326baf89dcb61d4005b94b73d1574e6164bda6ac51d4a8d15ccb0c3"
+    },
+    {
+      "candidateId": "sfm-r0.8-s2.55-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--3f09ba2a4edc",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.8-s2.55-o20.json",
+      "methodConfigCanonicalSha256": "3f09ba2a4edc4217c4d4629dfa52f0bf11acc95d60bcd5f637556f6d34604f20",
+      "methodConfigSourceSha256": "560c27d812bb75ee01e42d1bc0f8595f6506a873e5d85082cc5409cdfb3cd1f4"
+    },
+    {
+      "candidateId": "sfm-r0.8-s5.1-o10",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--6e792829a53e",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.8-s5.1-o10.json",
+      "methodConfigCanonicalSha256": "6e792829a53e54bc0d678d5ae6c56e700ba5427ec1a86dc4a2a3c944dcd65b86",
+      "methodConfigSourceSha256": "4477bc260faa339a35334f465983877e4fc43a5a3ba9d25594eef51596b82609"
+    },
+    {
+      "candidateId": "sfm-r0.8-s5.1-o20",
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--021978ab89bb",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\candidates\\configs\\social_force_pysocialforce_v1\\sfm-r0.8-s5.1-o20.json",
+      "methodConfigCanonicalSha256": "021978ab89bb2f59d8db4279023be34c76be2bc078652000ba378608f1e59304",
+      "methodConfigSourceSha256": "1c9f050828f6427ef14c296b414287a857837971ada3608f4abd3803ce9ae8f4"
+    }
+  ]
+}

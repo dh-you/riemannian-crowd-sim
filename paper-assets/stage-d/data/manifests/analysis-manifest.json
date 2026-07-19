@@ -1,0 +1,16 @@
+{
+  "analysisManifestVersion": 1,
+  "status": "PASS",
+  "repositoryCommit": "6bdc66c489e09c7bbdce2a82ebf344b63b006411",
+  "freezeManifestSha256": "a53a6aadce6ba4e0b54397975b02dd6e9affed77b50a379e1747c2d0fcb81890",
+  "mergedTestManifestSha256": "aabd1cf29e0d693e258fcc88d39f4d3b9cb9151e98a6f561dd8adb1b134ba12a",
+  "inputRunCount": 1160,
+  "outputRowCounts": {
+    "mainResults": 52,
+    "perFamily": 148,
+    "pairedDifferences": 39,
+    "ablations": 48,
+    "sensitivity": 12,
+    "failures": 0
+  }
+}
