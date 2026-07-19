@@ -1,21 +1,21 @@
-import { correctPositions } from "../../../../src/core/corrections";
-import { measureContacts, requirePosition } from "../../../../src/core/diagnostics";
-import { add, firstSegmentDiskIntersection, isFiniteVec2, norm, scale, sub } from "../../../../src/core/math";
-import { smoothingCoefficient } from "../../../../src/core/SimulatorCore";
-import { SpatialHash } from "../../../../src/core/spatialHash";
+import { correctPositions } from "../../../src/core/corrections";
+import { measureContacts, requirePosition } from "../../../src/core/diagnostics";
+import { add, firstSegmentDiskIntersection, isFiniteVec2, norm, scale, sub } from "../../../src/core/math";
+import { smoothingCoefficient } from "../../../src/core/SimulatorCore";
+import { SpatialHash } from "../../../src/core/spatialHash";
 import type {
   AgentState,
   PerAgentStepDiagnostics,
   StepDiagnostics,
   Vec2,
   WallSegment,
-} from "../../../../src/core/types";
+} from "../../../src/core/types";
 import {
   validateAgentStates,
   validateSimulationParameters,
   validateWalls,
-} from "../../../../src/core/validation";
-import type { ExperimentScenario } from "../../../protocol/schema";
+} from "../../../src/core/validation";
+import type { ExperimentScenario } from "../../protocol/schema";
 import type { RiemannianAblationConfig } from "./config";
 import { RiemannianAblationController } from "./RiemannianAblationController";
 

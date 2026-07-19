@@ -7,10 +7,24 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+node_modules/
+dist/
+dist-ssr/
+coverage/
+
+# Local environments and temporary files
+.env
+.env.*
+!.env.example
 *.local
+.venv/
+venv/
+env/
+*.tmp
+*.temp
+*.bak
+*.orig
+*~
 /results/
 /experiments/tmp/
 /experiments/generated/

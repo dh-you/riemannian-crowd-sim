@@ -1,6 +1,5 @@
 import { closeSync, mkdirSync, openSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import type { AgentState } from "../../../src/core/types";
 import { createExperimentEngine } from "../../engines/factory";
 import { validateEngineStepRecord } from "../../engines/engineStep";
 import { RunMetricsAccumulator } from "../../metrics/RunMetricsAccumulator";
@@ -8,7 +7,7 @@ import { sha256Bytes } from "../../protocol/hash";
 import { identifyMethod } from "../../protocol/methodIdentity";
 import { parseMethodConfig, velocityTimeConstantForMethod } from "../../protocol/methodConfig";
 import { parseExperimentScenario } from "../../protocol/schema";
-import { containsNonFinite, writeJson } from "./auditUtils";
+import { containsNonFinite, writeJson } from "./runUtils";
 
 export interface AuditRunResult {
   outputDirectory: string;
@@ -105,26 +104,4 @@ export function runAuditedEngine(
   writeJson(metricsPath, metrics);
   writeJson(summaryPath, summary);
   return { outputDirectory, manifestPath, trajectoryPath, metricsPath, summaryPath };
-}
-
-export function finalStatesFromRecords(
-  scenarioAgents: readonly AgentState[],
-  lastAgents: readonly {
-    id: number;
-    postCorrectionPosition: readonly [number, number];
-    realizedVelocity: readonly [number, number];
-    arrived: boolean;
-  }[],
-): AgentState[] {
-  const lastById = new Map(lastAgents.map((agent) => [agent.id, agent]));
-  return scenarioAgents.map((definition) => {
-    const last = lastById.get(definition.id);
-    if (last === undefined) throw new Error(`Synthetic trajectory is missing agent ${definition.id}`);
-    return {
-      ...definition,
-      position: last.postCorrectionPosition,
-      velocity: last.realizedVelocity,
-      arrived: last.arrived,
-    };
-  });
 }

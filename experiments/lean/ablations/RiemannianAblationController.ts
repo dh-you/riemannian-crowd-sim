@@ -5,8 +5,8 @@ import {
   scale,
   scaleMat2,
   sub,
-} from "../../../../src/core/math";
-import type { MotionController, MotionControllerResult } from "../../../../src/core/MotionController";
+} from "../../../src/core/math";
+import type { MotionController, MotionControllerResult } from "../../../src/core/MotionController";
 import {
   anisotropicTensor,
   closingGate,
@@ -14,13 +14,13 @@ import {
   RiemannianController,
   visibilityGate,
   type EffectiveMetricResult,
-} from "../../../../src/core/RiemannianController";
-import { wendlandC2 } from "../../../../src/core/smoothstep";
-import type { AgentState } from "../../../../src/core/types";
+} from "../../../src/core/RiemannianController";
+import { wendlandC2 } from "../../../src/core/smoothstep";
+import type { AgentState } from "../../../src/core/types";
 import type { RiemannianAblationConfig } from "./config";
 import { RIEMANNIAN_ABLATION_METHOD_ID } from "./config";
 
-/** Experiment-only controller used for mechanically defined Stage D ablations. */
+/** Experiment-only controller used for the lean study's mechanically defined ablations. */
 export class RiemannianAblationController implements MotionController {
   readonly id = RIEMANNIAN_ABLATION_METHOD_ID;
   private readonly targetController: RiemannianController;

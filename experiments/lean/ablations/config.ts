@@ -1,7 +1,7 @@
-import { sha256Bytes } from "../../../protocol/hash";
-import { createMethodKey } from "../../../protocol/methodIdentity";
-import { requireFiniteNumber, validateControllerParameters } from "../../../../src/core/validation";
-import { requireStrictObject } from "../../../protocol/validation";
+import { sha256Bytes } from "../../protocol/hash";
+import { createMethodKey } from "../../protocol/methodIdentity";
+import { requireFiniteNumber, validateControllerParameters } from "../../../src/core/validation";
+import { requireStrictObject } from "../../protocol/validation";
 
 export const RIEMANNIAN_ABLATION_METHOD_ID = "riemannian_ablation_v1" as const;
 export const RIEMANNIAN_ABLATION_ENGINE_ID = "scientific_core_ablation_engine_v1" as const;

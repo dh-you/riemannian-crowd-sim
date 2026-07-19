@@ -1,7 +1,7 @@
 import { closeSync, existsSync, mkdirSync, openSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { runAuditedEngine } from "../audit/cli/auditRun";
+import { runAuditedEngine } from "./audit/auditRun";
 import { runExperiment } from "../cli/runExperiment";
 import { validateEngineStepRecord, type EngineStepRecord } from "../engines/engineStep";
 import { generateExperimentScenario } from "../generation/generateScenario";
@@ -11,8 +11,8 @@ import { identifyMethod } from "../protocol/methodIdentity";
 import { forEachJsonLineSync } from "../protocol/jsonLines";
 import { parseMethodConfig } from "../protocol/methodConfig";
 import { serializeExperimentScenario } from "../protocol/schema";
-import { runRiemannianAblation } from "../studies/stage-d/ablations/RiemannianAblationEngine";
-import { identifyRiemannianAblationConfig, parseRiemannianAblationConfig } from "../studies/stage-d/ablations/config";
+import { runRiemannianAblation } from "./ablations/RiemannianAblationEngine";
+import { identifyRiemannianAblationConfig, parseRiemannianAblationConfig } from "./ablations/config";
 import { assignmentIdentity, runKey, validateWorkerRecord, type Assignment, type RunRecord } from "./run";
 const METRIC_FIELDS = {
   successFraction: null, normalizedTravelTime: null, pathRatio: null,

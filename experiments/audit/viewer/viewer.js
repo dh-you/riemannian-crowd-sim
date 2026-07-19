@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const data = window.D0_REVIEW_DATA;
+  const data = window.LEAN_REVIEW_DATA;
   if (!data || data.reviewDataVersion !== 1 || !Array.isArray(data.scenarios)) {
     document.body.textContent = "Review data is missing or unsupported. Run npm run audit:viewer.";
     return;

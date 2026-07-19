@@ -45,7 +45,7 @@ const scenario: ExperimentScenario = {
   metadata: { units: { distance: "m", time: "s" } },
 };
 
-describe("Stage D0 trajectory review viewer", () => {
+describe("lean-study trajectory review viewer", () => {
   it("finds the globally closest physical pre-correction encounter", () => {
     const closest = computeClosestPreCorrectionEncounter(scenario, [
       step(0, 0.1, [-0.5, 0], [0.5, 0], [-0.5, 0], [0.5, 0]),

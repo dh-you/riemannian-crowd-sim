@@ -12,9 +12,9 @@ import {
   RIEMANNIAN_ABLATION_ENGINE_ID,
   RIEMANNIAN_ABLATION_METHOD_ID,
   type RiemannianAblationConfig,
-} from "../../experiments/studies/stage-d/ablations/config";
-import { RiemannianAblationController } from "../../experiments/studies/stage-d/ablations/RiemannianAblationController";
-import { RiemannianAblationSimulator } from "../../experiments/studies/stage-d/ablations/RiemannianAblationSimulator";
+} from "../../experiments/lean/ablations/config";
+import { RiemannianAblationController } from "../../experiments/lean/ablations/RiemannianAblationController";
+import { RiemannianAblationSimulator } from "../../experiments/lean/ablations/RiemannianAblationSimulator";
 import { parseExperimentScenario } from "../../experiments/protocol/schema";
 
 const temporaryDirectories: string[] = [];
@@ -25,7 +25,7 @@ afterEach(() => {
   }
 });
 
-describe("Stage D Riemannian ablation capability", () => {
+describe("lean-study Riemannian ablation capability", () => {
   it("strictly validates the experiment-only method configuration", () => {
     const parsed = parseRiemannianAblationConfig(fullConfig());
     expect(parsed.id).toBe(RIEMANNIAN_ABLATION_METHOD_ID);

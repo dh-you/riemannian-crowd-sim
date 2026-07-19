@@ -16,7 +16,7 @@ import { forEachJsonLineSync } from "../../protocol/jsonLines";
 import type { ExperimentScenario } from "../../protocol/schema";
 import { parseExperimentScenario } from "../../protocol/schema";
 
-const DEFAULT_AUDIT_ROOT = resolve("results/stage-d0-audit");
+const DEFAULT_AUDIT_ROOT = resolve("results/lean/audit");
 const DEFAULT_OUTPUT_DIRECTORY = resolve(DEFAULT_AUDIT_ROOT, "trajectory-review");
 const AVOIDANCE_ONSET_ANGLE_DEGREES = 5;
 
@@ -187,7 +187,7 @@ export function generateReviewIndex(options: ReviewIndexOptions = {}): ReviewInd
   const trajectoryPaths = runRoots.flatMap((root) => findNamedFiles(root, "engine-steps.jsonl"));
   if (trajectoryPaths.length === 0) {
     throw new Error(
-      `No Stage D0 engine-step evidence found under ${auditRoot}. Run npm run audit:visuals first.`,
+      `No lean-study engine-step evidence found under ${auditRoot}. Run npm run lean -- --phase audit first.`,
     );
   }
 
@@ -261,12 +261,12 @@ export function generateReviewIndex(options: ReviewIndexOptions = {}): ReviewInd
   const reviewData = {
     reviewDataVersion: 1,
     status: "PENDING HUMAN REVIEW",
-    notice: "This viewer is local inspection support only and does not alter Stage D0 readiness.",
+    notice: "This viewer is local inspection support only and does not record human approval.",
     scenarios: scenarioGroups,
   };
   writeFileSync(
     resolve(outputDirectory, "review-data.js"),
-    `globalThis.D0_REVIEW_DATA = ${JSON.stringify(reviewData)};\n`,
+    `globalThis.LEAN_REVIEW_DATA = ${JSON.stringify(reviewData)};\n`,
     "utf8",
   );
   const indexPath = resolve(outputDirectory, "index.html");

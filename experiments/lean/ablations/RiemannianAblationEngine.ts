@@ -1,8 +1,8 @@
-import type { AgentState } from "../../../../src/core/types";
-import { fixedStepCount } from "../../../cli/runScenario";
-import type { EngineStepRecord } from "../../../engines/engineStep";
-import { scientificDiagnosticToEngineStep } from "../../../engines/engineStep";
-import type { ExperimentScenario } from "../../../protocol/schema";
+import type { AgentState } from "../../../src/core/types";
+import { fixedStepCount } from "../../cli/runScenario";
+import type { EngineStepRecord } from "../../engines/engineStep";
+import { scientificDiagnosticToEngineStep } from "../../engines/engineStep";
+import type { ExperimentScenario } from "../../protocol/schema";
 import type { RiemannianAblationConfig } from "./config";
 import { RiemannianAblationSimulator } from "./RiemannianAblationSimulator";
 
