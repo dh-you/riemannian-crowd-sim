@@ -1,0 +1,6 @@
+{
+  "methodConfigVersion": 1,
+  "id": "euclidean_goal_steering_v1",
+  "velocityTimeConstant": 0.1,
+  "parameters": {}
+}

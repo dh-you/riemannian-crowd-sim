@@ -1,0 +1,3010 @@
+{
+  "freezeManifestVersion": 1,
+  "status": "FROZEN",
+  "preregistrationCommit": "0e9639024632ef50f3218f3bd90dee9e67242e83",
+  "repositoryShaBeforeFreeze": "0e9639024632ef50f3218f3bd90dee9e67242e83",
+  "planHashes": {
+    "studyPlanSha256": "af31236180c7c369df38ef2de19806cd9b06e3b6cbf933cb08a34526fb75b7a9",
+    "metricPolicySha256": "52dc0d398bd74a071121b0f51ac34a7e57e5c96190f76ec9f9cc499c0f6f82e1",
+    "candidateSpaceSha256": "7f3aeadc07488c5c87af7a3703fc83e858737b7d751e54fc667e005d1245909f",
+    "scenarioPartitionsSha256": "fb144e36f5798e79a519b35315ba441184c0cc6b69d45840e94b47f204dc45d3"
+  },
+  "d0ReportSha256": "95fa5af49b4f013a3ac8b88b7ae3966d5f239df8eec840d3f97a8033bcc5156e",
+  "humanReviewSha256": "fac48a5fe3577c8bd9ce6961b23b34c4de30009461fba8e2ca1d5a2deb7ca102",
+  "scenarioSuiteSha256": "392496d4421cf4eb768df524e54d3a3b84330fd23fb4e274e76c65ad72a45e07",
+  "selectionCodeSha256": "fd2f36ff656ab69e76830148dd9a4e6561610a5559a9f376e3ba6f5cc43b4eb1",
+  "candidateSpaceSha256": "7f3aeadc07488c5c87af7a3703fc83e858737b7d751e54fc667e005d1245909f",
+  "selectionManifestSha256": "6ed76152ac804a5105dbbae076b5ab325d072a47dcc191bca9b024ab971a96a3",
+  "validationPhaseManifestHashes": {
+    "screening": "91860d6291deb5e069092d1c81a88a38389b4535ccf49fe025f3b2e77c14de9c",
+    "validation-tuning": "fcb2647ce6d55c7bfda874c4012711972606683b44824a493b2239dbc6dcd105",
+    "validation-holdout": "b7472cc9ab8ade339acb8e05531e55860dabf4fd7be71e8d323008686a064043"
+  },
+  "thirdPartyLockSha256": "c5fc6e08fa99fa5f0dd6d79e9a93a227b5b8965e54ea40fb5fc62c26631f935c",
+  "baselineBuildManifestSha256": "85f7c5898c8218b0d0e494572162e199a86c15d74a6c634c0185d1690973ddb9",
+  "upstreamCommits": {
+    "rvo2": "b577921d2bc1281a6b721c2d4778f397d37da97d",
+    "pysocialforce": "8c81cd1ed5db8d0e933417cec77954aa967d4459"
+  },
+  "frozenMethods": [
+    {
+      "methodId": "conditioned_riemannian_metric_v1",
+      "methodKey": "conditioned_riemannian_metric_v1--45386d3d5316",
+      "path": "D:\\Research\\riemannian-crowd-sim\\experiments\\methods\\frozen\\stage-d\\conditioned-riemannian.json",
+      "methodConfigCanonicalSha256": "45386d3d53167df602a2d685d6220493cd0bf6d5c882b2e20a96739f3d1993bd",
+      "methodConfigSourceSha256": "7abb2f44348c278b7b42d54ea384b27af490a1dc2c27a67a78b421ccca92b1f4",
+      "engineId": "scientific_core_engine_v1",
+      "engineAdapterVersion": "1",
+      "upstreamCommit": null,
+      "upstreamLicense": null,
+      "thirdPartyLockSha256": null,
+      "buildManifestSha256": null,
+      "runnerSha256": null
+    },
+    {
+      "methodId": "euclidean_goal_steering_v1",
+      "methodKey": "euclidean_goal_steering_v1--bdb72f7142a1",
+      "path": "D:\\Research\\riemannian-crowd-sim\\experiments\\methods\\frozen\\stage-d\\goal-projection.json",
+      "methodConfigCanonicalSha256": "bdb72f7142a139d11f8af6f01a33260853650a4e723bf604b781264cfe600691",
+      "methodConfigSourceSha256": "c700610f9444e77eaed80d1dd83341852d0d0b805632e50abc92cf316f24edf3",
+      "engineId": "scientific_core_engine_v1",
+      "engineAdapterVersion": "1",
+      "upstreamCommit": null,
+      "upstreamLicense": null,
+      "thirdPartyLockSha256": null,
+      "buildManifestSha256": null,
+      "runnerSha256": null
+    },
+    {
+      "methodId": "orca_rvo2_v1",
+      "methodKey": "orca_rvo2_v1--1ab544afd1fc",
+      "path": "D:\\Research\\riemannian-crowd-sim\\experiments\\methods\\frozen\\stage-d\\orca-rvo2.json",
+      "methodConfigCanonicalSha256": "1ab544afd1fc33d961d4b70b7429cc45b0f95ce5f8f52af0f155eeb51f12e8cb",
+      "methodConfigSourceSha256": "81d5e4e8f6b133ced0af97bbd9b193f8c161fd8f5f40dd197c1fe092c072af8d",
+      "engineId": "orca_rvo2_engine_v1",
+      "engineAdapterVersion": "2",
+      "upstreamCommit": "b577921d2bc1281a6b721c2d4778f397d37da97d",
+      "upstreamLicense": "Apache-2.0",
+      "thirdPartyLockSha256": "c5fc6e08fa99fa5f0dd6d79e9a93a227b5b8965e54ea40fb5fc62c26631f935c",
+      "buildManifestSha256": "85f7c5898c8218b0d0e494572162e199a86c15d74a6c634c0185d1690973ddb9",
+      "runnerSha256": "ecb36e39080862313addc580ec01dbe3c1076114634fe70995f55a52f514df33"
+    },
+    {
+      "methodId": "social_force_pysocialforce_v1",
+      "methodKey": "social_force_pysocialforce_v1--a27575969af7",
+      "path": "D:\\Research\\riemannian-crowd-sim\\experiments\\methods\\frozen\\stage-d\\pysocialforce.json",
+      "methodConfigCanonicalSha256": "a27575969af717dadc246085d7307517dff859b30189607de0ce1bf0ebd4ef10",
+      "methodConfigSourceSha256": "e8794f49838a1dbd163d80f03ee7266ca185ed554ec1497ba088ad22c09a16ac",
+      "engineId": "pysocialforce_engine_v1",
+      "engineAdapterVersion": "2",
+      "upstreamCommit": "8c81cd1ed5db8d0e933417cec77954aa967d4459",
+      "upstreamLicense": "MIT",
+      "thirdPartyLockSha256": "c5fc6e08fa99fa5f0dd6d79e9a93a227b5b8965e54ea40fb5fc62c26631f935c",
+      "buildManifestSha256": "85f7c5898c8218b0d0e494572162e199a86c15d74a6c634c0185d1690973ddb9",
+      "runnerSha256": "79469ed03e952c131962d7c77d94059a3bd80b6bd31a75a593f80fb1e7f79159"
+    }
+  ],
+  "testScenarios": [
+    {
+      "scenarioId": "bidirectional/corridor/seed-1000",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1000.json",
+      "sha256": "bd6cb6da2d2b2bc83596a570c0c49fabecce76d22c6e32005acf6c99d137359c",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1000,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1001",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1001.json",
+      "sha256": "910e4abb5682a1934e92795bb12027a95d9b5b01156d535db167e9bc19bfcbf6",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1001,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1002",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1002.json",
+      "sha256": "323a6193b1faea5b8a1b4915aaced7833fa5e2efbfac3a7f960127928264aa04",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1002,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1003",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1003.json",
+      "sha256": "ad467681d80c3c3915258f866a35b1df8da88338aa0cce92afb5c5db521117df",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1003,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1004",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1004.json",
+      "sha256": "f7f870b1abb855505e9787a07e0f8978818ca555b89abd214749a3ef2bde9c5e",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1004,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1005",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1005.json",
+      "sha256": "1cd4b4939ef68f4b6e0e4324913c436809de5dd0b0de8314d4734fa5f2dfa6cf",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1005,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1006",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1006.json",
+      "sha256": "b9f67abd33c66f23ae3f4b67316d6a24c9b05159e5c521030ca438511fd2f6b2",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1006,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1007",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1007.json",
+      "sha256": "740d4910ea5aec3f4240284f8b28f98b024a3a600573c0a84565341cd036d37b",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1007,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1008",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1008.json",
+      "sha256": "f84e3466444dde16358ac7a2f4764eb0c3bb10fa82dc6c9040c47d39453febf6",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1008,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1009",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1009.json",
+      "sha256": "3594757da0e4443fb65a5d653ee16df6fafb68815f811904c27ca8471ef84bd2",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1009,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1010",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1010.json",
+      "sha256": "9dd78ec6f366684972ebfa8189d5b96d8193314cacb59efafeeccadb9175caf1",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1010,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1011",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1011.json",
+      "sha256": "b2474635700dc4008ba9c394502e761a7e7dea881c45b161d58e1b3c3e349571",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1011,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1012",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1012.json",
+      "sha256": "0917e097550bd4495cd3211b928d148c5d6c56194835a038b0741171ac027080",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1012,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1013",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1013.json",
+      "sha256": "0e69fd37c58d67759ad02f84d474aa767762281b06678fe508160d7d6e270090",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1013,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1014",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1014.json",
+      "sha256": "b39869af54ff2d9a057cba28d5f9683c2786e5bf23939f13023ac731ab203b79",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1014,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1015",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1015.json",
+      "sha256": "ffbd99df36521c179361caa77e578e276f9be557f9af8f3b5c6f516c798bf785",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1015,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1016",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1016.json",
+      "sha256": "8f44804628addd1a2acef60a4c3272fe2abf0563eaf8d566c40fad501c2f38c4",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1016,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1017",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1017.json",
+      "sha256": "d174b4d78a5a3f483880e4e097e215e37a123b40e6fb2da5e88d8984eff97acd",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1017,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1018",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1018.json",
+      "sha256": "8f5bcf12ec05fd69dd55681e670ebadfa9bd4f8f6e26569639d5ad4da5f64e1c",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1018,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1019",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1019.json",
+      "sha256": "e954c392ac9a0e15ef1e4acb10298266e74701a73e457c934aae4cf630ea6372",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1019,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1020",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1020.json",
+      "sha256": "bad5654733ece0605ad8c8adb2682bcfd99d21e206430b182aa5c174c4f20cf0",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1020,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1021",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1021.json",
+      "sha256": "dfae3f33675122c73159ad068bf4f64d133bb4a2d4132957a54d3792699669a7",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1021,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1022",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1022.json",
+      "sha256": "e102db27adf8e9b0c75794305afaed4ead126f5e08042b119625716fa91fbdcc",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1022,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1023",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1023.json",
+      "sha256": "f4800579fb1e85cb624e5eec0d95e8f6a59277c9b223d9fdbeb48d6221f5fbef",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1023,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1024",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1024.json",
+      "sha256": "f61a658a774dc88e762232fc0bb6c16db1689596c948689b09d895c5d44b5b01",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1024,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1025",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1025.json",
+      "sha256": "101ee35d0645965253f917ed7bbc5ad9435476fd68bf76de1d14e41d1b496663",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1025,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1026",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1026.json",
+      "sha256": "dcbf082f0de5b5a747c7088230d54c8ec181d3cbe2ebc69488889c1facb792a3",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1026,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1027",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1027.json",
+      "sha256": "2f7f2ca4c13b1614918da3a78fd24d6b7bcc570195458ce7e61960a6d3c19216",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1027,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1028",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1028.json",
+      "sha256": "7c097b9843eff4c8c585c63df949dc32be90a23746fa90bc1b139319aab4ca9f",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1028,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bidirectional/corridor/seed-1029",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bidirectional\\corridor\\seed-1029.json",
+      "sha256": "ea5e2350f24940e425355d00d0a78cfa2a5f64e4efb5881fc923d9228d3ee3a6",
+      "family": "bidirectional",
+      "variant": "corridor",
+      "split": "test",
+      "seed": 1029,
+      "agentCount": 240
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1000",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1000.json",
+      "sha256": "92d95b974828a79bbd3b431de32fa260dac95c51a4930895f10cdfc22cc69293",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1000,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1001",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1001.json",
+      "sha256": "711973ccf6d0efa3b78a61dc18db63edfc5d9dbc92736a3dabe5b6a23167484a",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1001,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1002",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1002.json",
+      "sha256": "6404e57841c4b5fa557a647108fec9a30d273b646f262909c1c97d1c59a8bbef",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1002,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1003",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1003.json",
+      "sha256": "692968e4a74052cad2765fbc3e8f1e439d048b93e2a9f0e35e12d0cb608104b5",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1003,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1004",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1004.json",
+      "sha256": "fc7ddfe4d6d07af831bf55f4a192f21eb03518e41a58eff4b815c73ac527a706",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1004,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1005",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1005.json",
+      "sha256": "eabee178f2bacb243d031772659359061fdbad9fcaf6845ff6879a7e16edb531",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1005,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1006",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1006.json",
+      "sha256": "f45c5c65716cc7f56b61f6a7c0b2ae7dcc1a52bef26ccd3c9c92484f8ba1b2a0",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1006,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1007",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1007.json",
+      "sha256": "0d3b65c447a61fba62d3c3019c060f7bbe8cf99dfee51942895aa0829e95f2ec",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1007,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1008",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1008.json",
+      "sha256": "552045dd8596a77cd518b6e5e7f76f827197553c09ac5a18c2e651d5e2a9ba97",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1008,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1009",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1009.json",
+      "sha256": "1a13af6f677d04ec1b4706a6e723c5544e057ea709595d3e98de24de6ed8fe29",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1009,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1010",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1010.json",
+      "sha256": "b980193c99ebe0d6854aed027e5c8b2abb465b9190602e25c37046d74b51dcde",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1010,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1011",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1011.json",
+      "sha256": "2dfbaa9031715cb0d8cf8712a89abf8b41400f0b6503ce83857460d44fad616d",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1011,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1012",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1012.json",
+      "sha256": "10019fd3ebfff8161bd14a5a4a3a63a4f01d671e375e7ab0520f854ab10d7bad",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1012,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1013",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1013.json",
+      "sha256": "d8fadc58259617130e9fb239b9996746a147481ecc9d94e05d127c4083e4f8d6",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1013,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1014",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1014.json",
+      "sha256": "26667d26274e5a3a159e63212b59645b7420a52446ee728293ffbf8ad64121f9",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1014,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1015",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1015.json",
+      "sha256": "8eed6ec675e4698afad9385e265e066cd9dea8c01b04b8e978f3861d8fa9f269",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1015,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1016",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1016.json",
+      "sha256": "aec4efc8417d7202748775fedde0455b7dad1b84c29c67a0418d153aa78e714a",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1016,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1017",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1017.json",
+      "sha256": "0f201c7066ae1190e32092038f8703fe22c776cd94a7994e628d744b8c6a4e23",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1017,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1018",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1018.json",
+      "sha256": "72250b2309a755df0cdee5852d67f451bb8300f839bbddffd5d6cb38ea00048e",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1018,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1019",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1019.json",
+      "sha256": "16af7f59bbb1cb42ff956e35429ae7bbfb23f22d6d04aac52754e48900ca91c5",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1019,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1020",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1020.json",
+      "sha256": "60e9b528158395de3aa2eaccb3003e041d1321d18707ebb702b739c3f557933c",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1020,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1021",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1021.json",
+      "sha256": "f7b76569c59fde18c06aa5b38f4e27b739c094c9da4d1328ac5a7df836ac126f",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1021,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1022",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1022.json",
+      "sha256": "89b60a323499d0a48c57344de454c727e04dcef71790f8d72e5eaf4d06bf138a",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1022,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1023",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1023.json",
+      "sha256": "2a0fd7fa2b53ae4297c398a018384ff81a70482f1a4970cf14fa11c1660a6451",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1023,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1024",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1024.json",
+      "sha256": "ef81406515e9310602cd546a78887660f917dbcf2035b90a2f27727a99b92baa",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1024,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1025",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1025.json",
+      "sha256": "88b4fc15a1a8c9b4955cbdad632f8160feff8b52828a2cfe7cfab87d7fbe8ff8",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1025,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1026",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1026.json",
+      "sha256": "42c39b3e02997134faff7ea61bd8124851cea7316c56927aceefebf5be7d9e03",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1026,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1027",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1027.json",
+      "sha256": "6adab69d4fe5f426cba94a4dbe3ecb5cbe187c125a00440f86097afe393e021f",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1027,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1028",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1028.json",
+      "sha256": "cdb9f9d09ee758e91ec32acee863b54f077d03d18c7f5ee5e7501f299aba5b26",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1028,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "bottleneck/central_opening/seed-1029",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\bottleneck\\central_opening\\seed-1029.json",
+      "sha256": "fe176fd93dc90727bdaa332b76131f7846428362511b5f0eb5b184e4e860c2cd",
+      "family": "bottleneck",
+      "variant": "central_opening",
+      "split": "test",
+      "seed": 1029,
+      "agentCount": 224
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1000",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1000.json",
+      "sha256": "79007e95e7c6ba1bdae54adee7e27a0b1d148608ecf8f4d3f95eb74b0c3481e8",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1000,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1001",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1001.json",
+      "sha256": "62686d9110718286fc0d4444cecc142156e1c7673fa8a793064f15574e14a3e9",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1001,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1002",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1002.json",
+      "sha256": "d913a9a432b53239dec58b5b14a33944fe546e408ae6d7e975b0d1e9a98b1b60",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1002,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1003",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1003.json",
+      "sha256": "016ddd7cf4da6233d0f4a84a51ff18a494de1822c40070d2593395b2d377b4a4",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1003,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1004",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1004.json",
+      "sha256": "5241ded1df996c64ab1e5d4c27bf9f6a262cfb741038619485cf8c5920d315c1",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1004,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1005",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1005.json",
+      "sha256": "340c838dd94f6c4412d0ae6ff8f9fc5ba1b32075357defaca48111d4b3fb9c4b",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1005,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1006",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1006.json",
+      "sha256": "deb6f1b330e1042182a5e7d702e319a1c74b9a174f9985daf00754c4b829742f",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1006,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1007",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1007.json",
+      "sha256": "2b168d985c1ba42add5b9d3abf8014a46c62502faa6fe939960152ee57009ed7",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1007,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1008",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1008.json",
+      "sha256": "83bc2db04a82b4837f3a1406725be6b16f9b56e7279c121d88a6ba3c31d94401",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1008,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1009",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1009.json",
+      "sha256": "cf50f200952c51448d6d1566772a801c5eb12cbdc9abdb0b2e2f93a1b9f6a86a",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1009,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1010",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1010.json",
+      "sha256": "7518bcd36be372cc33067301a05f58c11104924abb88fab6bceaa4416bb9ea86",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1010,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1011",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1011.json",
+      "sha256": "7172259e64b9636e7f66a71b40e0bb5ab16aee8057f138770e925b91ce8a1c66",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1011,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1012",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1012.json",
+      "sha256": "dd4af90e937d1b803d4e96126db7dc49b65d8f4f7a7978c47bb620daaea923eb",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1012,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1013",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1013.json",
+      "sha256": "c009c5848cb1a90ff0512e6ced682041b072ae956c9eef4cc364af831edfe114",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1013,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1014",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1014.json",
+      "sha256": "6560dd58e66c6ed57927aa8aaf2b0bb8415295017b98d03a2ea902bf0debe62f",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1014,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1015",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1015.json",
+      "sha256": "ab8451c03bc1a0888ba2617882c1f208392f1de4ebb4a657002a98e883ce2afc",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1015,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1016",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1016.json",
+      "sha256": "280b5d96cdd78729b72e451ed73d77f985938809d30668deed194d2158547c1a",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1016,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1017",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1017.json",
+      "sha256": "cb0ed81c785963774fc5e970deed7bc74215bc03a863f26ec80a22ef8b51bde8",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1017,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1018",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1018.json",
+      "sha256": "c00fe6be76a21ea50703840503e6b36ad24e19a5566bae6d8c514948fd8f8075",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1018,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1019",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1019.json",
+      "sha256": "bc9b3f07d75d9eb792c853d262dcc60899789c38b18ddedaf9115566b58b18bc",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1019,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1020",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1020.json",
+      "sha256": "6809eaef71627b9e047495e59520dfac5ddaa23b9f53b8a5990ae785238f7a05",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1020,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1021",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1021.json",
+      "sha256": "9408d8e9e9d659472b5f09793c22b10c9efa263905e8ff232b1609229dc21080",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1021,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1022",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1022.json",
+      "sha256": "3adc984d843c0e2827ed101baf8e6347391e55ece734e07115bf16fcaeade089",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1022,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1023",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1023.json",
+      "sha256": "bc940464455ee4d4afc4c33119f259c60fcacab93c1574ffbd138c5e49dc66e1",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1023,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1024",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1024.json",
+      "sha256": "7ce767c2ae09b48101eb5cd94b773df86410b6dc01738c32df4b229fa1bfeed8",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1024,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1025",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1025.json",
+      "sha256": "e5aeb6c29e089dae38b71e97aa8d56a25e6a4810df8891728a3539b3c6bb8bdd",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1025,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1026",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1026.json",
+      "sha256": "dce1cf08684f76c47e34575b99307143f7406a55c7530c5d4104e783fb6a5072",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1026,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1027",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1027.json",
+      "sha256": "761a6d92f966aa10d487dc9b3e61f61b9e27ff027247d9100021e4827aa0195c",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1027,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1028",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1028.json",
+      "sha256": "3ad034e4bf94d34ce29f703faa69b5415823442d6297e02c5e50ad9be952cadc",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1028,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "circle_antipodal/perturbed/seed-1029",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\circle_antipodal\\perturbed\\seed-1029.json",
+      "sha256": "5b8cdf61ff2b62e24b0171a692f7d9753a1fd2d5af99b8b1043f969e72edc103",
+      "family": "circle_antipodal",
+      "variant": "perturbed",
+      "split": "test",
+      "seed": 1029,
+      "agentCount": 100
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1000",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1000.json",
+      "sha256": "b420baf7b44e500d3801de7ad1e001600e1e683626cf0b6001ee61e390a8eece",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1000,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1001",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1001.json",
+      "sha256": "a334892acdf6bce9e316f266afa732d7192070d2fd678bc3a1ad3dfbc8a6fe40",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1001,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1002",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1002.json",
+      "sha256": "823712392b65083f9c7d460d9acb5a2278e4fd0ce75049f7efe339ad9206a116",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1002,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1003",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1003.json",
+      "sha256": "9facc449d95e6afccd9eae4015f234a70a70783c35c06b3001d8f9d7636fd760",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1003,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1004",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1004.json",
+      "sha256": "9712d3c4854748bed7757312d180c236cc264d4ee877f7ee48f4c39b1bf22231",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1004,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1005",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1005.json",
+      "sha256": "92b60379615f709f8a20fe88e504c10cd9f65e7e66f6e1968f9c9d7b273102e6",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1005,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1006",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1006.json",
+      "sha256": "627393a2a152cb8fc33fb1ad6221a7a1acfc23811dffc3bb8173b3af4bcbfda8",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1006,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1007",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1007.json",
+      "sha256": "fd01d3f2be7aac80128323fb567c5d6888ea332e3c65ed15bbdf4b4e8f01051b",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1007,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1008",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1008.json",
+      "sha256": "d84e12edb07d19ce3b6eebb7e5bc7defc7abeb4891ad2af8b624b2e43e238262",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1008,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1009",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1009.json",
+      "sha256": "ca1ba6284a45918750a4c20280ea1a643ad8a3aef6127a5e060866a39a861307",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1009,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1010",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1010.json",
+      "sha256": "aa4712678fe3b7637b001a7b677dfa242e2eae045b745957ddc91b6da3e0a0f4",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1010,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1011",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1011.json",
+      "sha256": "8b4dcb8ad8edd52bb08917c00dc26c3c100f2f336b24593d1488e53d339c6f07",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1011,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1012",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1012.json",
+      "sha256": "632c2179257c402fba63415d717a40e9c1eeebad8c8cb0e1a87e206d524d07ea",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1012,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1013",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1013.json",
+      "sha256": "2a1a40cc8842103157761554c0056b87ebc64b5176be23c6a5a2fcede9f851e1",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1013,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1014",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1014.json",
+      "sha256": "87c88f4ba65384d6d66326e64556140cefc05d774588ced94ec5be0117fcd0ad",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1014,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1015",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1015.json",
+      "sha256": "1405a04f8fb1d5817aa5ff96632dca9ffcdc214615c61281db74d379bd91020e",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1015,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1016",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1016.json",
+      "sha256": "c938b4deb9df7abe854c7e7121c916aab4bf11a56dda943d7614acc3640d8909",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1016,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1017",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1017.json",
+      "sha256": "eaeebe8de74c7e1cdcb79d3ef3c651be0c4ab5879300a8c611c54c86a7b145d4",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1017,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1018",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1018.json",
+      "sha256": "06ea061c5ebb3a43bf5028e1b9297cfa90efe16cd0a05153dd9c9c48a9626991",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1018,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1019",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1019.json",
+      "sha256": "d6012d0e32b19b6a07c7fccb078268b7dc505d858783632d09c31726bdc8f55e",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1019,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1020",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1020.json",
+      "sha256": "fe16fc3a04577f9ab12ed0f609020cd2b82379d1a09f149c226de9548bdb6843",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1020,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1021",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1021.json",
+      "sha256": "2a2702bced9cf010be21a5113a203c151c3b6038c6163f3830d1694b9939f328",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1021,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1022",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1022.json",
+      "sha256": "026071bad9cf9c0a2b80c21b10fee7413606983cbb2194d37c654056bbd5136c",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1022,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1023",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1023.json",
+      "sha256": "d4baedd173f8d221633d734bc0aa994fbe3f645dbd5acafdd96c705ee8201821",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1023,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1024",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1024.json",
+      "sha256": "44bd37d70d91fc8b2476a1446b72e19671bb48bb560835fbedb4f1eed67814a7",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1024,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1025",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1025.json",
+      "sha256": "bdc33b961cd8e288204f8fe4ad81198cd8593234d37766d9ae74f370a4025a33",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1025,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1026",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1026.json",
+      "sha256": "240def318d4f714dd7d500ebbd3d78c2736998a1742fea5e739eaac32ef66a73",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1026,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1027",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1027.json",
+      "sha256": "fd662078949e1ccfc718450fe0b1107540152b16e7c3e0cdf0601365a0db15a9",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1027,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1028",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1028.json",
+      "sha256": "351a6752b8035a8060f19d9c144081590493c33e91bd563e2493ceb13eff203a",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1028,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1029",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1029.json",
+      "sha256": "dd422f88da1441ff2deb5c22aedc73fba17831f1f7e14d115fbce6a0ebba19e8",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1029,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1030",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1030.json",
+      "sha256": "0a979d12387b23127d3e383c75aa228f266ea97bce0378263a39256c7b821104",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1030,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1031",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1031.json",
+      "sha256": "702e63ea2a3d9d9b6a8a1bb624360e5f24132e2153f3a2e1196635b49211b7fb",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1031,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1032",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1032.json",
+      "sha256": "b8810297bdb46fe94c081a921a3439247a1b0a9f5cbc9cff76f10f8922f2cc4f",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1032,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1033",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1033.json",
+      "sha256": "88268aba609cc746e50d3f94631229fee44d1d734c8bcf8363ef4fe97f570882",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1033,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1034",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1034.json",
+      "sha256": "6a2e6dbe95488c9568f096b4a4cdce370592b8f29264b124f0982a7c733a2255",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1034,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1035",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1035.json",
+      "sha256": "9e9fca42373175a391cfd332f02ad2c66899ac65ec8981ab8cd327ca2f7a81ba",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1035,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1036",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1036.json",
+      "sha256": "06e8ba310ca6904e085c9cdaab8c92fc58f47c67dfbbd55be2bd64b7b0708aed",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1036,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1037",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1037.json",
+      "sha256": "37a873d41afec0ac353c3fd68ceb64ae631ee7600829f72e443dff47857f8280",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1037,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1038",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1038.json",
+      "sha256": "f80e8a58be403d4cf621d9a36b39444c95b328cf424b755c21cfb32c9443af77",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1038,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1039",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1039.json",
+      "sha256": "f8ed1fe4a5bff9da10ead47b79b63bdb4d433883758c50b709733e0d4da9103e",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1039,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1040",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1040.json",
+      "sha256": "89a5abbe29b16642db1743feaf06f380e62ef065b043efb7fda8abf413292f03",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1040,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1041",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1041.json",
+      "sha256": "6ca4f40013b19a979a2510f24dd576b1d749682758fd540b33cb24bb60f4b760",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1041,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1042",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1042.json",
+      "sha256": "eaadc4a4dddbd3b7e283b021d9b4d92ff07512238f2d96106893dac3701fc79c",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1042,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1043",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1043.json",
+      "sha256": "59f60cc5033fbef7e3bda8972d1cbedceeab50001bc712b3f277e359a45f82eb",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1043,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1044",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1044.json",
+      "sha256": "7cd3dfa26bc16d2266c836d6301910f988f004a26a8c8de9ffe45fbf184f1fc9",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1044,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1045",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1045.json",
+      "sha256": "9c9ef86f656c425b79d8bf3c22b4702843d557db3c55a39613362fe511da9ce2",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1045,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1046",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1046.json",
+      "sha256": "ef34463b0f747781cad5b9a8bc8aaf7ff39af7dff95a9e846d8a6d73f5a4f141",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1046,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1047",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1047.json",
+      "sha256": "87af496db2074de9e43a1362fb5768ced9cbf8ff15a443483d9d8d5c3495eb80",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1047,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1048",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1048.json",
+      "sha256": "b22dca2386bdf928a4f5859d3bcc3d9cfcc6f619858ce45d3c91a3ae8251eb2f",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1048,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/crossing/seed-1049",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\crossing\\seed-1049.json",
+      "sha256": "96fcdb3d34f3e4dc2368e4026bf0748709888738da840b1d63ec930dc8777d76",
+      "family": "pairwise",
+      "variant": "crossing",
+      "split": "test",
+      "seed": 1049,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1000",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1000.json",
+      "sha256": "5355634d765563e8d42c7317683b1606dfa320855f2af1227e0b0ebdface00b8",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1000,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1001",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1001.json",
+      "sha256": "5f61d5ee7891bdff4cd6c5c9dda0e0257c83d0d5910e977023c535ed58405114",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1001,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1002",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1002.json",
+      "sha256": "b4358a26b98c12503d48ed6a0f0b1b4d8024929d4653bcfc71efc28b1e31f739",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1002,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1003",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1003.json",
+      "sha256": "90881af45d1d1459beaf9c59a75b52d09d246fb8e4077ec6277a5c1e82bb1a15",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1003,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1004",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1004.json",
+      "sha256": "893fe104ffeb50e1c5f1a1cea1b17181441a07f675b2af5d90945d77cc185e92",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1004,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1005",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1005.json",
+      "sha256": "a5bf6c9ceb0c89faaf96c248b453c2730515df8c05254a2769f6ae93855a6e7a",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1005,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1006",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1006.json",
+      "sha256": "0eaaec48b9cc77e8828c1c19fe51a343d88ebdd15a6a658bd16ef17908dcff01",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1006,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1007",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1007.json",
+      "sha256": "841c0b12571da1ef195dbac331f3ea741542a093c15446f1dc2ddd381f916e14",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1007,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1008",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1008.json",
+      "sha256": "fbb08d053236549487efe19b73710089eb041898eda80c803e9ebd8ad68601a7",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1008,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1009",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1009.json",
+      "sha256": "b004277ae1c9ad54136765879aa0381626dc0474fba4a60b933bf3092c9542a9",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1009,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1010",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1010.json",
+      "sha256": "458246c8ffe02447c9cb8bf5cd72d195644a6990c328db4bd140a82f7b71fd11",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1010,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1011",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1011.json",
+      "sha256": "db9412699cbd6863429c79f483a9ba78ea46a665a86e330e91555643a183b0c5",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1011,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1012",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1012.json",
+      "sha256": "b5221aaffaf121357134acd4d7467253c763db1147ef71cd740f6ccbea45eb0b",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1012,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1013",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1013.json",
+      "sha256": "cd14e998c6192d9c3091504e619934986ec55ca1ae5f9264023e65734f9e114d",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1013,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1014",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1014.json",
+      "sha256": "60982c0052e6ead0fc8fda1253b852614739f1ba347463061183b44237f79899",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1014,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1015",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1015.json",
+      "sha256": "66803885e4e145eeb92c24aca5d5c70db7da86add3f202bd464e41cb2643beac",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1015,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1016",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1016.json",
+      "sha256": "02f27f5aa2a6216c7ce20a605005fab59558cafd79788bfd26001622fe2109ee",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1016,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1017",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1017.json",
+      "sha256": "5542d7e33adfeec1d4a77baf19ae60ca686e6fd2717d47b2be286969c3e98855",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1017,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1018",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1018.json",
+      "sha256": "7dca36efe2f874a98e68c9270f408094abf9466982c2a23158cd51c57e77718b",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1018,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1019",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1019.json",
+      "sha256": "ecd31a35f88dc35048328fff8904eed4d3c0cef423dbff4d129f683631fdfa10",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1019,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1020",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1020.json",
+      "sha256": "09e76aaebf02a86398ba92894acb42cf764bc13f91835f3c480c0988f81e4ab2",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1020,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1021",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1021.json",
+      "sha256": "7d61d1ef916cb0beaaf28e6268b45e51bcd4bb94c15bb31ed0c0d079d23b9bad",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1021,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1022",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1022.json",
+      "sha256": "907149b1879182b78a06279edb49ffacb0e3eed25fd68c56985d61885061b1c9",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1022,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1023",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1023.json",
+      "sha256": "bb078c50fe4eaf759ad4b70e33e3d1f469fe212ab9dd0a4c06091057e4c7219c",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1023,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1024",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1024.json",
+      "sha256": "6dad9ab9c48b6804906f13abe004b7f07e041a033f1e923ad574c06ed0758d32",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1024,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1025",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1025.json",
+      "sha256": "b80ae41b6512c3bdd7c921bfb1a48ae8bc01f7d8115a02458f75d6c8081a3948",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1025,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1026",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1026.json",
+      "sha256": "7ee064cc0480e670123ab83f641323d10988f90f6638e0d6992990875b474721",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1026,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1027",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1027.json",
+      "sha256": "619eb17a4bc728286a4d972396fc1ee98781421e5ecd49892933c2c57ea5c01f",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1027,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1028",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1028.json",
+      "sha256": "19f8a6bd1da7a9de36973e99c553868339191db3e99cb1c3bb58b11a32139ba6",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1028,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1029",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1029.json",
+      "sha256": "007e868b69315a92f76e02060a25edbe05079f56d3b83cd799b994e00baab261",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1029,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1030",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1030.json",
+      "sha256": "7073f0e38dab1262121e90ba4d89f25b29c83e308ea6f4cd65c00a5d8ccf3fbe",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1030,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1031",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1031.json",
+      "sha256": "fc9cb5a1c47ef7286c058157fda1131a5151dea7e74c417ed017a38e6e7c869b",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1031,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1032",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1032.json",
+      "sha256": "fdbfae9661770b932dc8441375c330b48da6557d2524aea8851468b875f93838",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1032,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1033",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1033.json",
+      "sha256": "250e3d0d46d3098ca1021209b05703c9c9efacf2bc6e92e0af0e63fcbea1fb7e",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1033,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1034",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1034.json",
+      "sha256": "d2fd9ba687a0441c7ac9e23b4e8642bcd1cf7449a96b3c7bcd60cfc017263fde",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1034,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1035",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1035.json",
+      "sha256": "35f8d524d0cd7154e28f058e8ee0dafee0f0c27ae8a7a24db4a210618f028a14",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1035,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1036",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1036.json",
+      "sha256": "bea3148279985da41beba41899cf6181027278babe5cd934d401720c16fb4dd9",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1036,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1037",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1037.json",
+      "sha256": "534e430064b6d1b021fee6feb1d18123fccb3b84580a2edd23b8051e9776a2b6",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1037,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1038",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1038.json",
+      "sha256": "d389ed2c3099ddc7179b4cb250e9fa03fee34447087c410c6a80ea8a61947705",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1038,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1039",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1039.json",
+      "sha256": "8daa852cc2a035eea5abebbda30b2d03390f395237ff8048e4e9ea6794c83981",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1039,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1040",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1040.json",
+      "sha256": "67167db7e580c6c4953a33458d862f72a3490d1c9106aa8ca0d5810d002537cb",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1040,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1041",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1041.json",
+      "sha256": "9da0232780a71773caeccb502f9bd78fc92118580b40ab45c4873d87504ae3f2",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1041,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1042",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1042.json",
+      "sha256": "1935964f716b06aa1cac67b83bf5360124515f0b8f274c7a901f9e896b89c8a9",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1042,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1043",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1043.json",
+      "sha256": "22391faaf30e5eba233aa2211d3ff9290e925254965b873e6d32f605a588c6c1",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1043,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1044",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1044.json",
+      "sha256": "159b8bb12aeab9b38263df1ed35218167f9ae14e3b113f0ddce99ed9730a4903",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1044,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1045",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1045.json",
+      "sha256": "6a486dc842d9b001ff9c67f8f07851309a5c8bebdbcfa6d61d9fd2c17148d1d3",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1045,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1046",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1046.json",
+      "sha256": "abb3277ec5ff0eff1c22f5777180d54acf97f894d73bfe8849d6e4563487797d",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1046,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1047",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1047.json",
+      "sha256": "9d9063506dd920af842906eeb49b33babacce2bb263bd5c64c510d9109538f2a",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1047,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1048",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1048.json",
+      "sha256": "b1fb912d0b69d1f860c0109627a99232f203ed9989c4a7e89033e04e1eadcf9a",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1048,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/head_on/seed-1049",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\head_on\\seed-1049.json",
+      "sha256": "ed0a2e0b18627de075b905057d28f5785fa5afcd0d0e7510a846e0833d43b865",
+      "family": "pairwise",
+      "variant": "head_on",
+      "split": "test",
+      "seed": 1049,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1000",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1000.json",
+      "sha256": "9295fdd9a51804bf0d2299b31532a664ebe3780aa6f271edb6c6845b140e9024",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1000,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1001",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1001.json",
+      "sha256": "c314b4b6b7bbf7868fcf7841f7d122a6cbf2a56dfe87ec815ad9361d2d4cc428",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1001,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1002",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1002.json",
+      "sha256": "1abfd3e234c0af083fc4581985ed56d0d7f432c443143d1ac3b2bda3be25bef0",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1002,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1003",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1003.json",
+      "sha256": "9400cd097ba2467d2101bef31c3ed913a1c0c07b884bc94216c716ba991875c5",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1003,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1004",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1004.json",
+      "sha256": "3d4a12873e6c47247e7909c50da032bf884e3bfcaf9c397eff37556279c5b582",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1004,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1005",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1005.json",
+      "sha256": "f3dc72dc8a53fe0b01317331b807eee0e97b746406b062a66c917486cc6bb014",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1005,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1006",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1006.json",
+      "sha256": "c0112577ab9d4a53e17e54c0f39c6aea49882602eab5fc087060dc1fd3bfe5e3",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1006,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1007",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1007.json",
+      "sha256": "2490c2da0efdecc2826c6318b9bf14f653fc61960f6e5d123b83fd940273b8f5",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1007,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1008",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1008.json",
+      "sha256": "fc516e2307d5c1713e96f87f09dafdd554a0c7bb32d929d6111190ded9836195",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1008,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1009",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1009.json",
+      "sha256": "52e343cfe5a104ae096261e6cec6922717e4d11e13843206328c5d8707e5737a",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1009,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1010",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1010.json",
+      "sha256": "bffdfd6025940801aa30dc6e4d81b3ded556d894d5e4035ac080a650cb7257ab",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1010,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1011",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1011.json",
+      "sha256": "b610396b5470e71ebaddbbbd386b0c33364a4ed4d8cba55d44f94229450d75af",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1011,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1012",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1012.json",
+      "sha256": "747fcef043452ec874f3dd1b3f8e9ff1e4989b4dd2ff0c46ee46438e616e1f08",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1012,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1013",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1013.json",
+      "sha256": "6f85b1b7c598292c7deafd162f11b0d0620d6939ee66c2caeaef15b1a7a6e829",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1013,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1014",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1014.json",
+      "sha256": "7e70e356b097ef2b0a8981f7b60ceac92400dc5bc6468e4bfd632665940c8aac",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1014,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1015",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1015.json",
+      "sha256": "3bf09c751b640cacbe15152d88a10613d0458fcafa62c16cee251f43afc45486",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1015,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1016",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1016.json",
+      "sha256": "5dfc7e186b46875f87138baf18b72549df194bdbf4b6cf9403eb1bc16207a28a",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1016,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1017",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1017.json",
+      "sha256": "ccb773b55bcc3fd90e7983ec8bfbceed52cb499243c9529c2da6be6357ecbf95",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1017,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1018",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1018.json",
+      "sha256": "3adb7dadba3cdd50212799c663060e9e8ded56761e2e154964e30c5bfa52bd39",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1018,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1019",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1019.json",
+      "sha256": "42f3728b56bb4b398aaa703290ce8bacd47d0d3a95af3081f7326c611364be2d",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1019,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1020",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1020.json",
+      "sha256": "2ae30a29345d91d519e092959bee3a573fea128bf2cb76b0ee1ca8e16ef3f0d3",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1020,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1021",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1021.json",
+      "sha256": "18067637a8c18fd216a477226ffa1a638ef0e344e01e63360d0531e9db071523",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1021,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1022",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1022.json",
+      "sha256": "b8ab1494e6436d7eefee28cedac70d013be9024f0b670a387b845e8b4b2e4227",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1022,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1023",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1023.json",
+      "sha256": "d1dedcd8a0b790106e857c20d0b081fb9a13210dd2bd8ae47522f71fecff4e27",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1023,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1024",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1024.json",
+      "sha256": "5fd6551159321dc946374102ce48f889ed91cbd0b88e4fafbf86be9e8a2bd1e9",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1024,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1025",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1025.json",
+      "sha256": "7e2ba927b3c2fda43207506168cb62fd90be1887871aff356994e363e1f67d79",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1025,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1026",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1026.json",
+      "sha256": "50dafb4825afdb2a9b83af1b290b8028babf85f5fdbb188a573ad43011c804a1",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1026,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1027",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1027.json",
+      "sha256": "a346ef120e021cd33512061d1d468f76748cfbc758f9579eabfbe7bf70756ead",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1027,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1028",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1028.json",
+      "sha256": "797e173bef3b78b24fc606f20df68c9383b02e95972ba4a60e9d17cea195d4a9",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1028,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1029",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1029.json",
+      "sha256": "1016424ff16e27c7a2b697438fa70b7d0dc12b4c973db435a44abd7dba19edf5",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1029,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1030",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1030.json",
+      "sha256": "5ec9abfaa24b806265f1472340844a2807210c8e0b0eebb39a1a523b05635335",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1030,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1031",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1031.json",
+      "sha256": "cdf4e072005c4ff5388ba1a32e7994026fa1e2643d6874f7b146632610c8a275",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1031,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1032",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1032.json",
+      "sha256": "2608fb41ea14f8ad27bc03d57c9a4a0ea4d45fbe630529220d9f64162237a478",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1032,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1033",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1033.json",
+      "sha256": "1d617b99f8a15eff4762136908431e68e3bde9d485c1205f1f416859e2d7ce19",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1033,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1034",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1034.json",
+      "sha256": "ee8556b01684cbb8cd5e7a094f6678c590f6cd300a71143954e5b752ec99fc21",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1034,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1035",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1035.json",
+      "sha256": "a4487f00dbc62510d235e3056d415dd36ed25cc005588b45687a19261660e72e",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1035,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1036",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1036.json",
+      "sha256": "53f515a8b718b076c7e896ce5ed55893ae4ddc470e58ade0b4a46eb8b223ee8a",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1036,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1037",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1037.json",
+      "sha256": "6dbf3c341d84e07d0957a6c96666b6930cc61da6e912a5716f2c4b613dbc932f",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1037,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1038",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1038.json",
+      "sha256": "ec76b40e71ff11ff90969ebf470bf64997f929f9a751939ca4866ad9c44f36b4",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1038,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1039",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1039.json",
+      "sha256": "07ed1062adf8e6bf374a238faa2199bd2949ca9cadb19f3c49f2affb290ccb0f",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1039,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1040",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1040.json",
+      "sha256": "4a73c7116a23ed6edfe1d955472a711f3913e4d4cf33883791bec8e8f67cc095",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1040,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1041",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1041.json",
+      "sha256": "313ccf277f9cf75c8ea8d0079295a11fc215596d40e9c93cbabfd96d26b237ea",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1041,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1042",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1042.json",
+      "sha256": "dcd87a44dbd958cc70b066074a5644c1ac85c597464bbc74f61fd64578dbf00a",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1042,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1043",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1043.json",
+      "sha256": "940a3bb65e6c73e0fa34e7052a544baa4f0e5254ce7160453c8a1ac702fa2877",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1043,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1044",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1044.json",
+      "sha256": "b1afc8af5385132dc7826f2149b72cc68a987edd3ab03866803f90ccd36ca252",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1044,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1045",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1045.json",
+      "sha256": "2540c3b5520c02f4ec418e43fad90bec8365cc28ff0b2b641f531a2f39e0276b",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1045,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1046",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1046.json",
+      "sha256": "b6bb420f182bbddd92be64331d838d9cecac6905de52475b8ae9c0d13ef9e118",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1046,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1047",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1047.json",
+      "sha256": "8196041dd91cee44480683537dfe5fb9ff2f0f604ba8d376a67edfa6641a4436",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1047,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1048",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1048.json",
+      "sha256": "3de002cee4cfb7a8c6d8f0f39eda862fc81ab203ebe2f1d1c9d37665d6b99482",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1048,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/overtaking/seed-1049",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\overtaking\\seed-1049.json",
+      "sha256": "d0ac5640057655f088645c0dd1252af38b06327123fb41af410ba9ae58f6c63c",
+      "family": "pairwise",
+      "variant": "overtaking",
+      "split": "test",
+      "seed": 1049,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1000",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1000.json",
+      "sha256": "d5bf323882aa88079d2cb5a566801e63d61d57479c8f2ffd6400e00d4e0afee6",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1000,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1001",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1001.json",
+      "sha256": "b61cd27b66c9ae1b45522593040c10a01b81706d5ca4dc1a536e1256293ec358",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1001,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1002",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1002.json",
+      "sha256": "0ca23782777aa8c6e33ff882668c9ef4069abff803529c0f5aa02886168beb3e",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1002,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1003",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1003.json",
+      "sha256": "9f97364d082c216b38cdcd3ce8d61c79dffc11e40b3139d7ade7aeeecb99ac4b",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1003,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1004",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1004.json",
+      "sha256": "ae0e583f91d0db4a6f9d45be5daccf1e0c2d0f7e34097019480cc9076c271682",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1004,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1005",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1005.json",
+      "sha256": "ee9510083f45f4b8542c2203e3789f553d768b71f81e03cda7d5e504b7f9d1ab",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1005,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1006",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1006.json",
+      "sha256": "de6d7167885435d091e5b7c795f48e101816f19ce89e7a4dc2bb0a3d384b1164",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1006,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1007",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1007.json",
+      "sha256": "a6113821af32e41f2fff82cb8d995cd1939bfc973dcef4cce7efa6babca9729a",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1007,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1008",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1008.json",
+      "sha256": "c5880e692abefe218d16a54c6001f7c64893bb9cf394b6fede7765b3513427b6",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1008,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1009",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1009.json",
+      "sha256": "2b474654af0272b0372799b544411208c9d7365e0c8579d7a5c8e964a36b703f",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1009,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1010",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1010.json",
+      "sha256": "855928cb4307b82e06a54b7bc7008f947b6d0f4cdab58df22bd2e86bf6d9565a",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1010,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1011",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1011.json",
+      "sha256": "d841efa3cbe87c6014f571e0c18871456b86acc986fea78eb9b46b6fd1dfc1d9",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1011,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1012",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1012.json",
+      "sha256": "935f39499a2d6ab0148a36804bd90abb23233bca1a9190c5a336b4961dbd2a0c",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1012,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1013",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1013.json",
+      "sha256": "20a5d93536ce5dcf7bf6887f631b32c46830ef4b328a56b4365cc60abd7e1cec",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1013,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1014",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1014.json",
+      "sha256": "4380b9ec88a9d0212c46057dcab6a8a2783e300131fbfb7265dbe29ca36ba4e6",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1014,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1015",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1015.json",
+      "sha256": "2d93a9989751562cbd974a2da38e675dbbeff2bd9f709b80eae457c85ae0c23a",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1015,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1016",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1016.json",
+      "sha256": "b3fa698a66ef0935b72424dd44457e9d49f9078373f736494e9b7f1fe820fb19",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1016,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1017",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1017.json",
+      "sha256": "64b481e55d2a634ea4d3a248e9e9de7675f14504b96aa3aa10a83373a5f0c967",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1017,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1018",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1018.json",
+      "sha256": "e7b8e6247689158c231981560df98416cd4892c99f0c9589701e21310c5575ec",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1018,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1019",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1019.json",
+      "sha256": "8a3f11050d3a3c90032512cecc91eb09082015f8a5b171541a44e20487600894",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1019,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1020",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1020.json",
+      "sha256": "4fa5aabf888d11e7e0d4493df6875d75ff4cc2f601e1a3873b010af696120c9e",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1020,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1021",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1021.json",
+      "sha256": "2df0e56ae7c3ae38ebaea731459ef96476a390439df8465928276fdd436f929b",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1021,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1022",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1022.json",
+      "sha256": "839dd328ee5b41b6233c8524c3eb2d33c4f7418e975cdae372e7733b19f72a0c",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1022,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1023",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1023.json",
+      "sha256": "2613fb058676cad3a6be17f678833f4f60709ac4c2a2caed7d14fdafbdb529d9",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1023,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1024",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1024.json",
+      "sha256": "3238e9e99eb4a229f154c880234efa80a7cd331dad12fa2f6eb4815d2d2855ab",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1024,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1025",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1025.json",
+      "sha256": "12f5b53c30fea4274cd6527680b444443279ef89aac720fc44d08b1c1fed5b83",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1025,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1026",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1026.json",
+      "sha256": "a178c4c1d24468f21877d70c176c37d54954bf1dd37ba940a222e0ef87b52420",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1026,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1027",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1027.json",
+      "sha256": "eca6a79de278ea89b0bb2ec944ee941882dbe9a09a2cbb17428541152932b03e",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1027,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1028",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1028.json",
+      "sha256": "7009970c21bed637548c1b41b33e0549cd7aa8479c7965ae814fd311e583e1c9",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1028,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1029",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1029.json",
+      "sha256": "0810c7894ac484d04f66c4ed972ec39e23463f250be49545342307cc87fe6b8d",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1029,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1030",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1030.json",
+      "sha256": "5db381c41b059f7822bf92b0ac8afcb403caa3e98367820eba1193a6f4a4661d",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1030,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1031",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1031.json",
+      "sha256": "175fc07702e3cefa7f40200ec6fbb06ae7e4193eda4a10addb5489fe18576607",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1031,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1032",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1032.json",
+      "sha256": "3f9e13380f82ac6ce31bb18fa7afe5e3f71679e80847b605442703c593b5bfae",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1032,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1033",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1033.json",
+      "sha256": "08a286e2c34e0619a2839f84e43fdee94465b74bb88e76c5dff40e02f265d3d2",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1033,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1034",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1034.json",
+      "sha256": "efca8804313850f2424cecba33380ce3ce73362e5cdf546ca1e4f104abb7f926",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1034,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1035",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1035.json",
+      "sha256": "faf30124def6bdf936c9431374055220add990dc63dff31f826907c3d2a50e7f",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1035,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1036",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1036.json",
+      "sha256": "04eb837fa5f7ca15399f904d462c847ac4e073f5fb2ad76fd55988224bb300d8",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1036,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1037",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1037.json",
+      "sha256": "7505bdc252aed8c5b7b53405160afacdd5a83d1c88a073cf42a87a8510713ab7",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1037,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1038",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1038.json",
+      "sha256": "15887af59123506678c87c5bb6f2490cea5645af657dc5ddbd7554ad3557edf1",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1038,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1039",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1039.json",
+      "sha256": "fd693dc9410746f119147dd43f3c9490f1e11cd702e77073aed3e092fd05fa28",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1039,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1040",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1040.json",
+      "sha256": "47906d4c970c6d4c25355a68cffa1d5c5e20c45324053a737b261f858bf4c42f",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1040,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1041",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1041.json",
+      "sha256": "b740b95e141249efb438498d21b78b38919c7e2fc9674e34b5f2f39d2bc21338",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1041,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1042",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1042.json",
+      "sha256": "7c0f60015e7c7e65e666722e1ebb4a3ba19515c1b879a9819085dbbf4088ff28",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1042,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1043",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1043.json",
+      "sha256": "d4a6d8a0ce50df133084f85426ae77b3e20b97fd54bfb2385814b36610d82b18",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1043,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1044",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1044.json",
+      "sha256": "6db431e053a5244c4cc9766129eb1664ca75e059abafa3d239e778d59961371d",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1044,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1045",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1045.json",
+      "sha256": "d9345b7603b70899cbbb6e0981ffd27a833cf3215805e075fbf6a81b02420747",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1045,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1046",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1046.json",
+      "sha256": "7297114b953cea7c72d0afc5bd218e4c4dfaf575ec9118e2c2040bf5c49e263b",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1046,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1047",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1047.json",
+      "sha256": "134f0b5eb821d8b00989a912d642c05f4762c5d5c0fe875449da1d1829fd171b",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1047,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1048",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1048.json",
+      "sha256": "506c9c4056eb919f27d5afe04fa5ee8aad82f4518e01c6473bbafd9750bc1bf2",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1048,
+      "agentCount": 2
+    },
+    {
+      "scenarioId": "pairwise/separating/seed-1049",
+      "path": "D:\\Research\\riemannian-crowd-sim\\results\\stage-d\\scenarios\\test\\pairwise\\separating\\seed-1049.json",
+      "sha256": "3d960db3173fc71e80b8d49f4c3ef84e82982363522d582fbd5337a30f9f6eed",
+      "family": "pairwise",
+      "variant": "separating",
+      "split": "test",
+      "seed": 1049,
+      "agentCount": 2
+    }
+  ],
+  "expectedTestRunCount": 1160,
+  "testMetricPolicySha256": "52dc0d398bd74a071121b0f51ac34a7e57e5c96190f76ec9f9cc499c0f6f82e1",
+  "statisticsPolicy": {
+    "bootstrapSeed": 20260718,
+    "bootstrapReplicates": 10000,
+    "confidenceLevel": 0.95,
+    "pairedBy": "exact scenario identity and SHA-256",
+    "unit": "scenario instance",
+    "pValues": false
+  },
+  "runtimePolicy": {
+    "populationSizes": [
+      50,
+      100,
+      200
+    ],
+    "horizonSeconds": 10,
+    "warmups": 1,
+    "repetitions": 5
+  },
+  "creationTimestamp": "2026-07-19T06:31:52.150Z"
+}

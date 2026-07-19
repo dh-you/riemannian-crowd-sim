@@ -1,0 +1,11 @@
+{
+  "methodConfigVersion": 2,
+  "id": "orca_rvo2_v1",
+  "engine": "orca_rvo2_engine_v1",
+  "parameters": {
+    "neighborDist": 8,
+    "maxNeighbors": 10,
+    "timeHorizon": 5,
+    "timeHorizonObst": 5
+  }
+}
