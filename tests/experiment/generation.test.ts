@@ -6,6 +6,7 @@ import {
   assertNoInitialPhysicalOverlaps,
   DEFAULT_PREFERRED_SPEED,
 } from "../../experiments/generation/common";
+import { generateBottleneckScenario } from "../../experiments/generation/bottleneck";
 import { generateExperimentScenario } from "../../experiments/generation/generateScenario";
 import { DeterministicRandom } from "../../experiments/generation/random";
 import {
@@ -123,6 +124,33 @@ describe("deterministic scenario families", () => {
     for (const wall of first.walls) {
       expect(Math.hypot(wall.end[0] - wall.start[0], wall.end[1] - wall.start[1])).toBeGreaterThan(0);
     }
+  });
+
+  it("closes the bottleneck chamber around one exact central opening", () => {
+    const openingWidth = 2.4;
+    const first = generateBottleneckScenario("validation", 17, 112, { openingWidth });
+    const second = generateBottleneckScenario("validation", 17, 112, { openingWidth });
+    expect(serializeExperimentScenario(first)).toBe(serializeExperimentScenario(second));
+    expect(first.walls).toEqual([
+      { id: 0, start: [-14, -6], end: [12, -6], thickness: 0.1 },
+      { id: 1, start: [-14, 6], end: [12, 6], thickness: 0.1 },
+      { id: 2, start: [-14, -6], end: [-14, 6], thickness: 0.1 },
+      { id: 3, start: [12, -6], end: [12, 6], thickness: 0.1 },
+      { id: 4, start: [0, -6], end: [0, -openingWidth / 2], thickness: 0.1 },
+      { id: 5, start: [0, openingWidth / 2], end: [0, 6], thickness: 0.1 },
+    ]);
+    expect(first.walls[5].start[1] - first.walls[4].end[1]).toBe(openingWidth);
+    for (const agent of first.agents) {
+      expect(agent.position[0]).toBeGreaterThan(-14);
+      expect(agent.position[0]).toBeLessThan(12);
+      expect(agent.position[1]).toBeGreaterThan(-6);
+      expect(agent.position[1]).toBeLessThan(6);
+      expect(agent.goal[0]).toBeGreaterThan(0);
+      expect(agent.goal[0]).toBeLessThan(12);
+      expect(agent.goal[1]).toBeGreaterThan(-6);
+      expect(agent.goal[1]).toBeLessThan(6);
+    }
+    expect(() => assertNoInitialPhysicalOverlaps(first)).not.toThrow();
   });
 
   it("uses the exact required validation and test population sizes", () => {

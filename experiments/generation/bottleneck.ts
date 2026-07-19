@@ -48,8 +48,12 @@ export function generateBottleneckScenario(
     );
   });
   const walls: WallSegment[] = [
-    { id: 0, start: [0, -8], end: [0, -openingWidth / 2], thickness: 0.1 },
-    { id: 1, start: [0, openingWidth / 2], end: [0, 8], thickness: 0.1 },
+    { id: 0, start: [-14, -6], end: [12, -6], thickness: 0.1 },
+    { id: 1, start: [-14, 6], end: [12, 6], thickness: 0.1 },
+    { id: 2, start: [-14, -6], end: [-14, 6], thickness: 0.1 },
+    { id: 3, start: [12, -6], end: [12, 6], thickness: 0.1 },
+    { id: 4, start: [0, -6], end: [0, -openingWidth / 2], thickness: 0.1 },
+    { id: 5, start: [0, openingWidth / 2], end: [0, 6], thickness: 0.1 },
   ];
   return createScenario(
     { family: "bottleneck", variant: "central_opening", split, seed },
