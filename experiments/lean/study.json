@@ -1,0 +1,69 @@
+{
+  "methods": {
+    "riemannian": {
+      "methodConfigVersion": 1,
+      "id": "conditioned_riemannian_metric_v1",
+      "velocityTimeConstant": 0.04,
+      "parameters": { "alpha": 20, "sigma": 1, "lambdaR": 20, "lambdaT": 1 }
+    },
+    "goal": {
+      "methodConfigVersion": 1,
+      "id": "euclidean_goal_steering_v1",
+      "velocityTimeConstant": 0.04,
+      "parameters": {}
+    },
+    "orca": {
+      "methodConfigVersion": 2,
+      "id": "orca_rvo2_v1",
+      "engine": "orca_rvo2_engine_v1",
+      "parameters": { "neighborDist": 5, "maxNeighbors": 16, "timeHorizon": 5, "timeHorizonObst": 5 }
+    },
+    "social-force": {
+      "methodConfigVersion": 2,
+      "id": "social_force_pysocialforce_v1",
+      "engine": "pysocialforce_engine_v1",
+      "parameters": {
+        "desiredFactor": 1, "relaxationTime": 0.5, "socialFactor": 5.1,
+        "lambdaImportance": 2, "gamma": 0.35, "n": 2, "nPrime": 3,
+        "obstacleFactor": 10, "obstacleSigma": 0.2, "obstacleThreshold": 3,
+        "maxSpeedMultiplier": 1.3, "obstacleResolution": 10
+      }
+    }
+  },
+  "scenarios": {
+    "head-on": { "family": "pairwise", "variant": "head_on" },
+    "crossing": { "family": "pairwise", "variant": "crossing" },
+    "overtaking": { "family": "pairwise", "variant": "overtaking" },
+    "circle": { "family": "circle_antipodal", "variant": "perturbed", "agentCount": 50 },
+    "corridor": { "family": "bidirectional", "variant": "corridor", "agentCount": 120 },
+    "bottleneck": { "family": "bottleneck", "variant": "central_opening", "agentCount": 112 },
+    "separating": { "family": "pairwise", "variant": "separating" },
+    "exact-symmetric": { "family": "pairwise", "variant": "exact_symmetric_diagnostic" }
+  },
+  "audit": {
+    "visual": { "scenarioTypes": ["head-on", "crossing", "overtaking", "circle", "corridor", "bottleneck"], "seeds": [0] },
+    "diagnostics": { "scenarioTypes": ["separating", "exact-symmetric"], "seeds": [0] }
+  },
+  "benchmark": { "scenarioTypes": ["head-on", "corridor"], "seeds": [99], "jobs": [1, 2, 4] },
+  "headline": {
+    "pairwise": { "scenarioTypes": ["head-on", "crossing", "overtaking"], "seeds": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119] },
+    "dense": { "scenarioTypes": ["circle", "corridor", "bottleneck"], "seeds": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109] }
+  },
+  "ablations": {
+    "scenarioTypes": ["head-on", "crossing", "corridor"],
+    "seeds": [200, 201, 202, 203, 204],
+    "variants": {
+      "full": { "lambdaR": 20, "lambdaT": 1, "closing": true, "visibility": true },
+      "isotropic": { "lambdaR": 1, "lambdaT": 1, "closing": true, "visibility": true },
+      "no-closing": { "lambdaR": 20, "lambdaT": 1, "closing": false, "visibility": true },
+      "no-visibility": { "lambdaR": 20, "lambdaT": 1, "closing": true, "visibility": false }
+    }
+  },
+  "runtime": { "scenario": "circle", "agentCounts": [50, 100, 200], "seed": 300, "warmups": 1, "measuredRepetitions": 3, "jobs": 1 },
+  "outputs": {
+    "root": "results/lean", "raw": "results/lean/raw-runs.jsonl",
+    "summary": "results/lean/summary.csv", "auditRoot": "results/lean/audit",
+    "benchmark": "results/lean/concurrency-benchmark.json"
+  },
+  "humanReviewGate": "results/lean/audit/review-approved.txt"
+}

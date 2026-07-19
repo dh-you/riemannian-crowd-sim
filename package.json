@@ -27,7 +27,8 @@
     "audit:visuals": "tsx experiments/audit/cli/runVisualAudit.ts",
     "audit:viewer": "tsx experiments/audit/viewer/generateReviewIndex.ts",
     "audit:clean-clone": "tsx experiments/audit/cli/cleanCloneAudit.ts",
-    "audit:fairness": "tsx experiments/audit/cli/runFairnessAudit.ts"
+    "audit:fairness": "tsx experiments/audit/cli/runFairnessAudit.ts",
+    "lean": "tsx experiments/lean/run.ts"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
