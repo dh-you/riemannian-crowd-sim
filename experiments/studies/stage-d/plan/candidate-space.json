@@ -1,0 +1,69 @@
+{
+  "candidateSpaceVersion": 1,
+  "budgetPolicy": "equal maximum budget of 18 candidates per tunable method; compact validation search, not exhaustive calibration",
+  "methods": {
+    "conditioned_riemannian_metric_v1": {
+      "candidateCount": 17,
+      "fixed": { "lambdaT": 1 },
+      "defaultReference": { "alpha": 10, "sigma": 2.4, "rho": 10, "velocityTimeConstant": 0.04 },
+      "oneAtATimeValues": {
+        "alpha": [5, 10, 20],
+        "sigma": [1.6, 2.4, 3.2],
+        "rho": [3, 10, 20],
+        "velocityTimeConstant": [0, 0.04, 0.1]
+      },
+      "candidates": [
+        { "candidateId": "riemannian-00-default", "alpha": 10, "sigma": 2.4, "rho": 10, "velocityTimeConstant": 0.04 },
+        { "candidateId": "riemannian-01-alpha-low", "alpha": 5, "sigma": 2.4, "rho": 10, "velocityTimeConstant": 0.04 },
+        { "candidateId": "riemannian-02-alpha-high", "alpha": 20, "sigma": 2.4, "rho": 10, "velocityTimeConstant": 0.04 },
+        { "candidateId": "riemannian-03-sigma-low", "alpha": 10, "sigma": 1.6, "rho": 10, "velocityTimeConstant": 0.04 },
+        { "candidateId": "riemannian-04-sigma-high", "alpha": 10, "sigma": 3.2, "rho": 10, "velocityTimeConstant": 0.04 },
+        { "candidateId": "riemannian-05-rho-low", "alpha": 10, "sigma": 2.4, "rho": 3, "velocityTimeConstant": 0.04 },
+        { "candidateId": "riemannian-06-rho-high", "alpha": 10, "sigma": 2.4, "rho": 20, "velocityTimeConstant": 0.04 },
+        { "candidateId": "riemannian-07-tau-immediate", "alpha": 10, "sigma": 2.4, "rho": 10, "velocityTimeConstant": 0 },
+        { "candidateId": "riemannian-08-tau-slow", "alpha": 10, "sigma": 2.4, "rho": 10, "velocityTimeConstant": 0.1 },
+        { "candidateId": "riemannian-09-corner-llll", "alpha": 5, "sigma": 1.6, "rho": 3, "velocityTimeConstant": 0 },
+        { "candidateId": "riemannian-10-corner-hhhh", "alpha": 20, "sigma": 3.2, "rho": 20, "velocityTimeConstant": 0.1 },
+        { "candidateId": "riemannian-11-corner-llhh", "alpha": 5, "sigma": 1.6, "rho": 20, "velocityTimeConstant": 0.1 },
+        { "candidateId": "riemannian-12-corner-lhlh", "alpha": 5, "sigma": 3.2, "rho": 3, "velocityTimeConstant": 0.1 },
+        { "candidateId": "riemannian-13-corner-lhhl", "alpha": 5, "sigma": 3.2, "rho": 20, "velocityTimeConstant": 0 },
+        { "candidateId": "riemannian-14-corner-hllh", "alpha": 20, "sigma": 1.6, "rho": 3, "velocityTimeConstant": 0.1 },
+        { "candidateId": "riemannian-15-corner-hlhl", "alpha": 20, "sigma": 1.6, "rho": 20, "velocityTimeConstant": 0 },
+        { "candidateId": "riemannian-16-corner-hhll", "alpha": 20, "sigma": 3.2, "rho": 3, "velocityTimeConstant": 0 }
+      ]
+    },
+    "orca_rvo2_v1": {
+      "candidateCount": 18,
+      "grid": {
+        "neighborDist": [3, 5, 8],
+        "maxNeighbors": [10, 20],
+        "timeHorizon": [2, 5, 8],
+        "timeHorizonObst": "equal to timeHorizon"
+      }
+    },
+    "social_force_pysocialforce_v1": {
+      "candidateCount": 18,
+      "defaultReference": { "relaxationTime": 0.5, "socialFactor": 5.1, "obstacleFactor": 10 },
+      "grid": {
+        "relaxationTime": [0.3, 0.5, 0.8],
+        "socialFactor": [2.55, 5.1, 10.2],
+        "obstacleFactor": [10, 20]
+      },
+      "fixed": {
+        "desiredFactor": 1,
+        "lambdaImportance": 2,
+        "gamma": 0.35,
+        "n": 2,
+        "nPrime": 3,
+        "obstacleSigma": 0.2,
+        "obstacleThreshold": 3,
+        "maxSpeedMultiplier": 1.3,
+        "obstacleResolution": 10
+      }
+    },
+    "euclidean_goal_steering_v1": {
+      "candidateCount": 0,
+      "derivation": "use the selected Conditioned Riemannian velocityTimeConstant; no independent search"
+    }
+  }
+}

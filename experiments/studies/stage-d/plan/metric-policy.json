@@ -1,0 +1,71 @@
+{
+  "metricPolicyVersion": 1,
+  "selectionMetrics": {
+    "success": "completion.successFraction",
+    "overlapExposure": "separation.preCorrectionOverlapPairSecondsPerAgentSecond",
+    "maximumPenetration": "separation.maximumPreCorrectionAgentPenetration",
+    "normalizedTravelTime": "travelTime.meanNormalizedTravelTime",
+    "rmsAcceleration": "smoothness.rmsAcceleration"
+  },
+  "selectionAggregation": {
+    "independentUnit": "one scenario instance identified by family, variant, and seed",
+    "runToStratum": {
+      "success": "arithmetic_mean",
+      "overlapExposure": "arithmetic_mean",
+      "maximumPenetration": "median",
+      "normalizedTravelTime": "median_of_non_null_values_conditional_on_success",
+      "rmsAcceleration": "median_of_non_null_values"
+    },
+    "pairwiseFamily": "compute each variant separately, then arithmetic-mean the four variant estimates",
+    "otherFamilies": "compute the family estimate directly from its scenario instances",
+    "macro": "arithmetic mean of the four equally weighted family estimates",
+    "nullPolicy": "do not impute; a null criterion ranks after every finite value; if all retained values are null, skip that criterion",
+    "invalidPolicy": "a missing, malformed, non-finite, discontinuous, failed, duplicated, or provenance-mismatched run invalidates its candidate for that phase"
+  },
+  "selectionRule": [
+    "remove invalid candidates",
+    "rank macro success descending and retain values within 0.01 absolute of the best",
+    "minimize macro pre-correction overlap exposure and retain within max(5 percent of best overlap exposure, 1e-6)",
+    "minimize macro maximum pre-correction agent penetration and retain within max(5 percent of best penetration, 1e-4 meters)",
+    "minimize macro median normalized travel time conditional on success and retain within 1 percent of the best finite value",
+    "minimize macro median RMS acceleration",
+    "resolve remaining ties by canonical method key in lexicographic order"
+  ],
+  "phaseRetention": {
+    "screening": 4,
+    "validationTuning": 2,
+    "validationHoldout": 1
+  },
+  "testEstimators": {
+    "successFraction": "arithmetic_mean",
+    "preCorrectionOverlapExposure": "arithmetic_mean",
+    "maximumPreCorrectionPenetration": "median",
+    "normalizedTravelTime": "median_of_non_null_run_means_conditional_on_success",
+    "pathRatio": "median of non-null run-level arithmetic means of per-agent (1 / pathEfficiency), equal to path length divided by straight-line distance",
+    "rmsAcceleration": "median",
+    "rmsJerk": "median",
+    "correctionRatio": "median",
+    "throughput": "arithmetic_mean_reported_primarily_for_bottleneck",
+    "pairwiseAvoidanceOnsetRate": "arithmetic_mean_of_agent_onset_indicators_aggregated_within_run",
+    "ttcAtOnset": "median_among_non_null_agent_onset_cases"
+  },
+  "pairing": "exact scenario SHA-256 and scenario identity",
+  "bootstrap": {
+    "seed": 20260718,
+    "replicates": 10000,
+    "confidenceLevel": 0.95,
+    "interval": "percentile",
+    "strata": [
+      "scenario family",
+      "pairwise variant within pairwise"
+    ],
+    "overallWeighting": "four families equally"
+  },
+  "forbidden": [
+    "test-informed configuration changes",
+    "post-correction safety as the primary collision measure",
+    "agent or timestep pseudoreplication",
+    "p-values",
+    "imputation of unavailable conditional travel time"
+  ]
+}

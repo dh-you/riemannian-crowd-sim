@@ -1,0 +1,50 @@
+{
+  "scenarioPartitionsVersion": 1,
+  "generatorVersion": "protocol_v1",
+  "screening": {
+    "split": "validation",
+    "entries": [
+      { "family": "pairwise", "variants": ["head_on", "crossing", "overtaking", "separating"], "seeds": [0, 1, 2], "agentCount": 2 },
+      { "family": "circle_antipodal", "variants": ["perturbed"], "seeds": [0, 1], "agentCount": 20 },
+      { "family": "bidirectional", "variants": ["corridor"], "seeds": [0, 1], "agentCount": 40 },
+      { "family": "bottleneck", "variants": ["central_opening"], "seeds": [0, 1], "agentCount": 40 }
+    ],
+    "expectedScenarioCount": 18,
+    "purpose": "candidate reduction only"
+  },
+  "validationTuning": {
+    "split": "validation",
+    "entries": [
+      { "family": "pairwise", "variants": ["head_on", "crossing", "overtaking", "separating"], "seeds": [0, 1, 2, 3, 4, 5], "agentCount": 2 },
+      { "family": "circle_antipodal", "variants": ["perturbed"], "seeds": [0, 1, 2], "agentCount": 50 },
+      { "family": "bidirectional", "variants": ["corridor"], "seeds": [0, 1, 2], "agentCount": 120 },
+      { "family": "bottleneck", "variants": ["central_opening"], "seeds": [0, 1, 2], "agentCount": 112 }
+    ],
+    "expectedScenarioCount": 33,
+    "purpose": "rank four screened candidates and retain two"
+  },
+  "validationHoldout": {
+    "split": "validation",
+    "entries": [
+      { "family": "pairwise", "variants": ["head_on", "crossing", "overtaking", "separating"], "seeds": [6, 7, 8, 9], "agentCount": 2 },
+      { "family": "circle_antipodal", "variants": ["perturbed"], "seeds": [3, 4], "agentCount": 50 },
+      { "family": "bidirectional", "variants": ["corridor"], "seeds": [3, 4], "agentCount": 120 },
+      { "family": "bottleneck", "variants": ["central_opening"], "seeds": [3, 4], "agentCount": 112 }
+    ],
+    "expectedScenarioCount": 22,
+    "purpose": "choose one of two finalists and report ablations"
+  },
+  "frozenTest": {
+    "split": "test",
+    "entries": [
+      { "family": "pairwise", "variants": ["head_on", "crossing", "overtaking", "separating"], "seedStart": 1000, "seedEnd": 1049, "agentCount": 2 },
+      { "family": "circle_antipodal", "variants": ["perturbed"], "seedStart": 1000, "seedEnd": 1029, "agentCount": 100 },
+      { "family": "bidirectional", "variants": ["corridor"], "seedStart": 1000, "seedEnd": 1029, "agentCount": 240 },
+      { "family": "bottleneck", "variants": ["central_opening"], "seedStart": 1000, "seedEnd": 1029, "agentCount": 224 }
+    ],
+    "expectedScenarioCount": 290,
+    "expectedMethodCount": 4,
+    "expectedRunCount": 1160,
+    "excludedFromClaims": ["pairwise exact_symmetric_diagnostic"]
+  }
+}

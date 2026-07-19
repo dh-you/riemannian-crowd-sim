@@ -27,7 +27,20 @@
     "audit:visuals": "tsx experiments/audit/cli/runVisualAudit.ts",
     "audit:viewer": "tsx experiments/audit/viewer/generateReviewIndex.ts",
     "audit:clean-clone": "tsx experiments/audit/cli/cleanCloneAudit.ts",
-    "audit:fairness": "tsx experiments/audit/cli/runFairnessAudit.ts"
+    "audit:fairness": "tsx experiments/audit/cli/runFairnessAudit.ts",
+    "study:d:plan": "tsx experiments/studies/stage-d/cli/createPlan.ts",
+    "study:d:candidates": "tsx experiments/studies/stage-d/cli/createCandidates.ts",
+    "study:d:screen": "tsx experiments/studies/stage-d/cli/runScreening.ts",
+    "study:d:validation": "tsx experiments/studies/stage-d/cli/runValidation.ts",
+    "study:d:select": "tsx experiments/studies/stage-d/cli/selectConfigurations.ts",
+    "study:d:freeze": "tsx experiments/studies/stage-d/cli/freezeConfigurations.ts",
+    "study:d:test": "tsx experiments/studies/stage-d/cli/runFrozenTest.ts",
+    "study:d:merge": "tsx experiments/studies/stage-d/cli/mergeFrozenTest.ts",
+    "study:d:ablations": "tsx experiments/studies/stage-d/cli/runAblations.ts",
+    "study:d:runtime": "tsx experiments/studies/stage-d/cli/runRuntimeStudy.ts",
+    "study:d:analyze": "tsx experiments/studies/stage-d/cli/analyzeResults.ts",
+    "study:d:paper": "tsx experiments/studies/stage-d/cli/generatePaperAssets.ts",
+    "study:d:verify": "tsx experiments/studies/stage-d/cli/verifyStudy.ts"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",

@@ -1,0 +1,91 @@
+{
+  "studyPlanVersion": 1,
+  "studyId": "eumas-stage-d-2026",
+  "status": "PREREGISTERED_BEFORE_VALIDATION",
+  "d0BaseCommit": "41f39701a72d0a4638f68661ec9221d5b99230e4",
+  "ablationPreparationCommit": "d102e94cae6152759d78399cbcb40ac48d53cee9",
+  "repositoryShaAtCreation": "d102e94cae6152759d78399cbcb40ac48d53cee9",
+  "creationTimestamp": "2026-07-19T00:00:26.7086243-04:00",
+  "provenance": {
+    "d0ReportPath": "results/stage-d0-audit/report.json",
+    "d0ReportSha256": "95fa5af49b4f013a3ac8b88b7ae3966d5f239df8eec840d3f97a8033bcc5156e",
+    "humanReviewPath": "results/stage-d0-audit/human-visual-review.json",
+    "humanReviewSha256": "fac48a5fe3577c8bd9ce6961b23b34c4de30009461fba8e2ca1d5a2deb7ca102",
+    "scenarioSuitePath": "experiments/suites/protocol-v1.json",
+    "scenarioSuiteSha256": "392496d4421cf4eb768df524e54d3a3b84330fd23fb4e274e76c65ad72a45e07",
+    "thirdPartyLockPath": "experiments/baselines/third-party-lock.json",
+    "thirdPartyLockSha256": "c5fc6e08fa99fa5f0dd6d79e9a93a227b5b8965e54ea40fb5fc62c26631f935c",
+    "baselineBuildManifestPath": "experiments/third_party/build/build-manifest.json",
+    "baselineBuildManifestSha256": "85f7c5898c8218b0d0e494572162e199a86c15d74a6c634c0185d1690973ddb9"
+  },
+  "lockedPlanInputs": {
+    "metricPolicyPath": "experiments/studies/stage-d/plan/metric-policy.json",
+    "metricPolicySha256": "52dc0d398bd74a071121b0f51ac34a7e57e5c96190f76ec9f9cc499c0f6f82e1",
+    "candidateSpacePath": "experiments/studies/stage-d/plan/candidate-space.json",
+    "candidateSpaceSha256": "7f3aeadc07488c5c87af7a3703fc83e858737b7d751e54fc667e005d1245909f",
+    "scenarioPartitionsPath": "experiments/studies/stage-d/plan/scenario-partitions.json",
+    "scenarioPartitionsSha256": "fb144e36f5798e79a519b35315ba441184c0cc6b69d45840e94b47f204dc45d3"
+  },
+  "headlineMethods": [
+    { "id": "conditioned_riemannian_metric_v1", "label": "Conditioned Riemannian", "tunable": true, "maximumCandidates": 18 },
+    { "id": "euclidean_goal_steering_v1", "label": "Goal+Projection", "tunable": false, "derivation": "selected Riemannian velocityTimeConstant" },
+    { "id": "orca_rvo2_v1", "label": "ORCA/RVO2", "tunable": true, "maximumCandidates": 18 },
+    { "id": "social_force_pysocialforce_v1", "label": "PySocialForce", "tunable": true, "maximumCandidates": 18 }
+  ],
+  "phases": [
+    "D1_PREREGISTRATION",
+    "D2_SCREENING",
+    "D3_VALIDATION_SELECTION",
+    "D4_CONFIGURATION_FREEZE",
+    "D5_FROZEN_TEST",
+    "D6_STATISTICS",
+    "D7_ABLATION_AND_SENSITIVITY",
+    "D8_RUNTIME",
+    "D9_PAPER_ASSETS_AND_CLAIMS_AUDIT"
+  ],
+  "selectionAlgorithm": "the ordered tolerance-filter rule in metric-policy.json, applied independently per tunable method; retain 4 after screening, 2 after tuning, and 1 after validation holdout",
+  "frozenTestDefinition": "all 290 statistical protocol-v1 test scenarios paired with exactly four frozen headline methods; the exact symmetric diagnostic is excluded from aggregate claims",
+  "representativeTrajectoryRule": "record every step for the lowest numbered valid frozen test seed (1000) for the preregistered head_on and crossing pairwise variants; do not select trajectories after viewing results",
+  "statisticsPolicy": {
+    "bootstrapSeed": 20260718,
+    "bootstrapReplicates": 10000,
+    "confidenceLevel": 0.95,
+    "pairedBy": "exact scenario identity and SHA-256",
+    "unit": "scenario instance",
+    "pValues": false
+  },
+  "runtimeBenchmarkProtocol": {
+    "populationSizes": [50, 100, 200],
+    "physicalHorizonSeconds": 10,
+    "warmupsPerCell": 1,
+    "measuredRepetitionsPerCell": 5,
+    "concurrentRuns": 1,
+    "engineThreads": 1,
+    "reported": ["median wall-clock seconds", "interquartile range", "simulated agent-steps per second"]
+  },
+  "plannedPaperOutputs": {
+    "data": [
+      "main-results.csv",
+      "main-results.json",
+      "per-family-results.csv",
+      "paired-differences.csv",
+      "validation-selection.csv",
+      "ablation-results.csv",
+      "sensitivity-results.csv",
+      "runtime-results.csv",
+      "failure-summary.csv"
+    ],
+    "tables": ["main-comparison.tex", "main-comparison.md", "pairwise-anticipation.md"],
+    "figures": ["main-comparison.svg", "ablation-sensitivity.svg", "pairwise-trajectories.svg", "runtime-scaling.svg"],
+    "claimsAudit": "paper-assets/stage-d/claims-audit.md"
+  },
+  "stopConditions": [
+    "audit or required test failure",
+    "locked preregistration change after validation starts",
+    "scientific implementation change",
+    "test execution before freeze commit",
+    "hash or provenance mismatch",
+    "missing, duplicate, malformed, or non-finite run",
+    "inability to prove complete frozen test Cartesian product"
+  ]
+}
