@@ -78,7 +78,6 @@ def evaluate(scenario: dict[str, Any], records: list[dict[str, Any]]) -> dict[st
     accumulators: dict[int, dict[str, Any]] = {}
     for agent_id, agent in definitions.items():
         accumulators[agent_id] = {
-            "previousPosition": vec(agent["position"], "agent.position"),
             "previousVelocity": vec(agent["velocity"], "agent.velocity"),
             "previousAcceleration": None,
             "pathLength": 0.0,
@@ -131,7 +130,9 @@ def evaluate(scenario: dict[str, Any], records: list[dict[str, Any]]) -> dict[st
             total_correction += distance(post_position, pre_position)
             accumulated = accumulators[agent_id]
             if accumulated["firstArrivalTime"] is None:
-                accumulated["pathLength"] += distance(post_position, accumulated["previousPosition"])
+                accumulated["pathLength"] += distance(
+                    post_position, vec(step["positionBefore"], "positionBefore")
+                )
                 realized = vec(step["realizedVelocity"], "realizedVelocity")
                 acceleration = scale(sub(realized, accumulated["previousVelocity"]), 1.0 / dt)
                 acceleration_squared += acceleration[0] ** 2 + acceleration[1] ** 2
@@ -144,7 +145,6 @@ def evaluate(scenario: dict[str, Any], records: list[dict[str, Any]]) -> dict[st
                 accumulated["previousAcceleration"] = acceleration
                 if step["arrived"]:
                     accumulated["firstArrivalTime"] = float(record["time"])
-            accumulated["previousPosition"] = post_position
             accumulated["previousVelocity"] = vec(step["realizedVelocity"], "realizedVelocity")
 
         if scenario.get("family") == "pairwise" and len(agents) == 2:

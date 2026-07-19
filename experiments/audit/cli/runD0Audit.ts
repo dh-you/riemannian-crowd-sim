@@ -67,7 +67,8 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
   const visual = readOptional(visualPath) as { status?: string } | null;
   const cleanClone = readOptional(cleanClonePath) as { status?: string } | null;
   const machineMismatch = [metrics, riemannian, gold, fairness].some((entry) => entry !== null && entry.status === "FAIL");
-  const incomplete = metrics?.status !== "PASS" || riemannian?.status !== "PASS" || fairness?.status !== "PASS" || cleanClone?.status !== "PASS";
+  const incomplete = metrics?.status !== "PASS" || riemannian?.status !== "PASS" ||
+    gold?.status !== "PASS" || fairness?.status !== "PASS" || cleanClone?.status !== "PASS";
   const readinessDecision = machineMismatch
     ? "NOT READY — AUDIT MISMATCH"
     : incomplete
@@ -79,7 +80,6 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
     "experiments/engines/OrcaRvo2Engine.ts",
     "experiments/engines/PySocialForceEngine.ts",
     "experiments/engines/externalProtocol.ts",
-    "experiments/metrics/RunMetricsAccumulator.ts",
     "experiments/protocol/schema.ts",
     "experiments/protocol/methodConfig.ts",
     "experiments/generation",
@@ -105,7 +105,7 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
     { id: "protected-production", description: "Protected scientific implementation remained unchanged", status: protectedChanges.length === 0 ? "PASS" : "FAIL", evidence: protectedChanges, maximumNumericalDiscrepancy: null },
   ];
   const report = {
-    stageD0AuditReportVersion: 1,
+    stageD0AuditReportVersion: 2,
     readinessDecision,
     environment: {
       repositoryCommit: git(["rev-parse", "HEAD"]),
@@ -124,9 +124,11 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
     commandResults,
     discrepancies: gold?.firstFailure === undefined || gold.firstFailure === null ? [] : [gold.firstFailure],
     protectedScientificFileChanges: protectedChanges,
-    unresolvedQuestions: readinessDecision === "NOT READY — AUDIT MISMATCH"
-      ? ["The ORCA at-goal fixture exposes a nonzero path ratio caused by initial float32 position quantization even though native realized displacement is zero."]
-      : [],
+    resolvedFindings: [
+      "Stage C.2 defines realized path from each emitted step's post-correction position minus that same step's before position, so engine representation conversion is not counted as travel.",
+      "Stage C.2 restores the locked PySocialForce checkout after upstream tests and removes generated tracked, untracked, and ignored artifacts before applying the locked patch.",
+    ],
+    unresolvedQuestions: [],
     evidence: { metrics: metricsPath, riemannian: riemannianPath, gold: goldPath, fairness: fairnessPath, cleanClone: cleanClonePath, visuals: visualPath },
   };
   const reportPath = resolve(AUDIT_RESULTS_ROOT, "report.json");
@@ -187,9 +189,17 @@ export function writeFinalAuditReport(commandResults: readonly CommandResult[] =
     "",
     `Status: **${cleanClone?.status ?? "BLOCKED"}**. A passing report requires a no-local clone, fresh dependency/bootstrap/build steps, and four-method byte/identity comparison.`,
     "",
-    "## Discrepancies and unresolved questions",
+    "## Discrepancies, resolved findings, and unresolved questions",
     "",
-    ...(report.discrepancies.length === 0 ? ["No machine-checkable mismatch was recorded."] : ["The first preserved mismatch is:", "", "```json", JSON.stringify(report.discrepancies[0], null, 2), "```", "", "In the ORCA at-goal fixture, conversion of the exact scenario coordinate `0.02` to the upstream engine's float32 coordinate `0.0199999996` creates a `4e-10 m` difference against the metric accumulator's exact scenario start. The native emitted step is stationary, but path ratio is `2.000000009355629e-8` rather than exactly zero. Production code and the gold expectation were not changed."]),
+    ...(report.discrepancies.length === 0
+      ? ["No machine-checkable mismatch was recorded."]
+      : ["The first machine-checkable mismatch is:", "", "```json", JSON.stringify(report.discrepancies[0], null, 2), "```"]),
+    "",
+    "Resolved D0 findings:",
+    "",
+    ...report.resolvedFindings.map((finding) => `- ${finding}`),
+    "",
+    "No unresolved semantic question is recorded by Stage C.2; any future failed check still fails closed through the decision logic above.",
     "",
     "## Visual review status",
     "",

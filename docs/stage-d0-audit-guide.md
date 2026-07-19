@@ -145,16 +145,34 @@ for review, not automatic evidence of plausible behavior. Use
 `human-visual-review.json` yourself only after completing the checklist. The
 audit must never approve that file.
 
-## Known preserved D0 mismatch
+## Resolved D0 path-semantics finding
 
-The ORCA start-at-goal fixture maps the exact scenario coordinate `x=0.02` to
-RVO2's float32 coordinate `x=0.0199999996`. The emitted engine step has zero
-native displacement and zero realized velocity. The common path accumulator,
-however, starts from exact scenario bytes and measures the `4e-10 m` mapping
-difference as path, yielding a path ratio of approximately `2.0e-8` instead of
-exactly zero. The independent evaluator agrees with the pipeline calculation,
-but the gold semantic expectation fails. D0 preserves this mismatch and does
-not modify the ORCA adapter or metric accumulator.
+The original D0 run found that the ORCA start-at-goal fixture maps exact scenario
+coordinate `x=0.02` to RVO2's float32 coordinate `x=0.0199999996`. Its emitted
+native step has zero displacement, but the old accumulator compared the mapped
+position with the scenario coordinate and counted the `4e-10 m` representation
+change as travel.
+
+Stage C.2 clarified the uniform physical definition. For every engine and every
+step through first arrival, path contributes exactly
+`|postCorrectionPosition - positionBefore|` from that same emitted step. Initial
+conversion into a native representation is not motion. A stationary mapped
+step now contributes exactly zero without a clamp, tolerance, or ORCA special
+case. A real mapped displacement still contributes its full length, and shared
+positional correction remains included because the final post-correction
+position is the realized physical position.
+
+## Clean-clone provenance comparison
+
+Each checkout's run manifest must match the SHA-256 of its own build manifest
+and runner, and the two checkouts must match on stable source, lock, upstream,
+toolchain, Python-package, method, and engine identity. Raw build-manifest hashes
+are recorded but are not compared across checkouts because the manifest
+intentionally contains its execution timestamp and absolute paths. Likewise, a
+native Windows executable may carry a linker timestamp even when the stable
+build identity and byte-identical trajectory agree. These location/time-specific
+hashes remain locally verified and visible in the comparison report rather than
+being treated as portable identities.
 
 ## What this audit proves—and what it does not prove
 

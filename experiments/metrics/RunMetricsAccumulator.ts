@@ -20,7 +20,6 @@ interface AgentAccumulator {
   initialPosition: Vec2;
   goal: Vec2;
   preferredSpeed: number;
-  previousPosition: Vec2;
   previousVelocity: Vec2;
   previousAcceleration: Vec2 | null;
   pathLengthUntilArrival: number;
@@ -77,7 +76,6 @@ export class RunMetricsAccumulator {
         initialPosition: agent.position,
         goal: agent.goal,
         preferredSpeed: agent.preferredSpeed,
-        previousPosition: agent.position,
         previousVelocity: agent.velocity,
         previousAcceleration: null,
         pathLengthUntilArrival: 0,
@@ -151,7 +149,7 @@ export class RunMetricsAccumulator {
       if (accumulated.firstArrivalTime !== null) arrivedBeforeStep.add(id);
       if (accumulated.firstArrivalTime === null) {
         accumulated.pathLengthUntilArrival += norm(
-          sub(step.postCorrectionPosition, accumulated.previousPosition),
+          sub(step.postCorrectionPosition, step.positionBefore),
         );
         const acceleration = scale(sub(step.realizedVelocity, accumulated.previousVelocity), 1 / dt);
         this.accelerationSquaredSum += dot(acceleration, acceleration);
@@ -164,7 +162,6 @@ export class RunMetricsAccumulator {
         accumulated.previousAcceleration = acceleration;
         if (step.arrived) accumulated.firstArrivalTime = record.time;
       }
-      accumulated.previousPosition = step.postCorrectionPosition;
       accumulated.previousVelocity = step.realizedVelocity;
     }
 

@@ -94,7 +94,14 @@ T_i^{\mathrm{norm}}=\frac{T_i^{\mathrm{arrival}}}{\lVert q_i-p_i^0\rVert/s_i},
 E_i^{\mathrm{path}}=\frac{L_i^{\mathrm{realized}}}{\lVert q_i-p_i^0\rVert}.
 \]
 
-Realized path length stops at first arrival. Per-agent values plus mean and median are written; unavailable aggregates are `null`.
+Realized path length stops at first arrival and is accumulated from each emitted physical step:
+
+\[
+L_i^{\mathrm{realized}}=\sum_{k\leq k_i^{\mathrm{first\ arrival}}}
+\left\lVert p_{i,\mathrm{post}}^{(k)}-p_{i,\mathrm{before}}^{(k)}\right\rVert.
+\]
+
+The before and final positions come from the same `EngineStepRecord`. Therefore initial conversion into a native engine's representation is not physical travel, while positional correction remains part of realized displacement. No engine-specific clamp or tolerance is used. Per-agent values plus mean and median are written; unavailable aggregates are `null`.
 
 Agent-agent and agent-wall safety are never combined in experiment metrics. The main safety fields are `minimumPreCorrectionAgentClearance`, agent overlap pair-seconds, and maximum pre/post agent penetration. Wall clearance and maximum pre/post wall penetration are reported in separate fields. Physical overlap and penetration exclude correction padding. The legacy core diagnostics retain combined aliases for Stage A compatibility, but experiment metrics and CSV columns do not use those aliases.
 

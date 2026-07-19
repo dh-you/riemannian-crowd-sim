@@ -7,6 +7,8 @@ import { mkdtempSync } from "node:fs";
 import { AUDIT_RESULTS_ROOT, writeJson } from "./auditUtils";
 import { runFairnessAudit } from "./runFairnessAudit";
 import { writeFinalAuditReport, type CommandResult } from "./runD0Audit";
+import { sha256File } from "../../protocol/hash";
+import type { BaselineBuildManifest } from "../../baselines/common/thirdParty";
 
 interface CloneCommand {
   command: string;
@@ -37,27 +39,124 @@ function run(
   return { command, status: result.status === 0 ? "PASS" : "FAIL", exitCode: result.status ?? -1, logPath };
 }
 
-function compareFairnessRuns(originalRoot: string, cloneRoot: string): { status: "PASS" | "FAIL"; comparisons: unknown[]; firstFailure: unknown | null } {
+interface ReproductionComparison {
+  methodId: string;
+  identityMatch: boolean;
+  stableManifestIdentityMatch: boolean;
+  stableBuildIdentityMatch: boolean;
+  originalProvenanceValid: boolean;
+  cloneProvenanceValid: boolean;
+  runnerHashByteMatch: boolean | null;
+  buildManifestHashByteMatch: boolean | null;
+  trajectoryByteMatch: boolean;
+  metricsByteMatch: boolean;
+}
+
+function compareFairnessRuns(originalRoot: string, cloneRoot: string): { status: "PASS" | "FAIL"; comparisons: ReproductionComparison[]; firstFailure: ReproductionComparison | null } {
   const methods = [
     "conditioned_riemannian_metric_v1",
     "euclidean_goal_steering_v1",
     "orca_rvo2_v1",
     "social_force_pysocialforce_v1",
   ];
-  const comparisons: { methodId: string; identityMatch: boolean; trajectoryByteMatch: boolean; metricsByteMatch: boolean }[] = [];
+  const comparisons: ReproductionComparison[] = [];
+  const originalRepository = resolve(originalRoot, "../../..");
+  const cloneRepository = resolve(cloneRoot, "../../..");
+  const originalBuild = readBuildManifestForAudit(originalRepository);
+  const cloneBuild = readBuildManifestForAudit(cloneRepository);
+  const stableBuildIdentityMatch = JSON.stringify(stableBuildIdentity(originalBuild)) ===
+    JSON.stringify(stableBuildIdentity(cloneBuild));
   for (const methodId of methods) {
     const original = resolve(originalRoot, methodId);
     const cloned = resolve(cloneRoot, methodId);
     const originalManifest = JSON.parse(readFileSync(resolve(original, "audit-manifest.json"), "utf8")) as Record<string, unknown>;
     const cloneManifest = JSON.parse(readFileSync(resolve(cloned, "audit-manifest.json"), "utf8")) as Record<string, unknown>;
-    const identityFields = ["scenarioSha256", "methodIdentityVersion", "methodKey", "methodConfigCanonicalSha256", "methodConfigSourceSha256", "engineId", "engineAdapterVersion", "correctionMode", "thirdPartyLockSha256", "upstreamCommit", "runnerSha256", "buildManifestSha256"];
-    const identityMatch = identityFields.every((field) => originalManifest[field] === cloneManifest[field]);
+    const identityFields = ["scenarioSha256", "methodIdentityVersion", "methodKey", "methodConfigCanonicalSha256", "methodConfigSourceSha256", "engineId", "engineAdapterVersion", "correctionMode", "thirdPartyLockSha256", "upstreamCommit"];
+    const stableManifestIdentityMatch = identityFields.every((field) => originalManifest[field] === cloneManifest[field]);
+    const external = methodId === "orca_rvo2_v1" || methodId === "social_force_pysocialforce_v1";
+    const runnerKind = methodId === "orca_rvo2_v1" ? "orca" : "socialForce";
+    const originalProvenanceValid = !external || localBuildProvenanceIsValid(
+      originalRepository,
+      originalManifest,
+      originalBuild,
+      runnerKind,
+    );
+    const cloneProvenanceValid = !external || localBuildProvenanceIsValid(
+      cloneRepository,
+      cloneManifest,
+      cloneBuild,
+      runnerKind,
+    );
+    const runnerHashByteMatch = external
+      ? originalManifest.runnerSha256 === cloneManifest.runnerSha256
+      : null;
+    const buildManifestHashByteMatch = external
+      ? originalManifest.buildManifestSha256 === cloneManifest.buildManifestSha256
+      : null;
     const trajectoryByteMatch = Buffer.compare(readFileSync(resolve(original, "engine-steps.jsonl")), readFileSync(resolve(cloned, "engine-steps.jsonl"))) === 0;
     const metricsByteMatch = Buffer.compare(readFileSync(resolve(original, "run-metrics.json")), readFileSync(resolve(cloned, "run-metrics.json"))) === 0;
-    comparisons.push({ methodId, identityMatch, trajectoryByteMatch, metricsByteMatch });
+    const identityMatch = stableManifestIdentityMatch && (!external || (
+      stableBuildIdentityMatch && originalProvenanceValid && cloneProvenanceValid
+    ));
+    comparisons.push({
+      methodId,
+      identityMatch,
+      stableManifestIdentityMatch,
+      stableBuildIdentityMatch: !external || stableBuildIdentityMatch,
+      originalProvenanceValid,
+      cloneProvenanceValid,
+      runnerHashByteMatch,
+      buildManifestHashByteMatch,
+      trajectoryByteMatch,
+      metricsByteMatch,
+    });
   }
   const firstFailure = comparisons.find((entry) => !entry.identityMatch || !entry.trajectoryByteMatch || !entry.metricsByteMatch) ?? null;
   return { status: firstFailure === null ? "PASS" : "FAIL", comparisons, firstFailure };
+}
+
+function readBuildManifestForAudit(repositoryRoot: string): BaselineBuildManifest {
+  return JSON.parse(readFileSync(
+    resolve(repositoryRoot, "experiments", "third_party", "build", "build-manifest.json"),
+    "utf8",
+  )) as BaselineBuildManifest;
+}
+
+function stableBuildIdentity(manifest: BaselineBuildManifest): unknown {
+  return {
+    buildManifestVersion: manifest.buildManifestVersion,
+    lockSha256: manifest.lockSha256,
+    adapterSourceSha256: manifest.adapterSourceSha256,
+    upstreamCommits: manifest.upstreamCommits,
+    compiler: manifest.compiler,
+    cmake: manifest.cmake,
+    buildType: manifest.buildType,
+    openMpEnabled: manifest.openMpEnabled,
+    pythonVersion: manifest.pythonVersion,
+    pythonPackages: manifest.pythonPackages,
+    platform: manifest.platform,
+    architecture: manifest.architecture,
+    socialForceRunnerSha256: manifest.runnerSha256.socialForce,
+  };
+}
+
+function localBuildProvenanceIsValid(
+  repositoryRoot: string,
+  runManifest: Record<string, unknown>,
+  buildManifest: BaselineBuildManifest,
+  runnerKind: "orca" | "socialForce",
+): boolean {
+  const buildManifestPath = resolve(
+    repositoryRoot,
+    "experiments",
+    "third_party",
+    "build",
+    "build-manifest.json",
+  );
+  const runnerPath = buildManifest.runners[runnerKind];
+  return runManifest.buildManifestSha256 === sha256File(buildManifestPath) &&
+    runManifest.runnerSha256 === buildManifest.runnerSha256[runnerKind] &&
+    existsSync(runnerPath) && sha256File(runnerPath) === buildManifest.runnerSha256[runnerKind];
 }
 
 function safeRemoveClone(temporaryRoot: string, cloneRoot: string): void {

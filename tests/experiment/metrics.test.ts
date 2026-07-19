@@ -4,6 +4,7 @@ import {
   PAIRWISE_AVOIDANCE_THRESHOLD_DEGREES,
   RunMetricsAccumulator,
 } from "../../experiments/metrics/RunMetricsAccumulator";
+import type { EngineStepRecord } from "../../experiments/engines/engineStep";
 import type { ExperimentScenario } from "../../experiments/protocol/schema";
 import type { AgentState, StepDiagnostics, Vec2 } from "../../src/core/types";
 
@@ -111,6 +112,36 @@ describe("online common metrics", () => {
     expect(metrics.separation.preCorrectionOverlapPairSecondsPerAgentSecond).toBeNull();
     expect(metrics.completion.perAgent[0].firstArrivalTime).toBeNull();
     expect(JSON.stringify(metrics)).not.toMatch(/NaN|Infinity/u);
+  });
+
+  it("counts a stationary precision-mapped native step as exactly zero realized path", () => {
+    const initial = agent(0, [0.02, 0], [0, 0], [0, 0], false);
+    const mappedPosition: Vec2 = [0.0199999996, 0];
+    const final = agent(0, mappedPosition, [0, 0], [0, 0], true);
+    const accumulator = new RunMetricsAccumulator(
+      scenarioOf([initial], "free_space", 1),
+      methodMetadata,
+    );
+    accumulator.observeStep(engineStep(mappedPosition, mappedPosition, [0, 0], true));
+    const metrics = accumulator.finish([final]);
+
+    expect(metrics.completion.perAgent[0].pathEfficiency).toBe(0);
+    expect(metrics.pathEfficiency.meanPathEfficiency).toBe(0);
+    expect(metrics.smoothness.rmsAcceleration).toBe(0);
+  });
+
+  it("counts real native motion independently of scenario-to-engine representation mapping", () => {
+    const initial = agent(0, [0.02, 0], [0, 0], [1.02, 0], false);
+    const mappedPosition: Vec2 = [0.0199999996, 0];
+    const finalPosition: Vec2 = [1.0199999996, 0];
+    const final = agent(0, finalPosition, [1, 0], [1.02, 0], true);
+    const accumulator = new RunMetricsAccumulator(
+      scenarioOf([initial], "free_space", 1),
+      methodMetadata,
+    );
+    accumulator.observeStep(engineStep(mappedPosition, finalPosition, [1, 0], true));
+
+    expect(accumulator.finish([final]).completion.perAgent[0].pathEfficiency).toBeCloseTo(1, 15);
   });
 });
 
@@ -359,5 +390,52 @@ function twoAgentDiagnostic(
         wallCorrectionDisplacement: 0,
       },
     ],
+  };
+}
+
+function engineStep(
+  positionBefore: Vec2,
+  positionAfter: Vec2,
+  realizedVelocity: Vec2,
+  arrived: boolean,
+): EngineStepRecord {
+  return {
+    engineStepVersion: 1,
+    stepIndex: 0,
+    time: 1,
+    agents: [{
+      id: 0,
+      positionBefore,
+      velocityBefore: [0, 0],
+      preCorrectionPosition: positionAfter,
+      postCorrectionPosition: positionAfter,
+      commandVelocity: realizedVelocity,
+      realizedVelocity,
+      arrived,
+    }],
+    diagnostics: {
+      preCorrectionOverlapPairs: 0,
+      postCorrectionOverlapPairs: 0,
+      preCorrectionWallContacts: 0,
+      postCorrectionWallContacts: 0,
+      minimumPreCorrectionAgentClearance: null,
+      minimumPreCorrectionWallClearance: null,
+      maximumPreCorrectionAgentPenetration: 0,
+      maximumPostCorrectionAgentPenetration: 0,
+      maximumPreCorrectionWallPenetration: 0,
+      maximumPostCorrectionWallPenetration: 0,
+      totalPreCorrectionAgentPenetration: 0,
+      totalPostCorrectionAgentPenetration: 0,
+      totalPreCorrectionWallPenetration: 0,
+      totalPostCorrectionWallPenetration: 0,
+      intendedDisplacement: Math.hypot(
+        positionAfter[0] - positionBefore[0],
+        positionAfter[1] - positionBefore[1],
+      ),
+      agentCorrectionDisplacement: 0,
+      wallCorrectionDisplacement: 0,
+      totalCorrectionDisplacement: 0,
+      correctionMode: "native_none",
+    },
   };
 }

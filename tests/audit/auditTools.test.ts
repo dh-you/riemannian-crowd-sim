@@ -70,6 +70,46 @@ describe("independent Stage D0 audit tooling", () => {
     );
   });
 
+  it("measures native path from each emitted before/final pair across precision mapping", () => {
+    const directory = temporaryDirectory();
+    const scenarioPath = resolve(directory, "scenario.json");
+    const trajectoryPath = resolve(directory, "trajectory.jsonl");
+    const outputPath = resolve(directory, "metrics.json");
+    const scenario = {
+      experimentScenarioVersion: 1,
+      name: "precision-mapped-path",
+      family: "free_space",
+      simulation: { dt: 1, horizonSeconds: 1, goalTolerance: 0.05 },
+      agents: [{
+        id: 0,
+        radius: 0.25,
+        preferredSpeed: 1,
+        position: [0.02, 0],
+        velocity: [0, 0],
+        goal: [0, 0],
+      }],
+      walls: [],
+    };
+    const mapped = [0.0199999996, 0];
+    writeFileSync(scenarioPath, `${JSON.stringify(scenario)}\n`, "utf8");
+    writeFileSync(trajectoryPath, `${JSON.stringify(metricStep(mapped, mapped, [0, 0]))}\n`, "utf8");
+    let result = evaluate(scenarioPath, trajectoryPath, outputPath);
+    expect(result.status, result.stdout + result.stderr).toBe(0);
+    let metrics = JSON.parse(readFileSync(outputPath, "utf8")) as {
+      completion: { perAgent: { pathEfficiency: number }[] };
+    };
+    expect(metrics.completion.perAgent[0].pathEfficiency).toBe(0);
+
+    scenario.agents[0].goal = [1.02, 0];
+    const final = [1.0199999996, 0];
+    writeFileSync(scenarioPath, `${JSON.stringify(scenario)}\n`, "utf8");
+    writeFileSync(trajectoryPath, `${JSON.stringify(metricStep(mapped, final, [1, 0]))}\n`, "utf8");
+    result = evaluate(scenarioPath, trajectoryPath, outputPath);
+    expect(result.status, result.stdout + result.stderr).toBe(0);
+    metrics = JSON.parse(readFileSync(outputPath, "utf8")) as typeof metrics;
+    expect(metrics.completion.perAgent[0].pathEfficiency).toBeCloseTo(1, 15);
+  });
+
   it("accepts bounded JSONL-style CRLF input and blank lines", () => {
     const directory = temporaryDirectory();
     const source = readFileSync("experiments/audit/synthetic/single-linear-trajectory.jsonl", "utf8");
@@ -135,3 +175,25 @@ describe("independent Stage D0 audit tooling", () => {
     expect(report.firstFailure.metric).toBe("throughput");
   });
 });
+
+function metricStep(
+  positionBefore: number[],
+  positionAfter: number[],
+  realizedVelocity: number[],
+): Record<string, unknown> {
+  return {
+    engineStepVersion: 1,
+    stepIndex: 0,
+    time: 1,
+    agents: [{
+      id: 0,
+      positionBefore,
+      velocityBefore: [0, 0],
+      preCorrectionPosition: positionAfter,
+      postCorrectionPosition: positionAfter,
+      commandVelocity: realizedVelocity,
+      realizedVelocity,
+      arrived: true,
+    }],
+  };
+}
