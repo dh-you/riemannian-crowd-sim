@@ -39,6 +39,13 @@ def effective_metric(case: dict[str, Any]) -> tuple[list[list[float]], int]:
     sigma = float(parameters["sigma"])
     lambda_r = float(parameters["lambdaR"])
     lambda_t = float(parameters["lambdaT"])
+    gates = case.get("gates", {"closing": True, "visibility": True})
+    if set(gates) != {"closing", "visibility"}:
+        raise AuditError(f"{case['caseId']}: gates must contain closing and visibility")
+    closing_enabled = gates["closing"]
+    visibility_enabled = gates["visibility"]
+    if not isinstance(closing_enabled, bool) or not isinstance(visibility_enabled, bool):
+        raise AuditError(f"{case['caseId']}: gate switches must be boolean")
     if alpha < 0.0 or sigma <= 0.0 or lambda_r <= 0.0 or lambda_t <= 0.0:
         raise AuditError(f"{case['caseId']}: invalid controller parameters")
 
@@ -64,8 +71,10 @@ def effective_metric(case: dict[str, Any]) -> tuple[list[list[float]], int]:
             continue
         radial = scale(relative, 1.0 / distance)
         distance_rate = dot(radial, sub(vec(neighbor["velocity"], "neighbor.velocity"), velocity))
-        closing = smoothstep(0.0, speed, -distance_rate)
-        visibility = 0.0 if goal_distance == 0.0 else smoothstep(-1.0, 1.0, dot(heading, radial))
+        closing = smoothstep(0.0, speed, -distance_rate) if closing_enabled else 1.0
+        visibility = (
+            0.0 if goal_distance == 0.0 else smoothstep(-1.0, 1.0, dot(heading, radial))
+        ) if visibility_enabled else 1.0
         weight = alpha * wendland_c2(distance / sigma) * closing * visibility
         if weight == 0.0:
             continue
