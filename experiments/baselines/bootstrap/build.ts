@@ -16,6 +16,7 @@ import {
   pythonExecutable,
   readThirdPartyLock,
   repositoryPath,
+  socialForceRadiusRunnerPath,
   type BaselineBuildManifest,
 } from "../common/thirdParty";
 
@@ -51,6 +52,7 @@ export function buildBaselines(): BaselineBuildManifest {
     .sort();
   const orcaRunner = orcaRunnerPath(lock);
   const socialRunner = repositoryPath(lock.runners.socialForce);
+  const radiusSocialRunner = socialForceRadiusRunnerPath();
   const manifest: BaselineBuildManifest = {
     buildManifestVersion: 1,
     lockSha256: lockSha256(),
@@ -65,8 +67,16 @@ export function buildBaselines(): BaselineBuildManifest {
     pythonPackages: packages,
     platform: platform(),
     architecture: arch(),
-    runners: { orca: orcaRunner, socialForce: socialRunner },
-    runnerSha256: { orca: sha256File(orcaRunner), socialForce: sha256File(socialRunner) },
+    runners: {
+      orca: orcaRunner,
+      socialForce: socialRunner,
+      radiusSocialForce: radiusSocialRunner,
+    },
+    runnerSha256: {
+      orca: sha256File(orcaRunner),
+      socialForce: sha256File(socialRunner),
+      radiusSocialForce: sha256File(radiusSocialRunner),
+    },
     timestamp: new Date().toISOString(),
   };
   mkdirSync(resolve(THIRD_PARTY_ROOT, "build"), { recursive: true });

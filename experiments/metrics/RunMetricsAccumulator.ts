@@ -24,6 +24,15 @@ import type {
 
 export const PAIRWISE_AVOIDANCE_THRESHOLD_DEGREES = 5;
 
+type OptionalMethodMetadata =
+  | "upstreamProject"
+  | "upstreamCommit"
+  | "upstreamLicense"
+  | "radiusAware"
+  | "distanceConvention"
+  | "upstreamVersion"
+  | "implementationCommit";
+
 interface AgentAccumulator {
   initialPosition: Vec2;
   goal: Vec2;
@@ -39,8 +48,8 @@ interface AgentAccumulator {
 
 export class RunMetricsAccumulator {
   private readonly scenario: ExperimentScenario;
-  private readonly method: Required<Omit<RunMethodMetadata, "upstreamProject" | "upstreamCommit" | "upstreamLicense">> &
-    Pick<RunMethodMetadata, "upstreamProject" | "upstreamCommit" | "upstreamLicense">;
+  private readonly method: Required<Omit<RunMethodMetadata, OptionalMethodMetadata>> &
+    Pick<RunMethodMetadata, OptionalMethodMetadata>;
   private readonly agents = new Map<number, AgentAccumulator>();
   private readonly pairwiseOnset = new Map<number, { time: number; ttc: number | null }>();
   private minimumPreCorrectionAgentClearance: number | null = null;
@@ -306,6 +315,10 @@ export class RunMetricsAccumulator {
         upstreamProject: this.method.upstreamProject ?? null,
         upstreamCommit: this.method.upstreamCommit ?? null,
         upstreamLicense: this.method.upstreamLicense ?? null,
+        radiusAware: this.method.radiusAware,
+        distanceConvention: this.method.distanceConvention,
+        upstreamVersion: this.method.upstreamVersion,
+        implementationCommit: this.method.implementationCommit,
         velocityTimeConstant: this.method.velocityTimeConstant,
         methodParameters: { ...this.method.methodParameters },
         agentCount: this.scenario.agents.length,

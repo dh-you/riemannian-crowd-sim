@@ -4,8 +4,12 @@ import type { MethodIdentity } from "../protocol/methodIdentity";
 import {
   SOCIAL_FORCE_ENGINE_ID,
   SOCIAL_FORCE_METHOD_ID,
+  SOCIAL_FORCE_RADIUS_ENGINE_ID,
+  SOCIAL_FORCE_RADIUS_METHOD_ID,
   type MethodConfig,
+  type RadiusAwareSocialForceMethodConfig,
   type SocialForceMethodConfig,
+  type SocialForceParameters,
 } from "../protocol/methodConfig";
 import type { ExperimentScenario } from "../protocol/schema";
 import { protocolNavigationRunnerConfig } from "../protocol/completion";
@@ -77,6 +81,70 @@ export class PySocialForceEngine implements ExperimentEngine {
   }
 }
 
+export class PySocialForceRadiusEngine implements ExperimentEngine {
+  readonly engineId = SOCIAL_FORCE_RADIUS_ENGINE_ID;
+
+  constructor(readonly methodId: string, readonly methodKey: string) {}
+
+  getProvenance(_scenario: ExperimentScenario, method: MethodConfig) {
+    if (method.id !== SOCIAL_FORCE_RADIUS_METHOD_ID) {
+      throw new Error("Radius-aware PySocialForce provenance received a mismatched method");
+    }
+    return baselineProvenance("pysocialforce_radius", method.parameters);
+  }
+
+  run(
+    scenario: ExperimentScenario,
+    method: MethodConfig,
+    identity: MethodIdentity,
+    sink: EngineStepSink,
+  ): EngineRunResult {
+    if (method.id !== SOCIAL_FORCE_RADIUS_METHOD_ID || identity.methodKey !== this.methodKey) {
+      throw new Error("Radius-aware PySocialForce engine received a mismatched method configuration");
+    }
+    const typed = method as RadiusAwareSocialForceMethodConfig;
+    const provenance = this.getProvenance(scenario, method);
+    const runtime = baselineRuntimePaths();
+    const temporaryDirectory = makeTemporaryDirectory(this.engineId, identity.methodKey);
+    const inputPath = resolve(temporaryDirectory, "input.json");
+    const configPath = resolve(temporaryDirectory, "config.toml");
+    const outputPath = resolve(temporaryDirectory, "output.jsonl");
+    writeFileSync(configPath, serializeConfig(scenario, typed), "utf8");
+    writeFileSync(
+      inputPath,
+      `${JSON.stringify(createSocialForceInput(scenario, typed, runtime.socialSource, configPath))}\n`,
+      "utf8",
+    );
+    let succeeded = false;
+    try {
+      runExternalProcess({
+        executable: runtime.python,
+        arguments: [runtime.socialRadiusRunner, "--input", inputPath, "--output", outputPath],
+        temporaryDirectory,
+        outputPath,
+        environment: {
+          ...process.env,
+          OMP_NUM_THREADS: "1",
+          OPENBLAS_NUM_THREADS: "1",
+          MKL_NUM_THREADS: "1",
+          NUMEXPR_NUM_THREADS: "1",
+          PYTHONHASHSEED: "0",
+        },
+      });
+      const finalStates = consumeNativeOutput(
+        scenario,
+        outputPath,
+        "pySocialForceRadius",
+        sink,
+      );
+      succeeded = true;
+      return { finalStates, totalSteps: fixedStepCount(scenario), provenance };
+    } finally {
+      if (succeeded) removeSuccessfulTemporaryDirectory(temporaryDirectory);
+    }
+  }
+}
+
 function assertHomogeneousRadii(scenario: ExperimentScenario): void {
   const radius = scenario.agents[0]?.radius;
   if (radius === undefined) throw new Error("PySocialForce requires at least one agent");
@@ -87,7 +155,7 @@ function assertHomogeneousRadii(scenario: ExperimentScenario): void {
 
 export function createSocialForceInput(
   scenario: ExperimentScenario,
-  method: SocialForceMethodConfig,
+  method: SocialForceMethodConfig | RadiusAwareSocialForceMethodConfig,
   sourceDirectory: string,
   configPath: string,
 ) {
@@ -118,7 +186,10 @@ export function createSocialForceInput(
   };
 }
 
-function serializeConfig(scenario: ExperimentScenario, method: SocialForceMethodConfig): string {
+function serializeConfig(
+  scenario: ExperimentScenario,
+  method: { parameters: SocialForceParameters },
+): string {
   const radius = scenario.agents[0].radius;
   const parameters = method.parameters;
   return [

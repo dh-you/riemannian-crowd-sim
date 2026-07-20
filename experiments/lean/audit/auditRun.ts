@@ -28,6 +28,10 @@ export function runAuditedEngine(
   mkdirSync(outputDirectory, { recursive: true });
   const scenarioBytes = readFileSync(scenarioPath, "utf8");
   const methodBytes = readFileSync(methodPath, "utf8");
+  const artifactScenarioPath = resolve(outputDirectory, "scenario.json");
+  const artifactMethodPath = resolve(outputDirectory, "method.json");
+  writeFileSync(artifactScenarioPath, scenarioBytes, "utf8");
+  writeFileSync(artifactMethodPath, methodBytes, "utf8");
   const scenario = parseExperimentScenario(JSON.parse(scenarioBytes) as unknown);
   const method = parseMethodConfig(JSON.parse(methodBytes) as unknown);
   const identity = identifyMethod(method, methodBytes);
@@ -49,6 +53,10 @@ export function runAuditedEngine(
     upstreamProject: provenance.upstreamProject,
     upstreamCommit: provenance.upstreamCommit,
     upstreamLicense: provenance.upstreamLicense,
+    radiusAware: provenance.radiusAware,
+    distanceConvention: provenance.distanceConvention,
+    upstreamVersion: provenance.upstreamVersion,
+    implementationCommit: provenance.implementationCommit,
   });
   const trajectoryPath = resolve(outputDirectory, "engine-steps.jsonl");
   const descriptor = openSync(trajectoryPath, "w");
@@ -68,8 +76,8 @@ export function runAuditedEngine(
   }
   const manifest = {
     auditRunManifestVersion: 1,
-    scenarioPath,
-    methodPath,
+    scenarioPath: artifactScenarioPath,
+    methodPath: artifactMethodPath,
     scenarioSha256: sha256Bytes(scenarioBytes),
     scenarioName: scenario.name,
     expectedStepCount: scenario.simulation.horizonSeconds / scenario.simulation.dt,
@@ -92,6 +100,13 @@ export function runAuditedEngine(
     runnerSha256: provenance.runnerSha256,
     buildManifestSha256: provenance.buildManifestSha256,
     limitations: provenance.limitations,
+    radiusAware: provenance.radiusAware,
+    distanceConvention: provenance.distanceConvention,
+    upstreamVersion: provenance.upstreamVersion,
+    frozenParameters: provenance.frozenParameters,
+    adaptationSourcePath: provenance.adaptationSourcePath,
+    adaptationSourceSha256: provenance.adaptationSourceSha256,
+    implementationCommit: provenance.implementationCommit,
   };
   const summary = {
     totalSteps: engineResult.totalSteps,

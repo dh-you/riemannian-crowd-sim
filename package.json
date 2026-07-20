@@ -22,7 +22,8 @@
     "test:baselines": "vitest run --config vitest.baselines.config.ts",
     "audit:viewer": "tsx experiments/audit/viewer/generateReviewIndex.ts",
     "protocol:audit": "tsx experiments/lean/completionAudit.ts",
-    "lean": "tsx experiments/lean/run.ts"
+    "lean": "tsx experiments/lean/run.ts",
+    "lean:sfm-radius-smoke": "tsx experiments/lean/sfmRadiusSmoke.ts"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",

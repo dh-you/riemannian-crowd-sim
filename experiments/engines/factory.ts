@@ -6,8 +6,12 @@ import {
 import type { ExperimentEngine } from "./ExperimentEngine";
 import { ScientificCoreEngine } from "./ScientificCoreEngine";
 import { OrcaRvo2Engine } from "./OrcaRvo2Engine";
-import { PySocialForceEngine } from "./PySocialForceEngine";
-import { ORCA_METHOD_ID, SOCIAL_FORCE_METHOD_ID } from "../protocol/methodConfig";
+import { PySocialForceEngine, PySocialForceRadiusEngine } from "./PySocialForceEngine";
+import {
+  ORCA_METHOD_ID,
+  SOCIAL_FORCE_METHOD_ID,
+  SOCIAL_FORCE_RADIUS_METHOD_ID,
+} from "../protocol/methodConfig";
 
 export function createExperimentEngine(
   method: MethodConfig,
@@ -18,6 +22,9 @@ export function createExperimentEngine(
   }
   if (method.id === ORCA_METHOD_ID) return new OrcaRvo2Engine(method.id, identity.methodKey);
   if (method.id === SOCIAL_FORCE_METHOD_ID) return new PySocialForceEngine(method.id, identity.methodKey);
+  if (method.id === SOCIAL_FORCE_RADIUS_METHOD_ID) {
+    return new PySocialForceRadiusEngine(method.id, identity.methodKey);
+  }
   throw new Error("Unsupported experiment engine");
 }
 

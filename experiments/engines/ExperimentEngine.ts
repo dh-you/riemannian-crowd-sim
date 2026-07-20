@@ -7,6 +7,7 @@ import type { CorrectionMode, EngineStepRecord } from "./engineStep";
 export const SCIENTIFIC_CORE_ADAPTER_VERSION = "2";
 export const ORCA_ADAPTER_VERSION = "3";
 export const SOCIAL_FORCE_ADAPTER_VERSION = "3";
+export const SOCIAL_FORCE_RADIUS_ADAPTER_VERSION = "1";
 
 export interface EngineProvenance {
   engineId: string;
@@ -22,6 +23,13 @@ export interface EngineProvenance {
   runnerSha256: string | null;
   buildManifestSha256: string | null;
   limitations: string[];
+  radiusAware?: true;
+  distanceConvention?: string;
+  upstreamVersion?: string;
+  frozenParameters?: Readonly<Record<string, number>>;
+  adaptationSourcePath?: string;
+  adaptationSourceSha256?: string;
+  implementationCommit?: string;
 }
 
 export interface EngineRunResult {

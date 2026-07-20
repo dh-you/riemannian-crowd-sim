@@ -121,7 +121,8 @@ def completion_rule(scenario, agent_id):
     if completion is None: return {"type": "goal_disk"}
     rule = completion["rule"]
     if rule["type"] != "per_agent_directional_line": return rule
-    return next(entry for entry in rule["rules"] if entry["agentId"] == agent_id)
+    entry = next(entry for entry in rule["rules"] if entry["agentId"] == agent_id)
+    return {"type": "directional_line", **entry}
 
 def completion_fraction(scenario, definition, start, end):
     rule = completion_rule(scenario, definition["id"])
@@ -135,7 +136,10 @@ def completion_fraction(scenario, definition, start, end):
 def verify_run(run_dir):
     manifest = json.loads((run_dir / "audit-manifest.json").read_text(encoding="utf-8")); tolerance = ORCA_TOL if manifest["methodId"] == "orca_rvo2_v1" else TOL
     audit_root = next(parent for parent in run_dir.parents if parent.name == "audit")
-    scenario_path = audit_root / "visuals" / "scenarios" / f"{manifest['scenarioName']}.json"
+    manifest_scenario = Path(manifest["scenarioPath"])
+    local_scenario = run_dir / "scenario.json"
+    scenario_path = (manifest_scenario if manifest_scenario.exists() else local_scenario
+                     if local_scenario.exists() else audit_root / "visuals" / "scenarios" / f"{manifest['scenarioName']}.json")
     scenario = json.loads(scenario_path.read_text(encoding="utf-8")); metrics = json.loads((run_dir / "run-metrics.json").read_text(encoding="utf-8"))
     full = run_dir / "engine-steps-full.jsonl"; trajectory = full if full.exists() else run_dir / "engine-steps.jsonl"
     steps = list(lines(trajectory)); agents = sorted(scenario["agents"], key=lambda item: item["id"])
@@ -211,14 +215,25 @@ def verify_selected(audit_root):
     if missing: raise ValueError(f"missing selected audit trajectories: {missing}")
     return [verify_run(found[item]) for item in SELECTED]
 
+def verify_all(audit_root):
+    directories = sorted({path.parent for path in (audit_root / "visuals" / "runs").glob("**/engine-steps.jsonl")})
+    if not directories: raise ValueError(f"no audit trajectories found under {audit_root}")
+    return [verify_run(directory) for directory in directories]
+
 def main():
     if len(sys.argv) == 3 and sys.argv[1] == "--verify-run":
         print(f"verified {verify_run(Path(sys.argv[2]).resolve())}"); return
     if len(sys.argv) == 4 and sys.argv[1] == "--summarize":
         count, rows = summarize(Path(sys.argv[2]).resolve(), Path(sys.argv[3]).resolve())
         print(f"lean summary: {count} source runs, {rows} summary rows"); return
-    study = json.loads(Path("experiments/lean/study.json").read_text(encoding="utf-8")); outputs = study["outputs"]
-    count, rows = summarize(Path(outputs["raw"]), Path(outputs["summary"])); checked = verify_selected(Path(outputs["auditRoot"]))
+    study_path = Path("experiments/lean/study.json")
+    verify = verify_selected
+    if len(sys.argv) == 3 and sys.argv[1] == "--study":
+        study_path = Path(sys.argv[2]); verify = verify_all
+    elif len(sys.argv) != 1:
+        raise ValueError("usage: analyze.py [--study PATH] | --verify-run DIR | --summarize RAW OUTPUT")
+    study = json.loads(study_path.read_text(encoding="utf-8")); outputs = study["outputs"]
+    count, rows = summarize(Path(outputs["raw"]), Path(outputs["summary"])); checked = verify(Path(outputs["auditRoot"]))
     print(f"lean analysis: {count} source runs, {rows} summary rows, {len(checked)} trajectories verified at {TOL} (ORCA float boundary {ORCA_TOL})")
 
 if __name__ == "__main__":

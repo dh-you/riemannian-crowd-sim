@@ -38,6 +38,10 @@ export interface RunMethodMetadata {
   upstreamProject?: string | null;
   upstreamCommit?: string | null;
   upstreamLicense?: string | null;
+  radiusAware?: true;
+  distanceConvention?: string;
+  upstreamVersion?: string;
+  implementationCommit?: string;
   methodConfigSha256: string;
   velocityTimeConstant: number | null;
   methodParameters: Readonly<Record<string, number>>;
@@ -63,6 +67,10 @@ export interface RunMetrics {
     upstreamProject: string | null;
     upstreamCommit: string | null;
     upstreamLicense: string | null;
+    radiusAware?: true;
+    distanceConvention?: string;
+    upstreamVersion?: string;
+    implementationCommit?: string;
     velocityTimeConstant: number | null;
     methodParameters: Readonly<Record<string, number>>;
     agentCount: number;

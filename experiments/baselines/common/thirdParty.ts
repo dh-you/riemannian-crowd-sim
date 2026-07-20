@@ -54,8 +54,8 @@ export interface BaselineBuildManifest {
   pythonPackages: string[];
   platform: string;
   architecture: string;
-  runners: { orca: string; socialForce: string };
-  runnerSha256: { orca: string; socialForce: string };
+  runners: { orca: string; socialForce: string; radiusSocialForce?: string };
+  runnerSha256: { orca: string; socialForce: string; radiusSocialForce?: string };
   timestamp: string;
 }
 
@@ -105,6 +105,26 @@ export function pythonExecutable(lock = readThirdPartyLock()): string {
 export function orcaRunnerPath(lock = readThirdPartyLock()): string {
   const base = repositoryPath(lock.runners.orca);
   return process.platform === "win32" ? `${base}.exe` : base;
+}
+
+export function socialForceRadiusRunnerPath(): string {
+  return resolve(
+    REPOSITORY_ROOT,
+    "experiments",
+    "baselines",
+    "social_force",
+    "radius_runner.py",
+  );
+}
+
+export function socialForceRadiusAdaptationPath(): string {
+  return resolve(
+    REPOSITORY_ROOT,
+    "experiments",
+    "baselines",
+    "social_force",
+    "radius_aware.py",
+  );
 }
 
 export function gitHead(source: string): string {

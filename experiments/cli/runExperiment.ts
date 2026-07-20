@@ -71,6 +71,13 @@ export interface ExperimentManifest {
   runnerSha256: string | null;
   buildManifestSha256: string | null;
   implementationLimitations: string[];
+  radiusAware?: true;
+  distanceConvention?: string;
+  upstreamVersion?: string;
+  frozenParameters?: Readonly<Record<string, number>>;
+  adaptationSourcePath?: string;
+  adaptationSourceSha256?: string;
+  implementationCommit?: string;
   gitCommitSha: string | null;
   nodeVersion: string;
   operatingSystem: string;
@@ -211,6 +218,13 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
       runnerSha256: provenance.runnerSha256,
       buildManifestSha256: provenance.buildManifestSha256,
       implementationLimitations: provenance.limitations,
+      radiusAware: provenance.radiusAware,
+      distanceConvention: provenance.distanceConvention,
+      upstreamVersion: provenance.upstreamVersion,
+      frozenParameters: provenance.frozenParameters,
+      adaptationSourcePath: provenance.adaptationSourcePath,
+      adaptationSourceSha256: provenance.adaptationSourceSha256,
+      implementationCommit: provenance.implementationCommit,
       gitCommitSha: readGitCommit(dirname(scenarioPath)),
       nodeVersion: process.version,
       operatingSystem: platform(),
@@ -267,6 +281,10 @@ function metricsProvenance(provenance: EngineProvenance) {
     upstreamProject: provenance.upstreamProject,
     upstreamCommit: provenance.upstreamCommit,
     upstreamLicense: provenance.upstreamLicense,
+    radiusAware: provenance.radiusAware,
+    distanceConvention: provenance.distanceConvention,
+    upstreamVersion: provenance.upstreamVersion,
+    implementationCommit: provenance.implementationCommit,
   };
 }
 
@@ -288,6 +306,7 @@ function methodLabel(id: string): string {
   if (id === "euclidean_goal_steering_v1") return "Goal+Projection";
   if (id === "orca_rvo2_v1") return "ORCA/RVO2";
   if (id === "social_force_pysocialforce_v1") return "PySocialForce";
+  if (id === "social_force_pysocialforce_radius_v2") return "Radius-aware PySocialForce";
   return id;
 }
 

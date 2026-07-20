@@ -14,6 +14,7 @@ import {
   readBuildManifest,
   readThirdPartyLock,
   repositoryPath,
+  socialForceRadiusRunnerPath,
 } from "../common/thirdParty";
 
 export function verifyBaselines(): void {
@@ -66,12 +67,18 @@ export function verifyBaselines(): void {
   }
   const orca = orcaRunnerPath(lock);
   const social = repositoryPath(lock.runners.socialForce);
-  if (sha256File(orca) !== build.runnerSha256.orca || sha256File(social) !== build.runnerSha256.socialForce) {
+  const radiusSocial = socialForceRadiusRunnerPath();
+  if (
+    sha256File(orca) !== build.runnerSha256.orca
+    || sha256File(social) !== build.runnerSha256.socialForce
+    || sha256File(radiusSocial) !== build.runnerSha256.radiusSocialForce
+  ) {
     throw new Error("Baseline runner hash differs from build manifest");
   }
   command(orca, ["--version"], { capture: true });
   const python = pythonExecutable(lock);
   command(python, [social, "--version"], { capture: true });
+  command(python, [radiusSocial, "--version"], { capture: true });
   command(python, ["-c", "import numpy, toml, numba; print('imports OK')"], { capture: true });
   const currentPythonVersion = command(python, ["--version"], { capture: true });
   if (currentPythonVersion !== build.pythonVersion) throw new Error("Python version differs from build manifest");

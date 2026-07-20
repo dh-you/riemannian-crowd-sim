@@ -1,0 +1,49 @@
+{
+  "methods": {
+    "social-force-radius": {
+      "methodConfigVersion": 2,
+      "id": "social_force_pysocialforce_radius_v2",
+      "engine": "pysocialforce_radius_engine_v2",
+      "parameters": {
+        "desiredFactor": 1,
+        "relaxationTime": 0.5,
+        "socialFactor": 5.1,
+        "lambdaImportance": 2,
+        "gamma": 0.35,
+        "n": 2,
+        "nPrime": 3,
+        "obstacleFactor": 10,
+        "obstacleSigma": 0.2,
+        "obstacleThreshold": 3,
+        "maxSpeedMultiplier": 1.3,
+        "obstacleResolution": 10
+      }
+    }
+  },
+  "scenarios": {
+    "head-on": { "family": "pairwise", "variant": "head_on" },
+    "crossing": { "family": "pairwise", "variant": "crossing" },
+    "circle": { "family": "circle_antipodal", "variant": "perturbed", "agentCount": 50 },
+    "corridor": { "family": "bidirectional", "variant": "corridor", "agentCount": 120 },
+    "bottleneck": { "family": "bottleneck", "variant": "central_opening", "agentCount": 112 }
+  },
+  "audit": {
+    "visual": { "scenarioTypes": ["head-on", "crossing", "circle", "corridor", "bottleneck"], "seeds": [0] },
+    "diagnostics": { "scenarioTypes": [], "seeds": [] }
+  },
+  "benchmark": { "scenarioTypes": ["head-on", "corridor"], "seeds": [99], "jobs": [1, 2, 4] },
+  "headline": {
+    "pairwise": { "scenarioTypes": ["head-on", "crossing"], "seeds": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119] },
+    "dense": { "scenarioTypes": ["circle", "corridor", "bottleneck"], "seeds": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109] }
+  },
+  "ablations": { "scenarioTypes": [], "seeds": [], "variants": {} },
+  "runtime": { "scenario": "circle", "agentCounts": [50, 100, 200], "seed": 300, "warmups": 1, "measuredRepetitions": 3, "jobs": 1 },
+  "outputs": {
+    "root": "results/lean-sfm-radius",
+    "raw": "results/lean-sfm-radius/raw-runs.jsonl",
+    "summary": "results/lean-sfm-radius/summary.csv",
+    "auditRoot": "results/lean-sfm-radius/audit",
+    "benchmark": "results/lean-sfm-radius/concurrency-benchmark.json"
+  },
+  "humanReviewGate": "results/lean-sfm-radius/audit/review-approved.txt"
+}

@@ -16,6 +16,8 @@ export const ORCA_METHOD_ID = "orca_rvo2_v1" as const;
 export const ORCA_ENGINE_ID = "orca_rvo2_engine_v1" as const;
 export const SOCIAL_FORCE_METHOD_ID = "social_force_pysocialforce_v1" as const;
 export const SOCIAL_FORCE_ENGINE_ID = "pysocialforce_engine_v1" as const;
+export const SOCIAL_FORCE_RADIUS_METHOD_ID = "social_force_pysocialforce_radius_v2" as const;
+export const SOCIAL_FORCE_RADIUS_ENGINE_ID = "pysocialforce_radius_engine_v2" as const;
 
 interface ScientificMethodConfigBase {
   methodConfigVersion: typeof METHOD_CONFIG_VERSION_1;
@@ -50,28 +52,40 @@ export interface OrcaMethodConfig {
 }
 
 /** Names map directly to the pinned PySocialForce TOML sections and keys. */
+export interface SocialForceParameters extends Record<string, number> {
+  desiredFactor: number;
+  relaxationTime: number;
+  socialFactor: number;
+  lambdaImportance: number;
+  gamma: number;
+  n: number;
+  nPrime: number;
+  obstacleFactor: number;
+  obstacleSigma: number;
+  obstacleThreshold: number;
+  maxSpeedMultiplier: number;
+  obstacleResolution: number;
+}
+
 export interface SocialForceMethodConfig {
   methodConfigVersion: typeof METHOD_CONFIG_VERSION_2;
   id: typeof SOCIAL_FORCE_METHOD_ID;
   engine: typeof SOCIAL_FORCE_ENGINE_ID;
-  parameters: {
-    desiredFactor: number;
-    relaxationTime: number;
-    socialFactor: number;
-    lambdaImportance: number;
-    gamma: number;
-    n: number;
-    nPrime: number;
-    obstacleFactor: number;
-    obstacleSigma: number;
-    obstacleThreshold: number;
-    maxSpeedMultiplier: number;
-    obstacleResolution: number;
-  };
+  parameters: SocialForceParameters;
+}
+
+export interface RadiusAwareSocialForceMethodConfig {
+  methodConfigVersion: typeof METHOD_CONFIG_VERSION_2;
+  id: typeof SOCIAL_FORCE_RADIUS_METHOD_ID;
+  engine: typeof SOCIAL_FORCE_RADIUS_ENGINE_ID;
+  parameters: SocialForceParameters;
 }
 
 export type ScientificMethodConfig = RiemannianMethodConfig | EuclideanGoalMethodConfig;
-export type ExternalMethodConfig = OrcaMethodConfig | SocialForceMethodConfig;
+export type ExternalMethodConfig =
+  | OrcaMethodConfig
+  | SocialForceMethodConfig
+  | RadiusAwareSocialForceMethodConfig;
 export type MethodConfig = ScientificMethodConfig | ExternalMethodConfig;
 
 export function parseMethodConfig(value: unknown): MethodConfig {
@@ -169,9 +183,12 @@ function parseExternalMethod(root: Record<string, unknown>): ExternalMethodConfi
       parameters,
     };
   }
-  if (strict.id === SOCIAL_FORCE_METHOD_ID) {
-    if (strict.engine !== SOCIAL_FORCE_ENGINE_ID) {
-      throw new Error(`${SOCIAL_FORCE_METHOD_ID} requires engine ${SOCIAL_FORCE_ENGINE_ID}`);
+  if (strict.id === SOCIAL_FORCE_METHOD_ID || strict.id === SOCIAL_FORCE_RADIUS_METHOD_ID) {
+    const expectedEngine = strict.id === SOCIAL_FORCE_METHOD_ID
+      ? SOCIAL_FORCE_ENGINE_ID
+      : SOCIAL_FORCE_RADIUS_ENGINE_ID;
+    if (strict.engine !== expectedEngine) {
+      throw new Error(`${String(strict.id)} requires engine ${expectedEngine}`);
     }
     const keys = [
       "desiredFactor",
@@ -188,7 +205,7 @@ function parseExternalMethod(root: Record<string, unknown>): ExternalMethodConfi
       "obstacleResolution",
     ] as const;
     const raw = requireStrictObject(strict.parameters, "methodConfig.parameters", keys);
-    const parameters: SocialForceMethodConfig["parameters"] = {
+    const parameters: SocialForceParameters = {
       desiredFactor: nonnegative(raw.desiredFactor, "desiredFactor"),
       relaxationTime: positive(raw.relaxationTime, "relaxationTime"),
       socialFactor: nonnegative(raw.socialFactor, "socialFactor"),
@@ -202,12 +219,19 @@ function parseExternalMethod(root: Record<string, unknown>): ExternalMethodConfi
       maxSpeedMultiplier: positive(raw.maxSpeedMultiplier, "maxSpeedMultiplier"),
       obstacleResolution: positive(raw.obstacleResolution, "obstacleResolution"),
     };
-    return {
-      methodConfigVersion: METHOD_CONFIG_VERSION_2,
-      id: SOCIAL_FORCE_METHOD_ID,
-      engine: SOCIAL_FORCE_ENGINE_ID,
-      parameters,
-    };
+    return strict.id === SOCIAL_FORCE_METHOD_ID
+      ? {
+        methodConfigVersion: METHOD_CONFIG_VERSION_2,
+        id: SOCIAL_FORCE_METHOD_ID,
+        engine: SOCIAL_FORCE_ENGINE_ID,
+        parameters,
+      }
+      : {
+        methodConfigVersion: METHOD_CONFIG_VERSION_2,
+        id: SOCIAL_FORCE_RADIUS_METHOD_ID,
+        engine: SOCIAL_FORCE_RADIUS_ENGINE_ID,
+        parameters,
+      };
   }
   throw new Error(`Unsupported version-2 method id: ${String(strict.id)}`);
 }

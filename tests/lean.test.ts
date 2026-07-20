@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { generateReviewIndex } from "../experiments/audit/viewer/generateReviewIndex";
 import type { EngineStepRecord } from "../experiments/engines/engineStep";
 import { metricRecord, packageViewerTrajectories } from "../experiments/lean/worker";
+import { writeAuditInventory } from "../experiments/lean/auditInventory";
 import type { RunMetrics } from "../experiments/metrics/types";
 import {
   assertUniqueAssignments, assignmentIdentity, buildAssignments, buildBenchmarkAssignments,
@@ -90,6 +91,8 @@ describe("camera-ready lean harness", () => {
     const root = directory(); const assignment = fixture(root, 4, true);
     const [record] = await runPool([assignment], 1);
     expect(record.status).toBe("PASS"); const runDirectory = String(record.artifactDirectory);
+    expect(readFileSync(resolve(runDirectory, "scenario.json"), "utf8")).toContain("free_space");
+    expect(readFileSync(resolve(runDirectory, "method.json"), "utf8")).toContain("euclidean_goal_steering_v1");
     const packaged = packageViewerTrajectories(resolve(root, "audit")); expect(packaged.runCount).toBe(1);
     const fullPath = resolve(runDirectory, "engine-steps-full.jsonl");
     const fullSource = readFileSync(fullPath, "utf8");
@@ -101,6 +104,9 @@ describe("camera-ready lean harness", () => {
     const viewer = generateReviewIndex({ auditRoot: resolve(root, "audit"), outputDirectory: resolve(root, "audit/viewer") });
     expect(viewer.runCount).toBe(1);
     expect(readFileSync(resolve(root, "audit/viewer/review-data.js"), "utf8")).toContain("free_space");
+    const inventory = writeAuditInventory(resolve(root, "audit"));
+    expect(inventory.fileCount).toBeGreaterThan(0);
+    expect(readFileSync(inventory.csvPath, "utf8")).toContain("engine-steps-full.jsonl");
     const python = process.platform === "win32" ? "python" : "python3";
     const verify = () => spawnSync(
       python,

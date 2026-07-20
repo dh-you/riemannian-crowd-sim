@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { sha256File } from "../protocol/hash";
 import {
   BUILD_MANIFEST_PATH,
@@ -13,14 +14,23 @@ import {
   readBuildManifest,
   readThirdPartyLock,
   repositoryPath,
+  socialForceRadiusAdaptationPath,
+  socialForceRadiusRunnerPath,
 } from "../baselines/common/thirdParty";
 import {
   ORCA_ADAPTER_VERSION,
   SOCIAL_FORCE_ADAPTER_VERSION,
+  SOCIAL_FORCE_RADIUS_ADAPTER_VERSION,
   type EngineProvenance,
 } from "./ExperimentEngine";
 
-export function baselineProvenance(kind: "orca" | "pysocialforce"): EngineProvenance {
+export const SOCIAL_FORCE_RADIUS_DISTANCE_CONVENTION =
+  "surface_clearance = center_distance - radius_i - radius_j";
+
+export function baselineProvenance(
+  kind: "orca" | "pysocialforce" | "pysocialforce_radius",
+  frozenParameters?: Readonly<Record<string, number>>,
+): EngineProvenance {
   const lock = readThirdPartyLock();
   const build = readBuildManifest();
   if (build.lockSha256 !== lockSha256() || build.adapterSourceSha256 !== adapterSourceSha256()) {
@@ -31,18 +41,37 @@ export function baselineProvenance(kind: "orca" | "pysocialforce"): EngineProven
   if (build.upstreamCommits[entry.id] !== entry.commit) {
     throw new Error(`${entry.project} build provenance does not match the locked upstream commit`);
   }
-  const runner = kind === "orca" ? orcaRunnerPath(lock) : repositoryPath(lock.runners.socialForce);
-  const expectedRunnerHash = kind === "orca" ? build.runnerSha256.orca : build.runnerSha256.socialForce;
+  const runner = kind === "orca"
+    ? orcaRunnerPath(lock)
+    : kind === "pysocialforce_radius"
+      ? socialForceRadiusRunnerPath()
+      : repositoryPath(lock.runners.socialForce);
+  const expectedRunnerHash = kind === "orca"
+    ? build.runnerSha256.orca
+    : kind === "pysocialforce_radius"
+      ? build.runnerSha256.radiusSocialForce
+      : build.runnerSha256.socialForce;
+  if (expectedRunnerHash === undefined) {
+    throw new Error("Radius-aware PySocialForce runner is absent from build provenance");
+  }
   if (!existsSync(runner) || sha256File(runner) !== expectedRunnerHash) {
     throw new Error(`Baseline runner is missing or stale: ${runner}`);
   }
-  if (kind === "pysocialforce" && !existsSync(pythonExecutable(lock))) {
+  if (kind !== "orca" && !existsSync(pythonExecutable(lock))) {
     throw new Error("PySocialForce environment is missing; run npm run baselines:bootstrap");
   }
-  return {
-    engineId: kind === "orca" ? "orca_rvo2_engine_v1" : "pysocialforce_engine_v1",
+  const common: EngineProvenance = {
+    engineId: kind === "orca"
+      ? "orca_rvo2_engine_v1"
+      : kind === "pysocialforce_radius"
+        ? "pysocialforce_radius_engine_v2"
+        : "pysocialforce_engine_v1",
     engineAdapterVersion:
-      kind === "orca" ? ORCA_ADAPTER_VERSION : SOCIAL_FORCE_ADAPTER_VERSION,
+      kind === "orca"
+        ? ORCA_ADAPTER_VERSION
+        : kind === "pysocialforce_radius"
+          ? SOCIAL_FORCE_RADIUS_ADAPTER_VERSION
+          : SOCIAL_FORCE_ADAPTER_VERSION,
     correctionMode: "native_none",
     commandVelocityMeaning:
       kind === "orca"
@@ -59,8 +88,35 @@ export function baselineProvenance(kind: "orca" | "pysocialforce"): EngineProven
     limitations:
       kind === "pysocialforce"
         ? ["Pinned PySocialForce supports one scene-wide pedestrian radius; heterogeneous-radius scenarios are rejected."]
-        : ["RVO2 uses single-precision arithmetic; cross-compiler last-bit variation may occur."],
+        : kind === "pysocialforce_radius"
+          ? [
+            "Pedestrian-pedestrian forces use per-agent radii; the unchanged upstream obstacle force retains one scene-wide agent radius.",
+            "No positional projection, contact force, friction, spring, saturation, or other stabilization is added.",
+          ]
+          : ["RVO2 uses single-precision arithmetic; cross-compiler last-bit variation may occur."],
   };
+  if (kind !== "pysocialforce_radius") return common;
+  if (frozenParameters === undefined) {
+    throw new Error("Radius-aware PySocialForce provenance requires frozen parameters");
+  }
+  const adaptationSourcePath = socialForceRadiusAdaptationPath();
+  return {
+    ...common,
+    radiusAware: true,
+    distanceConvention: SOCIAL_FORCE_RADIUS_DISTANCE_CONVENTION,
+    upstreamVersion: readPySocialForceVersion(repositoryPath(entry.sourceDirectory)),
+    frozenParameters: { ...frozenParameters },
+    adaptationSourcePath,
+    adaptationSourceSha256: sha256File(adaptationSourcePath),
+    implementationCommit: gitHead(REPOSITORY_ROOT),
+  };
+}
+
+function readPySocialForceVersion(sourceDirectory: string): string {
+  const source = readFileSync(resolve(sourceDirectory, "pysocialforce", "__init__.py"), "utf8");
+  const match = source.match(/^__version__\s*=\s*["']([^"']+)["']/mu);
+  if (match === null) throw new Error("Pinned PySocialForce version is missing");
+  return match[1];
 }
 
 function assertPinnedSource(entry: ReturnType<typeof dependency>): void {
@@ -99,6 +155,7 @@ export function baselineRuntimePaths() {
     orcaRunner: orcaRunnerPath(lock),
     python: pythonExecutable(lock),
     socialRunner: repositoryPath(lock.runners.socialForce),
+    socialRadiusRunner: socialForceRadiusRunnerPath(),
     rvoSource: repositoryPath(dependency(lock, "rvo2").sourceDirectory),
     socialSource: repositoryPath(dependency(lock, "pysocialforce").sourceDirectory),
   };

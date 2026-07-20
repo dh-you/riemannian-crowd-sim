@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { generateReviewIndex } from "../audit/viewer/generateReviewIndex";
+import { writeAuditInventory } from "./auditInventory";
 export type ScenarioSpec = { family: string; variant: string; agentCount?: number };
 export type Assignment = {
   phase: string; scenarioType: string; seed: number; method: string;
@@ -209,10 +210,13 @@ async function runPhase(study: LeanStudy, phase: "audit" | "test" | "ablation" |
 async function main(): Promise<void> {
   const args = process.argv.slice(2); const phase = option(args, "--phase") ?? "";
   const jobs = Number(option(args, "--jobs") ?? "1"); const resume = args.includes("--resume");
-  const study = loadStudy();
+  const studyPath = option(args, "--study");
+  const study = loadStudy(studyPath === undefined ? undefined : resolve(studyPath));
   if (phase === "analyze") {
     const python = process.platform === "win32" ? "python" : "python3";
-    const result = spawnSync(python, [resolve("experiments/lean/analyze.py")], { stdio: "inherit" });
+    const analyzeArguments = [resolve("experiments/lean/analyze.py")];
+    if (studyPath !== undefined) analyzeArguments.push("--study", resolve(studyPath));
+    const result = spawnSync(python, analyzeArguments, { stdio: "inherit" });
     if (result.status !== 0) throw new Error(`Lean analysis failed with exit ${result.status}`);
     return;
   }
@@ -228,6 +232,8 @@ async function main(): Promise<void> {
     console.log(`viewer packaging: ${packaged.stdout.trim()}`);
     const result = generateReviewIndex({ auditRoot: study.outputs.auditRoot, outputDirectory: resolve(study.outputs.auditRoot, "viewer") });
     console.log(`viewer: ${result.runCount} runs across ${result.scenarioCount} scenarios at ${result.indexPath}`);
+    const inventory = writeAuditInventory(study.outputs.auditRoot);
+    console.log(`audit inventory: ${inventory.fileCount} files at ${inventory.csvPath}`);
   }
 }
 
