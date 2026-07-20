@@ -1,6 +1,6 @@
 {
-  "lockVersion": 1,
-  "adapterVersion": "1",
+  "lockVersion": 2,
+  "adapterVersion": "2",
   "dependencies": [
     {
       "id": "rvo2",
@@ -33,9 +33,27 @@
       }
     }
   ],
+  "pythonPackages": {
+    "jupedsim": {
+      "project": "JuPedSim",
+      "version": "1.4.2",
+      "repository": "https://github.com/PedestrianDynamics/jupedsim",
+      "packageIndex": "https://pypi.org/project/jupedsim/1.4.2/",
+      "license": "LGPL-3.0-or-later",
+      "licenseFile": "experiments/baselines/licenses/JuPedSim-LGPL-3.0-or-later.txt",
+      "licenseSha256": "a173220e8231800f9ac57b63d3fa4e8c929e0f467aba66d756e799afb9dd2cde",
+      "wheelFilename": "jupedsim-1.4.2-cp312-cp312-win_amd64.whl",
+      "wheelSha256": "9bc43cc6a6bbf4e3a5b7fd82f835a879dea2205e3499cd0c2bcb11b0371d8408",
+      "requirementsLock": "experiments/baselines/jupedsim/requirements.lock",
+      "requirementsLockSha256": "ad03251f648555612954bef27a9e9a2aed8f1563a99d13fd7b6883fc30b9a907",
+      "environment": "experiments/third_party/jupedsim-venv",
+      "installationCommand": "python -m pip install --disable-pip-version-check --require-hashes --only-binary=:all: -r experiments/baselines/jupedsim/requirements.lock"
+    }
+  },
   "runners": {
     "orca": "experiments/third_party/build/rvo2/bin/orca_runner",
     "socialForce": "experiments/baselines/social_force/runner.py",
-    "pythonEnvironment": "experiments/third_party/venv"
+    "pythonEnvironment": "experiments/third_party/venv",
+    "jupedsim": "experiments/baselines/jupedsim/runner.py"
   }
 }

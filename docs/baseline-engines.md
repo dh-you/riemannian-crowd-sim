@@ -14,7 +14,8 @@ ExperimentEngine
   |     |-- Conditioned Riemannian
   |     `-- Goal+Projection
   |-- OrcaRvo2Engine
-  `-- PySocialForceEngine
+  |-- PySocialForceEngine
+  `-- JuPedSimSfmEngine
         |
 EngineStepRecord v2
         |
@@ -33,6 +34,7 @@ This stage supplies provisional infrastructure defaults only. It does not tune a
 | --- | --- | --- | --- |
 | RVO2 Library | `https://github.com/snape/RVO2.git` | `b577921d2bc1281a6b721c2d4778f397d37da97d` | Apache-2.0 |
 | PySocialForce | `https://github.com/yuxiang-gao/PySocialForce.git` | `8c81cd1ed5db8d0e933417cec77954aa967d4459` | MIT |
+| JuPedSim | `https://github.com/PedestrianDynamics/jupedsim` | PyPI wheel `jupedsim-1.4.2-cp312-cp312-win_amd64.whl`, SHA-256 `9bc43cc6a6bbf4e3a5b7fd82f835a879dea2205e3499cd0c2bcb11b0371d8408` | LGPL-3.0-or-later |
 
 Committed license copies are in `experiments/baselines/licenses/`. Full upstream trees are cloned into ignored directories and are not vendored.
 
@@ -53,7 +55,7 @@ npm run baselines:build
 npm run baselines:verify
 ```
 
-Bootstrap checks out exact detached commits under `experiments/third_party/src/`, verifies upstream license files, creates `experiments/third_party/venv/`, and installs the exact packages in `requirements.lock`. It does not modify global Python. On the first patch application it temporarily installs test/plot dependencies and runs the unpatched upstream PySocialForce tests. Because those tests rewrite tracked reference images, bootstrap then removes the temporary dependencies, restores the exact locked checkout, deletes generated tracked/untracked/ignored artifacts, verifies the source tree is clean, and only then applies the locked patch. Destructive Git restoration is accepted only for the exact locked source directory beneath the managed third-party source root, with the expected `.git` metadata and locked HEAD. Successful bootstrap is idempotent.
+Bootstrap checks out exact detached commits under `experiments/third_party/src/`, verifies upstream license files, creates `experiments/third_party/venv/`, and installs the exact PySocialForce packages in `requirements.lock`. It also creates the separate ignored `experiments/third_party/jupedsim-venv/`, downloads only the official compatible Windows binary wheel, verifies its locked SHA-256, and installs JuPedSim plus every declared dependency using `--require-hashes --only-binary=:all:`. It does not modify global Python. On the first patch application it temporarily installs test/plot dependencies and runs the unpatched upstream PySocialForce tests. Because those tests rewrite tracked reference images, bootstrap then removes the temporary dependencies, restores the exact locked checkout, deletes generated tracked/untracked/ignored artifacts, verifies the source tree is clean, and only then applies the locked patch. Destructive Git restoration is accepted only for the exact locked source directory beneath the managed third-party source root, with the expected `.git` metadata and locked HEAD. Successful bootstrap is idempotent.
 
 Build configures RVO2 and `orca_runner` in Release mode with OpenMP disabled and one build job. It verifies the dedicated Python runtime and writes `experiments/third_party/build/build-manifest.json`. The manifest records upstream SHAs, compiler and CMake identity, build type, Python executable/version/packages, platform, architecture, adapter-source hash, lock hash, runner paths/hashes, and timestamp.
 
@@ -65,6 +67,7 @@ Generated locations are ignored:
 experiments/third_party/src/
 experiments/third_party/build/
 experiments/third_party/venv/
+experiments/third_party/jupedsim-venv/
 experiments/tmp/
 ```
 
@@ -86,6 +89,7 @@ Diagnostics retain separate agent/wall clearance and penetration, pre/post overl
 - Scientific Core: controller target velocity before shared exponential smoothing.
 - ORCA: RVO2-selected velocity used for its integration step.
 - PySocialForce: native velocity after force integration and before its position update.
+- JuPedSim: native `SocialForceModel` velocity after the native iteration.
 
 Pairwise avoidance onset uses this field. Smoothness uses realized velocity. Metrics consume every common step even when `trajectory.jsonl` is subsampled.
 
@@ -149,6 +153,18 @@ When an agent has already entered its final point-goal disk, the wrapper zeros i
 
 PySocialForce is an implementation baseline, not evidence that provisional defaults are calibrated to human motion or that the resulting trajectories are realistic.
 
+## JuPedSim SocialForceModel mapping
+
+`jupedsim_sfm_engine_v1` supports method `social_force_jupedsim_v1` (active study key `jupedsim-sfm`). The implementation is pinned to JuPedSim `1.4.2` and uses the package-default `SocialForceModel` values `body_force=120000` and `friction=240000`. Per-agent package defaults fixed in the strict method config are `mass=80`, `reaction_time=0.5`, `agent_scale=2000`, `obstacle_scale=2000`, and `force_distance=0.08`. Radius, desired speed, position, velocity, orientation, and navigation target always come from the scenario.
+
+The runner creates `Simulation(..., dt=scenario.dt)`, exactly one direct-steering stage, and one journey containing only that stage. Initial orientation is normalized initial velocity when nonzero, otherwise normalized current protocol target minus position, otherwise `[1,0]`. A stable explicit map relates scenario IDs to JuPedSim IDs. Every native step must retain the complete agent set and exactly the requested step count; duplicate, missing, unexpected, disappearing, nonfinite, or unmappable agents fail.
+
+Before every step the runner resolves and assigns the existing completion-v2 target for every agent. Head-on, crossing, circle, and corridor use their point goals (including corridor `x=+20` or `x=-20`). Bottleneck uses shared `[1.5,0]` while `position.x <= 1`, then the individual `[10,initialY]` goal. JuPedSim direct steering uses its native geometry-aware shortest path to that shared target; it receives no private opening, waypoint, routing stage, group, or random force. Paper completion remains the common completion-v2 metric and never uses JuPedSim stage completion. Direct steering does not automatically remove agents, and the adapter never requests removal.
+
+Walkable geometry starts from a deterministic counterclockwise outer rectangle with a fixed 5 m margin around every initial position, point goal, possible protocol waypoint, and expanded wall vertex. The existing thick-wall expansion is authoritative. Its sorted wall rectangles are subtracted with the JuPedSim-supported Shapely geometry path, and the unique connected component containing all initial centers is selected. Every initial center, point goal, and protocol waypoint must be strictly inside that component or the run fails. The six bottleneck walls therefore isolate the chamber from the exterior while leaving only the shared central divider opening. A SHA-256 over the canonical construction record is stored per run; the runner additionally hashes the normalized selected native geometry.
+
+JuPedSim uses `correctionMode = "native_none"`. There is no Scientific Core smoothing/correction, custom overlap projection, external velocity clamp, post-step position correction, or goal-disk truncation. Native positions and native model velocities are emitted. Provenance records the exact package/Python/platform identity, wheel and requirement-lock hashes, installation command, runner/method/geometry hashes, direct-steering use, exact timestep, scenario radii/preferred speeds, completion protocol, upstream project, and LGPL license. These package defaults are untuned and are not a realism or calibration claim.
+
 ## Point-goal wrapper and paper completion
 
 All methods retain the physical final-point arrival definition `distance(goal, position) <= goalTolerance`. This is the meaning of `AgentState.arrived` and native `arrived`; it is not the paper-facing completion source for directional-line scenarios.
@@ -161,7 +177,7 @@ Pairwise avoidance onset is evaluated only while an agent has not previously arr
 
 ## Native JSONL ingestion and continuity
 
-ORCA and PySocialForce finish writing their native JSONL before Node consumes it, but ingestion is bounded: a synchronous 64 KiB chunk reader retains only one native step record plus the fixed buffer. The common resume validator uses the same bounded reader for finalized trajectories. Neither path loads or splits a complete trajectory file in memory.
+ORCA, PySocialForce, and JuPedSim finish writing their native JSONL before Node consumes it, but ingestion is bounded: a synchronous 64 KiB chunk reader retains only one native step record plus the fixed buffer. The common resume validator uses the same bounded reader for finalized trajectories. Neither path loads or splits a complete trajectory file in memory.
 
 Native agent order is protocol data, not repairable formatting. Every step must emit unique IDs in ascending order, exactly matching the scenario IDs. Step zero `positionBefore` must match the scenario start, and every later `positionBefore` must match that agent's previous final position within a scaled tolerance of `2e-7 * max(1 m, coordinate magnitude)`. The emitted navigation target must match the shared resolver within the same tolerance on every step. This covers the pinned RVO2 adapter's float32 round-trip while remaining far below a physical timestep displacement. Count, ID-set, order, time, step-index, position-continuity, and target violations fail the run; no sorting or repair is performed before validation.
 
@@ -189,15 +205,16 @@ Normal tests remain network- and baseline-independent:
 npm test
 ```
 
-Real integration tests and the seven-scenario/four-method smoke require successful bootstrap/build:
+Real integration tests and the seven-scenario/five-method development smoke require successful bootstrap/build:
 
 ```bash
 npm run test:baselines
 npm run baselines:smoke
+npm run jupedsim:audit
 ```
 
 Committed controller-independent fixtures under `experiments/baselines/fixtures/` cover free space, offset head-on, crossing, separating, and finite-wall approach. The real-engine tests use those exact files for analytical, qualitative, finite-value, provenance, and repeatability checks.
 
-The smoke covers free space, pairwise head-on/crossing/separating, small circle, small corridor, and small bottleneck using identical scenario bytes for all four methods.
+The smoke covers free space, pairwise head-on/crossing/separating, small circle, small corridor, and small bottleneck using identical scenario bytes for all five currently available methods. `jupedsim:audit` is separate: it runs only JuPedSim for the five paper-facing scenarios at seed 400 and writes beneath `results/jupedsim-integration/audit-v1/`.
 
 Current limits are pinned upstream behavior, homogeneous PySocialForce radii, RVO2 single precision, and provisional untuned defaults. Parameter tuning, sensitivity analysis, frozen validation/test execution, confidence intervals, plots, tables, and scientific comparison are deferred.

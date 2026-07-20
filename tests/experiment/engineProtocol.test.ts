@@ -157,6 +157,67 @@ describe("common engine-step protocol", () => {
     expect(() => consumeNativeOutput(scenario, outputPath, "mockNative", () => undefined))
       .toThrow(/agent ID mismatch/u);
   });
+
+  it("rejects incorrect reported targets, missing and duplicate agents, nonfinite state, and wrong step counts", () => {
+    const scenario = shortened(generatePairwiseScenario("head_on", "test", 0), 2);
+
+    const wrongTarget = nativeRecord(scenario, 0);
+    wrongTarget.agents[0].navigationTarget = [99, 99];
+    expect(() => consumeNativeOutput(
+      scenario,
+      writeNativeOutput(temporaryDirectory("native-target-invalid-"), [
+        wrongTarget,
+        nativeRecord(scenario, 1),
+      ]),
+      "mockNative",
+      () => undefined,
+    )).toThrow(/navigation target mismatch/u);
+
+    const missing = nativeRecord(scenario, 0);
+    missing.agents.pop();
+    expect(() => consumeNativeOutput(
+      scenario,
+      writeNativeOutput(temporaryDirectory("native-missing-invalid-"), [
+        missing,
+        nativeRecord(scenario, 1),
+      ]),
+      "mockNative",
+      () => undefined,
+    )).toThrow(/agent count mismatch/u);
+
+    const duplicate = nativeRecord(scenario, 0);
+    duplicate.agents[1].id = duplicate.agents[0].id;
+    expect(() => consumeNativeOutput(
+      scenario,
+      writeNativeOutput(temporaryDirectory("native-duplicate-invalid-"), [
+        duplicate,
+        nativeRecord(scenario, 1),
+      ]),
+      "mockNative",
+      () => undefined,
+    )).toThrow(/sorted by unique ascending ID/u);
+
+    const nonfinite = nativeRecord(scenario, 0);
+    nonfinite.agents[0].proposedPosition[0] = Number.POSITIVE_INFINITY;
+    expect(() => consumeNativeOutput(
+      scenario,
+      writeNativeOutput(temporaryDirectory("native-nonfinite-invalid-"), [
+        nonfinite,
+        nativeRecord(scenario, 1),
+      ]),
+      "mockNative",
+      () => undefined,
+    )).toThrow();
+
+    expect(() => consumeNativeOutput(
+      scenario,
+      writeNativeOutput(temporaryDirectory("native-short-invalid-"), [
+        nativeRecord(scenario, 0),
+      ]),
+      "mockNative",
+      () => undefined,
+    )).toThrow(/emitted 1 records; expected 2/u);
+  });
 });
 
 describe("Scientific Core engine adapter numerical parity", () => {

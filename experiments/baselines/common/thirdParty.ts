@@ -30,18 +30,38 @@ export interface LockedDependency {
 }
 
 export interface ThirdPartyLock {
-  lockVersion: 1;
-  adapterVersion: string;
+  lockVersion: 2;
+  adapterVersion: "2";
   dependencies: LockedDependency[];
+  pythonPackages: {
+    jupedsim: LockedJuPedSimPackage;
+  };
   runners: {
     orca: string;
     socialForce: string;
     pythonEnvironment: string;
+    jupedsim: string;
   };
 }
 
+export interface LockedJuPedSimPackage {
+  project: "JuPedSim";
+  version: "1.4.2";
+  repository: string;
+  packageIndex: string;
+  license: "LGPL-3.0-or-later";
+  licenseFile: string;
+  licenseSha256: string;
+  wheelFilename: string;
+  wheelSha256: string;
+  requirementsLock: string;
+  requirementsLockSha256: string;
+  environment: string;
+  installationCommand: string;
+}
+
 export interface BaselineBuildManifest {
-  buildManifestVersion: 1;
+  buildManifestVersion: 2;
   lockSha256: string;
   adapterSourceSha256: string;
   upstreamCommits: Record<string, string>;
@@ -52,19 +72,27 @@ export interface BaselineBuildManifest {
   pythonExecutable: string;
   pythonVersion: string;
   pythonPackages: string[];
+  jupedsimPythonExecutable: string;
+  jupedsimPythonVersion: string;
+  jupedsimPythonPackages: string[];
+  jupedsimVersion: "1.4.2";
+  jupedsimWheelFilename: string;
+  jupedsimWheelSha256: string;
+  jupedsimRequirementsLockSha256: string;
+  jupedsimInstallationCommand: string;
   platform: string;
   architecture: string;
-  runners: { orca: string; socialForce: string };
-  runnerSha256: { orca: string; socialForce: string };
+  runners: { orca: string; socialForce: string; jupedsim: string };
+  runnerSha256: { orca: string; socialForce: string; jupedsim: string };
   timestamp: string;
 }
 
 export function readThirdPartyLock(): ThirdPartyLock {
   const value = JSON.parse(readFileSync(LOCK_PATH, "utf8")) as Partial<ThirdPartyLock>;
-  if (value.lockVersion !== 1 || value.adapterVersion !== "1" || !Array.isArray(value.dependencies)) {
+  if (value.lockVersion !== 2 || value.adapterVersion !== "2" || !Array.isArray(value.dependencies)) {
     throw new Error("Unsupported or malformed third-party lock file");
   }
-  if (value.dependencies.length !== 2 || value.runners === undefined) {
+  if (value.dependencies.length !== 2 || value.runners === undefined || value.pythonPackages === undefined) {
     throw new Error("Third-party lock must contain both baseline dependencies and runners");
   }
   for (const dependency of value.dependencies) {
@@ -77,6 +105,18 @@ export function readThirdPartyLock(): ThirdPartyLock {
     if (dependency.patch !== null && !/^[a-f0-9]{64}$/u.test(dependency.patch.sha256)) {
       throw new Error(`Invalid patch hash for ${dependency.id}`);
     }
+  }
+  const jupedsim = value.pythonPackages.jupedsim;
+  if (
+    jupedsim.project !== "JuPedSim"
+    || jupedsim.version !== "1.4.2"
+    || jupedsim.license !== "LGPL-3.0-or-later"
+    || jupedsim.wheelFilename !== "jupedsim-1.4.2-cp312-cp312-win_amd64.whl"
+    || !/^[a-f0-9]{64}$/u.test(jupedsim.wheelSha256)
+    || !/^[a-f0-9]{64}$/u.test(jupedsim.requirementsLockSha256)
+    || !/^[a-f0-9]{64}$/u.test(jupedsim.licenseSha256)
+  ) {
+    throw new Error("Invalid locked JuPedSim 1.4.2 package declaration");
   }
   return value as ThirdPartyLock;
 }
@@ -100,6 +140,29 @@ export function pythonExecutable(lock = readThirdPartyLock()): string {
   return process.platform === "win32"
     ? resolve(environment, "Scripts", "python.exe")
     : resolve(environment, "bin", "python");
+}
+
+export function jupedSimPackage(lock = readThirdPartyLock()): LockedJuPedSimPackage {
+  return lock.pythonPackages.jupedsim;
+}
+
+export function jupedSimPythonExecutable(lock = readThirdPartyLock()): string {
+  const environment = repositoryPath(jupedSimPackage(lock).environment);
+  return process.platform === "win32"
+    ? resolve(environment, "Scripts", "python.exe")
+    : resolve(environment, "bin", "python");
+}
+
+export function jupedSimRunnerPath(lock = readThirdPartyLock()): string {
+  return repositoryPath(lock.runners.jupedsim);
+}
+
+export function jupedSimRequirementsPath(lock = readThirdPartyLock()): string {
+  return repositoryPath(jupedSimPackage(lock).requirementsLock);
+}
+
+export function jupedSimWheelPath(lock = readThirdPartyLock()): string {
+  return resolve(THIRD_PARTY_ROOT, "build", "wheel-cache", jupedSimPackage(lock).wheelFilename);
 }
 
 export function orcaRunnerPath(lock = readThirdPartyLock()): string {
@@ -146,6 +209,7 @@ export function adapterSourceSha256(): string {
     resolve(REPOSITORY_ROOT, "experiments", "baselines", "common"),
     resolve(REPOSITORY_ROOT, "experiments", "baselines", "orca"),
     resolve(REPOSITORY_ROOT, "experiments", "baselines", "social_force"),
+    resolve(REPOSITORY_ROOT, "experiments", "baselines", "jupedsim"),
     resolve(REPOSITORY_ROOT, "experiments", "baselines", "patches"),
     resolve(REPOSITORY_ROOT, "experiments", "engines"),
   ];
@@ -175,6 +239,6 @@ export function readBuildManifest(): BaselineBuildManifest {
     throw new Error("Baseline build manifest is missing; run npm run baselines:build");
   }
   const manifest = JSON.parse(readFileSync(BUILD_MANIFEST_PATH, "utf8")) as BaselineBuildManifest;
-  if (manifest.buildManifestVersion !== 1) throw new Error("Unsupported baseline build manifest");
+  if (manifest.buildManifestVersion !== 2) throw new Error("Unsupported baseline build manifest");
   return manifest;
 }

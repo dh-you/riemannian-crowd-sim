@@ -144,7 +144,7 @@
     for (const wall of scenario.walls) points.push(wall.start, wall.end);
     for (const step of run.steps) {
       for (const agent of step.agents) {
-        points.push(agent.positionBefore, agent.preCorrectionPosition, agent.postCorrectionPosition);
+        points.push(agent.preCorrectionPosition, agent.postCorrectionPosition);
       }
     }
     let minX = Math.min(...points.map((point) => point[0]));
@@ -419,17 +419,24 @@
     const elapsed = Math.min(0.25, (timestamp - state.lastFrameTimestamp) / 1000);
     state.lastFrameTimestamp = timestamp;
     state.playbackCarrySeconds += elapsed * Number(ui.playbackSpeed.value);
-    const stepDuration = currentGroup().scenario.simulation.dt;
-    while (state.playbackCarrySeconds >= stepDuration) {
-      state.playbackCarrySeconds -= stepDuration;
+    while (state.playing) {
       if (state.stepIndex >= currentRun().steps.length - 1) {
         setPlaying(false);
         return;
       }
+      const stepDuration = currentRun().frameDurationsSeconds?.[state.stepIndex];
+      if (!Number.isFinite(stepDuration) || stepDuration <= 0) {
+        setPlaying(false);
+        throw new Error(
+          `Stored trajectory time difference at record ${state.stepIndex} must be positive and finite; received ${stepDuration}`,
+        );
+      }
+      if (state.playbackCarrySeconds < stepDuration) break;
+      state.playbackCarrySeconds -= stepDuration;
       state.stepIndex += 1;
       render();
     }
-    requestAnimationFrame(animate);
+    if (state.playing) requestAnimationFrame(animate);
   }
 
   function colorForId(id, lightness) {

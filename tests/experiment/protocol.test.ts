@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { generateFreeSpaceScenario } from "../../experiments/generation/freeSpace";
 import {
   controllerParametersFromMethod,
+  JUPEDSIM_SFM_ENGINE_ID,
+  JUPEDSIM_SFM_METHOD_ID,
   ORCA_ENGINE_ID,
   ORCA_METHOD_ID,
   parseMethodConfig,
@@ -51,6 +53,20 @@ const socialForceConfig = {
     obstacleThreshold: 3,
     maxSpeedMultiplier: 1.3,
     obstacleResolution: 10,
+  },
+};
+const jupedsimConfig = {
+  methodConfigVersion: 2,
+  id: JUPEDSIM_SFM_METHOD_ID,
+  engine: JUPEDSIM_SFM_ENGINE_ID,
+  parameters: {
+    bodyForce: 120000,
+    friction: 240000,
+    mass: 80,
+    reactionTime: 0.5,
+    agentScale: 2000,
+    obstacleScale: 2000,
+    forceDistance: 0.08,
   },
 };
 
@@ -108,9 +124,10 @@ describe("method configuration schema", () => {
     });
   });
 
-  it("strictly parses the ORCA and PySocialForce engine configurations", () => {
+  it("strictly parses the ORCA, PySocialForce, and JuPedSim engine configurations", () => {
     expect(parseMethodConfig(orcaConfig)).toEqual(orcaConfig);
     expect(parseMethodConfig(socialForceConfig)).toEqual(socialForceConfig);
+    expect(parseMethodConfig(jupedsimConfig)).toEqual(jupedsimConfig);
   });
 
   it.each([
@@ -122,6 +139,25 @@ describe("method configuration schema", () => {
     [{ ...socialForceConfig, engine: ORCA_ENGINE_ID }, /requires engine/u],
     [{ ...socialForceConfig, parameters: { ...socialForceConfig.parameters, relaxationTime: 0 } }, /positive/u],
     [{ ...socialForceConfig, parameters: { ...socialForceConfig.parameters, groupCoherenceFactor: 1 } }, /not allowed/u],
+    [{ ...jupedsimConfig, engine: SOCIAL_FORCE_ENGINE_ID }, /requires engine/u],
+    [{
+      ...jupedsimConfig,
+      parameters: { ...jupedsimConfig.parameters, reactionTime: 0 },
+    }, /positive/u],
+    [{
+      ...jupedsimConfig,
+      parameters: { ...jupedsimConfig.parameters, bodyForce: Number.NaN },
+    }, /finite/u],
+    [{
+      ...jupedsimConfig,
+      parameters: { ...jupedsimConfig.parameters, radius: 0.3 },
+    }, /not allowed/u],
+    [{
+      ...jupedsimConfig,
+      parameters: Object.fromEntries(
+        Object.entries(jupedsimConfig.parameters).filter(([key]) => key !== "mass"),
+      ),
+    }, /required|finite/u],
   ])("rejects invalid external-engine configuration %#", (value, message) => {
     expect(() => parseMethodConfig(value)).toThrow(message);
   });

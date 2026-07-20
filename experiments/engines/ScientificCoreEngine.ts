@@ -40,6 +40,7 @@ export class ScientificCoreEngine implements ExperimentEngine {
       runnerPath: null,
       runnerSha256: null,
       buildManifestSha256: null,
+      engineSpecificProvenance: {},
       limitations: [],
     };
   }

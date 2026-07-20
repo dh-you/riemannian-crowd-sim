@@ -12,11 +12,15 @@ METRICS = {
     "rmsAcceleration": "m/s^2", "correctionRatio": "ratio", "throughput": "arrivals/s",
     "pairwiseAvoidanceOnsetRate": "fraction", "runtimeSeconds": "s",
 }
+PAPER_METRICS = [
+    "successFraction", "normalizedCompletionTime", "preCorrectionOverlapExposure",
+    "maximumPhysicalPenetration", "rmsAcceleration",
+]
 SELECTED = [
     ("pairwise-head_on-lean-seed-0", "conditioned_riemannian_metric_v1"),
     ("pairwise-head_on-lean-seed-0", "euclidean_goal_steering_v1"),
     ("pairwise-crossing-lean-seed-0", "orca_rvo2_v1"),
-    ("pairwise-crossing-lean-seed-0", "social_force_pysocialforce_v1"),
+    ("pairwise-crossing-lean-seed-0", "social_force_jupedsim_v1"),
     ("circle_antipodal-perturbed-lean-seed-0", "conditioned_riemannian_metric_v1"),
     ("bottleneck-central_opening-lean-seed-0", "orca_rvo2_v1"),
 ]
@@ -78,6 +82,24 @@ def summarize(raw_path, output_path):
         _, scenario, metric, reference, comparator = key; valid = [value for value in values if value is not None]
         rows.append(row("paired_difference", scenario, metric, reference, comparator, valid,
                         len(values), len(values) - len(valid), f"{reference} minus {comparator}"))
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", newline="", encoding="utf-8") as target:
+        writer = csv.DictWriter(target, fieldnames=FIELDS); writer.writeheader(); writer.writerows(rows)
+    return len(records), len(rows)
+
+def paper_summary(raw_path, output_path):
+    records = [record for record in lines(raw_path)
+               if record["phase"] == "test" and not record.get("warmup", False)]
+    groups = {}
+    for record in records:
+        for metric in PAPER_METRICS:
+            groups.setdefault((scenario_name(record), metric, method_name(record)), []).append(record)
+    rows = []
+    for (scenario, metric, method), group in sorted(groups.items()):
+        values = [record[metric] for record in group
+                  if record["status"] == "PASS" and record.get(metric) is not None]
+        rows.append(row("estimate", scenario, metric, method, "", values, len(group),
+                        sum(record["status"] == "FAIL" for record in group), ""))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", newline="", encoding="utf-8") as target:
         writer = csv.DictWriter(target, fieldnames=FIELDS); writer.writeheader(); writer.writerows(rows)
@@ -217,9 +239,15 @@ def main():
     if len(sys.argv) == 4 and sys.argv[1] == "--summarize":
         count, rows = summarize(Path(sys.argv[2]).resolve(), Path(sys.argv[3]).resolve())
         print(f"lean summary: {count} source runs, {rows} summary rows"); return
+    if len(sys.argv) == 4 and sys.argv[1] == "--paper-summary":
+        count, rows = paper_summary(Path(sys.argv[2]).resolve(), Path(sys.argv[3]).resolve())
+        print(f"paper summary: {count} headline runs, {rows} summary rows"); return
     study = json.loads(Path("experiments/lean/study.json").read_text(encoding="utf-8")); outputs = study["outputs"]
-    count, rows = summarize(Path(outputs["raw"]), Path(outputs["summary"])); checked = verify_selected(Path(outputs["auditRoot"]))
-    print(f"lean analysis: {count} source runs, {rows} summary rows, {len(checked)} trajectories verified at {TOL} (ORCA float boundary {ORCA_TOL})")
+    count, rows = summarize(Path(outputs["raw"]), Path(outputs["summary"]))
+    paper_path = Path(outputs["root"]) / "paper-facing-summary.csv"
+    paper_count, paper_rows = paper_summary(Path(outputs["raw"]), paper_path)
+    checked = verify_selected(Path(outputs["auditRoot"]))
+    print(f"lean analysis: {count} source runs, {rows} summary rows, {paper_count} headline runs, {paper_rows} paper-facing rows, {len(checked)} trajectories verified at {TOL} (ORCA float boundary {ORCA_TOL})")
 
 if __name__ == "__main__":
     try: main()

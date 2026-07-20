@@ -12,6 +12,7 @@ import {
   loadStudy, pendingAssignments, requireHumanReviewGate, runKey, runPool, validateWorkerRecord,
   type Assignment, type RunRecord,
 } from "../experiments/lean/run";
+import { compareScientificValues } from "../experiments/lean/verifyFinalEvidence";
 const temporary: string[] = [];
 const PAPER_METRICS = [
   "successFraction",
@@ -44,6 +45,8 @@ describe("camera-ready lean harness", () => {
     expect(study.audit.visual.scenarioTypes).toEqual([
       "head-on", "crossing", "circle", "corridor", "bottleneck",
     ]);
+    expect(Object.keys(study.methods)).toEqual(["riemannian", "goal", "orca", "jupedsim-sfm"]);
+    expect(study.outputs.root).toBe("results/final-camera-ready-jupedsim");
     expect([
       ...study.headline.pairwise.scenarioTypes,
       ...study.headline.dense.scenarioTypes,
@@ -84,6 +87,23 @@ describe("camera-ready lean harness", () => {
 
   it("rejects non-finite worker output", () => {
     expect(() => validateWorkerRecord({ key: "x", status: "PASS", runtimeSeconds: Infinity })).toThrow(/non-finite/u);
+  });
+
+  it("uses the retained scientific tolerances and reports the first divergence", () => {
+    expect(() => compareScientificValues(
+      { position: [1, 2] },
+      { position: [1 + 5e-9, 2] },
+      "trajectory",
+      1e-8,
+    )).not.toThrow();
+    expect(() => compareScientificValues(
+      { position: [1, 2] },
+      { position: [1.01, 2] },
+      "trajectory",
+      1e-8,
+    )).toThrow(/trajectory\.position\[0\]: numeric divergence/u);
+    expect(() => compareScientificValues(Number.NaN, 0, "metric", 1e-8))
+      .toThrow(/numeric divergence/u);
   });
 
   it("creates viewer artifacts and passes independent Python verification", async () => {
@@ -206,5 +226,17 @@ describe("camera-ready lean harness", () => {
         }
       }
     }
+
+    const paperPath = resolve(root, "paper-facing.csv");
+    const paper = spawnSync(
+      python,
+      [resolve("experiments/lean/analyze.py"), "--paper-summary", rawPath, paperPath],
+      { encoding: "utf8" },
+    );
+    expect(paper.status, paper.stdout + paper.stderr).toBe(0);
+    const paperRows = readFileSync(paperPath, "utf8").trim().split(/\r?\n/u);
+    expect(paperRows).toHaveLength(1 + PAPER_METRICS.length * 2);
+    expect(new Set(paperRows.slice(1).map((line) => line.split(",")[2])))
+      .toEqual(new Set(PAPER_METRICS));
   });
 });

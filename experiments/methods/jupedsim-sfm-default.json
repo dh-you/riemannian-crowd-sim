@@ -1,0 +1,14 @@
+{
+  "methodConfigVersion": 2,
+  "id": "social_force_jupedsim_v1",
+  "engine": "jupedsim_sfm_engine_v1",
+  "parameters": {
+    "bodyForce": 120000,
+    "friction": 240000,
+    "mass": 80,
+    "reactionTime": 0.5,
+    "agentScale": 2000,
+    "obstacleScale": 2000,
+    "forceDistance": 0.08
+  }
+}

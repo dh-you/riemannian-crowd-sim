@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { createJuPedSimInput } from "../../experiments/engines/JuPedSimSfmEngine";
 import { ScientificCoreEngine } from "../../experiments/engines/ScientificCoreEngine";
 import { serializeOrcaInput } from "../../experiments/engines/OrcaRvo2Engine";
-import { createSocialForceInput } from "../../experiments/engines/PySocialForceEngine";
 import type { EngineAgentStep, EngineStepRecord } from "../../experiments/engines/engineStep";
 import { generateBidirectionalScenario } from "../../experiments/generation/bidirectional";
 import { generateBottleneckScenario } from "../../experiments/generation/bottleneck";
@@ -19,9 +19,9 @@ import {
 import { identifyMethod } from "../../experiments/protocol/methodIdentity";
 import {
   parseMethodConfig,
+  type JuPedSimSfmMethodConfig,
   type MethodConfig,
   type OrcaMethodConfig,
-  type SocialForceMethodConfig,
 } from "../../experiments/protocol/methodConfig";
 import type { ExperimentScenario } from "../../experiments/protocol/schema";
 import type { AgentState, Vec2 } from "../../src/core/types";
@@ -193,10 +193,9 @@ describe("paper-facing completion protocol v2", () => {
     };
     const goal = parseMethodConfig(study.methods.goal) as MethodConfig;
     const orca = parseMethodConfig(study.methods.orca) as OrcaMethodConfig;
-    const social = parseMethodConfig(study.methods["social-force"]) as SocialForceMethodConfig;
+    const jupedsim = parseMethodConfig(study.methods["jupedsim-sfm"]) as JuPedSimSfmMethodConfig;
     const expected = protocolNavigationRunnerConfig(scenario);
-    const socialInput = createSocialForceInput(scenario, social, "source", "config");
-    expect(socialInput.navigation).toEqual(expected);
+    expect(createJuPedSimInput(scenario, jupedsim).navigation).toEqual(expected);
     expect(serializeOrcaInput(scenario, orca)).toContain(
       "NAVIGATION WAYPOINT_THEN_POINT_GOAL 1.5 0 x 1 positive",
     );

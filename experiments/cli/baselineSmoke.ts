@@ -16,6 +16,7 @@ const METHODS = [
   "experiments/methods/goal-projection.json",
   "experiments/methods/orca-default.json",
   "experiments/methods/social-force-default.json",
+  "experiments/methods/jupedsim-sfm-default.json",
 ] as const;
 
 export interface BaselineSmokeResult {
@@ -53,7 +54,11 @@ export function runBaselineSmoke(outputDirectory = "results/baseline-smoke"): Ba
         throw new Error(`Invalid baseline smoke output for ${scenario.name}/${method.id}`);
       }
       if (
-        (method.id === "orca_rvo2_v1" || method.id === "social_force_pysocialforce_v1") &&
+        (
+          method.id === "orca_rvo2_v1"
+          || method.id === "social_force_pysocialforce_v1"
+          || method.id === "social_force_jupedsim_v1"
+        ) &&
         (result.manifest.upstreamCommit === null ||
           result.manifest.runnerSha256 === null ||
           result.metrics.correctionDependence.totalCorrectionDisplacement !== 0)
