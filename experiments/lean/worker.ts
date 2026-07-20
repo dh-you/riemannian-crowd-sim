@@ -97,7 +97,7 @@ export function executeAssignment(assignment: Assignment): RunRecord {
   return validateWorkerRecord(failureRecord(assignment, failure, (performance.now() - started) / 1000));
 }
 
-function metricRecord(assignment: Assignment, metrics: RunMetrics, agentCount: number, artifactDirectory: string | null, runtimeSeconds: number): RunRecord {
+export function metricRecord(assignment: Assignment, metrics: RunMetrics, agentCount: number, artifactDirectory: string | null, runtimeSeconds: number): RunRecord {
   const pairwise = metrics.pairwise?.perAgent ?? [];
   const pointGoalOutcomes = metrics.completion.perAgent;
   return {
@@ -107,7 +107,7 @@ function metricRecord(assignment: Assignment, metrics: RunMetrics, agentCount: n
     agentCount, status: "PASS", error: null,
     successFraction: metrics.completion.successFraction,
     legacyPointGoalSuccessFraction: metrics.completion.legacyPointGoalSuccessFraction,
-    normalizedCompletionTime: metrics.completionTime.meanNormalizedCompletionTime,
+    normalizedCompletionTime: metrics.completionTime.medianNormalizedCompletionTime,
     minimumPointGoalDistance: Math.min(
       ...pointGoalOutcomes.map(({ minimumDistanceToPointGoal }) => minimumDistanceToPointGoal),
     ),

@@ -105,6 +105,48 @@ describe("online common metrics", () => {
     expect(metrics.smoothness.accelerationSampleCount).toBe(1);
   });
 
+  it("includes the directional completion step and excludes later acceleration and jerk", () => {
+    const initial = agent(0, [0, 0], [0, 0], [10, 0], false);
+    const beforeLine = agent(0, [0.5, 0], [1, 0], [10, 0], false);
+    const acrossLine = agent(0, [1.5, 0], [3, 0], [10, 0], false);
+    const strongLaterAcceleration = agent(0, [2, 0], [100, 0], [10, 0], false);
+    const scenario = scenarioOf([initial], "free_space", 1);
+    scenario.completion = {
+      completionSpecVersion: 1,
+      rule: { type: "directional_line", axis: "x", threshold: 1, direction: "positive" },
+      idealCompletionDistances: [{ agentId: 0, idealCompletionDistance: 1 }],
+    };
+    const measure = (includePostCompletion: boolean) => {
+      const accumulator = new RunMetricsAccumulator(scenario, methodMetadata);
+      accumulator.observeStep(
+        [initial],
+        stepDiagnostic(0, 1, initial, beforeLine, [1, 0]),
+        [beforeLine],
+      );
+      accumulator.observeStep(
+        [beforeLine],
+        stepDiagnostic(1, 2, beforeLine, acrossLine, [3, 0]),
+        [acrossLine],
+      );
+      if (includePostCompletion) {
+        accumulator.observeStep(
+          [acrossLine],
+          stepDiagnostic(2, 3, acrossLine, strongLaterAcceleration, [100, 0]),
+          [strongLaterAcceleration],
+        );
+      }
+      return accumulator.finish(includePostCompletion ? [strongLaterAcceleration] : [acrossLine]);
+    };
+    const atCompletion = measure(false);
+    const afterStrongAcceleration = measure(true);
+    expect(afterStrongAcceleration.completion.perAgent[0].firstCompletionTime).toBe(1.5);
+    expect(afterStrongAcceleration.smoothness.accelerationSampleCount).toBe(2);
+    expect(afterStrongAcceleration.smoothness.jerkSampleCount).toBe(1);
+    expect(afterStrongAcceleration.smoothness.rmsAcceleration).toBeCloseTo(Math.sqrt(2.5), 15);
+    expect(afterStrongAcceleration.smoothness.rmsJerk).toBe(1);
+    expect(afterStrongAcceleration.smoothness).toEqual(atCompletion.smoothness);
+  });
+
   it("uses explicit nulls for zero-duration and unavailable metrics", () => {
     const initial = agent(0, [0, 0], [0, 0], [10, 0], false);
     const metrics = new RunMetricsAccumulator(

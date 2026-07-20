@@ -141,14 +141,20 @@ def verify_run(run_dir):
     steps = list(lines(trajectory)); agents = sorted(scenario["agents"], key=lambda item: item["id"])
     ids = [agent["id"] for agent in agents]; definitions = {agent["id"]: agent for agent in agents}
     previous = {agent["id"]: agent["position"] for agent in agents}
-    completed = set(); legacy_arrived = set(); final_arrived = set(); lengths = {agent_id: 0.0 for agent_id in ids}
-    minimum = None; maximum = 0.0; correction = 0.0
+    previous_velocity = {agent["id"]: agent["velocity"] for agent in agents}
+    completed = {agent["id"] for agent in agents if completion_rule(scenario, agent["id"])["type"] == "goal_disk"
+                 and completion_fraction(scenario, agent, agent["position"], agent["position"]) is not None}
+    legacy_arrived = set(); final_arrived = set(); lengths = {agent_id: 0.0 for agent_id in ids}
+    minimum = None; maximum = 0.0; correction = 0.0; pre_overlap_pair_seconds = 0.0
+    acceleration_squared_sum = 0.0; acceleration_sample_count = 0
+    dt = scenario["simulation"]["dt"]
     expected_steps = round(scenario["simulation"]["horizonSeconds"] / scenario["simulation"]["dt"])
     if len(steps) != expected_steps: raise ValueError(f"{run_dir}: missing steps {len(steps)} != {expected_steps}")
     for index, step in enumerate(steps):
         if step["stepIndex"] != index: raise ValueError(f"{run_dir}: discontinuous step index")
         ordered = step["agents"]
         if [agent["id"] for agent in ordered] != ids: raise ValueError(f"{run_dir}: duplicate, missing, or unordered agent ID")
+        pre_overlap_pair_seconds += step["diagnostics"]["preCorrectionOverlapPairs"] * dt
         for agent in ordered:
             agent_id = agent["id"]
             for actual, expected in zip(agent["positionBefore"], previous[agent_id]): close(actual, expected, "position continuity", tolerance)
@@ -157,23 +163,39 @@ def verify_run(run_dir):
                 if segment_disk_fraction(agent["positionBefore"], agent["postCorrectionPosition"],
                                          definitions[agent_id]["goal"], scenario["simulation"]["goalTolerance"]) is not None:
                     legacy_arrived.add(agent_id)
-            if agent_id not in completed and completion_fraction(
-                    scenario, definitions[agent_id], agent["positionBefore"], agent["postCorrectionPosition"]) is not None:
-                completed.add(agent_id)
+            if agent_id not in completed:
+                acceleration = [(agent["realizedVelocity"][axis] - previous_velocity[agent_id][axis]) / dt
+                                for axis in range(2)]
+                acceleration_squared_sum += sum(value * value for value in acceleration)
+                acceleration_sample_count += 1
+                if completion_fraction(scenario, definitions[agent_id], agent["positionBefore"],
+                                       agent["postCorrectionPosition"]) is not None:
+                    completed.add(agent_id)
             if agent["arrived"]: final_arrived.add(agent_id)
             else: final_arrived.discard(agent_id)
             previous[agent_id] = agent["postCorrectionPosition"]
+            previous_velocity[agent_id] = agent["realizedVelocity"]
         for first in range(len(ordered)):
             for second in range(first + 1, len(ordered)):
                 a, b = ordered[first], ordered[second]
                 clearance = math.dist(a["preCorrectionPosition"], b["preCorrectionPosition"]) - definitions[a["id"]]["radius"] - definitions[b["id"]]["radius"]
                 minimum = clearance if minimum is None else min(minimum, clearance); maximum = max(maximum, -clearance)
         correction += step["diagnostics"]["totalCorrectionDisplacement"]
+    simulated_duration = steps[-1]["time"] if steps else 0.0
+    exposure_denominator = len(ids) * simulated_duration
+    overlap_exposure = None if exposure_denominator == 0 else pre_overlap_pair_seconds / exposure_denominator
+    rms_acceleration = None if acceleration_sample_count == 0 else math.sqrt(
+        acceleration_squared_sum / acceleration_sample_count)
     close(len(completed) / len(ids), metrics["completion"]["successFraction"], "completion", tolerance)
     close(len(legacy_arrived) / len(ids), metrics["completion"]["legacyPointGoalSuccessFraction"], "legacy completion", tolerance)
     close(len(final_arrived) / len(ids), metrics["completion"]["legacyFinalPointGoalArrivedFraction"], "final arrived", tolerance)
     close(minimum, metrics["separation"]["minimumPreCorrectionAgentClearance"], "minimum clearance", tolerance)
     close(maximum, metrics["separation"]["maximumPreCorrectionAgentPenetration"], "maximum penetration", tolerance)
+    close(overlap_exposure, metrics["separation"]["preCorrectionOverlapPairSecondsPerAgentSecond"],
+          "pre-correction overlap exposure", tolerance)
+    close(rms_acceleration, metrics["smoothness"]["rmsAcceleration"], "rms acceleration", tolerance)
+    close(acceleration_sample_count, metrics["smoothness"]["accelerationSampleCount"],
+          "acceleration sample count", tolerance)
     expected_length = sum(entry["pathEfficiency"] * math.dist(definitions[entry["id"]]["position"], definitions[entry["id"]]["goal"])
                           for entry in metrics["completion"]["perAgent"] if entry["pathEfficiency"] is not None)
     close(sum(lengths[agent_id] for agent_id in legacy_arrived), expected_length, "arrived path length", tolerance)
@@ -192,6 +214,9 @@ def verify_selected(audit_root):
 def main():
     if len(sys.argv) == 3 and sys.argv[1] == "--verify-run":
         print(f"verified {verify_run(Path(sys.argv[2]).resolve())}"); return
+    if len(sys.argv) == 4 and sys.argv[1] == "--summarize":
+        count, rows = summarize(Path(sys.argv[2]).resolve(), Path(sys.argv[3]).resolve())
+        print(f"lean summary: {count} source runs, {rows} summary rows"); return
     study = json.loads(Path("experiments/lean/study.json").read_text(encoding="utf-8")); outputs = study["outputs"]
     count, rows = summarize(Path(outputs["raw"]), Path(outputs["summary"])); checked = verify_selected(Path(outputs["auditRoot"]))
     print(f"lean analysis: {count} source runs, {rows} summary rows, {len(checked)} trajectories verified at {TOL} (ORCA float boundary {ORCA_TOL})")

@@ -175,6 +175,8 @@ export class RunMetricsAccumulator {
         accumulated.pathLengthUntilPointGoalArrival += norm(
           sub(step.postCorrectionPosition, step.positionBefore),
         );
+      }
+      if (accumulated.firstCompletionTime === null) {
         const acceleration = scale(sub(step.realizedVelocity, accumulated.previousVelocity), 1 / dt);
         this.accelerationSquaredSum += dot(acceleration, acceleration);
         this.accelerationSampleCount += 1;
