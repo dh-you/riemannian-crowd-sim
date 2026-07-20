@@ -8,6 +8,7 @@ import {
   type SocialForceMethodConfig,
 } from "../protocol/methodConfig";
 import type { ExperimentScenario } from "../protocol/schema";
+import { protocolNavigationRunnerConfig } from "../protocol/completion";
 import { expandThickWalls } from "../baselines/common/wallGeometry";
 import { baselineProvenance, baselineRuntimePaths } from "./baselineProvenance";
 import type { EngineRunResult, EngineStepSink, ExperimentEngine } from "./ExperimentEngine";
@@ -48,7 +49,7 @@ export class PySocialForceEngine implements ExperimentEngine {
     writeFileSync(configPath, serializeConfig(scenario, typed), "utf8");
     writeFileSync(
       inputPath,
-      `${JSON.stringify(createInput(scenario, typed, runtime.socialSource, configPath))}\n`,
+      `${JSON.stringify(createSocialForceInput(scenario, typed, runtime.socialSource, configPath))}\n`,
       "utf8",
     );
     let succeeded = false;
@@ -84,7 +85,7 @@ function assertHomogeneousRadii(scenario: ExperimentScenario): void {
   }
 }
 
-function createInput(
+export function createSocialForceInput(
   scenario: ExperimentScenario,
   method: SocialForceMethodConfig,
   sourceDirectory: string,
@@ -97,13 +98,14 @@ function createInput(
     }),
   );
   return {
-    runnerInputVersion: 1,
+    runnerInputVersion: 2,
     sourceDirectory,
     configPath,
     dt: scenario.simulation.dt,
     steps: fixedStepCount(scenario),
     goalTolerance: scenario.simulation.goalTolerance,
     parameters: method.parameters,
+    navigation: protocolNavigationRunnerConfig(scenario),
     agents: [...scenario.agents].sort((a, b) => a.id - b.id).map((agent) => ({
       id: agent.id,
       radius: agent.radius,

@@ -21,6 +21,7 @@
     "baselines:smoke": "tsx experiments/cli/baselineSmoke.ts",
     "test:baselines": "vitest run --config vitest.baselines.config.ts",
     "audit:viewer": "tsx experiments/audit/viewer/generateReviewIndex.ts",
+    "protocol:audit": "tsx experiments/lean/completionAudit.ts",
     "lean": "tsx experiments/lean/run.ts"
   },
   "devDependencies": {

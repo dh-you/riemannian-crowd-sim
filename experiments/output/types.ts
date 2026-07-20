@@ -23,6 +23,7 @@ export interface TrajectoryAgent {
   realizedVelocity: Vec2;
   targetVelocity: Vec2;
   commandVelocity?: Vec2;
+  navigationTarget?: Vec2;
   arrived: boolean;
 }
 

@@ -1,7 +1,7 @@
 {
   "methods": {
     "riemannian": { "methodConfigVersion": 1, "id": "conditioned_riemannian_metric_v1",
-      "velocityTimeConstant": 0.04, "parameters": { "alpha": 20, "sigma": 1, "lambdaR": 20, "lambdaT": 1 } },
+      "velocityTimeConstant": 0.04, "parameters": { "alpha": 20, "sigma": 1.5, "lambdaR": 20, "lambdaT": 1 } },
     "goal": { "methodConfigVersion": 1, "id": "euclidean_goal_steering_v1",
       "velocityTimeConstant": 0.04, "parameters": {} },
     "orca": { "methodConfigVersion": 2, "id": "orca_rvo2_v1", "engine": "orca_rvo2_engine_v1",
@@ -26,12 +26,12 @@
     "exact-symmetric": { "family": "pairwise", "variant": "exact_symmetric_diagnostic" }
   },
   "audit": {
-    "visual": { "scenarioTypes": ["head-on", "crossing", "overtaking", "circle", "corridor", "bottleneck"], "seeds": [0] },
+    "visual": { "scenarioTypes": ["head-on", "crossing", "circle", "corridor", "bottleneck"], "seeds": [0] },
     "diagnostics": { "scenarioTypes": ["separating", "exact-symmetric"], "seeds": [0] }
   },
   "benchmark": { "scenarioTypes": ["head-on", "corridor"], "seeds": [99], "jobs": [1, 2, 4] },
   "headline": {
-    "pairwise": { "scenarioTypes": ["head-on", "crossing", "overtaking"], "seeds": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119] },
+    "pairwise": { "scenarioTypes": ["head-on", "crossing"], "seeds": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119] },
     "dense": { "scenarioTypes": ["circle", "corridor", "bottleneck"], "seeds": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109] }
   },
   "ablations": {

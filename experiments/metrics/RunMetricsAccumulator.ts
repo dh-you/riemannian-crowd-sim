@@ -6,6 +6,14 @@ import {
   type EngineStepRecord,
 } from "../engines/engineStep";
 import type { ExperimentScenario } from "../protocol/schema";
+import {
+  completionRuleForAgent,
+  detectCompletion,
+  firstSegmentDiskIntersectionFraction,
+  idealCompletionDistanceForAgent,
+  minimumDistanceFromSegmentToPoint,
+  pointIsNumericallyInGoalDisk,
+} from "../protocol/completion";
 import { constantVelocityTimeToContact, relativeGeometry } from "./geometry";
 import type {
   PairwiseMetrics,
@@ -22,8 +30,11 @@ interface AgentAccumulator {
   preferredSpeed: number;
   previousVelocity: Vec2;
   previousAcceleration: Vec2 | null;
-  pathLengthUntilArrival: number;
-  firstArrivalTime: number | null;
+  pathLengthUntilPointGoalArrival: number;
+  firstCompletionTime: number | null;
+  legacyFirstPointGoalArrivalTime: number | null;
+  minimumDistanceToPointGoal: number;
+  finalDistanceToPointGoal: number;
 }
 
 export class RunMetricsAccumulator {
@@ -52,6 +63,9 @@ export class RunMetricsAccumulator {
   private accelerationSampleCount = 0;
   private jerkSampleCount = 0;
   private duration = 0;
+  private preCorrectionGoalDiskEntries = 0;
+  private postCorrectionGoalDiskEntries = 0;
+  private correctionEjectedGoalDiskEntries = 0;
 
   constructor(scenario: ExperimentScenario, method: RunMethodMetadata) {
     this.scenario = scenario;
@@ -72,14 +86,20 @@ export class RunMetricsAccumulator {
       methodParameters: { ...method.methodParameters },
     };
     for (const agent of scenario.agents) {
+      const initialPointGoalDistance = norm(sub(agent.position, agent.goal));
+      const startsInPointGoal = initialPointGoalDistance <= scenario.simulation.goalTolerance;
+      const completionRule = completionRuleForAgent(scenario, agent.id);
       this.agents.set(agent.id, {
         initialPosition: agent.position,
         goal: agent.goal,
         preferredSpeed: agent.preferredSpeed,
         previousVelocity: agent.velocity,
         previousAcceleration: null,
-        pathLengthUntilArrival: 0,
-        firstArrivalTime: null,
+        pathLengthUntilPointGoalArrival: 0,
+        firstCompletionTime: completionRule.type === "goal_disk" && startsInPointGoal ? 0 : null,
+        legacyFirstPointGoalArrivalTime: startsInPointGoal ? 0 : null,
+        minimumDistanceToPointGoal: initialPointGoalDistance,
+        finalDistanceToPointGoal: initialPointGoalDistance,
       });
     }
   }
@@ -142,13 +162,17 @@ export class RunMetricsAccumulator {
     this.totalWallCorrection += diagnostics.wallCorrectionDisplacement;
 
     const stepById = new Map(record.agents.map((agent) => [agent.id, agent]));
-    const arrivedBeforeStep = new Set<number>();
+    const pointGoalArrivedBeforeStep = new Set<number>();
     for (const [id, accumulated] of this.agents) {
       const step = stepById.get(id);
       if (step === undefined) throw new Error(`Metrics missing agent ${id}`);
-      if (accumulated.firstArrivalTime !== null) arrivedBeforeStep.add(id);
-      if (accumulated.firstArrivalTime === null) {
-        accumulated.pathLengthUntilArrival += norm(
+      const definition = this.scenario.agents.find((agent) => agent.id === id);
+      if (definition === undefined) throw new Error(`Scenario missing agent ${id}`);
+      if (accumulated.legacyFirstPointGoalArrivalTime !== null) {
+        pointGoalArrivedBeforeStep.add(id);
+      }
+      if (accumulated.legacyFirstPointGoalArrivalTime === null) {
+        accumulated.pathLengthUntilPointGoalArrival += norm(
           sub(step.postCorrectionPosition, step.positionBefore),
         );
         const acceleration = scale(sub(step.realizedVelocity, accumulated.previousVelocity), 1 / dt);
@@ -160,37 +184,102 @@ export class RunMetricsAccumulator {
           this.jerkSampleCount += 1;
         }
         accumulated.previousAcceleration = acceleration;
-        if (step.arrived) accumulated.firstArrivalTime = record.time;
       }
+      const stepStartTime = record.time - dt;
+      const startsOutsideGoalDisk = !pointIsNumericallyInGoalDisk(
+        step.positionBefore,
+        definition.goal,
+        this.scenario.simulation.goalTolerance,
+      );
+      const preGoalFraction = firstSegmentDiskIntersectionFraction(
+        step.positionBefore,
+        step.preCorrectionPosition,
+        definition.goal,
+        this.scenario.simulation.goalTolerance,
+      );
+      const postGoalFraction = firstSegmentDiskIntersectionFraction(
+        step.positionBefore,
+        step.postCorrectionPosition,
+        definition.goal,
+        this.scenario.simulation.goalTolerance,
+      );
+      if (startsOutsideGoalDisk && preGoalFraction !== null) this.preCorrectionGoalDiskEntries += 1;
+      if (startsOutsideGoalDisk && postGoalFraction !== null) this.postCorrectionGoalDiskEntries += 1;
+      if (
+        norm(sub(step.preCorrectionPosition, definition.goal))
+          <= this.scenario.simulation.goalTolerance
+        && norm(sub(step.postCorrectionPosition, definition.goal))
+          > this.scenario.simulation.goalTolerance
+      ) {
+        this.correctionEjectedGoalDiskEntries += 1;
+      }
+      if (accumulated.legacyFirstPointGoalArrivalTime === null && postGoalFraction !== null) {
+        accumulated.legacyFirstPointGoalArrivalTime = stepStartTime + postGoalFraction * dt;
+      }
+      if (accumulated.firstCompletionTime === null) {
+        const completion = detectCompletion(
+          this.scenario,
+          definition,
+          step.positionBefore,
+          step.postCorrectionPosition,
+        );
+        if (completion !== null) {
+          accumulated.firstCompletionTime = stepStartTime + completion.segmentFraction * dt;
+        }
+      }
+      accumulated.minimumDistanceToPointGoal = Math.min(
+        accumulated.minimumDistanceToPointGoal,
+        minimumDistanceFromSegmentToPoint(
+          step.positionBefore,
+          step.postCorrectionPosition,
+          definition.goal,
+        ),
+      );
+      accumulated.finalDistanceToPointGoal = norm(sub(step.postCorrectionPosition, definition.goal));
       accumulated.previousVelocity = step.realizedVelocity;
     }
 
     if (this.scenario.family === "pairwise" && record.agents.length === 2) {
-      this.observePairwise(record, arrivedBeforeStep);
+      this.observePairwise(record, pointGoalArrivedBeforeStep);
     }
   }
 
   finish(finalStates: readonly AgentState[]): RunMetrics {
+    const finalById = new Map(finalStates.map((agent) => [agent.id, agent]));
     const perAgent: PerAgentOutcomeMetrics[] = [...this.agents.entries()]
       .sort(([firstId], [secondId]) => firstId - secondId)
       .map(([id, accumulated]) => {
         const directDistance = norm(sub(accumulated.goal, accumulated.initialPosition));
-        const idealTravelTime = directDistance / accumulated.preferredSpeed;
+        const idealCompletionDistance = idealCompletionDistanceForAgent(this.scenario, id);
+        const idealCompletionTime = idealCompletionDistance / accumulated.preferredSpeed;
+        const finalState = finalById.get(id);
+        if (finalState === undefined) throw new Error(`Final states missing agent ${id}`);
+        const completionRule = completionRuleForAgent(this.scenario, id);
         return {
           id,
-          firstArrivalTime: accumulated.firstArrivalTime,
-          normalizedTravelTime:
-            accumulated.firstArrivalTime === null || idealTravelTime <= 0
+          completionType: completionRule.type,
+          idealCompletionDistance,
+          firstCompletionTime: accumulated.firstCompletionTime,
+          normalizedCompletionTime:
+            accumulated.firstCompletionTime === null || idealCompletionTime <= 0
               ? null
-              : accumulated.firstArrivalTime / idealTravelTime,
+              : accumulated.firstCompletionTime / idealCompletionTime,
+          legacyFirstPointGoalArrivalTime: accumulated.legacyFirstPointGoalArrivalTime,
+          minimumDistanceToPointGoal: accumulated.minimumDistanceToPointGoal,
+          finalDistanceToPointGoal: norm(sub(finalState.position, accumulated.goal)),
           pathEfficiency:
-            accumulated.firstArrivalTime === null || directDistance <= 0
+            accumulated.legacyFirstPointGoalArrivalTime === null || directDistance <= 0
               ? null
-              : accumulated.pathLengthUntilArrival / directDistance,
+              : accumulated.pathLengthUntilPointGoalArrival / directDistance,
         };
       });
-    const reached = perAgent.filter((agent) => agent.firstArrivalTime !== null).length;
-    const normalizedTravelTimes = nonNull(perAgent.map((agent) => agent.normalizedTravelTime));
+    const completed = perAgent.filter((agent) => agent.firstCompletionTime !== null).length;
+    const legacyCompleted = perAgent.filter(
+      (agent) => agent.legacyFirstPointGoalArrivalTime !== null,
+    ).length;
+    const normalizedCompletionTimes = nonNull(
+      perAgent.map((agent) => agent.normalizedCompletionTime),
+    );
     const pathEfficiencies = nonNull(perAgent.map((agent) => agent.pathEfficiency));
     const finalArrived = finalStates.filter((agent) => agent.arrived).length;
     const totalCorrection = this.totalAgentCorrection + this.totalWallCorrection;
@@ -221,14 +310,22 @@ export class RunMetricsAccumulator {
         simulatedDuration: this.duration,
       },
       completion: {
-        agentsReachedGoal: reached,
-        successFraction: this.scenario.agents.length === 0 ? 0 : reached / this.scenario.agents.length,
-        finalArrivedFraction: finalStates.length === 0 ? 0 : finalArrived / finalStates.length,
+        completionRuleType: this.scenario.completion.rule.type,
+        completedAgents: completed,
+        successFraction: this.scenario.agents.length === 0 ? 0 : completed / this.scenario.agents.length,
+        legacyPointGoalCompletedAgents: legacyCompleted,
+        legacyPointGoalSuccessFraction:
+          this.scenario.agents.length === 0 ? 0 : legacyCompleted / this.scenario.agents.length,
+        legacyFinalPointGoalArrivedFraction:
+          finalStates.length === 0 ? 0 : finalArrived / finalStates.length,
+        preCorrectionGoalDiskEntries: this.preCorrectionGoalDiskEntries,
+        postCorrectionGoalDiskEntries: this.postCorrectionGoalDiskEntries,
+        correctionEjectedGoalDiskEntries: this.correctionEjectedGoalDiskEntries,
         perAgent,
       },
-      travelTime: {
-        meanNormalizedTravelTime: mean(normalizedTravelTimes),
-        medianNormalizedTravelTime: median(normalizedTravelTimes),
+      completionTime: {
+        meanNormalizedCompletionTime: mean(normalizedCompletionTimes),
+        medianNormalizedCompletionTime: median(normalizedCompletionTimes),
       },
       pathEfficiency: {
         meanPathEfficiency: mean(pathEfficiencies),
@@ -263,7 +360,7 @@ export class RunMetricsAccumulator {
         accelerationSampleCount: this.accelerationSampleCount,
         jerkSampleCount: this.jerkSampleCount,
       },
-      throughput: this.duration === 0 ? null : reached / this.duration,
+      throughput: this.duration === 0 ? null : completed / this.duration,
       pairwise: this.finishPairwise(),
     };
   }

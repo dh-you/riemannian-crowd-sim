@@ -9,7 +9,7 @@ import type { EngineStepRecord } from "../../experiments/engines/engineStep";
 import type { ExperimentScenario } from "../../experiments/protocol/schema";
 
 const scenario: ExperimentScenario = {
-  experimentScenarioVersion: 1,
+  experimentScenarioVersion: 2,
   name: "viewer-fixture",
   family: "pairwise",
   variant: "head_on",
@@ -42,6 +42,15 @@ const scenario: ExperimentScenario = {
     },
   ],
   walls: [],
+  completion: {
+    completionSpecVersion: 1,
+    rule: { type: "goal_disk" },
+    idealCompletionDistances: [
+      { agentId: 0, idealCompletionDistance: 1.95 },
+      { agentId: 1, idealCompletionDistance: 1.95 },
+    ],
+  },
+  navigation: { type: "point_goal" },
   metadata: { units: { distance: "m", time: "s" } },
 };
 
@@ -107,7 +116,7 @@ function step(
   secondPost: [number, number],
 ): EngineStepRecord {
   return {
-    engineStepVersion: 1,
+    engineStepVersion: 2,
     stepIndex,
     time,
     agents: [
@@ -117,6 +126,7 @@ function step(
         velocityBefore: [1, 0],
         preCorrectionPosition: firstPre,
         postCorrectionPosition: firstPost,
+        navigationTarget: [1, 0],
         commandVelocity: [1, 0],
         realizedVelocity: [1, 0],
         arrived: false,
@@ -127,6 +137,7 @@ function step(
         velocityBefore: [-1, 0],
         preCorrectionPosition: secondPre,
         postCorrectionPosition: secondPost,
+        navigationTarget: [-1, 0],
         commandVelocity: [-1, 0],
         realizedVelocity: [-1, 0],
         arrived: false,

@@ -13,8 +13,8 @@ from pathlib import Path
 from typing import Any
 
 
-RUNNER_INPUT_VERSION = 1
-NATIVE_STEP_VERSION = 1
+RUNNER_INPUT_VERSION = 2
+NATIVE_STEP_VERSION = 2
 
 
 def load_pysocialforce(source_directory: Path):
@@ -62,7 +62,26 @@ def require_input(value: Any) -> dict[str, Any]:
         raise RuntimeError("PySocialForce runner requires agents")
     if not isinstance(value.get("obstacles"), list):
         raise RuntimeError("PySocialForce runner requires an obstacle list")
+    navigation = value.get("navigation")
+    if not isinstance(navigation, dict) or navigation.get("type") not in {
+        "point_goal", "waypoint_then_point_goal"
+    }:
+        raise RuntimeError("PySocialForce runner requires valid protocol navigation")
     return value
+
+
+def protocol_target(navigation, position, point_goal):
+    if navigation["type"] == "point_goal":
+        return [float(point_goal[0]), float(point_goal[1])]
+    line = navigation["switchLine"]
+    coordinate = float(position[0 if line["axis"] == "x" else 1])
+    switched = (
+        coordinate > float(line["threshold"])
+        if line["direction"] == "positive"
+        else coordinate < float(line["threshold"])
+    )
+    target = point_goal if switched else navigation["waypoint"]
+    return [float(target[0]), float(target[1])]
 
 
 def run(input_path: Path, output_path: Path) -> None:
@@ -99,12 +118,16 @@ def run(input_path: Path, output_path: Path) -> None:
     arrived = [False] * len(agents)
     goal_tolerance = float(data["goalTolerance"])
     dt = float(data["dt"])
+    navigation = data["navigation"]
 
     with output_path.open("w", encoding="utf-8", newline="\n") as output:
         for step_index in range(int(data["steps"])):
             before_positions = simulator.peds.pos().copy()
             before_velocities = simulator.peds.vel().copy()
+            navigation_targets = []
             for index, agent in enumerate(agents):
+                target = protocol_target(navigation, before_positions[index], agent["goal"])
+                navigation_targets.append(target)
                 if not arrived[index]:
                     distance = np.linalg.norm(before_positions[index] - np.array(agent["goal"]))
                     if distance <= goal_tolerance:
@@ -113,6 +136,8 @@ def run(input_path: Path, output_path: Path) -> None:
                     simulator.peds.state[index, 2:4] = 0.0
                     # Disable DesiredForce for held agents during native force evaluation.
                     simulator.peds.state[index, 4:6] = before_positions[index]
+                else:
+                    simulator.peds.state[index, 4:6] = np.array(target, dtype=np.float64)
             simulator.step_once()
             proposed_positions = simulator.peds.pos().copy()
             command_velocities = simulator.peds.vel().copy()
@@ -152,6 +177,7 @@ def run(input_path: Path, output_path: Path) -> None:
                         "positionBefore": before_positions[index].tolist(),
                         "velocityBefore": before_velocities[index].tolist(),
                         "proposedPosition": final_position.tolist(),
+                        "navigationTarget": navigation_targets[index],
                         "commandVelocity": command_velocities[index].tolist(),
                         "realizedVelocity": realized_velocity.tolist(),
                         "arrived": arrived[index],

@@ -7,6 +7,7 @@ import {
   type MethodConfig,
 } from "../protocol/methodConfig";
 import type { ExperimentScenario } from "../protocol/schema";
+import { resolveProtocolTarget } from "../protocol/completion";
 import { fixedStepCount } from "../cli/runScenario";
 import {
   SCIENTIFIC_CORE_ADAPTER_VERSION,
@@ -72,9 +73,19 @@ export class ScientificCoreEngine implements ExperimentEngine {
       : "disabled";
     for (let index = 0; index < totalSteps; index += 1) {
       const before = simulator.getAgents();
-      const diagnostic = simulator.step();
+      const navigationTargets = new Map(before.map((agent) => [
+        agent.id,
+        resolveProtocolTarget(scenario, agent),
+      ]));
+      const diagnostic = simulator.step(navigationTargets);
       const after = simulator.getAgents();
-      sink(scientificDiagnosticToEngineStep(before, diagnostic, after, correctionMode));
+      sink(scientificDiagnosticToEngineStep(
+        before,
+        diagnostic,
+        after,
+        correctionMode,
+        navigationTargets,
+      ));
     }
     return {
       finalStates: simulator.getAgents(),

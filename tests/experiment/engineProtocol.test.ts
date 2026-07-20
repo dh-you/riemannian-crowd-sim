@@ -37,6 +37,7 @@ import {
   type ScientificMethodConfig,
 } from "../../experiments/protocol/methodConfig";
 import type { ExperimentScenario } from "../../experiments/protocol/schema";
+import { resolveProtocolTarget } from "../../experiments/protocol/completion";
 
 const temporaryDirectories: string[] = [];
 
@@ -182,10 +183,20 @@ describe("Scientific Core engine adapter numerical parity", () => {
     });
     for (let step = 0; step < 2; step += 1) {
       const before = directSimulator.getAgents();
-      const diagnostic = directSimulator.step();
+      const navigationTargets = new Map(before.map((agent) => [
+        agent.id,
+        resolveProtocolTarget(scenario, agent),
+      ]));
+      const diagnostic = directSimulator.step(navigationTargets);
       const after = directSimulator.getAgents();
       directMetrics.observeStep(before, diagnostic, after);
-      directRecords.push(scientificDiagnosticToEngineStep(before, diagnostic, after, "shared_projection"));
+      directRecords.push(scientificDiagnosticToEngineStep(
+        before,
+        diagnostic,
+        after,
+        "shared_projection",
+        navigationTargets,
+      ));
     }
     const engine = new ScientificCoreEngine(method.id, identity.methodKey);
     const adaptedRecords: EngineStepRecord[] = [];
@@ -221,7 +232,7 @@ function scientificParityScenarios(): ExperimentScenario[] {
 
 function fixtureRecord(): EngineStepRecord {
   return {
-    engineStepVersion: 1,
+    engineStepVersion: 2,
     stepIndex: 0,
     time: 0.1,
     agents: [{
@@ -230,6 +241,7 @@ function fixtureRecord(): EngineStepRecord {
       velocityBefore: [0, 0],
       preCorrectionPosition: [0.1, 0],
       postCorrectionPosition: [0.1, 0],
+      navigationTarget: [1, 0],
       commandVelocity: [1, 0],
       realizedVelocity: [1, 0],
       arrived: false,
@@ -267,7 +279,7 @@ function temporaryDirectory(prefix: string): string {
 
 function nativeRecord(scenario: ExperimentScenario, stepIndex: number) {
   return {
-    nativeEngineStepVersion: 1,
+    nativeEngineStepVersion: 2,
     stepIndex,
     time: (stepIndex + 1) * scenario.simulation.dt,
     agents: scenario.agents.map((agent) => ({
@@ -275,6 +287,7 @@ function nativeRecord(scenario: ExperimentScenario, stepIndex: number) {
       positionBefore: [...agent.position] as [number, number],
       velocityBefore: [...agent.velocity] as [number, number],
       proposedPosition: [...agent.position] as [number, number],
+      navigationTarget: [...agent.goal] as [number, number],
       commandVelocity: [0, 0] as [number, number],
       realizedVelocity: [0, 0] as [number, number],
       arrived: false,

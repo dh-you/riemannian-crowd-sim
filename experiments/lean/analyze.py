@@ -5,7 +5,8 @@ from pathlib import Path
 FIELDS = ["row_type", "scenario_type", "metric", "method", "comparator", "n",
           "total_runs", "failures", "median", "q1", "q3", "unit", "difference_definition"]
 METRICS = {
-    "successFraction": "fraction", "normalizedTravelTime": "ratio", "pathRatio": "ratio",
+    "successFraction": "fraction", "legacyPointGoalSuccessFraction": "fraction",
+    "normalizedCompletionTime": "ratio", "pathRatio": "ratio",
     "preCorrectionOverlapExposure": "pair-seconds/agent-second",
     "maximumPhysicalPenetration": "m", "minimumPhysicalClearance": "m",
     "rmsAcceleration": "m/s^2", "correctionRatio": "ratio", "throughput": "arrivals/s",
@@ -96,6 +97,41 @@ def close(actual, expected, label, tolerance=TOL):
     elif not math.isclose(actual, expected, rel_tol=tolerance, abs_tol=tolerance):
         raise ValueError(f"{label}: {actual} != {expected}")
 
+def segment_disk_fraction(start, end, center, radius):
+    sx, sy = start[0] - center[0], start[1] - center[1]
+    coordinate_scale = max([1.0, radius] + [abs(value) for value in start + center])
+    if math.hypot(sx, sy) <= radius + 2e-7 * coordinate_scale: return 0.0
+    dx, dy = end[0] - start[0], end[1] - start[1]
+    a = dx * dx + dy * dy
+    if a <= 0.0: return None
+    b = 2.0 * (sx * dx + sy * dy); c = sx * sx + sy * sy - radius * radius
+    discriminant = b * b - 4.0 * a * c
+    scale = max(1.0, abs(b * b), abs(4.0 * a * c))
+    if discriminant >= -1e-12 * scale:
+        root = math.sqrt(max(0.0, discriminant))
+        candidates = [max(0.0, min(1.0, value)) for value in
+                      [(-b - root) / (2.0 * a), (-b + root) / (2.0 * a)]
+                      if -1e-12 <= value <= 1.0 + 1e-12]
+        if candidates: return min(candidates)
+    coordinate_scale = max([1.0, radius] + [abs(value) for value in end + center])
+    return 1.0 if math.dist(end, center) <= radius + 2e-7 * coordinate_scale else None
+
+def completion_rule(scenario, agent_id):
+    completion = scenario.get("completion")
+    if completion is None: return {"type": "goal_disk"}
+    rule = completion["rule"]
+    if rule["type"] != "per_agent_directional_line": return rule
+    return next(entry for entry in rule["rules"] if entry["agentId"] == agent_id)
+
+def completion_fraction(scenario, definition, start, end):
+    rule = completion_rule(scenario, definition["id"])
+    if rule["type"] == "goal_disk":
+        return segment_disk_fraction(start, end, definition["goal"], scenario["simulation"]["goalTolerance"])
+    axis = 0 if rule["axis"] == "x" else 1
+    before, after, threshold = start[axis], end[axis], rule["threshold"]
+    crosses = before < threshold < after if rule["direction"] == "positive" else before > threshold > after
+    return (threshold - before) / (after - before) if crosses else None
+
 def verify_run(run_dir):
     manifest = json.loads((run_dir / "audit-manifest.json").read_text(encoding="utf-8")); tolerance = ORCA_TOL if manifest["methodId"] == "orca_rvo2_v1" else TOL
     audit_root = next(parent for parent in run_dir.parents if parent.name == "audit")
@@ -104,7 +140,8 @@ def verify_run(run_dir):
     full = run_dir / "engine-steps-full.jsonl"; trajectory = full if full.exists() else run_dir / "engine-steps.jsonl"
     steps = list(lines(trajectory)); agents = sorted(scenario["agents"], key=lambda item: item["id"])
     ids = [agent["id"] for agent in agents]; definitions = {agent["id"]: agent for agent in agents}
-    previous = {agent["id"]: agent["position"] for agent in agents}; arrived = set(); lengths = {agent_id: 0.0 for agent_id in ids}
+    previous = {agent["id"]: agent["position"] for agent in agents}
+    completed = set(); legacy_arrived = set(); final_arrived = set(); lengths = {agent_id: 0.0 for agent_id in ids}
     minimum = None; maximum = 0.0; correction = 0.0
     expected_steps = round(scenario["simulation"]["horizonSeconds"] / scenario["simulation"]["dt"])
     if len(steps) != expected_steps: raise ValueError(f"{run_dir}: missing steps {len(steps)} != {expected_steps}")
@@ -115,9 +152,16 @@ def verify_run(run_dir):
         for agent in ordered:
             agent_id = agent["id"]
             for actual, expected in zip(agent["positionBefore"], previous[agent_id]): close(actual, expected, "position continuity", tolerance)
-            if agent_id not in arrived:
+            if agent_id not in legacy_arrived:
                 lengths[agent_id] += math.dist(agent["positionBefore"], agent["postCorrectionPosition"])
-                if agent["arrived"]: arrived.add(agent_id)
+                if segment_disk_fraction(agent["positionBefore"], agent["postCorrectionPosition"],
+                                         definitions[agent_id]["goal"], scenario["simulation"]["goalTolerance"]) is not None:
+                    legacy_arrived.add(agent_id)
+            if agent_id not in completed and completion_fraction(
+                    scenario, definitions[agent_id], agent["positionBefore"], agent["postCorrectionPosition"]) is not None:
+                completed.add(agent_id)
+            if agent["arrived"]: final_arrived.add(agent_id)
+            else: final_arrived.discard(agent_id)
             previous[agent_id] = agent["postCorrectionPosition"]
         for first in range(len(ordered)):
             for second in range(first + 1, len(ordered)):
@@ -125,12 +169,14 @@ def verify_run(run_dir):
                 clearance = math.dist(a["preCorrectionPosition"], b["preCorrectionPosition"]) - definitions[a["id"]]["radius"] - definitions[b["id"]]["radius"]
                 minimum = clearance if minimum is None else min(minimum, clearance); maximum = max(maximum, -clearance)
         correction += step["diagnostics"]["totalCorrectionDisplacement"]
-    close(len(arrived) / len(ids), metrics["completion"]["successFraction"], "completion", tolerance)
+    close(len(completed) / len(ids), metrics["completion"]["successFraction"], "completion", tolerance)
+    close(len(legacy_arrived) / len(ids), metrics["completion"]["legacyPointGoalSuccessFraction"], "legacy completion", tolerance)
+    close(len(final_arrived) / len(ids), metrics["completion"]["legacyFinalPointGoalArrivedFraction"], "final arrived", tolerance)
     close(minimum, metrics["separation"]["minimumPreCorrectionAgentClearance"], "minimum clearance", tolerance)
     close(maximum, metrics["separation"]["maximumPreCorrectionAgentPenetration"], "maximum penetration", tolerance)
     expected_length = sum(entry["pathEfficiency"] * math.dist(definitions[entry["id"]]["position"], definitions[entry["id"]]["goal"])
                           for entry in metrics["completion"]["perAgent"] if entry["pathEfficiency"] is not None)
-    close(sum(lengths[agent_id] for agent_id in arrived), expected_length, "arrived path length", tolerance)
+    close(sum(lengths[agent_id] for agent_id in legacy_arrived), expected_length, "arrived path length", tolerance)
     close(correction, metrics["correctionDependence"]["totalCorrectionDisplacement"], "correction displacement", tolerance)
     return manifest["scenarioName"], manifest["methodId"]
 

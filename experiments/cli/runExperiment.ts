@@ -55,6 +55,8 @@ export interface ExperimentManifest {
   timestepSeconds: number;
   horizonSeconds: number;
   correction: ExperimentScenario["simulation"]["correction"];
+  completion: ExperimentScenario["completion"];
+  navigation: ExperimentScenario["navigation"];
   scenarioSha256: string;
   methodConfigCanonicalSha256: string;
   methodConfigSourceSha256: string;
@@ -84,8 +86,10 @@ export interface ExperimentRunSummary {
   methodKey: string;
   totalSteps: number;
   simulatedDuration: number;
-  arrivedAgents: number;
-  arrivedFraction: number;
+  completedAgents: number;
+  completionFraction: number;
+  legacyFinalPointGoalArrivedAgents: number;
+  legacyFinalPointGoalArrivedFraction: number;
   nonFiniteValueOccurred: boolean;
   perAgentFinalState: AgentState[];
 }
@@ -152,15 +156,18 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
 
     const finalStates = engineResult.finalStates;
     const metrics = accumulator.finish(finalStates);
-    const arrivedAgents = finalStates.filter((agent) => agent.arrived).length;
+    const legacyFinalPointGoalArrivedAgents = finalStates.filter((agent) => agent.arrived).length;
     const summary: ExperimentRunSummary = {
       scenarioName: scenario.name,
       methodId: method.id,
       methodKey: identity.methodKey,
       totalSteps: engineResult.totalSteps,
       simulatedDuration: engineResult.totalSteps * scenario.simulation.dt,
-      arrivedAgents,
-      arrivedFraction: finalStates.length === 0 ? 0 : arrivedAgents / finalStates.length,
+      completedAgents: metrics.completion.completedAgents,
+      completionFraction: metrics.completion.successFraction,
+      legacyFinalPointGoalArrivedAgents,
+      legacyFinalPointGoalArrivedFraction:
+        finalStates.length === 0 ? 0 : legacyFinalPointGoalArrivedAgents / finalStates.length,
       nonFiniteValueOccurred: containsNonFinite(finalStates) || containsNonFinite(metrics),
       perAgentFinalState: finalStates,
     };
@@ -189,6 +196,8 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
       timestepSeconds: scenario.simulation.dt,
       horizonSeconds: scenario.simulation.horizonSeconds,
       correction: scenario.simulation.correction,
+      completion: scenario.completion,
+      navigation: scenario.navigation,
       scenarioSha256: sha256Bytes(scenarioBytes),
       methodConfigCanonicalSha256: identity.methodConfigCanonicalSha256,
       methodConfigSourceSha256: identity.methodConfigSourceSha256,

@@ -11,6 +11,7 @@ import { THIRD_PARTY_ROOT } from "../baselines/common/thirdParty";
 import { requireSafeInteger, requireStrictObject } from "../protocol/validation";
 import { forEachJsonLineSync } from "../protocol/jsonLines";
 import type { ExperimentScenario } from "../protocol/schema";
+import { resolveProtocolTarget } from "../protocol/completion";
 import {
   ENGINE_STEP_VERSION,
   nativeStepDiagnostics,
@@ -19,7 +20,7 @@ import {
   type EngineStepRecord,
 } from "./engineStep";
 
-export const NATIVE_ENGINE_STEP_VERSION = 1 as const;
+export const NATIVE_ENGINE_STEP_VERSION = 2 as const;
 /** Scaled tolerance covering the pinned RVO2 adapter's float32 round-trip. */
 export const NATIVE_POSITION_CONTINUITY_TOLERANCE_METERS = 2e-7;
 
@@ -28,6 +29,7 @@ interface NativeAgentStep {
   positionBefore: Vec2;
   velocityBefore: Vec2;
   proposedPosition: Vec2;
+  navigationTarget: Vec2;
   commandVelocity: Vec2;
   realizedVelocity: Vec2;
   arrived: boolean;
@@ -110,12 +112,20 @@ export function consumeNativeOutput(
         throw new Error(`External engine emitted unknown agent ${agent.id}`);
       }
       assertPositionContinuity(agent.positionBefore, expectedPosition, agent.id, index);
+      const definition = definitions.get(agent.id);
+      if (definition === undefined) throw new Error(`Missing definition for agent ${agent.id}`);
+      const expectedNavigationTarget = resolveProtocolTarget(scenario, {
+        ...definition,
+        position: agent.positionBefore,
+      });
+      assertNavigationTarget(agent.navigationTarget, expectedNavigationTarget, agent.id, index);
       return {
         id: agent.id,
         positionBefore: agent.positionBefore,
         velocityBefore: agent.velocityBefore,
         preCorrectionPosition: agent.proposedPosition,
         postCorrectionPosition: agent.proposedPosition,
+        navigationTarget: agent.navigationTarget,
         commandVelocity: agent.commandVelocity,
         realizedVelocity: agent.realizedVelocity,
         arrived: agent.arrived,
@@ -127,7 +137,7 @@ export function consumeNativeOutput(
       time: expectedTime,
       agents,
       diagnostics: nativeStepDiagnostics(scenario.agents, scenario.walls, agents),
-      engineMetadata: { [engineNamespace]: { nativeEngineStepVersion: 1 } },
+      engineMetadata: { [engineNamespace]: { nativeEngineStepVersion: NATIVE_ENGINE_STEP_VERSION } },
     });
     sink(record);
     finalStates = agents.map((agent) => {
@@ -166,6 +176,7 @@ function parseNativeStep(value: unknown): NativeStepRecord {
       "positionBefore",
       "velocityBefore",
       "proposedPosition",
+      "navigationTarget",
       "commandVelocity",
       "realizedVelocity",
       "arrived",
@@ -176,6 +187,7 @@ function parseNativeStep(value: unknown): NativeStepRecord {
       positionBefore: requireVec2(agent.positionBefore, `${path}.positionBefore`),
       velocityBefore: requireVec2(agent.velocityBefore, `${path}.velocityBefore`),
       proposedPosition: requireVec2(agent.proposedPosition, `${path}.proposedPosition`),
+      navigationTarget: requireVec2(agent.navigationTarget, `${path}.navigationTarget`),
       commandVelocity: requireVec2(agent.commandVelocity, `${path}.commandVelocity`),
       realizedVelocity: requireVec2(agent.realizedVelocity, `${path}.realizedVelocity`),
       arrived: agent.arrived,
@@ -194,6 +206,24 @@ function parseNativeStep(value: unknown): NativeStepRecord {
     time: requireFiniteNumber(root.time, "nativeStep.time"),
     agents,
   };
+}
+
+function assertNavigationTarget(
+  actual: Vec2,
+  expected: Vec2,
+  agentId: number,
+  stepIndex: number,
+): void {
+  const matches = actual.every((value, component) => {
+    const expectedValue = expected[component];
+    const scale = Math.max(1, Math.abs(value), Math.abs(expectedValue));
+    return Math.abs(value - expectedValue) <= NATIVE_POSITION_CONTINUITY_TOLERANCE_METERS * scale;
+  });
+  if (!matches) {
+    throw new Error(
+      `External engine navigation target mismatch for agent ${agentId} at step ${stepIndex}`,
+    );
+  }
 }
 
 function assertPositionContinuity(

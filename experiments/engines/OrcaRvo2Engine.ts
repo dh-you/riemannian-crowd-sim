@@ -8,6 +8,7 @@ import {
   type OrcaMethodConfig,
 } from "../protocol/methodConfig";
 import type { ExperimentScenario } from "../protocol/schema";
+import { protocolNavigationRunnerConfig } from "../protocol/completion";
 import { expandThickWalls } from "../baselines/common/wallGeometry";
 import { baselineProvenance, baselineRuntimePaths } from "./baselineProvenance";
 import type {
@@ -47,7 +48,7 @@ export class OrcaRvo2Engine implements ExperimentEngine {
     const temporaryDirectory = makeTemporaryDirectory(this.engineId, identity.methodKey);
     const inputPath = resolve(temporaryDirectory, "input.txt");
     const outputPath = resolve(temporaryDirectory, "output.jsonl");
-    writeFileSync(inputPath, serializeInput(scenario, typed), "utf8");
+    writeFileSync(inputPath, serializeOrcaInput(scenario, typed), "utf8");
     let succeeded = false;
     try {
       runExternalProcess({
@@ -69,10 +70,11 @@ export class OrcaRvo2Engine implements ExperimentEngine {
   }
 }
 
-function serializeInput(scenario: ExperimentScenario, method: OrcaMethodConfig): string {
+export function serializeOrcaInput(scenario: ExperimentScenario, method: OrcaMethodConfig): string {
   const polygons = expandThickWalls(scenario.walls);
+  const navigation = protocolNavigationRunnerConfig(scenario);
   const lines = [
-    "RVO2_ENGINE_INPUT_V1",
+    "RVO2_ENGINE_INPUT_V2",
     [
       scenario.simulation.dt,
       fixedStepCount(scenario),
@@ -86,6 +88,17 @@ function serializeInput(scenario: ExperimentScenario, method: OrcaMethodConfig):
       method.parameters.timeHorizon,
       method.parameters.timeHorizonObst,
     ].join(" "),
+    navigation.type === "point_goal"
+      ? "NAVIGATION POINT_GOAL"
+      : [
+          "NAVIGATION",
+          "WAYPOINT_THEN_POINT_GOAL",
+          navigation.waypoint[0],
+          navigation.waypoint[1],
+          navigation.switchLine.axis,
+          navigation.switchLine.threshold,
+          navigation.switchLine.direction,
+        ].join(" "),
   ];
   for (const agent of [...scenario.agents].sort((a, b) => a.id - b.id)) {
     lines.push([

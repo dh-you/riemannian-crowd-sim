@@ -65,7 +65,7 @@ describe("controller-independent experiment scenario schema", () => {
   });
 
   it.each([
-    ["unsupported version", (value: JsonObject) => (value.experimentScenarioVersion = 2)],
+    ["unsupported version", (value: JsonObject) => (value.experimentScenarioVersion = 3)],
     ["malformed vector", (value: JsonObject) => (agents(value)[0].position = [0])],
     ["unsafe ID", (value: JsonObject) => (agents(value)[0].id = Number.MAX_SAFE_INTEGER + 1)],
     ["duplicate agent ID", (value: JsonObject) => agents(value).push({ ...agents(value)[0] })],
@@ -74,6 +74,8 @@ describe("controller-independent experiment scenario schema", () => {
     ["nonpositive timestep", (value: JsonObject) => (simulation(value).dt = 0)],
     ["negative horizon", (value: JsonObject) => (simulation(value).horizonSeconds = -1)],
     ["invalid correction", (value: JsonObject) => (correction(value).iterations = -1)],
+    ["missing completion", (value: JsonObject) => delete value.completion],
+    ["invalid navigation", (value: JsonObject) => (value.navigation = { type: "private_waypoint" })],
     ["unknown physical field", (value: JsonObject) => (value.controller = {})],
     ["wrong units", (value: JsonObject) => ((value.metadata as JsonObject).units = { distance: "ft", time: "s" })],
   ])("rejects %s", (_label, mutate) => {

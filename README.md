@@ -72,7 +72,11 @@ npm run lean -- --phase runtime --jobs 1
 npm run lean -- --phase analyze
 ```
 
-The audit phase contains 32 assignments and packages a read-only viewer under `results/lean/audit/viewer/`. A human must inspect the trajectories and create a nonempty `results/lean/audit/review-approved.txt` before later phases will run. `npm run audit:viewer` rebuilds the viewer from existing lean audit outputs. The headline phase contains 360 assignments, the ablation phase 60, and the runtime phase 48 total assignments: 12 warmups and 36 measured runs.
+The active audit phase contains 28 assignments (20 paper-facing trajectories plus eight diagnostics) and packages a read-only viewer under `results/lean/audit/viewer/`. A human must inspect the trajectories and create a nonempty `results/lean/audit/review-approved.txt` before later phases will run. `npm run audit:viewer` rebuilds the viewer from existing lean audit outputs while excluding historical overtaking runs. The five-scenario headline phase contains 280 assignments, the ablation phase 60, and the runtime phase 48 total assignments: 12 warmups and 36 measured runs.
+
+The active paper-facing scenarios are exactly head-on, perpendicular crossing, circle antipodal, bidirectional corridor, and bottleneck. Head-on and crossing run for 30 seconds and use realized goal-disk entry. Circle retains individual antipodal point goals and uses a horizon no shorter than unobstructed ideal travel. Corridor navigation continues to the far goals at `x=+20` or `x=-20`, while paper completion is the correctly directed crossing of `x=+17` or `x=-17`. Bottleneck agents share waypoint `[1.5,0]` until strictly beyond `x=1`, then target lane-preserving goals `[10,initialY]`; completion is the positive crossing of `x=8`. Completion is independent of the legacy final point-goal arrival diagnostics. The exact interpolation and normalized-time definitions are in [docs/experiment-protocol.md](docs/experiment-protocol.md).
+
+The isolated seed-400 completion audit can be reproduced with `npm run protocol:audit`; it writes only beneath `results/protocol-audit/completion-v2-current/` and does not touch canonical lean results.
 
 The ablations are mechanically fixed to full, isotropic, no-closing-gate, and no-visibility-gate variants over head-on, crossing, and corridor scenarios. They reuse the same equations, smoothing, metrics, and output protocol as the lean runner.
 
@@ -80,7 +84,7 @@ The ablations are mechanically fixed to full, isotropic, no-closing-gate, and no
 
 The lean comparison fixes these configurations in `experiments/lean/study.json`:
 
-- Conditioned Riemannian metric: `conditioned_riemannian_metric_v1`, velocity time constant `0.04`, `alpha=20`, `sigma=1`, `lambdaR=20`, `lambdaT=1`.
+- Conditioned Riemannian metric: `conditioned_riemannian_metric_v1`, velocity time constant `0.04`, `alpha=20`, `sigma=1.5`, `lambdaR=20`, `lambdaT=1`.
 - Euclidean goal steering: `euclidean_goal_steering_v1`, velocity time constant `0.04`, with no free parameters.
 - ORCA/RVO2: `neighborDist=5`, `maxNeighbors=16`, `timeHorizon=5`, `timeHorizonObst=5`.
 - PySocialForce: `desiredFactor=1`, `relaxationTime=0.5`, `socialFactor=5.1`, `lambdaImportance=2`, `gamma=0.35`, `n=2`, `nPrime=3`, `obstacleFactor=10`, `obstacleSigma=0.2`, `obstacleThreshold=3`, `maxSpeedMultiplier=1.3`, `obstacleResolution=10`.

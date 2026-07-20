@@ -2,7 +2,7 @@ import { measureContacts } from "../../src/core/diagnostics";
 import { isFiniteVec2, norm, sub } from "../../src/core/math";
 import type { AgentState, StepDiagnostics, Vec2, WallSegment } from "../../src/core/types";
 
-export const ENGINE_STEP_VERSION = 1 as const;
+export const ENGINE_STEP_VERSION = 2 as const;
 
 export type CorrectionMode = "shared_projection" | "disabled" | "native_none";
 
@@ -12,6 +12,7 @@ export interface EngineAgentStep {
   velocityBefore: Vec2;
   preCorrectionPosition: Vec2;
   postCorrectionPosition: Vec2;
+  navigationTarget: Vec2;
   commandVelocity: Vec2;
   realizedVelocity: Vec2;
   arrived: boolean;
@@ -53,6 +54,7 @@ export function scientificDiagnosticToEngineStep(
   diagnostic: StepDiagnostics,
   afterStep: readonly AgentState[],
   correctionMode: CorrectionMode,
+  navigationTargets?: ReadonlyMap<number, Vec2>,
 ): EngineStepRecord {
   const after = new Map(afterStep.map((agent) => [agent.id, agent]));
   const perAgent = new Map(diagnostic.perAgent.map((agent) => [agent.id, agent]));
@@ -74,6 +76,7 @@ export function scientificDiagnosticToEngineStep(
           velocityBefore: agent.velocity,
           preCorrectionPosition: step.preCorrectionPosition,
           postCorrectionPosition: step.postCorrectionPosition,
+          navigationTarget: navigationTargets?.get(agent.id) ?? agent.goal,
           commandVelocity: step.targetVelocity,
           realizedVelocity: step.realizedVelocity,
           arrived: completed.arrived,
@@ -175,6 +178,7 @@ export function validateEngineStepRecord(value: EngineStepRecord): EngineStepRec
       "velocityBefore",
       "preCorrectionPosition",
       "postCorrectionPosition",
+      "navigationTarget",
       "commandVelocity",
       "realizedVelocity",
       "arrived",
@@ -189,6 +193,7 @@ export function validateEngineStepRecord(value: EngineStepRecord): EngineStepRec
       velocityBefore: agent.velocityBefore,
       preCorrectionPosition: agent.preCorrectionPosition,
       postCorrectionPosition: agent.postCorrectionPosition,
+      navigationTarget: agent.navigationTarget,
       commandVelocity: agent.commandVelocity,
       realizedVelocity: agent.realizedVelocity,
     })) {

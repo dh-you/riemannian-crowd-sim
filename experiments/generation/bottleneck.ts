@@ -43,7 +43,7 @@ export function generateBottleneckScenario(
     return makeAgent(
       id,
       [x, y],
-      [10, y * 0.12],
+      [10, y],
       speedWithHeterogeneity(random.nextFloat(), speedHeterogeneity),
     );
   });
@@ -60,5 +60,20 @@ export function generateBottleneckScenario(
     40,
     agents,
     walls,
+    {
+      completion: {
+        completionSpecVersion: 1,
+        rule: { type: "directional_line", axis: "x", threshold: 8, direction: "positive" },
+        idealCompletionDistances: agents.map((agent) => ({
+          agentId: agent.id,
+          idealCompletionDistance: Math.hypot(1.5 - agent.position[0], agent.position[1]) + 6.5,
+        })),
+      },
+      navigation: {
+        type: "waypoint_then_point_goal",
+        waypoint: [1.5, 0],
+        switchLine: { type: "directional_line", axis: "x", threshold: 1, direction: "positive" },
+      },
+    },
   );
 }

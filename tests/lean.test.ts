@@ -24,14 +24,21 @@ function stable(records: RunRecord[]): unknown { return records.map(({ runtimeSe
 describe("camera-ready lean harness", () => {
   it("builds the exact unique approved matrices", () => {
     const study = loadStudy();
-    expect(buildAssignments(study, "audit")).toHaveLength(32);
+    expect(buildAssignments(study, "audit")).toHaveLength(28);
     expect(buildBenchmarkAssignments(study)).toHaveLength(8);
-    expect(buildAssignments(study, "test")).toHaveLength(360);
+    expect(buildAssignments(study, "test")).toHaveLength(280);
     expect(buildAssignments(study, "ablation")).toHaveLength(60);
     const runtime = buildAssignments(study, "runtime");
     expect(runtime).toHaveLength(48);
     expect(runtime.filter((entry) => entry.warmup)).toHaveLength(12);
-    expect(new Set([...buildAssignments(study, "audit"), ...runtime].map(runKey)).size).toBe(80);
+    expect(new Set([...buildAssignments(study, "audit"), ...runtime].map(runKey)).size).toBe(76);
+    expect(study.audit.visual.scenarioTypes).toEqual([
+      "head-on", "crossing", "circle", "corridor", "bottleneck",
+    ]);
+    expect([
+      ...study.headline.pairwise.scenarioTypes,
+      ...study.headline.dense.scenarioTypes,
+    ]).toEqual(["head-on", "crossing", "circle", "corridor", "bottleneck"]);
   });
 
   it("rejects duplicate keys and changed resume identities", () => {

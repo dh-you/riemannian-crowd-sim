@@ -15,7 +15,10 @@ import { runRiemannianAblation } from "./ablations/RiemannianAblationEngine";
 import { identifyRiemannianAblationConfig, parseRiemannianAblationConfig } from "./ablations/config";
 import { assignmentIdentity, runKey, validateWorkerRecord, type Assignment, type RunRecord } from "./run";
 const METRIC_FIELDS = {
-  successFraction: null, normalizedTravelTime: null, pathRatio: null,
+  successFraction: null, legacyPointGoalSuccessFraction: null,
+  normalizedCompletionTime: null, pathRatio: null,
+  minimumPointGoalDistance: null, finalPointGoalDistance: null,
+  correctionEjectedGoalDiskEntries: null,
   preCorrectionOverlapExposure: null, maximumPhysicalPenetration: null,
   minimumPhysicalClearance: null, rmsAcceleration: null, correctionRatio: null,
   throughput: null, pairwiseAvoidanceOnsetRate: null,
@@ -96,13 +99,22 @@ export function executeAssignment(assignment: Assignment): RunRecord {
 
 function metricRecord(assignment: Assignment, metrics: RunMetrics, agentCount: number, artifactDirectory: string | null, runtimeSeconds: number): RunRecord {
   const pairwise = metrics.pairwise?.perAgent ?? [];
+  const pointGoalOutcomes = metrics.completion.perAgent;
   return {
     key: runKey(assignment), assignmentIdentity: assignmentIdentity(assignment), phase: assignment.phase,
     scenarioType: assignment.scenarioType, seed: assignment.seed, method: assignment.method,
     ablation: assignment.ablation ?? null, repetition: assignment.repetition ?? null, warmup: assignment.warmup ?? null,
     agentCount, status: "PASS", error: null,
     successFraction: metrics.completion.successFraction,
-    normalizedTravelTime: metrics.travelTime.meanNormalizedTravelTime,
+    legacyPointGoalSuccessFraction: metrics.completion.legacyPointGoalSuccessFraction,
+    normalizedCompletionTime: metrics.completionTime.meanNormalizedCompletionTime,
+    minimumPointGoalDistance: Math.min(
+      ...pointGoalOutcomes.map(({ minimumDistanceToPointGoal }) => minimumDistanceToPointGoal),
+    ),
+    finalPointGoalDistance: median(
+      pointGoalOutcomes.map(({ finalDistanceToPointGoal }) => finalDistanceToPointGoal),
+    ),
+    correctionEjectedGoalDiskEntries: metrics.completion.correctionEjectedGoalDiskEntries,
     pathRatio: metrics.pathEfficiency.meanPathEfficiency,
     preCorrectionOverlapExposure: metrics.separation.preCorrectionOverlapPairSecondsPerAgentSecond,
     maximumPhysicalPenetration: metrics.separation.maximumPreCorrectionAgentPenetration,
@@ -115,6 +127,15 @@ function metricRecord(assignment: Assignment, metrics: RunMetrics, agentCount: n
     correctionMode: metrics.identity.correctionMode, commandVelocityMeaning: metrics.identity.commandVelocityMeaning,
     artifactDirectory, runtimeSeconds,
   };
+}
+
+function median(values: readonly number[]): number | null {
+  if (values.length === 0) return null;
+  const ordered = [...values].sort((first, second) => first - second);
+  const middle = Math.floor(ordered.length / 2);
+  return ordered.length % 2 === 0
+    ? (ordered[middle - 1] + ordered[middle]) / 2
+    : ordered[middle];
 }
 
 function failureRecord(assignment: Assignment, error: unknown, runtimeSeconds: number): RunRecord {

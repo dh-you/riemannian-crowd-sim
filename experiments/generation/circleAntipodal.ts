@@ -22,6 +22,11 @@ export function generateCircleAntipodalScenario(
     const speed = exact ? 1.4 : speedWithHeterogeneity(random.nextFloat());
     return makeAgent(id, position, goal, speed);
   });
+  const idealTravelHorizon = Math.ceil(Math.max(...agents.map((agent) =>
+    Math.max(0, Math.hypot(
+      agent.goal[0] - agent.position[0],
+      agent.goal[1] - agent.position[1],
+    ) - 0.1) / agent.preferredSpeed)));
   return createScenario(
     {
       family: "circle_antipodal",
@@ -29,7 +34,7 @@ export function generateCircleAntipodalScenario(
       split,
       seed,
     },
-    30,
+    Math.max(30, idealTravelHorizon),
     agents,
   );
 }

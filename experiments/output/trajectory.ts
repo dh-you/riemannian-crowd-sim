@@ -69,6 +69,7 @@ export function engineStepToTrajectoryRecord(record: EngineStepRecord): Trajecto
       realizedVelocity: agent.realizedVelocity,
       targetVelocity: agent.commandVelocity,
       commandVelocity: agent.commandVelocity,
+      navigationTarget: agent.navigationTarget,
       arrived: agent.arrived,
     })),
     diagnostics: {

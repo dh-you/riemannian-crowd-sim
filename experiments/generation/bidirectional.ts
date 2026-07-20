@@ -43,10 +43,33 @@ export function generateBidirectionalScenario(
     { id: 0, start: [-18, -corridorHalfWidth], end: [18, -corridorHalfWidth], thickness: 0.1 },
     { id: 1, start: [-18, corridorHalfWidth], end: [18, corridorHalfWidth], thickness: 0.1 },
   ];
+  const completionRules = agents.map((agent) => {
+    const rightMoving = agent.goal[0] > agent.position[0];
+    return {
+      agentId: agent.id,
+      axis: "x" as const,
+      threshold: rightMoving ? 17 : -17,
+      direction: rightMoving ? "positive" as const : "negative" as const,
+    };
+  });
   return createScenario(
     { family: "bidirectional", variant: "corridor", split, seed },
     35,
     agents,
     walls,
+    {
+      completion: {
+        completionSpecVersion: 1,
+        rule: { type: "per_agent_directional_line", rules: completionRules },
+        idealCompletionDistances: completionRules.map((rule) => {
+          const agent = agents.find(({ id }) => id === rule.agentId);
+          if (agent === undefined) throw new Error(`Missing corridor agent ${rule.agentId}`);
+          return {
+            agentId: rule.agentId,
+            idealCompletionDistance: Math.abs(rule.threshold - agent.position[0]),
+          };
+        }),
+      },
+    },
   );
 }

@@ -1,7 +1,12 @@
 export interface PerAgentOutcomeMetrics {
   id: number;
-  firstArrivalTime: number | null;
-  normalizedTravelTime: number | null;
+  completionType: "goal_disk" | "directional_line";
+  idealCompletionDistance: number;
+  firstCompletionTime: number | null;
+  normalizedCompletionTime: number | null;
+  legacyFirstPointGoalArrivalTime: number | null;
+  minimumDistanceToPointGoal: number;
+  finalDistanceToPointGoal: number;
   pathEfficiency: number | null;
 }
 
@@ -64,14 +69,20 @@ export interface RunMetrics {
     simulatedDuration: number;
   };
   completion: {
-    agentsReachedGoal: number;
+    completionRuleType: "goal_disk" | "directional_line" | "per_agent_directional_line";
+    completedAgents: number;
     successFraction: number;
-    finalArrivedFraction: number;
+    legacyPointGoalCompletedAgents: number;
+    legacyPointGoalSuccessFraction: number;
+    legacyFinalPointGoalArrivedFraction: number;
+    preCorrectionGoalDiskEntries: number;
+    postCorrectionGoalDiskEntries: number;
+    correctionEjectedGoalDiskEntries: number;
     perAgent: PerAgentOutcomeMetrics[];
   };
-  travelTime: {
-    meanNormalizedTravelTime: number | null;
-    medianNormalizedTravelTime: number | null;
+  completionTime: {
+    meanNormalizedCompletionTime: number | null;
+    medianNormalizedCompletionTime: number | null;
   };
   pathEfficiency: {
     meanPathEfficiency: number | null;

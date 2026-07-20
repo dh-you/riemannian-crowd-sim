@@ -155,8 +155,8 @@ export function computeFirstAvoidanceOnsets(
       const definition = definitions.get(agent.id);
       if (definition === undefined) throw new Error(`Scenario is missing agent ${agent.id}`);
       const goalVector: Vec2 = [
-        definition.goal[0] - agent.positionBefore[0],
-        definition.goal[1] - agent.positionBefore[1],
+        agent.navigationTarget[0] - agent.positionBefore[0],
+        agent.navigationTarget[1] - agent.positionBefore[1],
       ];
       const commandMagnitude = magnitude(agent.commandVelocity);
       const goalMagnitude = magnitude(goalVector);
@@ -205,6 +205,7 @@ export function generateReviewIndex(options: ReviewIndexOptions = {}): ReviewInd
       throw new Error(`Scenario hash mismatch for ${scenarioPath}`);
     }
     const scenario = parseExperimentScenario(JSON.parse(scenarioSource) as unknown);
+    if (scenario.family === "pairwise" && scenario.variant === "overtaking") continue;
     if (scenario.name !== manifest.scenarioName) {
       throw new Error(`Scenario name mismatch in ${manifestPath}`);
     }

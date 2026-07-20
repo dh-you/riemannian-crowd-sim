@@ -39,7 +39,8 @@ export function generatePairwiseScenario(
       agents = separatingAgents(random);
       break;
   }
-  return createScenario({ family: "pairwise", variant, split, seed }, 15, agents);
+  const horizonSeconds = variant === "head_on" || variant === "crossing" ? 30 : 15;
+  return createScenario({ family: "pairwise", variant, split, seed }, horizonSeconds, agents);
 }
 
 function headOnAgents(random: DeterministicRandom): AgentState[] {

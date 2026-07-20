@@ -16,8 +16,16 @@ struct Agent {
   long long id;
   float radius;
   float preferredSpeed;
-  RVO::Vector2 goal;
+  RVO::Vector2 pointGoal;
   bool arrived;
+};
+
+struct Navigation {
+  bool waypointThenPointGoal;
+  RVO::Vector2 waypoint;
+  char axis;
+  float threshold;
+  bool positive;
 };
 
 struct Input {
@@ -28,6 +36,7 @@ struct Input {
   std::size_t maxNeighbors;
   float timeHorizon;
   float timeHorizonObst;
+  Navigation navigation;
   std::vector<Agent> agents;
   std::vector<RVO::Vector2> positions;
   std::vector<RVO::Vector2> velocities;
@@ -40,6 +49,17 @@ float length(const RVO::Vector2 &value) {
 
 bool finite(const RVO::Vector2 &value) {
   return std::isfinite(value.x()) && std::isfinite(value.y());
+}
+
+RVO::Vector2 protocolTarget(const Navigation &navigation,
+                            const RVO::Vector2 &position,
+                            const RVO::Vector2 &pointGoal) {
+  if (!navigation.waypointThenPointGoal) return pointGoal;
+  const float coordinate = navigation.axis == 'x' ? position.x() : position.y();
+  const bool switched = navigation.positive
+      ? coordinate > navigation.threshold
+      : coordinate < navigation.threshold;
+  return switched ? pointGoal : navigation.waypoint;
 }
 
 RVO::Vector2 segmentDiskIntersection(const RVO::Vector2 &start,
@@ -75,12 +95,34 @@ Input readInput(const std::string &path) {
   if (!stream) throw std::runtime_error("Cannot open ORCA input: " + path);
   std::string header;
   stream >> header;
-  if (header != "RVO2_ENGINE_INPUT_V1") throw std::runtime_error("Unsupported ORCA input protocol");
+  if (header != "RVO2_ENGINE_INPUT_V2") throw std::runtime_error("Unsupported ORCA input protocol");
   Input input;
   std::size_t agentCount = 0;
   std::size_t obstacleCount = 0;
   stream >> input.dt >> input.steps >> input.goalTolerance >> agentCount >> obstacleCount;
   stream >> input.neighborDist >> input.maxNeighbors >> input.timeHorizon >> input.timeHorizonObst;
+  std::string navigationMarker, navigationType;
+  stream >> navigationMarker >> navigationType;
+  if (navigationMarker != "NAVIGATION") throw std::runtime_error("Missing NAVIGATION record");
+  if (navigationType == "POINT_GOAL") {
+    input.navigation = Navigation{false, RVO::Vector2(0.0f, 0.0f), 'x', 0.0f, true};
+  } else if (navigationType == "WAYPOINT_THEN_POINT_GOAL") {
+    float waypointX, waypointY, threshold;
+    std::string axis, direction;
+    stream >> waypointX >> waypointY >> axis >> threshold >> direction;
+    if ((axis != "x" && axis != "y") ||
+        (direction != "positive" && direction != "negative")) {
+      throw std::runtime_error("Malformed navigation rule");
+    }
+    input.navigation = Navigation{
+        true,
+        RVO::Vector2(waypointX, waypointY),
+        axis[0],
+        threshold,
+        direction == "positive"};
+  } else {
+    throw std::runtime_error("Unsupported navigation rule");
+  }
   for (std::size_t index = 0; index < agentCount; ++index) {
     std::string marker;
     long long id;
@@ -135,23 +177,32 @@ void run(const Input &input, const std::string &outputPath) {
   for (std::size_t step = 0; step < input.steps; ++step) {
     std::vector<RVO::Vector2> beforePosition;
     std::vector<RVO::Vector2> beforeVelocity;
+    std::vector<RVO::Vector2> navigationTargets;
     for (std::size_t index = 0; index < agents.size(); ++index) {
       const RVO::Vector2 position = simulator.getAgentPosition(index);
       beforePosition.push_back(position);
       beforeVelocity.push_back(simulator.getAgentVelocity(index));
-      const RVO::Vector2 toGoal = agents[index].goal - position;
-      if (!agents[index].arrived && length(toGoal) <= input.goalTolerance) agents[index].arrived = true;
+      const RVO::Vector2 navigationTarget = protocolTarget(
+          input.navigation, position, agents[index].pointGoal);
+      navigationTargets.push_back(navigationTarget);
+      const RVO::Vector2 toPointGoal = agents[index].pointGoal - position;
+      if (!agents[index].arrived && length(toPointGoal) <= input.goalTolerance) agents[index].arrived = true;
       if (agents[index].arrived) {
         simulator.setAgentMaxSpeed(index, 0.0f);
         simulator.setAgentVelocity(index, RVO::Vector2(0.0f, 0.0f));
         simulator.setAgentPrefVelocity(index, RVO::Vector2(0.0f, 0.0f));
       } else {
         simulator.setAgentMaxSpeed(index, agents[index].preferredSpeed);
-        simulator.setAgentPrefVelocity(index, agents[index].preferredSpeed * toGoal / length(toGoal));
+        const RVO::Vector2 toTarget = navigationTarget - position;
+        simulator.setAgentPrefVelocity(
+            index,
+            length(toTarget) == 0.0f
+                ? RVO::Vector2(0.0f, 0.0f)
+                : agents[index].preferredSpeed * toTarget / length(toTarget));
       }
     }
     simulator.doStep();
-    output << "{\"nativeEngineStepVersion\":1,\"stepIndex\":" << step
+    output << "{\"nativeEngineStepVersion\":2,\"stepIndex\":" << step
            << ",\"time\":" << (step + 1) * input.dt << ",\"agents\":[";
     for (std::size_t index = 0; index < agents.size(); ++index) {
       const RVO::Vector2 command = simulator.getAgentVelocity(index);
@@ -160,7 +211,7 @@ void run(const Input &input, const std::string &outputPath) {
       if (!agents[index].arrived) {
         bool hit = false;
         const RVO::Vector2 intersection = segmentDiskIntersection(
-            beforePosition[index], proposed, agents[index].goal, input.goalTolerance, hit);
+            beforePosition[index], proposed, agents[index].pointGoal, input.goalTolerance, hit);
         if (hit) {
           finalPosition = intersection;
           agents[index].arrived = true;
@@ -181,6 +232,8 @@ void run(const Input &input, const std::string &outputPath) {
       writeVector(output, beforeVelocity[index]);
       output << ",\"proposedPosition\":";
       writeVector(output, finalPosition);
+      output << ",\"navigationTarget\":";
+      writeVector(output, navigationTargets[index]);
       output << ",\"commandVelocity\":";
       writeVector(output, command);
       output << ",\"realizedVelocity\":";

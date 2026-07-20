@@ -14,7 +14,7 @@ import {
   expandSuiteDefinition,
   parseSuiteDefinition,
 } from "../../experiments/generation/suite";
-import { serializeExperimentScenario } from "../../experiments/protocol/schema";
+import { parseExperimentScenario, serializeExperimentScenario } from "../../experiments/protocol/schema";
 
 const representativeRequests = [
   { family: "pairwise", variant: "head_on", split: "validation", seed: 0 },
@@ -223,9 +223,15 @@ describe("deterministic scenario families", () => {
     [representativeRequests[1], "validation/circle_antipodal/perturbed/seed-0.json"],
     [representativeRequests[2], "validation/bidirectional/corridor/seed-0.json"],
     [representativeRequests[3], "validation/bottleneck/central_opening/seed-0.json"],
-  ] as const)("matches committed golden fixture %#", (request, fixturePath) => {
+  ] as const)("keeps legacy committed fixture %# readable", (request, fixturePath) => {
     const expected = readFileSync(resolve("experiments/fixtures/protocol-v1", fixturePath), "utf8");
-    expect(serializeExperimentScenario(generateExperimentScenario(request))).toBe(expected);
+    const legacy = parseExperimentScenario(JSON.parse(expected) as unknown);
+    const current = generateExperimentScenario(request);
+    expect([legacy.family, legacy.variant, legacy.seed]).toEqual([
+      current.family, current.variant, current.seed,
+    ]);
+    expect(legacy.completion.rule.type).toBe("goal_disk");
+    expect(legacy.navigation.type).toBe("point_goal");
   });
 
   it("matches the committed exact symmetric diagnostic fixture", () => {
@@ -239,6 +245,10 @@ describe("deterministic scenario families", () => {
       resolve("experiments/fixtures/protocol-v1/diagnostic/pairwise/exact_symmetric_diagnostic/exact.json"),
       "utf8",
     );
-    expect(serializeExperimentScenario(generateExperimentScenario(request))).toBe(expected);
+    const legacy = parseExperimentScenario(JSON.parse(expected) as unknown);
+    const current = generateExperimentScenario(request);
+    expect([legacy.family, legacy.variant, legacy.seed]).toEqual([
+      current.family, current.variant, current.seed,
+    ]);
   });
 });

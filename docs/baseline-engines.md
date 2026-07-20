@@ -16,7 +16,7 @@ ExperimentEngine
   |-- OrcaRvo2Engine
   `-- PySocialForceEngine
         |
-EngineStepRecord v1
+EngineStepRecord v2
         |
 RunMetricsAccumulator
 ```
@@ -68,12 +68,13 @@ experiments/third_party/venv/
 experiments/tmp/
 ```
 
-## Common engine-step version 1
+## Common engine-step version 2
 
 `EngineStepRecord` contains a zero-based step index, post-step physical time, ID-sorted agents, and physical diagnostics. Each agent exposes:
 
 - position and realized velocity before the step;
 - pre- and post-correction position;
+- the shared current `navigationTarget` used for that step;
 - native `commandVelocity`;
 - realized velocity from final displacement divided by `dt`;
 - post-step arrival state.
@@ -103,7 +104,7 @@ Its correction mode is `shared_projection` when scenario correction is enabled a
 - `timeHorizon` -> agent time horizon;
 - `timeHorizonObst` -> obstacle time horizon.
 
-The experiment timestep is RVO2's timestep. Agents are added in ID order with scenario position, initial velocity, radius, and preferred speed. Maximum speed equals preferred speed. Before each native step, preferred velocity points directly at the current goal or is zero for a completed agent. There is no smoothing, random perturbation, or left/right bias.
+The experiment timestep is RVO2's timestep. Agents are added in ID order with scenario position, initial velocity, radius, and preferred speed. Maximum speed equals preferred speed. Before each native step, preferred velocity points directly at the shared protocol target or is zero for an agent that has reached its final point goal. Point-goal arrival remains separate from directional paper completion. There is no smoothing, random perturbation, or left/right bias.
 
 Finite thick wall segments are sorted by wall ID and expanded by the shared utility into closed counterclockwise rectangles using half the thickness on each side. Each rectangle is added once and all RVO2 obstacles are processed before stepping. Agent radius remains unchanged, so wall thickness is not double-counted.
 
@@ -138,23 +139,23 @@ The strict config maps adapter names to actual upstream keys:
 | `maxSpeedMultiplier` | root `max_speed_multiplier` |
 | `obstacleResolution` | root `resolution` |
 
-The pinned `PedState` reads `step_width`, `agent_radius`, and `max_speed_multiplier` at the TOML root, not under `[scene]`; the adapter follows that exact implementation. `step_width` is scenario `dt`. Initial position/velocity/goal are mapped directly. The per-agent preferred-speed array supplies upstream initial speeds, and its maximum-speed array is `preferredSpeed * maxSpeedMultiplier`.
+The pinned `PedState` reads `step_width`, `agent_radius`, and `max_speed_multiplier` at the TOML root, not under `[scene]`; the adapter follows that exact implementation. `step_width` is scenario `dt`. Initial position, velocity, final point goal, and the shared current navigation target are mapped explicitly. The per-agent preferred-speed array supplies upstream initial speeds, and its maximum-speed array is `preferredSpeed * maxSpeedMultiplier`.
 
 The upstream implementation has one scalar `agent_radius`. The adapter maps the scenario radius exactly only when all radii are equal and rejects heterogeneous-radius scenarios clearly. It never silently discards a radius.
 
 Expanded wall rectangle edges are passed to upstream `EnvState` as finite line segments. PySocialForce performs its native force and `PedState` integration once per scenario timestep. There is no Scientific Core smoothing, ORCA constraint, or positional projection. `correctionMode = "native_none"`; native contacts remain visible.
 
-When an agent has already entered the experiment goal disk, the wrapper zeros its native velocity and temporarily sets its PySocialForce goal to its current position during force evaluation. This removes `DesiredForce` from the recorded post-arrival native command instead of merely resetting position afterward. The original goal is restored after the native step for provenance and state clarity.
+When an agent has already entered its final point-goal disk, the wrapper zeros its native velocity and temporarily sets its PySocialForce goal to its current position during force evaluation. This removes `DesiredForce` from the recorded post-arrival native command instead of merely resetting position afterward. Otherwise its upstream goal is the shared protocol target for that step. The final point goal remains separately available for arrival and provenance.
 
 PySocialForce is an implementation baseline, not evidence that provisional defaults are calibrated to human motion or that the resulting trajectories are realistic.
 
-## Common goal-region wrapper
+## Point-goal wrapper and paper completion
 
-All methods use the physical arrival definition `distance(goal, position) <= goalTolerance`.
+All methods retain the physical final-point arrival definition `distance(goal, position) <= goalTolerance`. This is the meaning of `AgentState.arrived` and native `arrived`; it is not the paper-facing completion source for directional-line scenarios.
 
 External engines give no further goal drive to an agent that starts inside the disk. When a proposed segment first enters the closed disk, the runner uses the first analytic segment-disk intersection, truncates position there, and derives realized velocity from actual displacement. A completed external agent is held stationary thereafter. External engines have no projection layer that could move it back out; this permanent deactivation differs deliberately from Scientific Core's post-correction arrival recomputation.
 
-Pre-arrival native commands are not changed except for goal-entry truncation.
+Pre-arrival native commands are not changed except for goal-entry truncation and the shared scenario-defined navigation target. Paper completion is evaluated separately from the realized previous-committed to post-correction segment and never deactivates an agent.
 
 Pairwise avoidance onset is evaluated only while an agent has not previously arrived. A command produced after first arrival cannot create a new anticipation event.
 
@@ -162,7 +163,7 @@ Pairwise avoidance onset is evaluated only while an agent has not previously arr
 
 ORCA and PySocialForce finish writing their native JSONL before Node consumes it, but ingestion is bounded: a synchronous 64 KiB chunk reader retains only one native step record plus the fixed buffer. The common resume validator uses the same bounded reader for finalized trajectories. Neither path loads or splits a complete trajectory file in memory.
 
-Native agent order is protocol data, not repairable formatting. Every step must emit unique IDs in ascending order, exactly matching the scenario IDs. Step zero `positionBefore` must match the scenario start, and every later `positionBefore` must match that agent's previous final position within a scaled tolerance of `2e-7 * max(1 m, coordinate magnitude)`. This covers the pinned RVO2 adapter's float32 round-trip while remaining far below a physical timestep displacement. Count, ID-set, order, time, step-index, and position-continuity violations fail the run; no sorting is performed before validation.
+Native agent order is protocol data, not repairable formatting. Every step must emit unique IDs in ascending order, exactly matching the scenario IDs. Step zero `positionBefore` must match the scenario start, and every later `positionBefore` must match that agent's previous final position within a scaled tolerance of `2e-7 * max(1 m, coordinate magnitude)`. The emitted navigation target must match the shared resolver within the same tolerance on every step. This covers the pinned RVO2 adapter's float32 round-trip while remaining far below a physical timestep displacement. Count, ID-set, order, time, step-index, position-continuity, and target violations fail the run; no sorting or repair is performed before validation.
 
 ## Identity, manifests, batch, and CSV
 
@@ -176,7 +177,7 @@ Manifests separately record canonical and source-byte hashes. Formatting and lin
 
 External runs fail before simulation unless lock, build manifest, runner, adapter, and upstream provenance agree. Manifests record engine ID/version, correction mode, command meaning, identity version/hashes, lock hash, upstream project/repository/commit/license, runner path/hash, build-manifest hash, and implementation limitations.
 
-External adapter version 2 identifies the bounded-reader, continuity, and post-arrival hardening. Batch manifest version 4 uses the canonical key in output paths and records the build-manifest hash per run. Resume verifies scenario hash, canonical method identity, engine/adapter identity, third-party lock, upstream commit, runner hash, build-manifest hash, and repository Git SHA. This catches rebuilt Python environments or native packages even when runner source is unchanged. `--allow-cross-commit-resume` relaxes only repository Git SHA. Aggregation remains compatible with existing version-3 batch manifests. External stderr excerpts are recorded as batch failures.
+External adapter version 3 identifies shared protocol-target support in addition to the bounded-reader, continuity, and post-arrival hardening. Batch manifest version 4 uses the canonical key in output paths and records the build-manifest hash per run. Resume verifies scenario hash, canonical method identity, engine/adapter identity, third-party lock, upstream commit, runner hash, build-manifest hash, and repository Git SHA. This catches rebuilt Python environments or native packages even when runner source is unchanged. `--allow-cross-commit-resume` relaxes only repository Git SHA. Aggregation remains compatible with existing version-3 batch manifests. External stderr excerpts are recorded as batch failures.
 
 Aggregation exposes common engine/provenance columns, nullable velocity smoothing, Riemannian parameters, ORCA parameters, actual enabled SFM parameters, separate raw/corrected safety, pairwise pre/post separation, completion, efficiency, correction dependence, smoothness, throughput, onset, and TTC. Inapplicable fields are empty CSV cells.
 

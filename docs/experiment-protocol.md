@@ -6,7 +6,7 @@ Stages B and C separate five concerns that must remain independently auditable:
 
 1. An experiment scenario describes only the shared physical problem: agents, finite walls, units, fixed timestep, horizon, goal tolerance, and correction settings.
 2. A method configuration selects an engine and its strictly validated native parameters.
-3. `ScientificCoreEngine` wraps the two `MotionController` implementations without changing `SimulatorCore`; ORCA and PySocialForce use separate external engine adapters that preserve native dynamics.
+3. `ScientificCoreEngine` wraps the two `MotionController` implementations and supplies the shared protocol target to `SimulatorCore`; ORCA and PySocialForce use separate external engine adapters that preserve native dynamics.
 4. Every engine emits the versioned common `EngineStepRecord` physical contract.
 5. `RunMetricsAccumulator` consumes every completed engine step online, independently of trajectory recording frequency.
 
@@ -30,10 +30,10 @@ The Conditioned Riemannian implementation retains the Stage A equations and nume
 For Goal+Projection, an agent outside the goal tolerance receives
 
 \[
-v_i^\star=s_i\frac{q_i-p_i}{\lVert q_i-p_i\rVert},
+v_i^\star=s_i\frac{q_i^{\mathrm{nav}}-p_i}{\lVert q_i^{\mathrm{nav}}-p_i\rVert},
 \]
 
-and an agent inside receives zero. It ignores neighbors, has interaction radius zero, and has no interaction parameters or lateral bias. “Projection” refers only to the optional shared positional correction layer; correction is not part of this controller.
+where (q_i^{\mathrm{nav}}) is the shared current protocol target. An agent inside its final point-goal disk receives zero. It ignores neighbors, has interaction radius zero, and has no interaction parameters or lateral bias. “Projection” refers only to the optional shared positional correction layer; correction is not part of this controller.
 
 The committed configs in `experiments/methods/` are provisional infrastructure defaults. They are not tuned or selected paper parameters.
 
@@ -45,17 +45,25 @@ methodKey = <method-id>--<first-12-hex-characters-of-canonical-SHA-256>
 
 Method identity version 2 parses and strictly validates the source, reconstructs a documented field order, sorts parameter keys lexicographically, serializes compact JSON with one trailing LF, and hashes those canonical UTF-8 bytes. Semantically identical whitespace, line endings, and parameter-key ordering therefore have the same key, while a value change does not. Manifests retain both `methodConfigCanonicalSha256` and the provenance-only `methodConfigSourceSha256`. Output directories, metrics, batch identity, and resume use the canonical hash. The aggregate CSV exposes applicable Scientific Core, ORCA, and Social Force parameters; unavailable values are empty fields.
 
-## Experiment scenario version 1
+## Experiment scenario version 2
 
-An `experimentScenarioVersion: 1` document contains:
+An `experimentScenarioVersion: 2` document contains:
 
 - `name`, `family`, `variant`, `split`, and an integer `seed`;
 - `simulation.dt`, `horizonSeconds`, `goalTolerance`, and correction configuration;
 - agents with unique safe-integer IDs, positive radius and preferred speed, and finite 2D position, velocity, and goal;
 - finite, nondegenerate wall segments with unique safe-integer IDs and nonnegative thickness;
+- a strictly validated completion specification and one ideal completion distance for every agent;
+- a shared protocol-navigation specification used by every method;
 - explicit distance unit `m` and time unit `s`.
 
-It contains no controller parameters, smoothing time constant, or method label. Parsing is strict: unknown fields, unsupported versions, non-finite values, malformed vectors, invalid IDs, duplicate IDs, invalid physical quantities, and degenerate walls are rejected. No malformed value receives a default.
+It contains no controller parameters, smoothing time constant, or method label. Parsing is strict: unknown fields, unsupported versions, non-finite values, malformed vectors, invalid IDs, duplicate or missing per-agent rules, invalid physical quantities, and degenerate walls are rejected. Historical version-1 fixtures remain readable and are interpreted as point-goal navigation with goal-disk completion; generated study scenarios use version 2.
+
+Completion is one of `goal_disk`, one shared `directional_line`, or `per_agent_directional_line`. A directional line records an axis (`x` or `y`), finite threshold, and positive or negative crossing direction. Completion is irreversible and is evaluated on the realized segment from the previous committed position to the current post-correction position. Goal-disk entry uses the first analytic segment-disk intersection. A serialized endpoint no farther outside the boundary than the common scaled position tolerance, (2\times10^{-7}\max(1\ \mathrm m,|p|,|q|,\epsilon_q)), is treated as the analytic boundary endpoint; this accommodates the pinned float32 ORCA representation without using `arrived`. A line requires a strict crossing from the incomplete side to the completed side in the specified direction; touching or a wrong-direction crossing does not count and receives no tolerance expansion. The event time is linearly interpolated within the timestep.
+
+`AgentState.arrived` retains its original point-goal meaning and controller stopping behavior. Paper-facing completion is tracked independently. The protocol also records `legacyFirstPointGoalArrivalTime`, minimum and final point-goal distance, pre- and post-correction point-goal entries, and entries for which correction moved the endpoint back outside the point-goal disk.
+
+The shared navigation resolver returns the assigned point goal except for the bottleneck. Before an agent is strictly beyond `x=1`, every method targets the free-space waypoint `[1.5,0]`; after that it targets the agent's individual final goal `[10, initialY]`. The waypoint, switch rule, and current target are carried through the common protocol, and native output is rejected if its reported target differs from the shared resolver.
 
 ## Deterministic generation
 
@@ -69,10 +77,10 @@ Defaults are metric-scale navigation fixtures, not human calibration: radius 0.3
 
 ### Scenario families
 
-- Pairwise: seeded `head_on`, `crossing`, `overtaking`, and `separating` encounters. The separate `exact_symmetric_diagnostic` exposes the controller's left/right symmetry limitation and is excluded from statistical splits.
-- Circle antipodal: near-even circular placement with antipodal goals and small angular/speed perturbations. Validation uses 50 agents and test uses 100.
-- Bidirectional flow: two equal counter-moving populations in a finite-wall corridor. Validation uses 120 agents and test uses 240; goals lie beyond the opposite interaction boundary.
-- Bottleneck: one population approaches a central finite-wall opening. Opening width, initial spacing (density), spawn jitter, and speed heterogeneity are generator parameters. Defaults produce 112 validation agents and 224 test agents with goals beyond the exit.
+- Pairwise: the active paper study uses seeded `head_on` and perpendicular `crossing` encounters with 30-second horizons. Historical `overtaking` and `separating` generators remain available. The separate `exact_symmetric_diagnostic` exposes the controller's left/right symmetry limitation and is excluded from statistical splits.
+- Circle antipodal: near-even circular placement with antipodal goals and small angular/speed perturbations. Validation uses 50 agents and test uses 100. Its horizon is at least 30 seconds and is extended deterministically when the longest unobstructed ideal travel time is greater.
+- Bidirectional flow: two equal counter-moving populations in a finite-wall corridor. Assigned navigation goals remain at `x=+20` and `x=-20`; paper completion is the first positive crossing of `x=+17` for right-moving agents or negative crossing of `x=-17` for left-moving agents. Completed agents remain active toward their far goals.
+- Bottleneck: one population approaches the central 2.4 m opening in a closed six-wall chamber. Every agent first targets `[1.5,0]`, switches to its lane-preserving final goal `[10, initialY]` beyond `x=1`, and completes on the first positive crossing of `x=8`.
 
 ### Seed split
 
@@ -84,20 +92,20 @@ Committed fixtures under `experiments/fixtures/protocol-v1/` include the exact d
 
 Metrics consume every common engine step, even when `trajectory.jsonl` is subsampled.
 
-First arrival is the first completed physical step for which `arrived` is true. Scientific Core arrival remains recomputed after its optional correction; native external engines permanently deactivate an agent after the shared analytic goal-entry wrapper first reaches the goal disk. Success is the fraction that arrived at least once, while final-arrived fraction describes only the last state.
+`firstCompletionTime` is the interpolated first realized-trajectory completion event. Success is the fraction of agents with such an event, and throughput is completed agents divided by simulated seconds. These metrics do not use `AgentState.arrived` as their source.
 
-For successful agent \(i\), normalized travel time and path ratio are
+For completed agent \(i\), normalized completion time is
 
 \[
-T_i^{\mathrm{norm}}=\frac{T_i^{\mathrm{arrival}}}{\lVert q_i-p_i^0\rVert/s_i},
-\qquad
-E_i^{\mathrm{path}}=\frac{L_i^{\mathrm{realized}}}{\lVert q_i-p_i^0\rVert}.
+T_i^{\mathrm{norm}}=\frac{T_i^{\mathrm{completion}}}{D_i^{\mathrm{ideal}}/s_i}.
 \]
 
-Realized path length stops at first arrival and is accumulated from each emitted physical step:
+For goal-disk scenarios, \(D_i^{\mathrm{ideal}}=\max(0,\lVert q_i-p_i^0\rVert-\epsilon_q)\). For corridor agents it is the absolute initial x-distance to the assigned exit line. For bottleneck agents it is the initial Euclidean distance to `[1.5,0]` plus `8-1.5=6.5` m. An agent that does not complete has a null normalized completion time.
+
+The legacy path-efficiency diagnostic remains point-goal based and is not silently redefined by directional completion. Its realized path length stops at the first point-goal entry and is accumulated from each emitted physical step:
 
 \[
-L_i^{\mathrm{realized}}=\sum_{k\leq k_i^{\mathrm{first\ arrival}}}
+L_i^{\mathrm{realized}}=\sum_{k\leq k_i^{\mathrm{first\ point\ goal\ entry}}}
 \left\lVert p_{i,\mathrm{post}}^{(k)}-p_{i,\mathrm{before}}^{(k)}\right\rVert.
 \]
 
@@ -111,9 +119,9 @@ Correction metrics sum intended, agent-correction, wall-correction, and total-co
 D_{\mathrm{correction}}/(D_{\mathrm{intended}}+10^{-12}\ \mathrm m).
 \]
 
-Smoothness uses realized velocity and physical timestep. The initial scenario velocity precedes the first acceleration sample. Each active agent-step contributes one squared vector magnitude; RMS acceleration is the square root of the sum divided by the number of acceleration vector samples. Jerk is aggregated identically over consecutive acceleration samples. An agent contributes no later samples after first arrival. A missing denominator yields `null`.
+Smoothness uses realized velocity and physical timestep. The initial scenario velocity precedes the first acceleration sample. Each active agent-step contributes one squared vector magnitude; RMS acceleration is the square root of the sum divided by the number of acceleration vector samples. Jerk is aggregated identically over consecutive acceleration samples. To preserve the established diagnostic, an agent contributes no later samples after its first point-goal entry. A missing denominator yields `null`.
 
-Throughput is first arrivals divided by simulated seconds; it is `null` at zero duration.
+Throughput is paper-facing completions divided by simulated seconds; it is `null` at zero duration.
 
 ### Pairwise anticipation
 

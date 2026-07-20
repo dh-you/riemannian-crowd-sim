@@ -38,14 +38,20 @@ describe("online common metrics", () => {
     accumulator.observeStep([initial], diagnostic, [after]);
     const metrics = accumulator.finish([after]);
 
-    expect(metrics.completion.agentsReachedGoal).toBe(1);
-    expect(metrics.completion.perAgent[0]).toEqual({
+    expect(metrics.completion.completedAgents).toBe(1);
+    const outcome = metrics.completion.perAgent[0];
+    expect(outcome).toMatchObject({
       id: 0,
-      firstArrivalTime: 1,
-      normalizedTravelTime: 1,
+      completionType: "goal_disk",
+      idealCompletionDistance: 0.99,
+      minimumDistanceToPointGoal: 0,
+      finalDistanceToPointGoal: 0,
       pathEfficiency: 1,
     });
-    expect(metrics.travelTime.meanNormalizedTravelTime).toBe(1);
+    expect(outcome.firstCompletionTime).toBeCloseTo(0.99, 14);
+    expect(outcome.normalizedCompletionTime).toBeCloseTo(1, 14);
+    expect(outcome.legacyFirstPointGoalArrivalTime).toBeCloseTo(0.99, 14);
+    expect(metrics.completionTime.meanNormalizedCompletionTime).toBeCloseTo(1, 14);
     expect(metrics.pathEfficiency.meanPathEfficiency).toBe(1);
     expect(metrics.separation.totalPreCorrectionOverlapPairSeconds).toBe(2);
     expect(metrics.separation.totalPostCorrectionOverlapPairSeconds).toBe(1);
@@ -79,7 +85,7 @@ describe("online common metrics", () => {
     expect(metrics.smoothness.rmsAcceleration).toBeCloseTo(Math.sqrt(2.5), 15);
     expect(metrics.smoothness.rmsJerk).toBe(1);
     expect(metrics.completion.successFraction).toBe(0);
-    expect(metrics.travelTime.meanNormalizedTravelTime).toBeNull();
+    expect(metrics.completionTime.meanNormalizedCompletionTime).toBeNull();
     expect(metrics.pathEfficiency.meanPathEfficiency).toBeNull();
   });
 
@@ -94,8 +100,8 @@ describe("online common metrics", () => {
     accumulator.observeStep([initial], stepDiagnostic(0, 1, initial, arrived, [1, 0]), [arrived]);
     accumulator.observeStep([arrived], stepDiagnostic(1, 2, arrived, later, [100, 0]), [later]);
     const metrics = accumulator.finish([later]);
-    expect(metrics.completion.perAgent[0].firstArrivalTime).toBe(1);
-    expect(metrics.completion.finalArrivedFraction).toBe(0);
+    expect(metrics.completion.perAgent[0].legacyFirstPointGoalArrivalTime).toBeCloseTo(0.99, 14);
+    expect(metrics.completion.legacyFinalPointGoalArrivedFraction).toBe(0);
     expect(metrics.smoothness.accelerationSampleCount).toBe(1);
   });
 
@@ -110,13 +116,13 @@ describe("online common metrics", () => {
     expect(metrics.smoothness.rmsAcceleration).toBeNull();
     expect(metrics.smoothness.rmsJerk).toBeNull();
     expect(metrics.separation.preCorrectionOverlapPairSecondsPerAgentSecond).toBeNull();
-    expect(metrics.completion.perAgent[0].firstArrivalTime).toBeNull();
+    expect(metrics.completion.perAgent[0].firstCompletionTime).toBeNull();
     expect(JSON.stringify(metrics)).not.toMatch(/NaN|Infinity/u);
   });
 
   it("counts a stationary precision-mapped native step as exactly zero realized path", () => {
-    const initial = agent(0, [0.02, 0], [0, 0], [0, 0], false);
-    const mappedPosition: Vec2 = [0.0199999996, 0];
+    const initial = agent(0, [0.002, 0], [0, 0], [0, 0], false);
+    const mappedPosition: Vec2 = [0.00199999996, 0];
     const final = agent(0, mappedPosition, [0, 0], [0, 0], true);
     const accumulator = new RunMetricsAccumulator(
       scenarioOf([initial], "free_space", 1),
@@ -127,7 +133,7 @@ describe("online common metrics", () => {
 
     expect(metrics.completion.perAgent[0].pathEfficiency).toBe(0);
     expect(metrics.pathEfficiency.meanPathEfficiency).toBe(0);
-    expect(metrics.smoothness.rmsAcceleration).toBe(0);
+    expect(metrics.smoothness.rmsAcceleration).toBeNull();
   });
 
   it("counts real native motion independently of scenario-to-engine representation mapping", () => {
@@ -195,7 +201,7 @@ describe("pairwise anticipation geometry and metrics", () => {
   });
 
   it("does not evaluate a new avoidance onset after an agent's first arrival", () => {
-    const first = agent(0, [-2, 0], [1, 0], [2, 0], false);
+    const first = agent(0, [-2, 0], [1, 0], [-2, 0], true);
     const second = agent(1, [2, 0], [-1, 0], [-2, 0], false);
     const arrivedFirst = { ...first, arrived: true };
     const accumulator = new RunMetricsAccumulator(
@@ -241,7 +247,7 @@ describe("pairwise anticipation geometry and metrics", () => {
 
 function scenarioOf(agents: AgentState[], family: string, dt: number): ExperimentScenario {
   return {
-    experimentScenarioVersion: 1,
+    experimentScenarioVersion: 2,
     name: "analytical",
     family,
     variant: "fixture",
@@ -255,6 +261,18 @@ function scenarioOf(agents: AgentState[], family: string, dt: number): Experimen
     },
     agents,
     walls: [],
+    completion: {
+      completionSpecVersion: 1,
+      rule: { type: "goal_disk" },
+      idealCompletionDistances: agents.map((entry) => ({
+        agentId: entry.id,
+        idealCompletionDistance: Math.max(
+          0,
+          Math.hypot(entry.goal[0] - entry.position[0], entry.goal[1] - entry.position[1]) - 0.01,
+        ),
+      })),
+    },
+    navigation: { type: "point_goal" },
     metadata: { units: { distance: "m", time: "s" } },
   };
 }
@@ -400,7 +418,7 @@ function engineStep(
   arrived: boolean,
 ): EngineStepRecord {
   return {
-    engineStepVersion: 1,
+    engineStepVersion: 2,
     stepIndex: 0,
     time: 1,
     agents: [{
@@ -409,6 +427,7 @@ function engineStep(
       velocityBefore: [0, 0],
       preCorrectionPosition: positionAfter,
       postCorrectionPosition: positionAfter,
+      navigationTarget: [0, 0],
       commandVelocity: realizedVelocity,
       realizedVelocity,
       arrived,

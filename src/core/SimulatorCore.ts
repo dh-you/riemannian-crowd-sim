@@ -73,19 +73,34 @@ export class SimulatorCore {
     return this.nextStepIndex * this.simulation.dt;
   }
 
-  step(): StepDiagnostics {
+  step(navigationTargets?: ReadonlyMap<number, Vec2>): StepDiagnostics {
     // Every calculation through pre-correction integration reads this one snapshot.
     const snapshot = cloneAgents(this.agents).sort((a, b) => a.id - b.id);
+    if (navigationTargets !== undefined) {
+      const agentIds = new Set(snapshot.map(({ id }) => id));
+      if (
+        navigationTargets.size !== snapshot.length
+        || snapshot.some(({ id }) => !navigationTargets.has(id))
+        || [...navigationTargets.keys()].some((id) => !agentIds.has(id))
+      ) {
+        throw new Error("Navigation targets must contain exactly one entry per agent");
+      }
+    }
+    const controllerSnapshot = snapshot.map((agent) => {
+      const target = navigationTargets?.get(agent.id) ?? agent.goal;
+      if (!isFiniteVec2(target)) throw new Error(`Navigation target for agent ${agent.id} must be finite`);
+      return { ...agent, goal: [target[0], target[1]] as Vec2 };
+    });
     const spatialHash =
       this.controller.interactionRadius > 0
         ? new SpatialHash(this.controller.interactionRadius)
         : null;
-    spatialHash?.rebuild(snapshot);
+    spatialHash?.rebuild(controllerSnapshot);
 
     const targetById = new Map<number, Vec2>();
     const beginsWithinGoalById = new Map<number, boolean>();
     let coincidentNeighborContributionsSkipped = 0;
-    for (const agent of snapshot) {
+    for (const agent of controllerSnapshot) {
       const controlResult = this.controller.computeControl(
         agent,
         spatialHash?.query(agent.position, this.controller.interactionRadius) ?? [],
@@ -94,7 +109,12 @@ export class SimulatorCore {
       coincidentNeighborContributionsSkipped +=
         controlResult.coincidentNeighborContributionsSkipped;
       targetById.set(agent.id, controlResult.targetVelocity);
-      beginsWithinGoalById.set(agent.id, controlResult.arrived);
+      const physicalAgent = snapshot.find((candidate) => candidate.id === agent.id);
+      if (physicalAgent === undefined) throw new Error(`Missing physical agent ${agent.id}`);
+      beginsWithinGoalById.set(
+        agent.id,
+        norm(sub(physicalAgent.position, physicalAgent.goal)) <= this.simulation.goalTolerance,
+      );
     }
 
     const eta = smoothingCoefficient(this.simulation.dt, this.simulation.velocityTimeConstant);

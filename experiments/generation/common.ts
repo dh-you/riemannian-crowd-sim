@@ -5,6 +5,8 @@ import {
   parseExperimentScenario,
   serializeExperimentScenario,
   type ExperimentScenario,
+  type ProtocolNavigation,
+  type ScenarioCompletion,
 } from "../protocol/schema";
 
 export const GENERATOR_VERSION = "protocol_v1";
@@ -25,7 +27,12 @@ export function createScenario(
   horizonSeconds: number,
   agents: AgentState[],
   walls: WallSegment[] = [],
+  protocol?: {
+    completion?: ScenarioCompletion;
+    navigation?: ProtocolNavigation;
+  },
 ): ExperimentScenario {
+  const completion = protocol?.completion ?? goalDiskCompletion(agents, 0.1);
   const scenario: ExperimentScenario = {
     experimentScenarioVersion: EXPERIMENT_SCENARIO_VERSION,
     name:
@@ -44,10 +51,29 @@ export function createScenario(
     },
     agents: [...agents].sort((a, b) => a.id - b.id),
     walls: [...walls].sort((a, b) => a.id - b.id),
+    completion,
+    navigation: protocol?.navigation ?? { type: "point_goal" },
     metadata: { units: { distance: "m", time: "s" } },
   };
   assertNoInitialPhysicalOverlaps(scenario);
   return parseExperimentScenario(JSON.parse(serializeExperimentScenario(scenario)) as unknown);
+}
+
+export function goalDiskCompletion(
+  agents: readonly AgentState[],
+  goalTolerance: number,
+): ScenarioCompletion {
+  return {
+    completionSpecVersion: 1,
+    rule: { type: "goal_disk" },
+    idealCompletionDistances: agents.map((agent) => ({
+      agentId: agent.id,
+      idealCompletionDistance: Math.max(
+        0,
+        norm(sub(agent.goal, agent.position)) - goalTolerance,
+      ),
+    })),
+  };
 }
 
 export function makeAgent(
