@@ -24,6 +24,7 @@ Scientific Core configs retain `methodConfigVersion: 1`; native baseline configs
 | `euclidean_goal_steering_v1` | Goal+Projection |
 | `orca_rvo2_v1` | ORCA/RVO2 |
 | `social_force_pysocialforce_v1` | PySocialForce |
+| `social_force_jupedsim_v1` | JuPedSim SocialForceModel (development candidate; not yet active in `study.json`) |
 
 The Conditioned Riemannian implementation retains the Stage A equations and numerical operations documented in [scientific-core.md](scientific-core.md). The controller refactor delegates the same metric construction and inverse-metric target calculation through a common interface; it does not change goal-direction visibility, signed closing, Wendland weighting, tensor construction, solve-based steering, normalization, or ID-ordered accumulation.
 

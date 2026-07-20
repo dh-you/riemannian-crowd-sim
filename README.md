@@ -30,7 +30,7 @@ The repository supports the completed experiment; it does not infer new claims f
 - `pages/` and `public/`: browser entry points and assets.
 - `experiments/generation/`: deterministic scenario generators, including the corrected six-wall bottleneck.
 - `experiments/engines/`, `metrics/`, `protocol/`, and `output/`: execution adapters, measurements, validation, identities, and records.
-- `experiments/baselines/`: pinned ORCA/RVO2 and PySocialForce bootstrap, build, verification, adapters, licenses, and fixtures.
+- `experiments/baselines/`: pinned ORCA/RVO2, PySocialForce, and candidate JuPedSim bootstrap, build, verification, adapters, licenses, and fixtures.
 - `experiments/lean/`: lean-study definition, runner, analysis, audited execution, and reusable ablation implementation.
 - `experiments/audit/viewer/`: local, read-only trajectory-review viewer used by the lean audit phase.
 - `tests/`: browser-independent core, experiment, baseline, lean, viewer, generator, and ablation regression tests.
@@ -56,9 +56,12 @@ npm run baselines:bootstrap
 npm run baselines:build
 npm run baselines:verify
 npm run test:baselines
+npm run jupedsim:audit
 ```
 
 Bootstrap requires Git, Python, CMake, and a C++ compiler. Build additionally uses Ninja. These commands do not add npm dependencies or modify the system Python environment.
+
+JuPedSim `1.4.2` is available alongside PySocialForce for the isolated seed-400 audit; the active lean-study method remains PySocialForce until the human-review gate is explicitly approved. The JuPedSim audit writes only beneath `results/jupedsim-integration/audit-v1/`.
 
 ## Lean study
 
@@ -88,6 +91,7 @@ The lean comparison fixes these configurations in `experiments/lean/study.json`:
 - Euclidean goal steering: `euclidean_goal_steering_v1`, velocity time constant `0.04`, with no free parameters.
 - ORCA/RVO2: `neighborDist=5`, `maxNeighbors=16`, `timeHorizon=5`, `timeHorizonObst=5`.
 - PySocialForce: `desiredFactor=1`, `relaxationTime=0.5`, `socialFactor=5.1`, `lambdaImportance=2`, `gamma=0.35`, `n=2`, `nPrime=3`, `obstacleFactor=10`, `obstacleSigma=0.2`, `obstacleThreshold=3`, `maxSpeedMultiplier=1.3`, `obstacleResolution=10`.
+- JuPedSim development candidate: `bodyForce=120000`, `friction=240000`, `mass=80`, `reactionTime=0.5`, `agentScale=2000`, `obstacleScale=2000`, `forceDistance=0.08`; scenario radii and preferred speeds remain per-agent.
 
 Do not substitute the standalone example configs under `experiments/methods/` for the fixed lean-study entries.
 

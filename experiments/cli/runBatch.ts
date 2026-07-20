@@ -37,6 +37,7 @@ export interface BatchRunRecord {
   upstreamCommit: string | null;
   runnerSha256: string | null;
   buildManifestSha256: string | null;
+  engineSpecificProvenance: Record<string, unknown>;
   status: "completed" | "skipped" | "failed";
   error: string | null;
 }
@@ -132,6 +133,7 @@ export function runBatch(options: RunBatchOptions): RunBatchResult {
         upstreamCommit: provenance.upstreamCommit,
         runnerSha256: provenance.runnerSha256,
         buildManifestSha256: provenance.buildManifestSha256,
+        engineSpecificProvenance: provenance.engineSpecificProvenance,
         status: "failed",
         error: null,
       };
@@ -275,6 +277,7 @@ function completedRunMatches(
       manifest.upstreamCommit === provenance.upstreamCommit &&
       manifest.runnerSha256 === provenance.runnerSha256 &&
       manifest.buildManifestSha256 === provenance.buildManifestSha256 &&
+      JSON.stringify(manifest.engineSpecificProvenance) === JSON.stringify(provenance.engineSpecificProvenance) &&
       summary.methodKey === methodKey &&
       metrics.identity.methodKey === methodKey &&
       metrics.identity.methodIdentityVersion === methodIdentityVersion &&

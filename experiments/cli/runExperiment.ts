@@ -70,6 +70,7 @@ export interface ExperimentManifest {
   runnerPath: string | null;
   runnerSha256: string | null;
   buildManifestSha256: string | null;
+  engineSpecificProvenance: Record<string, unknown>;
   implementationLimitations: string[];
   gitCommitSha: string | null;
   nodeVersion: string;
@@ -210,6 +211,7 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
       runnerPath: provenance.runnerPath,
       runnerSha256: provenance.runnerSha256,
       buildManifestSha256: provenance.buildManifestSha256,
+      engineSpecificProvenance: provenance.engineSpecificProvenance,
       implementationLimitations: provenance.limitations,
       gitCommitSha: readGitCommit(dirname(scenarioPath)),
       nodeVersion: process.version,
@@ -288,6 +290,7 @@ function methodLabel(id: string): string {
   if (id === "euclidean_goal_steering_v1") return "Goal+Projection";
   if (id === "orca_rvo2_v1") return "ORCA/RVO2";
   if (id === "social_force_pysocialforce_v1") return "PySocialForce";
+  if (id === "social_force_jupedsim_v1") return "JuPedSim SocialForceModel";
   return id;
 }
 

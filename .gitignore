@@ -31,6 +31,7 @@ env/
 /experiments/third_party/src/
 /experiments/third_party/build/
 /experiments/third_party/venv/
+/experiments/third_party/jupedsim-venv/
 /results/baseline-*/
 __pycache__/
 *.py[cod]

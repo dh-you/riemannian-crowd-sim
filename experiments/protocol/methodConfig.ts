@@ -16,6 +16,8 @@ export const ORCA_METHOD_ID = "orca_rvo2_v1" as const;
 export const ORCA_ENGINE_ID = "orca_rvo2_engine_v1" as const;
 export const SOCIAL_FORCE_METHOD_ID = "social_force_pysocialforce_v1" as const;
 export const SOCIAL_FORCE_ENGINE_ID = "pysocialforce_engine_v1" as const;
+export const JUPEDSIM_SFM_METHOD_ID = "social_force_jupedsim_v1" as const;
+export const JUPEDSIM_SFM_ENGINE_ID = "jupedsim_sfm_engine_v1" as const;
 
 interface ScientificMethodConfigBase {
   methodConfigVersion: typeof METHOD_CONFIG_VERSION_1;
@@ -70,8 +72,24 @@ export interface SocialForceMethodConfig {
   };
 }
 
+/** JuPedSim 1.4.2 SocialForceModel package defaults; scenario values stay per-agent. */
+export interface JuPedSimSfmMethodConfig {
+  methodConfigVersion: typeof METHOD_CONFIG_VERSION_2;
+  id: typeof JUPEDSIM_SFM_METHOD_ID;
+  engine: typeof JUPEDSIM_SFM_ENGINE_ID;
+  parameters: {
+    bodyForce: number;
+    friction: number;
+    mass: number;
+    reactionTime: number;
+    agentScale: number;
+    obstacleScale: number;
+    forceDistance: number;
+  };
+}
+
 export type ScientificMethodConfig = RiemannianMethodConfig | EuclideanGoalMethodConfig;
-export type ExternalMethodConfig = OrcaMethodConfig | SocialForceMethodConfig;
+export type ExternalMethodConfig = OrcaMethodConfig | SocialForceMethodConfig | JuPedSimSfmMethodConfig;
 export type MethodConfig = ScientificMethodConfig | ExternalMethodConfig;
 
 export function parseMethodConfig(value: unknown): MethodConfig {
@@ -206,6 +224,36 @@ function parseExternalMethod(root: Record<string, unknown>): ExternalMethodConfi
       methodConfigVersion: METHOD_CONFIG_VERSION_2,
       id: SOCIAL_FORCE_METHOD_ID,
       engine: SOCIAL_FORCE_ENGINE_ID,
+      parameters,
+    };
+  }
+  if (strict.id === JUPEDSIM_SFM_METHOD_ID) {
+    if (strict.engine !== JUPEDSIM_SFM_ENGINE_ID) {
+      throw new Error(`${JUPEDSIM_SFM_METHOD_ID} requires engine ${JUPEDSIM_SFM_ENGINE_ID}`);
+    }
+    const keys = [
+      "bodyForce",
+      "friction",
+      "mass",
+      "reactionTime",
+      "agentScale",
+      "obstacleScale",
+      "forceDistance",
+    ] as const;
+    const raw = requireStrictObject(strict.parameters, "methodConfig.parameters", keys);
+    const parameters: JuPedSimSfmMethodConfig["parameters"] = {
+      bodyForce: positive(raw.bodyForce, "bodyForce"),
+      friction: positive(raw.friction, "friction"),
+      mass: positive(raw.mass, "mass"),
+      reactionTime: positive(raw.reactionTime, "reactionTime"),
+      agentScale: positive(raw.agentScale, "agentScale"),
+      obstacleScale: positive(raw.obstacleScale, "obstacleScale"),
+      forceDistance: positive(raw.forceDistance, "forceDistance"),
+    };
+    return {
+      methodConfigVersion: METHOD_CONFIG_VERSION_2,
+      id: JUPEDSIM_SFM_METHOD_ID,
+      engine: JUPEDSIM_SFM_ENGINE_ID,
       parameters,
     };
   }

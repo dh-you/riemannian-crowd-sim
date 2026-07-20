@@ -25,6 +25,7 @@ const METHOD_LABELS: Readonly<Record<string, string>> = {
   euclidean_goal_steering_v1: "Goal + Projection",
   orca_rvo2_v1: "ORCA / RVO2",
   social_force_pysocialforce_v1: "PySocialForce",
+  social_force_jupedsim_v1: "JuPedSim SocialForceModel",
 };
 
 const METHOD_ORDER: Readonly<Record<string, number>> = {
@@ -32,6 +33,7 @@ const METHOD_ORDER: Readonly<Record<string, number>> = {
   euclidean_goal_steering_v1: 1,
   orca_rvo2_v1: 2,
   social_force_pysocialforce_v1: 3,
+  social_force_jupedsim_v1: 4,
 };
 
 interface AuditManifest {

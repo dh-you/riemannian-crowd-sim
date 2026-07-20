@@ -91,6 +91,7 @@ export function runAuditedEngine(
     runnerPath: provenance.runnerPath,
     runnerSha256: provenance.runnerSha256,
     buildManifestSha256: provenance.buildManifestSha256,
+    engineSpecificProvenance: provenance.engineSpecificProvenance,
     limitations: provenance.limitations,
   };
   const summary = {

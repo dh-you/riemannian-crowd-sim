@@ -8,7 +8,11 @@ import {
   command,
   dependency,
   gitHead,
-  pythonExecutable,
+  jupedSimPackage,
+  jupedSimPythonExecutable,
+  jupedSimRequirementsPath,
+  jupedSimRunnerPath,
+  jupedSimWheelPath,
   readThirdPartyLock,
   repositoryPath,
 } from "../common/thirdParty";
@@ -66,9 +70,10 @@ export function bootstrapBaselines(): void {
     if (!existsSync(license)) throw new Error(`${entry.id} license file is missing: ${license}`);
   }
 
-  const python = ensurePythonEnvironment();
+  const python = ensurePythonEnvironment(lock.runners.pythonEnvironment);
   const requirements = resolve(REPOSITORY_ROOT, "experiments", "baselines", "social_force", "requirements.lock");
   command(python, ["-m", "pip", "install", "--disable-pip-version-check", "-r", requirements]);
+  bootstrapJuPedSim();
   const pysocialforce = dependency(lock, "pysocialforce");
   const pySource = repositoryPath(pysocialforce.sourceDirectory);
   const patch = pysocialforce.patch;
@@ -99,18 +104,69 @@ export function bootstrapBaselines(): void {
     }, null, 2)}\n`,
     "utf8",
   );
-  console.log("baselines:bootstrap pinned sources and dedicated Python environment are ready");
+  console.log("baselines:bootstrap pinned sources and dedicated Python environments are ready");
 }
 
-function ensurePythonEnvironment(): string {
-  const lock = readThirdPartyLock();
-  const python = pythonExecutable(lock);
+function ensurePythonEnvironment(environmentPath: string): string {
+  const environment = repositoryPath(environmentPath);
+  const python = process.platform === "win32"
+    ? resolve(environment, "Scripts", "python.exe")
+    : resolve(environment, "bin", "python");
   if (!existsSync(python)) {
-    const environment = repositoryPath(lock.runners.pythonEnvironment);
     mkdirSync(dirname(environment), { recursive: true });
     command("python", ["-m", "venv", environment]);
   }
   return python;
+}
+
+function bootstrapJuPedSim(): void {
+  const lock = readThirdPartyLock();
+  const packageLock = jupedSimPackage(lock);
+  const requirements = jupedSimRequirementsPath(lock);
+  if (sha256File(requirements) !== packageLock.requirementsLockSha256) {
+    throw new Error("JuPedSim requirements lock hash does not match third-party-lock.json");
+  }
+  const wheel = jupedSimWheelPath(lock);
+  const wheelCache = dirname(wheel);
+  mkdirSync(wheelCache, { recursive: true });
+  if (!existsSync(wheel)) {
+    command("python", [
+      "-m",
+      "pip",
+      "download",
+      "--disable-pip-version-check",
+      "--only-binary=:all:",
+      "--no-deps",
+      "--dest",
+      wheelCache,
+      "jupedsim==" + packageLock.version,
+    ]);
+  }
+  if (sha256File(wheel) !== packageLock.wheelSha256) {
+    throw new Error("Downloaded JuPedSim wheel hash does not match third-party-lock.json");
+  }
+  const python = ensurePythonEnvironment(packageLock.environment);
+  command(python, [
+    "-m",
+    "pip",
+    "install",
+    "--disable-pip-version-check",
+    "--require-hashes",
+    "--only-binary=:all:",
+    "-r",
+    requirements,
+  ]);
+  const runner = jupedSimRunnerPath(lock);
+  command(python, [runner, "--version"], { capture: true });
+  const packageInfo = JSON.parse(command(python, [runner, "--package-info"], { capture: true })) as {
+    jupedsimVersion?: string;
+  };
+  if (packageInfo.jupedsimVersion !== packageLock.version) {
+    throw new Error("Installed JuPedSim package version is not exactly 1.4.2");
+  }
+  if (python !== jupedSimPythonExecutable(lock)) {
+    throw new Error("JuPedSim environment path differs from the package lock");
+  }
 }
 
 function verifyUnpatchedPySocialForce(python: string, source: string, commit: string): void {

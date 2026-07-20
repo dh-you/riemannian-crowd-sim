@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
-import { sha256File } from "../protocol/hash";
+import { sha256Bytes, sha256File } from "../protocol/hash";
+import { createJuPedSimGeometry } from "../baselines/jupedsim/geometry";
 import {
   BUILD_MANIFEST_PATH,
   REPOSITORY_ROOT,
@@ -7,6 +8,11 @@ import {
   command,
   dependency,
   gitHead,
+  jupedSimPackage,
+  jupedSimPythonExecutable,
+  jupedSimRequirementsPath,
+  jupedSimRunnerPath,
+  jupedSimWheelPath,
   lockSha256,
   orcaRunnerPath,
   pythonExecutable,
@@ -15,10 +21,14 @@ import {
   repositoryPath,
 } from "../baselines/common/thirdParty";
 import {
+  JUPEDSIM_SFM_ADAPTER_VERSION,
   ORCA_ADAPTER_VERSION,
   SOCIAL_FORCE_ADAPTER_VERSION,
   type EngineProvenance,
 } from "./ExperimentEngine";
+import { serializeCanonicalMethodConfig } from "../protocol/methodIdentity";
+import type { JuPedSimSfmMethodConfig } from "../protocol/methodConfig";
+import type { ExperimentScenario } from "../protocol/schema";
 
 export function baselineProvenance(kind: "orca" | "pysocialforce"): EngineProvenance {
   const lock = readThirdPartyLock();
@@ -56,10 +66,93 @@ export function baselineProvenance(kind: "orca" | "pysocialforce"): EngineProven
     runnerPath: runner,
     runnerSha256: expectedRunnerHash,
     buildManifestSha256: sha256File(BUILD_MANIFEST_PATH),
+    engineSpecificProvenance: {},
     limitations:
       kind === "pysocialforce"
         ? ["Pinned PySocialForce supports one scene-wide pedestrian radius; heterogeneous-radius scenarios are rejected."]
         : ["RVO2 uses single-precision arithmetic; cross-compiler last-bit variation may occur."],
+  };
+}
+
+export function jupedSimProvenance(
+  scenario: ExperimentScenario,
+  method: JuPedSimSfmMethodConfig,
+): EngineProvenance {
+  const lock = readThirdPartyLock();
+  const build = readBuildManifest();
+  const packageLock = jupedSimPackage(lock);
+  if (build.lockSha256 !== lockSha256() || build.adapterSourceSha256 !== adapterSourceSha256()) {
+    throw new Error("Baseline build provenance is stale; run npm run baselines:build");
+  }
+  const runner = jupedSimRunnerPath(lock);
+  const python = jupedSimPythonExecutable(lock);
+  const requirements = jupedSimRequirementsPath(lock);
+  const wheel = jupedSimWheelPath(lock);
+  if (!existsSync(python)) {
+    throw new Error("JuPedSim environment is missing; run npm run baselines:bootstrap");
+  }
+  if (!existsSync(runner) || sha256File(runner) !== build.runnerSha256.jupedsim) {
+    throw new Error("JuPedSim runner is missing or stale");
+  }
+  if (!existsSync(requirements) || sha256File(requirements) !== packageLock.requirementsLockSha256) {
+    throw new Error("JuPedSim requirements lock is missing or stale");
+  }
+  if (!existsSync(wheel) || sha256File(wheel) !== packageLock.wheelSha256) {
+    throw new Error("JuPedSim wheel cache is missing or stale");
+  }
+  if (
+    build.jupedsimVersion !== packageLock.version
+    || build.jupedsimWheelFilename !== packageLock.wheelFilename
+    || build.jupedsimWheelSha256 !== packageLock.wheelSha256
+    || build.jupedsimRequirementsLockSha256 !== packageLock.requirementsLockSha256
+    || build.jupedsimInstallationCommand !== packageLock.installationCommand
+  ) {
+    throw new Error("JuPedSim build provenance differs from the package lock");
+  }
+  const geometry = createJuPedSimGeometry(scenario);
+  return {
+    engineId: "jupedsim_sfm_engine_v1",
+    engineAdapterVersion: JUPEDSIM_SFM_ADAPTER_VERSION,
+    correctionMode: "native_none",
+    commandVelocityMeaning: "native JuPedSim SocialForceModel velocity after the iteration",
+    thirdPartyLockSha256: lockSha256(),
+    upstreamProject: packageLock.project,
+    upstreamRepository: packageLock.repository,
+    upstreamCommit: null,
+    upstreamLicense: packageLock.license,
+    runnerPath: runner,
+    runnerSha256: build.runnerSha256.jupedsim,
+    buildManifestSha256: sha256File(BUILD_MANIFEST_PATH),
+    engineSpecificProvenance: {
+      jupedsimVersion: packageLock.version,
+      pythonVersion: build.jupedsimPythonVersion,
+      platform: build.platform,
+      wheelFilename: packageLock.wheelFilename,
+      packageWheelSha256: packageLock.wheelSha256,
+      requirementsLockSha256: packageLock.requirementsLockSha256,
+      installationCommand: packageLock.installationCommand,
+      methodConfigSha256: sha256Bytes(serializeCanonicalMethodConfig(method)),
+      geometrySha256: geometry.sha256,
+      correctionMode: "native_none",
+      directSteering: true,
+      directSteeringJourneyStageCount: 1,
+      exactDt: scenario.simulation.dt,
+      scenarioProvidedRadii: scenario.agents.map((agent) => ({
+        id: agent.id,
+        radius: agent.radius,
+      })),
+      scenarioProvidedPreferredSpeeds: scenario.agents.map((agent) => ({
+        id: agent.id,
+        preferredSpeed: agent.preferredSpeed,
+      })),
+      completionProtocolVersion: "completion-v2",
+      completionSpecVersion: scenario.completion.completionSpecVersion,
+      nativeGeometryAwareWayfinding: true,
+    },
+    limitations: [
+      "Direct steering uses JuPedSim geometry-aware shortest-path wayfinding to the shared protocol target.",
+      "The package-default SocialForceModel parameters are untuned for these scenarios.",
+    ],
   };
 }
 
@@ -101,5 +194,8 @@ export function baselineRuntimePaths() {
     socialRunner: repositoryPath(lock.runners.socialForce),
     rvoSource: repositoryPath(dependency(lock, "rvo2").sourceDirectory),
     socialSource: repositoryPath(dependency(lock, "pysocialforce").sourceDirectory),
+    jupedsimPython: jupedSimPythonExecutable(lock),
+    jupedsimRunner: jupedSimRunnerPath(lock),
+    jupedsimWheel: jupedSimWheelPath(lock),
   };
 }

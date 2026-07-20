@@ -8,6 +8,11 @@ import {
   command,
   dependency,
   gitHead,
+  jupedSimPackage,
+  jupedSimPythonExecutable,
+  jupedSimRequirementsPath,
+  jupedSimRunnerPath,
+  jupedSimWheelPath,
   lockSha256,
   orcaRunnerPath,
   pythonExecutable,
@@ -64,9 +69,65 @@ export function verifyBaselines(): void {
       if (changed !== "") throw new Error(`${entry.id} source tree differs from its pinned commit: ${changed}`);
     }
   }
+  const jupedsim = jupedSimPackage(lock);
+  const jupedsimRequirements = jupedSimRequirementsPath(lock);
+  const jupedsimWheel = jupedSimWheelPath(lock);
+  const jupedsimRunner = jupedSimRunnerPath(lock);
+  const jupedsimPython = jupedSimPythonExecutable(lock);
+  const jupedsimLicense = repositoryPath(jupedsim.licenseFile);
+  if (sha256File(jupedsimRequirements) !== jupedsim.requirementsLockSha256) {
+    throw new Error("JuPedSim requirements lock hash differs from third-party-lock.json");
+  }
+  if (sha256File(jupedsimWheel) !== jupedsim.wheelSha256) {
+    throw new Error("JuPedSim wheel hash differs from third-party-lock.json");
+  }
+  if (sha256File(jupedsimLicense) !== jupedsim.licenseSha256) {
+    throw new Error("JuPedSim committed license hash differs from third-party-lock.json");
+  }
+  if (sha256File(jupedsimRunner) !== build.runnerSha256.jupedsim) {
+    throw new Error("JuPedSim runner hash differs from build manifest");
+  }
+  const jupedsimInfo = JSON.parse(
+    command(jupedsimPython, [jupedsimRunner, "--package-info"], { capture: true }),
+  ) as {
+    jupedsimVersion?: string;
+    pythonVersion?: string;
+    upstreamLicense?: string;
+    installedLicenseSha256?: string;
+  };
+  if (
+    jupedsimInfo.jupedsimVersion !== "1.4.2"
+    || jupedsimInfo.pythonVersion !== build.jupedsimPythonVersion
+    || jupedsimInfo.upstreamLicense !== "LGPL-3.0-or-later"
+    || jupedsimInfo.installedLicenseSha256 !== jupedsim.licenseSha256
+  ) {
+    throw new Error("Installed JuPedSim package metadata differs from the pinned lock");
+  }
+  const currentJuPedSimPackages = command(
+    jupedsimPython,
+    ["-m", "pip", "freeze", "--all"],
+    { capture: true },
+  ).split(/\r?\n/u).filter(Boolean).sort();
+  if (JSON.stringify(currentJuPedSimPackages) !== JSON.stringify(build.jupedsimPythonPackages)) {
+    throw new Error("JuPedSim Python environment packages differ from build manifest");
+  }
+  if (
+    build.jupedsimVersion !== jupedsim.version
+    || build.jupedsimWheelFilename !== jupedsim.wheelFilename
+    || build.jupedsimWheelSha256 !== jupedsim.wheelSha256
+    || build.jupedsimRequirementsLockSha256 !== jupedsim.requirementsLockSha256
+    || build.jupedsimInstallationCommand !== jupedsim.installationCommand
+    || build.jupedsimPythonExecutable !== jupedsimPython
+  ) {
+    throw new Error("JuPedSim build manifest differs from the package lock");
+  }
   const orca = orcaRunnerPath(lock);
   const social = repositoryPath(lock.runners.socialForce);
-  if (sha256File(orca) !== build.runnerSha256.orca || sha256File(social) !== build.runnerSha256.socialForce) {
+  if (
+    sha256File(orca) !== build.runnerSha256.orca
+    || sha256File(social) !== build.runnerSha256.socialForce
+    || sha256File(jupedsimRunner) !== build.runnerSha256.jupedsim
+  ) {
     throw new Error("Baseline runner hash differs from build manifest");
   }
   command(orca, ["--version"], { capture: true });
@@ -86,7 +147,7 @@ export function verifyBaselines(): void {
       build.upstreamCommits.pysocialforce !== dependency(lock, "pysocialforce").commit) {
     throw new Error("Build manifest upstream commits differ from lock");
   }
-  console.log("baselines:verify PASS pinned sources, licenses, runners, environment, and build identity");
+  console.log("baselines:verify PASS pinned sources, licenses, runners, environments, and build identity");
 }
 
 function commandStatus(executable: string, arguments_: readonly string[]): number | null {
