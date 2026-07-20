@@ -82,6 +82,7 @@ interface ViewerRun {
   };
   closestPreCorrectionEncounter: ClosestEncounter | null;
   avoidanceOnsets: AvoidanceOnset[];
+  frameDurationsSeconds: number[];
   steps: EngineStepRecord[];
 }
 
@@ -95,6 +96,7 @@ interface ViewerScenarioGroup {
 export interface ReviewIndexOptions {
   auditRoot?: string;
   outputDirectory?: string;
+  trajectoryFilename?: string;
 }
 
 export interface ReviewIndexResult {
@@ -102,6 +104,40 @@ export interface ReviewIndexResult {
   scenarioCount: number;
   runCount: number;
   stepCount: number;
+}
+
+export interface StoredStepTime {
+  stepIndex: number;
+  time: number;
+}
+
+/**
+ * Returns one playback interval for each transition between retained records.
+ * The final frame intentionally has no outgoing interval.
+ */
+export function computeStoredFrameDurations(
+  steps: readonly StoredStepTime[],
+): number[] {
+  const durations: number[] = [];
+  for (let index = 0; index + 1 < steps.length; index += 1) {
+    const current = steps[index];
+    const next = steps[index + 1];
+    const duration = next.time - current.time;
+    if (!Number.isFinite(duration) || duration <= 0) {
+      throw new Error(
+        `Stored trajectory time difference must be positive and finite between records ${index} and ${index + 1} (steps ${current.stepIndex} and ${next.stepIndex}); received ${duration}`,
+      );
+    }
+    durations.push(duration);
+  }
+  return durations;
+}
+
+export function computeStoredPlaybackDuration(
+  steps: readonly StoredStepTime[],
+): number {
+  return computeStoredFrameDurations(steps)
+    .reduce((total, duration) => total + duration, 0);
 }
 
 /** Finds the globally closest physical agent-agent encounter before correction. */
@@ -185,11 +221,18 @@ export function computeFirstAvoidanceOnsets(
 export function generateReviewIndex(options: ReviewIndexOptions = {}): ReviewIndexResult {
   const auditRoot = resolve(options.auditRoot ?? DEFAULT_AUDIT_ROOT);
   const outputDirectory = resolve(options.outputDirectory ?? DEFAULT_OUTPUT_DIRECTORY);
+  const trajectoryFilename = options.trajectoryFilename ?? "engine-steps.jsonl";
+  if (
+    trajectoryFilename.length === 0
+    || basename(trajectoryFilename) !== trajectoryFilename
+  ) {
+    throw new Error("trajectoryFilename must be a nonempty filename without directories");
+  }
   const runRoots = [resolve(auditRoot, "gold"), resolve(auditRoot, "visuals/runs")];
-  const trajectoryPaths = runRoots.flatMap((root) => findNamedFiles(root, "engine-steps.jsonl"));
+  const trajectoryPaths = runRoots.flatMap((root) => findNamedFiles(root, trajectoryFilename));
   if (trajectoryPaths.length === 0) {
     throw new Error(
-      `No lean-study engine-step evidence found under ${auditRoot}. Run npm run lean -- --phase audit first.`,
+      `No '${trajectoryFilename}' engine-step evidence found under ${auditRoot}.`,
     );
   }
 
@@ -217,6 +260,7 @@ export function generateReviewIndex(options: ReviewIndexOptions = {}): ReviewInd
       steps.push(validateEngineStepRecord(JSON.parse(line) as EngineStepRecord));
     });
     if (steps.length === 0) throw new Error(`Trajectory has no completed steps: ${trajectoryPath}`);
+    const frameDurationsSeconds = computeStoredFrameDurations(steps);
     stepCount += steps.length;
 
     const groupKey = `${manifest.scenarioName}--${manifest.scenarioSha256}`;
@@ -241,6 +285,7 @@ export function generateReviewIndex(options: ReviewIndexOptions = {}): ReviewInd
       },
       closestPreCorrectionEncounter: computeClosestPreCorrectionEncounter(scenario, steps),
       avoidanceOnsets: computeFirstAvoidanceOnsets(scenario, steps),
+      frameDurationsSeconds,
       steps,
     });
     groups.set(groupKey, group);
@@ -374,6 +419,7 @@ function main(): void {
     const result = generateReviewIndex({
       auditRoot: parseOption("--audit-root"),
       outputDirectory: parseOption("--out"),
+      trajectoryFilename: parseOption("--trajectory-file"),
     });
     console.log(
       `audit:viewer indexed ${result.runCount} runs across ${result.scenarioCount} scenarios (${result.stepCount} steps).`,
