@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { closeSync, mkdirSync, openSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createExperimentEngine } from "../../engines/factory";
@@ -93,6 +94,10 @@ export function runAuditedEngine(
     buildManifestSha256: provenance.buildManifestSha256,
     engineSpecificProvenance: provenance.engineSpecificProvenance,
     limitations: provenance.limitations,
+    implementationCommit: readImplementationCommit(),
+    ...(engineResult.artifactDiagnostics === undefined
+      ? {}
+      : { engineArtifactDiagnostics: engineResult.artifactDiagnostics }),
   };
   const summary = {
     totalSteps: engineResult.totalSteps,
@@ -105,4 +110,8 @@ export function runAuditedEngine(
   writeJson(metricsPath, metrics);
   writeJson(summaryPath, summary);
   return { outputDirectory, manifestPath, trajectoryPath, metricsPath, summaryPath };
+}
+
+function readImplementationCommit(): string {
+  return execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 }

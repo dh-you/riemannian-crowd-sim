@@ -46,7 +46,7 @@ describe("camera-ready lean harness", () => {
       "head-on", "crossing", "circle", "corridor", "bottleneck",
     ]);
     expect(Object.keys(study.methods)).toEqual(["riemannian", "goal", "orca", "jupedsim-sfm"]);
-    expect(study.outputs.root).toBe("results/final-camera-ready-jupedsim");
+    expect(study.outputs.root).toBe("results/final-camera-ready-jupedsim-v2");
     expect([
       ...study.headline.pairwise.scenarioTypes,
       ...study.headline.dense.scenarioTypes,

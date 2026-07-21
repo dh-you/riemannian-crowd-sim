@@ -7,7 +7,7 @@ import type { CorrectionMode, EngineStepRecord } from "./engineStep";
 export const SCIENTIFIC_CORE_ADAPTER_VERSION = "2";
 export const ORCA_ADAPTER_VERSION = "3";
 export const SOCIAL_FORCE_ADAPTER_VERSION = "3";
-export const JUPEDSIM_SFM_ADAPTER_VERSION = "1";
+export const JUPEDSIM_SFM_ADAPTER_VERSION = "2";
 
 export interface EngineProvenance {
   engineId: string;
@@ -30,6 +30,7 @@ export interface EngineRunResult {
   finalStates: AgentState[];
   totalSteps: number;
   provenance: EngineProvenance;
+  artifactDiagnostics?: Record<string, unknown>;
 }
 
 export type EngineStepSink = (record: EngineStepRecord) => void;

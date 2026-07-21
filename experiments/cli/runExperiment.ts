@@ -79,6 +79,7 @@ export interface ExperimentManifest {
   commandArguments: string[];
   executionTimestamp: string;
   recordingInterval: number;
+  engineArtifactDiagnostics?: Record<string, unknown>;
 }
 
 export interface ExperimentRunSummary {
@@ -220,6 +221,9 @@ export function runExperiment(options: RunExperimentOptions): RunExperimentResul
       commandArguments: [...(options.commandArguments ?? process.argv.slice(2))],
       executionTimestamp: new Date().toISOString(),
       recordingInterval,
+      ...(engineResult.artifactDiagnostics === undefined
+        ? {}
+        : { engineArtifactDiagnostics: engineResult.artifactDiagnostics }),
     };
 
     writeJson(temporaryPaths.manifest, manifest);

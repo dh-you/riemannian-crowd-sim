@@ -48,6 +48,22 @@ interface AuditManifest {
   methodConfigSourceSha256: string;
   engineId: string;
   engineSpecificProvenance?: Record<string, unknown>;
+  engineArtifactDiagnostics?: Record<string, unknown>;
+  implementationCommit?: string;
+}
+
+interface JuPedSimStabilityDiagnostic {
+  diagnosticVersion: number;
+  experimentDt: number;
+  nativeJuPedSimDt: number;
+  nativeSubstepsPerExperimentStep: number;
+  nativeIterationCount: number;
+  protocolTargetResolutionCount: number;
+  targetAssignmentCount: number;
+  targetHeldAcrossNativeSubsteps: boolean;
+  peakNativeSpeedMetersPerSecond: { value: number };
+  peakNativeAccelerationMetersPerSecondSquared: { value: number };
+  minimumArtificialOuterBoundaryClearanceMeters: number;
 }
 
 interface EquivalenceRow {
@@ -177,6 +193,7 @@ export async function verifyFinalEvidence(): Promise<string> {
   const phases = ["audit", "test", "ablation", "runtime"] as const;
   const assignments = phases.flatMap((phase) => buildAssignments(study, phase));
   const expected = new Map(assignments.map((assignment) => [runKey(assignment), assignment]));
+  const commit = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
   if (expected.size !== 416 || records.size !== expected.size) {
     throw new Error(`Expected 416 unique total records, received expected=${expected.size}, actual=${records.size}`);
   }
@@ -186,6 +203,23 @@ export async function verifyFinalEvidence(): Promise<string> {
     if (record.status !== "PASS") throw new Error(`Failed assignment ${key}: ${String(record.error)}`);
     if (JSON.stringify(record.assignmentIdentity) !== JSON.stringify(assignmentIdentity(assignment))) {
       throw new Error(`Assignment identity mismatch for ${key}`);
+    }
+    if (record.implementationCommit !== commit) {
+      throw new Error(`${key}: implementation commit differs from frozen HEAD`);
+    }
+    if (record.method === "jupedsim-sfm") {
+      const diagnostic = requireJuPedSimStabilityDiagnostic(
+        record.engineArtifactDiagnostics,
+        key,
+      );
+      if (
+        diagnostic.nativeIterationCount * Number(record.agentCount)
+        !== 2 * diagnostic.protocolTargetResolutionCount
+      ) {
+        throw new Error(`${key}: JuPedSim native iteration/target-resolution counts disagree`);
+      }
+    } else if (record.engineArtifactDiagnostics !== undefined) {
+      throw new Error(`${key}: non-JuPedSim run contains JuPedSim artifact diagnostics`);
     }
   }
   for (const key of records.keys()) {
@@ -229,6 +263,9 @@ export async function verifyFinalEvidence(): Promise<string> {
     if (manifest.actualStepCount !== manifest.expectedStepCount) {
       throw new Error(`${directory}: audit step-count mismatch`);
     }
+    if (manifest.implementationCommit !== commit) {
+      throw new Error(`${directory}: audit manifest implementation commit mismatch`);
+    }
     const scenarioPath = resolve(study.outputs.auditRoot, "visuals", "scenarios", `${manifest.scenarioName}.json`);
     if (sha256Bytes(readFileSync(scenarioPath)) !== manifest.scenarioSha256) {
       throw new Error(`${directory}: scenario artifact hash mismatch`);
@@ -255,9 +292,21 @@ export async function verifyFinalEvidence(): Promise<string> {
         provenance.jupedsimVersion !== "1.4.2"
         || provenance.correctionMode !== "native_none"
         || provenance.directSteering !== true
+        || provenance.experimentDt !== 1 / 60
+        || provenance.nativeJuPedSimDt !== 1 / 120
+        || provenance.nativeSubstepsPerExperimentStep !== 2
       ) {
         throw new Error(`${directory}: JuPedSim provenance mismatch`);
       }
+      const diagnostic = requireJuPedSimStabilityDiagnostic(
+        manifest.engineArtifactDiagnostics,
+        directory,
+      );
+      if (diagnostic.nativeIterationCount !== manifest.expectedStepCount * 2) {
+        throw new Error(`${directory}: JuPedSim audit native iteration count mismatch`);
+      }
+    } else if (manifest.engineArtifactDiagnostics !== undefined) {
+      throw new Error(`${directory}: non-JuPedSim audit contains JuPedSim artifact diagnostics`);
     }
   }
 
@@ -298,7 +347,6 @@ export async function verifyFinalEvidence(): Promise<string> {
     const actual = await sha256FileStreaming(resolve(outputRoot, artifact.path));
     if (actual !== artifact.sha256) throw new Error(`Artifact changed during verification: ${artifact.path}`);
   }
-  const commit = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
   const reportPath = resolve(outputRoot, "final-verification.json");
   writeJson(reportPath, {
     finalVerificationVersion: 1,
@@ -320,6 +368,14 @@ export async function verifyFinalEvidence(): Promise<string> {
     noFailedRuns: true,
     noNonfiniteValues: true,
     noPySocialForceAssignments: true,
+    jupedsimIntegration: {
+      packageDefaults: true,
+      experimentDt: 1 / 60,
+      nativeJuPedSimDt: 1 / 120,
+      nativeSubstepsPerExperimentStep: 2,
+      paperMetricsUseOuterStepRecords: true,
+      runtimeIncludesAllNativeSubsteps: true,
+    },
     retainedEquivalence: equivalencePath,
     artifactHashManifest: hashManifestPath,
     artifactHashManifestSha256: await sha256FileStreaming(hashManifestPath),
@@ -330,6 +386,49 @@ export async function verifyFinalEvidence(): Promise<string> {
     paperFacingSummary: resolve(outputRoot, "paper-facing-summary.csv"),
   });
   return reportPath;
+}
+
+function requireJuPedSimStabilityDiagnostic(
+  value: unknown,
+  label: string,
+): JuPedSimStabilityDiagnostic {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error(`${label}: missing JuPedSim stability diagnostics`);
+  }
+  const diagnostic = (value as Record<string, unknown>).numericalStability;
+  if (diagnostic === null || typeof diagnostic !== "object" || Array.isArray(diagnostic)) {
+    throw new Error(`${label}: missing JuPedSim numerical-stability diagnostic`);
+  }
+  const typed = diagnostic as Partial<JuPedSimStabilityDiagnostic>;
+  if (
+    typed.diagnosticVersion !== 1
+    || typed.experimentDt !== 1 / 60
+    || typed.nativeJuPedSimDt !== 1 / 120
+    || typed.nativeSubstepsPerExperimentStep !== 2
+    || !Number.isSafeInteger(typed.nativeIterationCount)
+    || (typed.nativeIterationCount ?? 0) <= 0
+    || !Number.isSafeInteger(typed.protocolTargetResolutionCount)
+    || (typed.protocolTargetResolutionCount ?? 0) <= 0
+    || typed.targetAssignmentCount !== typed.protocolTargetResolutionCount
+    || typed.targetHeldAcrossNativeSubsteps !== true
+    || !finiteNonnegativeDiagnostic(typed.peakNativeSpeedMetersPerSecond)
+    || !finiteNonnegativeDiagnostic(typed.peakNativeAccelerationMetersPerSecondSquared)
+    || typeof typed.minimumArtificialOuterBoundaryClearanceMeters !== "number"
+    || !Number.isFinite(typed.minimumArtificialOuterBoundaryClearanceMeters)
+    || typed.minimumArtificialOuterBoundaryClearanceMeters <= 0
+  ) {
+    throw new Error(`${label}: malformed JuPedSim numerical-stability diagnostic`);
+  }
+  return typed as JuPedSimStabilityDiagnostic;
+}
+
+function finiteNonnegativeDiagnostic(value: unknown): boolean {
+  return value !== null
+    && typeof value === "object"
+    && !Array.isArray(value)
+    && typeof (value as { value?: unknown }).value === "number"
+    && Number.isFinite((value as { value: number }).value)
+    && (value as { value: number }).value >= 0;
 }
 
 function requireFrozenStudy(study: ReturnType<typeof loadStudy>): void {

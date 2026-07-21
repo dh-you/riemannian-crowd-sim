@@ -15,9 +15,10 @@ from typing import Any
 
 
 RUNNER_INPUT_VERSION = 1
-RUNNER_METADATA_VERSION = 1
+RUNNER_METADATA_VERSION = 2
 NATIVE_STEP_VERSION = 2
 EXPECTED_JUPEDSIM_VERSION = "1.4.2"
+NATIVE_SUBSTEPS_PER_EXPERIMENT_STEP = 2
 
 
 def exact_object(value: Any, keys: set[str], path: str) -> dict[str, Any]:
@@ -302,6 +303,7 @@ def package_info() -> dict[str, Any]:
 
 def run(input_path: Path, output_path: Path, metadata_path: Path) -> None:
     import jupedsim
+    from shapely.geometry import Point, Polygon
 
     if jupedsim.__version__ != EXPECTED_JUPEDSIM_VERSION:
         raise RuntimeError(
@@ -311,16 +313,18 @@ def run(input_path: Path, output_path: Path, metadata_path: Path) -> None:
     data = require_input(json.loads(input_path.read_text(encoding="utf-8")))
     walkable, geometry_metadata = build_walkable_geometry(data)
     parameters = data["parameters"]
+    experiment_dt = float(data["dt"])
+    native_dt = experiment_dt / NATIVE_SUBSTEPS_PER_EXPERIMENT_STEP
     simulation = jupedsim.Simulation(
         model=jupedsim.SocialForceModel(
             body_force=float(parameters["bodyForce"]),
             friction=float(parameters["friction"]),
         ),
         geometry=walkable,
-        dt=float(data["dt"]),
+        dt=native_dt,
     )
-    if not math.isclose(simulation.delta_time(), float(data["dt"]), rel_tol=0.0, abs_tol=1e-15):
-        raise RuntimeError("JuPedSim did not preserve the scenario timestep")
+    if not math.isclose(simulation.delta_time(), native_dt, rel_tol=0.0, abs_tol=1e-15):
+        raise RuntimeError("JuPedSim did not preserve the native substep timestep")
     stage_id = simulation.add_direct_steering_stage()
     journey_id = simulation.add_journey(jupedsim.JourneyDescription([stage_id]))
     agents = data["agents"]
@@ -361,6 +365,27 @@ def run(input_path: Path, output_path: Path, metadata_path: Path) -> None:
     if simulation.agent_count() != len(agents):
         raise RuntimeError("JuPedSim agent count mismatch after insertion")
 
+    artificial_outer_boundary = Polygon(data["geometry"]["outerPolygon"]).boundary
+    minimum_outer_boundary_clearance = min(
+        artificial_outer_boundary.distance(Point(agent["position"]))
+        for agent in agents
+    )
+    native_iteration_count = 0
+    protocol_target_resolution_count = 0
+    target_assignment_count = 0
+    peak_native_speed = {
+        "value": -1.0,
+        "scenarioAgentId": -1,
+        "experimentStepIndex": -1,
+        "nativeSubstepIndex": -1,
+    }
+    peak_native_acceleration = {
+        "value": -1.0,
+        "scenarioAgentId": -1,
+        "experimentStepIndex": -1,
+        "nativeSubstepIndex": -1,
+    }
+
     with output_path.open("w", encoding="utf-8", newline="\n") as output:
         for step_index in range(int(data["steps"])):
             before_native = list(simulation.agents())
@@ -383,15 +408,58 @@ def run(input_path: Path, output_path: Path, metadata_path: Path) -> None:
                     before["position"],
                     point_goals[scenario_id],
                 )
+                protocol_target_resolution_count += 1
                 targets[scenario_id] = target
                 simulation.agent(native_id).target = target
-            simulation.iterate()
-            if simulation.removed_agents():
-                raise RuntimeError("JuPedSim unexpectedly removed an agent")
-            after_native = list(simulation.agents())
-            after_ids = {agent.id for agent in after_native}
-            if after_ids != expected_jupedsim_ids or len(after_native) != len(agents):
-                raise RuntimeError("JuPedSim agent set changed after a step")
+                target_assignment_count += 1
+            after_native = before_native
+            for native_substep_index in range(NATIVE_SUBSTEPS_PER_EXPERIMENT_STEP):
+                native_before = list(simulation.agents())
+                native_before_ids = {agent.id for agent in native_before}
+                if native_before_ids != expected_jupedsim_ids or len(native_before) != len(agents):
+                    raise RuntimeError("JuPedSim agent set changed before a native substep")
+                native_before_velocities = {
+                    agent.id: tuple(float(value) for value in agent.model.velocity)
+                    for agent in native_before
+                }
+                simulation.iterate()
+                native_iteration_count += 1
+                if simulation.removed_agents():
+                    raise RuntimeError("JuPedSim unexpectedly removed an agent")
+                after_native = list(simulation.agents())
+                after_ids = {agent.id for agent in after_native}
+                if after_ids != expected_jupedsim_ids or len(after_native) != len(agents):
+                    raise RuntimeError("JuPedSim agent set changed after a native substep")
+                for native_agent in after_native:
+                    scenario_id = jupedsim_to_scenario[native_agent.id]
+                    position = tuple(float(value) for value in native_agent.position)
+                    velocity = tuple(float(value) for value in native_agent.model.velocity)
+                    previous_velocity = native_before_velocities[native_agent.id]
+                    speed = math.hypot(*velocity)
+                    acceleration = math.dist(velocity, previous_velocity) / native_dt
+                    values = [*position, *velocity, *previous_velocity, speed, acceleration]
+                    if not all(math.isfinite(value) for value in values):
+                        raise RuntimeError(
+                            f"non-finite JuPedSim native substep state for agent {scenario_id}"
+                        )
+                    if speed > peak_native_speed["value"]:
+                        peak_native_speed = {
+                            "value": speed,
+                            "scenarioAgentId": scenario_id,
+                            "experimentStepIndex": step_index,
+                            "nativeSubstepIndex": native_substep_index,
+                        }
+                    if acceleration > peak_native_acceleration["value"]:
+                        peak_native_acceleration = {
+                            "value": acceleration,
+                            "scenarioAgentId": scenario_id,
+                            "experimentStepIndex": step_index,
+                            "nativeSubstepIndex": native_substep_index,
+                        }
+                    minimum_outer_boundary_clearance = min(
+                        minimum_outer_boundary_clearance,
+                        artificial_outer_boundary.distance(Point(position)),
+                    )
             after_by_scenario = {
                 jupedsim_to_scenario[agent.id]: {
                     "position": tuple(float(value) for value in agent.position),
@@ -425,29 +493,45 @@ def run(input_path: Path, output_path: Path, metadata_path: Path) -> None:
                         "proposedPosition": list(after["position"]),
                         "navigationTarget": list(targets[scenario_id]),
                         "commandVelocity": list(after["velocity"]),
-                        "realizedVelocity": list(after["velocity"]),
+                        "realizedVelocity": [
+                            (after["position"][0] - before["position"][0]) / experiment_dt,
+                            (after["position"][1] - before["position"][1]) / experiment_dt,
+                        ],
                         "arrived": arrived[scenario_id],
                     }
                 )
             record = {
                 "nativeEngineStepVersion": NATIVE_STEP_VERSION,
                 "stepIndex": step_index,
-                "time": (step_index + 1) * float(data["dt"]),
+                "time": (step_index + 1) * experiment_dt,
                 "agents": output_agents,
             }
             output.write(json.dumps(record, allow_nan=False, separators=(",", ":"), sort_keys=True))
             output.write("\n")
 
-    if simulation.iteration_count() != int(data["steps"]):
+    expected_native_iterations = int(data["steps"]) * NATIVE_SUBSTEPS_PER_EXPERIMENT_STEP
+    if simulation.iteration_count() != expected_native_iterations:
         raise RuntimeError("JuPedSim iteration count mismatch")
+    if native_iteration_count != expected_native_iterations:
+        raise RuntimeError("JuPedSim adapter native iteration count mismatch")
     metadata = {
         "runnerMetadataVersion": RUNNER_METADATA_VERSION,
         **package_info(),
         **geometry_metadata,
         "geometrySha256": data["geometrySha256"],
+        "experimentDt": experiment_dt,
+        "nativeJuPedSimDt": native_dt,
+        "nativeSubstepsPerExperimentStep": NATIVE_SUBSTEPS_PER_EXPERIMENT_STEP,
+        "nativeIterationCount": native_iteration_count,
+        "protocolTargetResolutionCount": protocol_target_resolution_count,
+        "targetAssignmentCount": target_assignment_count,
+        "targetHeldAcrossNativeSubsteps": True,
+        "peakNativeSpeed": peak_native_speed,
+        "peakNativeAcceleration": peak_native_acceleration,
+        "minimumArtificialOuterBoundaryClearance": minimum_outer_boundary_clearance,
         "directSteering": True,
         "journeyStageCount": 1,
-        "dt": float(data["dt"]),
+        "dt": experiment_dt,
         "steps": int(data["steps"]),
         "agentCount": len(agents),
         "scenarioToJuPedSimIds": [

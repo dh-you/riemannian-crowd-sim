@@ -21,17 +21,34 @@ import {
 } from "./externalProtocol";
 
 interface JuPedSimRunnerMetadata {
-  runnerMetadataVersion: 1;
+  runnerMetadataVersion: 2;
   jupedsimVersion: string;
   pythonVersion: string;
   geometrySha256: string;
   finalGeometrySha256: string;
+  experimentDt: number;
+  nativeJuPedSimDt: number;
+  nativeSubstepsPerExperimentStep: number;
+  nativeIterationCount: number;
+  protocolTargetResolutionCount: number;
+  targetAssignmentCount: number;
+  targetHeldAcrossNativeSubsteps: boolean;
+  peakNativeSpeed: JuPedSimPeakDiagnostic;
+  peakNativeAcceleration: JuPedSimPeakDiagnostic;
+  minimumArtificialOuterBoundaryClearance: number;
   directSteering: boolean;
   journeyStageCount: number;
   dt: number;
   steps: number;
   agentCount: number;
   scenarioToJuPedSimIds: Array<{ scenarioId: number; jupedsimId: number }>;
+}
+
+interface JuPedSimPeakDiagnostic {
+  value: number;
+  scenarioAgentId: number;
+  experimentStepIndex: number;
+  nativeSubstepIndex: number;
 }
 
 export class JuPedSimSfmEngine implements ExperimentEngine {
@@ -108,7 +125,27 @@ export class JuPedSimSfmEngine implements ExperimentEngine {
       }
       const finalStates = consumeNativeOutput(scenario, outputPath, "jupedSimSfm", sink);
       succeeded = true;
-      return { finalStates, totalSteps: fixedStepCount(scenario), provenance };
+      return {
+        finalStates,
+        totalSteps: fixedStepCount(scenario),
+        provenance,
+        artifactDiagnostics: {
+          numericalStability: {
+            diagnosticVersion: 1,
+            experimentDt: metadata.experimentDt,
+            nativeJuPedSimDt: metadata.nativeJuPedSimDt,
+            nativeSubstepsPerExperimentStep: metadata.nativeSubstepsPerExperimentStep,
+            nativeIterationCount: metadata.nativeIterationCount,
+            protocolTargetResolutionCount: metadata.protocolTargetResolutionCount,
+            targetAssignmentCount: metadata.targetAssignmentCount,
+            targetHeldAcrossNativeSubsteps: metadata.targetHeldAcrossNativeSubsteps,
+            peakNativeSpeedMetersPerSecond: metadata.peakNativeSpeed,
+            peakNativeAccelerationMetersPerSecondSquared: metadata.peakNativeAcceleration,
+            minimumArtificialOuterBoundaryClearanceMeters:
+              metadata.minimumArtificialOuterBoundaryClearance,
+          },
+        },
+      };
     } finally {
       if (succeeded) removeSuccessfulTemporaryDirectory(temporaryDirectory);
     }
@@ -155,7 +192,7 @@ function validateRunnerMetadata(
   if (!existsSync(path)) throw new Error("JuPedSim runner metadata is missing");
   const value = JSON.parse(readFileSync(path, "utf8")) as Partial<JuPedSimRunnerMetadata>;
   if (
-    value.runnerMetadataVersion !== 1
+    value.runnerMetadataVersion !== 2
     || value.jupedsimVersion !== "1.4.2"
     || value.geometrySha256 !== geometrySha256
     || value.directSteering !== true
@@ -165,6 +202,17 @@ function validateRunnerMetadata(
     || value.agentCount !== scenario.agents.length
     || typeof value.pythonVersion !== "string"
     || !/^[a-f0-9]{64}$/u.test(value.finalGeometrySha256 ?? "")
+    || value.experimentDt !== scenario.simulation.dt
+    || value.nativeJuPedSimDt !== scenario.simulation.dt / 2
+    || value.nativeSubstepsPerExperimentStep !== 2
+    || value.nativeIterationCount !== steps * 2
+    || value.protocolTargetResolutionCount !== steps * scenario.agents.length
+    || value.targetAssignmentCount !== steps * scenario.agents.length
+    || value.targetHeldAcrossNativeSubsteps !== true
+    || !validPeakDiagnostic(value.peakNativeSpeed, scenario, steps)
+    || !validPeakDiagnostic(value.peakNativeAcceleration, scenario, steps)
+    || !Number.isFinite(value.minimumArtificialOuterBoundaryClearance)
+    || (value.minimumArtificialOuterBoundaryClearance ?? 0) <= 0
     || !Array.isArray(value.scenarioToJuPedSimIds)
   ) {
     throw new Error("JuPedSim runner metadata is malformed or inconsistent");
@@ -181,4 +229,21 @@ function validateRunnerMetadata(
     throw new Error("JuPedSim runner ID mapping is incomplete or unstable");
   }
   return value as JuPedSimRunnerMetadata;
+}
+
+function validPeakDiagnostic(
+  value: JuPedSimPeakDiagnostic | undefined,
+  scenario: ExperimentScenario,
+  steps: number,
+): value is JuPedSimPeakDiagnostic {
+  return value !== undefined
+    && Number.isFinite(value.value)
+    && value.value >= 0
+    && scenario.agents.some((agent) => agent.id === value.scenarioAgentId)
+    && Number.isSafeInteger(value.experimentStepIndex)
+    && value.experimentStepIndex >= 0
+    && value.experimentStepIndex < steps
+    && Number.isSafeInteger(value.nativeSubstepIndex)
+    && value.nativeSubstepIndex >= 0
+    && value.nativeSubstepIndex < 2;
 }

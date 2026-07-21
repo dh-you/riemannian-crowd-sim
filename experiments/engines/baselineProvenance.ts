@@ -114,7 +114,8 @@ export function jupedSimProvenance(
     engineId: "jupedsim_sfm_engine_v1",
     engineAdapterVersion: JUPEDSIM_SFM_ADAPTER_VERSION,
     correctionMode: "native_none",
-    commandVelocityMeaning: "native JuPedSim SocialForceModel velocity after the iteration",
+    commandVelocityMeaning:
+      "final native JuPedSim SocialForceModel velocity after two deterministic internal substeps; realized velocity is displacement over the common experiment timestep",
     thirdPartyLockSha256: lockSha256(),
     upstreamProject: packageLock.project,
     upstreamRepository: packageLock.repository,
@@ -137,6 +138,11 @@ export function jupedSimProvenance(
       directSteering: true,
       directSteeringJourneyStageCount: 1,
       exactDt: scenario.simulation.dt,
+      experimentDt: scenario.simulation.dt,
+      nativeJuPedSimDt: scenario.simulation.dt / 2,
+      nativeSubstepsPerExperimentStep: 2,
+      internalIntegrationDescription:
+        "deterministic internal integration substepping for numerical stability of the stiff contact-force model",
       scenarioProvidedRadii: scenario.agents.map((agent) => ({
         id: agent.id,
         radius: agent.radius,
@@ -151,7 +157,8 @@ export function jupedSimProvenance(
     },
     limitations: [
       "Direct steering uses JuPedSim geometry-aware shortest-path wayfinding to the shared protocol target.",
-      "The package-default SocialForceModel parameters are untuned for these scenarios.",
+      "The package-default SocialForceModel force coefficients are untuned for these scenarios.",
+      "Each common experiment step uses two deterministic half-step native JuPedSim iterations; paper metrics sample only the common outer-step records.",
     ],
   };
 }

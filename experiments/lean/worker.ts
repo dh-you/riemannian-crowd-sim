@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { closeSync, existsSync, mkdirSync, openSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -57,7 +58,9 @@ export function executeAssignment(assignment: Assignment): RunRecord {
     const scenario = generateExperimentScenario({ ...assignment.scenario, split: "lean", seed: assignment.seed });
     const scenarioSource = serializeExperimentScenario(scenario); const scenarioPath = resolve(work, "scenario.json");
     writeFileSync(scenarioPath, scenarioSource, "utf8");
-    let metrics: RunMetrics; let artifactDirectory: string | null = null;
+    let metrics: RunMetrics;
+    let artifactDirectory: string | null = null;
+    let engineArtifactDiagnostics: Record<string, unknown> | undefined;
     if (assignment.ablation !== undefined) {
       const configSource = `${JSON.stringify(assignment.methodConfig, null, 2)}\n`;
       const config = parseRiemannianAblationConfig(JSON.parse(configSource) as unknown);
@@ -82,19 +85,38 @@ export function executeAssignment(assignment: Assignment): RunRecord {
         const runDirectory = resolve(root, "audit", "visuals", "runs", scenario.name, identity.methodKey);
         const result = runAuditedEngine(scenarioPath, methodPath, runDirectory);
         metrics = JSON.parse(readFileSync(result.metricsPath, "utf8")) as RunMetrics;
+        const manifest = JSON.parse(readFileSync(result.manifestPath, "utf8")) as {
+          engineArtifactDiagnostics?: Record<string, unknown>;
+        };
+        engineArtifactDiagnostics = manifest.engineArtifactDiagnostics;
         writeFileSync(resolve(scenarioDirectory, `${scenario.name}.json`), scenarioSource, "utf8");
         artifactDirectory = runDirectory;
       } else {
         const result = runExperiment({ scenarioPath, methodPath, outputDirectory: resolve(work, "out"),
           recordingInterval: Math.round(scenario.simulation.horizonSeconds / scenario.simulation.dt) });
         metrics = result.metrics;
+        engineArtifactDiagnostics = result.manifest.engineArtifactDiagnostics;
       }
     }
-    record = metricRecord(assignment, metrics, scenario.agents.length, artifactDirectory, (performance.now() - started) / 1000);
+    record = {
+      ...metricRecord(
+        assignment,
+        metrics,
+        scenario.agents.length,
+        artifactDirectory,
+        (performance.now() - started) / 1000,
+      ),
+      implementationCommit: readImplementationCommit(),
+      ...(engineArtifactDiagnostics === undefined ? {} : { engineArtifactDiagnostics }),
+    };
   } catch (error) { failure = error; }
   finally { rmSync(work, { recursive: true, force: true }); }
   if (record !== undefined) return validateWorkerRecord(record);
   return validateWorkerRecord(failureRecord(assignment, failure, (performance.now() - started) / 1000));
+}
+
+function readImplementationCommit(): string {
+  return execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 }
 
 export function metricRecord(assignment: Assignment, metrics: RunMetrics, agentCount: number, artifactDirectory: string | null, runtimeSeconds: number): RunRecord {

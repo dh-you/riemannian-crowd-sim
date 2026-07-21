@@ -18,7 +18,7 @@ import { containsNonFinite, writeJson } from "../../lean/audit/runUtils";
 import { packageViewerTrajectories } from "../../lean/worker";
 import type { RunMetrics } from "../../metrics/types";
 
-const DEFAULT_ROOT = resolve("results/jupedsim-integration/audit-v1");
+const DEFAULT_ROOT = resolve("results/jupedsim-integration/audit-v2");
 const METHOD_PATH = resolve("experiments/methods/jupedsim-sfm-default.json");
 const SEED = 400;
 

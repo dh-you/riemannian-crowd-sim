@@ -44,10 +44,10 @@
     }
   },
   "runtime": { "scenario": "circle", "agentCounts": [50, 100, 200], "seed": 300, "warmups": 1, "measuredRepetitions": 3, "jobs": 1 },
-  "outputs": { "root": "results/final-camera-ready-jupedsim",
-    "raw": "results/final-camera-ready-jupedsim/raw-runs.jsonl",
-    "summary": "results/final-camera-ready-jupedsim/summary.csv",
-    "auditRoot": "results/final-camera-ready-jupedsim/audit",
-    "benchmark": "results/final-camera-ready-jupedsim/concurrency-benchmark.json" },
-  "humanReviewGate": "results/final-camera-ready-jupedsim/audit/review-approved.txt"
+  "outputs": { "root": "results/final-camera-ready-jupedsim-v2",
+    "raw": "results/final-camera-ready-jupedsim-v2/raw-runs.jsonl",
+    "summary": "results/final-camera-ready-jupedsim-v2/summary.csv",
+    "auditRoot": "results/final-camera-ready-jupedsim-v2/audit",
+    "benchmark": "results/final-camera-ready-jupedsim-v2/concurrency-benchmark.json" },
+  "humanReviewGate": "results/final-camera-ready-jupedsim-v2/audit/review-approved.txt"
 }

@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { createJuPedSimGeometry } from "../../experiments/baselines/jupedsim/geometry";
 import { runExperiment, type RunExperimentResult } from "../../experiments/cli/runExperiment";
+import type { EngineStepRecord } from "../../experiments/engines/engineStep";
 import { generateBidirectionalScenario } from "../../experiments/generation/bidirectional";
 import { generateBottleneckScenario } from "../../experiments/generation/bottleneck";
 import { generateCircleAntipodalScenario } from "../../experiments/generation/circleAntipodal";
@@ -16,9 +17,25 @@ import {
   type ExperimentScenario,
 } from "../../experiments/protocol/schema";
 import type { TrajectoryRecord } from "../../experiments/output/types";
+import { runAuditedEngine } from "../../experiments/lean/audit/auditRun";
+import type { RunMetrics } from "../../experiments/metrics/types";
 
 const temporaryDirectories: string[] = [];
 const METHOD_PATH = resolve("experiments", "methods", "jupedsim-sfm-default.json");
+const GOAL_METHOD_PATH = resolve("experiments", "methods", "goal-projection.json");
+
+interface StabilityDiagnostic {
+  experimentDt: number;
+  nativeJuPedSimDt: number;
+  nativeSubstepsPerExperimentStep: number;
+  nativeIterationCount: number;
+  protocolTargetResolutionCount: number;
+  targetAssignmentCount: number;
+  targetHeldAcrossNativeSubsteps: boolean;
+  peakNativeSpeedMetersPerSecond: { value: number };
+  peakNativeAccelerationMetersPerSecondSquared: { value: number };
+  minimumArtificialOuterBoundaryClearanceMeters: number;
+}
 
 afterEach(() => {
   for (const directory of temporaryDirectories.splice(0)) {
@@ -73,6 +90,85 @@ describe("real pinned JuPedSim 1.4.2 SocialForceModel integration", () => {
         .toEqual(scenario.agents.map((agent) => agent.id));
     }
     expect(result.summary.nonFiniteValueOccurred).toBe(false);
+  });
+
+  it("stabilizes circle N=50 seed 107 at the unchanged outer clock and fixed geometry", () => {
+    const scenario = generateCircleAntipodalScenario("test", 107, 50);
+    const scenarioBytes = serializeExperimentScenario(scenario);
+    const geometry = createJuPedSimGeometry(scenario);
+    expect(geometry.spec.margin).toBe(5);
+    const result = runAuditedScenario(scenario);
+    expect(result.steps).toHaveLength(1800);
+    expect(result.steps.at(-1)?.time).toBe(30);
+    expect(result.metrics.completion.successFraction).toBe(1);
+    expect(JSON.stringify(result.steps)).not.toMatch(/NaN|Infinity/u);
+    const diagnostic = stabilityDiagnostic(result.manifest);
+    expect(diagnostic.peakNativeSpeedMetersPerSecond.value).toBeLessThan(5);
+    expect(diagnostic.peakNativeAccelerationMetersPerSecondSquared.value).toBeLessThan(500);
+    expect(diagnostic.minimumArtificialOuterBoundaryClearanceMeters).toBeGreaterThan(0);
+    const [lowerLeft, , upperRight] = geometry.spec.outerPolygon;
+    for (const step of result.steps) {
+      for (const agent of step.agents) {
+        expect(agent.postCorrectionPosition[0]).toBeGreaterThan(lowerLeft[0]);
+        expect(agent.postCorrectionPosition[0]).toBeLessThan(upperRight[0]);
+        expect(agent.postCorrectionPosition[1]).toBeGreaterThan(lowerLeft[1]);
+        expect(agent.postCorrectionPosition[1]).toBeLessThan(upperRight[1]);
+      }
+    }
+    expect(serializeExperimentScenario(scenario)).toBe(scenarioBytes);
+    expect(createJuPedSimGeometry(scenario)).toEqual(geometry);
+  });
+
+  it("emits one outer record after exactly two held-target native substeps", () => {
+    const scenario = shortened(loadFixture("free-space"), 12);
+    const scenarioBytes = serializeExperimentScenario(scenario);
+    const method = loadMethod();
+    const input = createJuPedSimInput(scenario, method);
+    const result = runAuditedScenario(scenario);
+    const diagnostic = stabilityDiagnostic(result.manifest);
+    expect(diagnostic.experimentDt).toBe(scenario.simulation.dt);
+    expect(diagnostic.nativeJuPedSimDt).toBe(scenario.simulation.dt / 2);
+    expect(diagnostic.nativeSubstepsPerExperimentStep).toBe(2);
+    expect(diagnostic.nativeIterationCount).toBe(24);
+    expect(diagnostic.protocolTargetResolutionCount).toBe(12);
+    expect(diagnostic.targetAssignmentCount).toBe(12);
+    expect(diagnostic.targetHeldAcrossNativeSubsteps).toBe(true);
+    expect(result.steps.map((step) => step.stepIndex)).toEqual(
+      Array.from({ length: 12 }, (_, index) => index),
+    );
+    expect(result.steps.map((step) => step.time)).toEqual(
+      Array.from({ length: 12 }, (_, index) => (index + 1) * scenario.simulation.dt),
+    );
+    for (const step of result.steps) {
+      const agent = step.agents[0];
+      expect(agent.navigationTarget).toEqual(scenario.agents[0].goal);
+      expect(agent.realizedVelocity[0]).toBeCloseTo(
+        (agent.postCorrectionPosition[0] - agent.positionBefore[0]) / scenario.simulation.dt,
+        12,
+      );
+      expect(agent.realizedVelocity[1]).toBeCloseTo(
+        (agent.postCorrectionPosition[1] - agent.positionBefore[1]) / scenario.simulation.dt,
+        12,
+      );
+    }
+    expect(input.parameters).toEqual(method.parameters);
+    expect(input.geometry.margin).toBe(5);
+    expect(input.agents[0].radius).toBe(scenario.agents[0].radius);
+    expect(input.agents[0].preferredSpeed).toBe(scenario.agents[0].preferredSpeed);
+    expect(input.navigation).toEqual({ type: "point_goal" });
+    expect(input.steps * input.dt).toBe(scenario.simulation.horizonSeconds);
+    expect(serializeExperimentScenario(scenario)).toBe(scenarioBytes);
+  });
+
+  it("does not alter non-JuPedSim scientific output", () => {
+    const scenario = shortened(generatePairwiseScenario("crossing", "test", 19), 24);
+    const first = runScenario(scenario, GOAL_METHOD_PATH);
+    createJuPedSimInput(scenario, loadMethod());
+    const second = runScenario(scenario, GOAL_METHOD_PATH);
+    expect(readFileSync(second.trajectoryPath, "utf8"))
+      .toBe(readFileSync(first.trajectoryPath, "utf8"));
+    expect(second.metrics).toEqual(first.metrics);
+    expect(second.manifest.engineArtifactDiagnostics).toBeUndefined();
   });
 
   it("keeps corridor centers between the expanded walls and reports directional point goals", () => {
@@ -145,6 +241,11 @@ describe("real pinned JuPedSim 1.4.2 SocialForceModel integration", () => {
     expect(provenance.directSteering).toBe(true);
     expect(provenance.directSteeringJourneyStageCount).toBe(1);
     expect(provenance.exactDt).toBe(scenario.simulation.dt);
+    expect(provenance.experimentDt).toBe(scenario.simulation.dt);
+    expect(provenance.nativeJuPedSimDt).toBe(scenario.simulation.dt / 2);
+    expect(provenance.nativeSubstepsPerExperimentStep).toBe(2);
+    expect(provenance.internalIntegrationDescription)
+      .toMatch(/deterministic internal integration substepping/u);
     expect(provenance.completionProtocolVersion).toBe("completion-v2");
     expect(provenance.scenarioProvidedRadii).toEqual([{ id: 0, radius: scenario.agents[0].radius }]);
     expect(provenance.scenarioProvidedPreferredSpeeds)
@@ -158,16 +259,54 @@ function loadMethod(): JuPedSimSfmMethodConfig {
   ) as JuPedSimSfmMethodConfig;
 }
 
-function runScenario(scenario: ExperimentScenario): RunExperimentResult {
+function runScenario(
+  scenario: ExperimentScenario,
+  methodPath = METHOD_PATH,
+): RunExperimentResult {
   const directory = mkdtempSync(resolve(tmpdir(), "jupedsim-baseline-test-"));
   temporaryDirectories.push(directory);
   const scenarioPath = resolve(directory, "scenario.json");
   writeFileSync(scenarioPath, serializeExperimentScenario(scenario), "utf8");
   return runExperiment({
     scenarioPath,
-    methodPath: METHOD_PATH,
+    methodPath,
     outputDirectory: resolve(directory, "run"),
   });
+}
+
+function runAuditedScenario(scenario: ExperimentScenario): {
+  steps: EngineStepRecord[];
+  metrics: RunMetrics;
+  manifest: Record<string, unknown>;
+} {
+  const directory = mkdtempSync(resolve(tmpdir(), "jupedsim-audit-test-"));
+  temporaryDirectories.push(directory);
+  const scenarioPath = resolve(directory, "scenario.json");
+  writeFileSync(scenarioPath, serializeExperimentScenario(scenario), "utf8");
+  const artifacts = runAuditedEngine(
+    scenarioPath,
+    METHOD_PATH,
+    resolve(directory, "run"),
+  );
+  return {
+    steps: readFileSync(artifacts.trajectoryPath, "utf8").trim().split(/\r?\n/u)
+      .filter(Boolean)
+      .map((line) => JSON.parse(line) as EngineStepRecord),
+    metrics: JSON.parse(readFileSync(artifacts.metricsPath, "utf8")) as RunMetrics,
+    manifest: JSON.parse(readFileSync(artifacts.manifestPath, "utf8")) as Record<string, unknown>,
+  };
+}
+
+function stabilityDiagnostic(manifest: Record<string, unknown>): StabilityDiagnostic {
+  const artifacts = manifest.engineArtifactDiagnostics;
+  if (artifacts === null || typeof artifacts !== "object" || Array.isArray(artifacts)) {
+    throw new Error("missing JuPedSim artifact diagnostics");
+  }
+  const diagnostic = (artifacts as Record<string, unknown>).numericalStability;
+  if (diagnostic === null || typeof diagnostic !== "object" || Array.isArray(diagnostic)) {
+    throw new Error("missing JuPedSim numerical-stability diagnostic");
+  }
+  return diagnostic as unknown as StabilityDiagnostic;
 }
 
 function loadFixture(name: string): ExperimentScenario {
