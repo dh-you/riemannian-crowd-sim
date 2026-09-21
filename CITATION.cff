@@ -9,7 +9,7 @@ authors:
 repository-code: "https://github.com/dh-you/riemannian-crowd-sim"
 version: "paper-eumas-2026-v1.0"
 preferred-citation:
-  type: inproceedings
+  type: conference-paper
   title: "Agent-Induced Riemannian Metric Fields for Crowd Simulation"
   authors:
     - family-names: You
