@@ -1,4 +1,4 @@
-name: Research verification
+name: CI
 on:
   push:
     branches: [main, research-publication]
@@ -7,7 +7,7 @@ on:
 permissions:
   contents: read
 jobs:
-  core:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,33 +15,6 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
       - run: npm ci
       - run: npm test
       - run: npm run build
-      - run: npm run paper:verify
-  native-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - uses: msys2/setup-msys2@v2
-        with:
-          msystem: UCRT64
-          install: mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja
-      - name: Add native compiler to PATH
-        shell: pwsh
-        run: '"C:\msys64\ucrt64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append'
-      - run: npm ci
-      - run: npm run baselines:bootstrap
-      - run: npm run baselines:build
-      - run: npm run baselines:verify
-      - run: npm run test:baselines

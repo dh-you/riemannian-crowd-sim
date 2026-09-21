@@ -1,78 +1,55 @@
 # Scientific simulation core
 
-## Scope and separation
+`src/core/` is the pure numerical implementation used by the headless scientific runners. It has no Three.js, DOM, rendering, or native-code dependencies. The browser demo under `src/demo/` remains a separate interactive implementation.
 
-`src/core` is the exact, pure numerical implementation used by headless scientific runs. It has no Three.js, DOM, mesh, animation-loop, or rendering dependencies. `src/demo/sim` remains the legacy interactive browser demonstrator: its behavior is intentionally unchanged, and its parameters and implementation must not be interpreted as the paper method.
+The two supported controllers are:
 
-The stable scientific controller identifier is `conditioned_riemannian_metric_v1`. Position, radius, interaction range, and wall thickness use meters; velocity and preferred speed use meters per second; time and time constants use seconds.
+- `conditioned_riemannian_metric_v1`: the agent-induced Riemannian controller.
+- `euclidean_goal_steering_v1`: direct Euclidean goal steering used as the lightweight comparison method.
 
-## Controller definition
+Positions and radii are in metres, velocities in metres per second, and time values in seconds.
 
-For controlled agent $i$ and neighbor $j$, the relative position, distance, and radial unit vector are
+## Riemannian controller
+
+For controlled agent $i$ and neighbor $j$,
 
 \[
 r_{ij}=p_j-p_i,\qquad d_{ij}=\lVert r_{ij}\rVert,\qquad \hat r_{ij}=r_{ij}/d_{ij}.
 \]
 
-When $d_{ij}<10^{-9}$ m, the radial direction is not well-defined. The implementation skips that neighbor's anisotropic metric contribution, increments `coincidentNeighborContributionsSkipped`, and leaves any overlap to the optional correction layer.
-
-The radial-tangential tensor is
+The anisotropic radial/tangential tensor is
 
 \[
 A_{ij}=\lambda_t I+(\lambda_r-\lambda_t)\hat r_{ij}\hat r_{ij}^{\mathsf T}.
 \]
 
-It has radial eigenvalue `lambdaR` and tangential eigenvalue `lambdaT`. The controller validates `lambdaR > 0`, `lambdaT > 0`, `alpha >= 0`, and `sigma > 0`. Every agent radius and preferred speed must also be positive.
-
-The compactly supported Wendland $C^2$ kernel is
+Neighbor influence is compactly supported with the Wendland $C^2$ kernel
 
 \[
 \phi(s)=\begin{cases}(1+4s)(1-s)^4,&0\leq s<1,\\0,&s\geq1.\end{cases}
 \]
 
-Negative or non-finite normalized distances are rejected.
-
-The signed distance rate and closing gate are
-
-\[
-\dot d_{ij}=\hat r_{ij}^{\mathsf T}(v_j-v_i),\qquad
-c_{ij}=\operatorname{smoothstep}_{[0,s_i]}(-\dot d_{ij}).
-\]
-
-Thus separating and co-moving neighbors have zero closing influence, while sufficiently fast approach saturates at one. Smoothstep is the clamped cubic $S(t)=3t^2-2t^3$.
-
-Front/back visibility is defined only by the current goal direction, not current velocity:
-
-\[
-h_i=\frac{q_i-p_i}{\lVert q_i-p_i\rVert},\qquad
-f_{ij}=\operatorname{smoothstep}_{[-1,1]}(h_i^{\mathsf T}\hat r_{ij}).
-\]
-
-Directly ahead, lateral, and directly behind map to 1, 0.5, and 0. There is no global rotational bias, velocity-heading convention, front-gate floor, or gate-width parameter in the scientific controller.
-
-The effective metric is
+and modulated by closing-speed and front/back visibility gates. The resulting metric is
 
 \[
 G_i=I+\sum_{j\ne i}\alpha\,\phi(d_{ij}/\sigma)c_{ij}f_{ij}A_{ij}.
 \]
 
-All contributions come from one immutable state snapshot. The deterministic spatial hash returns candidates in ascending agent-ID order, and contributions are accumulated in that order, independent of the input array order.
-
-For the goal potential $\Phi_i(p)=\lVert p-q_i\rVert^2$, the gradient is $g_i=2(p_i-q_i)$. The implementation solves the symmetric $2\times2$ system
+For the goal potential $\Phi_i(p)=\lVert p-q_i\rVert^2$ with gradient $g_i=2(p_i-q_i)$, the implementation solves
 
 \[
 G_i x_i=g_i
 \]
 
-with determinant, symmetry, positive-definiteness, and finite-value guards; it does not explicitly form an inverse. The target velocity is
+without explicitly forming an inverse, then commands
 
 \[
 v_i^\star=-s_i\frac{x_i}{\sqrt{g_i^{\mathsf T}x_i}}.
 \]
 
-For every non-goal state, $\sqrt{(v_i^\star)^{\mathsf T}G_i v_i^\star}=s_i$. With $G_i=I$, the result points exactly at the goal with Euclidean magnitude $s_i$. Within `goalTolerance`, the controller target is zero.
+The solver checks symmetry, positive-definiteness, determinant magnitude, and finite values. Coincident neighbors whose radial direction is undefined are skipped in the anisotropic contribution and recorded in diagnostics.
 
-## Time integration and synchronization
+## Time integration
 
 Velocity smoothing uses elapsed physical time:
 
@@ -81,84 +58,43 @@ Velocity smoothing uses elapsed physical time:
 v_i^{\mathrm{smooth}}=\eta v_i+(1-\eta)v_i^\star.
 \]
 
-For `velocityTimeConstant = 0`, $\eta=0$ and target tracking is immediate. An agent that begins a step inside the closed goal-tolerance disk is held stationary before correction: both target and smoothed velocity are zero, its pre-correction position equals its old position, and its intended displacement is zero regardless of residual incoming velocity.
+All agents are stepped synchronously from an immutable state snapshot. Neighbor candidates are processed deterministically in ascending agent-ID order. Goal entry is handled with a deterministic segment-circle intersection so a fixed timestep cannot pass completely through the goal region.
 
-For an agent that begins outside the goal disk, the nominal pre-correction position is $p_i+\Delta t\,v_i^{\mathrm{smooth}}$. If the segment from the old position to that proposal intersects the closed goal disk, a deterministic analytic segment-circle solve truncates motion at the first intersection. This prevents a fixed step from passing completely through the goal region. The diagnostic `smoothedVelocity` remains the nominal smoothed velocity, while `preCorrectionPosition` and `intendedDisplacement` describe the truncated motion actually applied before correction.
-
-Every fixed step snapshots all agents, builds neighbors from that snapshot, computes all metrics and targets from it, computes all smoothed velocities and pre-correction positions, measures contacts, applies optional corrections, measures contacts again, and only then commits all ID-sorted states. Arrival is recomputed from each post-correction physical position and is not a permanent latch. Correction may therefore push an otherwise arrived agent outside the goal region; that agent becomes unarrived and resumes controller motion on the next step.
-
-The realized velocity always records the actual final motion, including a truncated arrival step or correction displacement; it is not overwritten with zero when the agent reaches the goal:
+Realized velocity is always computed from the final physical displacement,
 
 \[
 v_i^{\mathrm{realized}}=(p_i^{\mathrm{post}}-p_i^{\mathrm{old}})/\Delta t.
 \]
 
-Step indices are zero-based, while the reported step time is the post-step physical time. A horizon runs `horizonSeconds / dt` steps when that ratio is numerically integral; otherwise it runs the greatest whole number of fixed steps that does not exceed the horizon. `summary.json` reports the actual simulated duration.
-
 ## Optional correction layer
 
-Correction is a numerical safeguard and is not part of the claimed collision-avoidance controller. It may be disabled and is measured separately.
+Position correction is a numerical safeguard, not part of the claimed avoidance controller. Agent-agent overlap correction uses fixed-count Jacobi passes with deterministic pair ordering. Finite thick wall segments use closest-point projection with agent radius, half wall thickness, and configured padding.
 
-Agent-agent correction uses fixed-count Jacobi passes. Overlapping pairs are sorted by `(minId, maxId)`, contribute equal-and-opposite displacements toward a minimum distance of `radius_i + radius_j + padding`, and are applied simultaneously. Exactly coincident agents receive a deterministic direction derived from their IDs; no randomness is used.
+Diagnostics separately report pre/post-correction overlap, wall contact, penetration, intended displacement, correction displacement, and correction dependence. Correction can be disabled.
 
-Walls are finite line segments with thickness. Closest-point projection enforces clearance
+## Determinism and validation
 
-```text
-agent.radius + wall.thickness / 2 + padding
-```
+The core rejects non-finite values, invalid radii or speeds, malformed vectors, unsupported controller IDs, invalid wall segments, and invalid controller parameters rather than repairing them with defaults. Simulation order does not depend on input agent-array order.
 
-Wall contributions in each pass are also accumulated before simultaneous application. An agent exactly on a wall centerline receives a deterministic normal derived from stable agent and wall IDs. Zero-length wall segments are rejected by scenario validation.
+Core unit tests live in `tests/core/` and cover controller behavior, corrections, determinism, formulation, runner behavior, simulation, and validation.
 
-Because correction is applied after goal handling, it may displace an agent that was held inside its goal region. Post-correction arrival then reflects whether the final position remains inside that region.
+## Running the core
 
-Diagnostics report physical overlap and wall penetration without counting padding. Agent-agent clearance/penetration and agent-wall clearance/penetration have separate fields. Legacy combined aliases remain available for Stage A output compatibility, but the experiment protocol does not use them as scientific safety metrics. Correction counts can therefore be nonzero when padding alone triggered a safeguard. Displacement totals are sums over agents of Euclidean displacement magnitudes applied by each correction layer. The safe correction ratio is
+Install dependencies and run the scientific checks with:
 
-\[
-C_{\mathrm{rel}}=D_{\mathrm{correction}}/(D_{\mathrm{intended}}+10^{-12}\text{ m}).
-\]
-
-No zero denominator or non-finite result is silently replaced.
-
-## Scenario format
-
-Scenarios are validated JSON objects with `schemaVersion: 1`, a name and integer seed, simulation settings, the exact controller ID and parameters, agents, and finite wall segments. See `experiments/scenarios/free-space.json` and `experiments/scenarios/pairwise-offset.json`.
-
-Agent entries contain `id`, `radius`, `preferredSpeed`, `position`, `velocity`, and `goal`; optional `arrived` defaults to `false`. Wall entries contain a unique integer `id`, `start`, `end`, and nonnegative `thickness`. Agent IDs must be unique. Vectors must contain exactly two finite numbers. Malformed input, non-finite values, nonpositive timesteps, negative horizons, invalid radii or speeds, invalid parameters, duplicate IDs, invalid wall segments, and unsupported schema or controller IDs are rejected rather than repaired with defaults.
-
-`simulation.recordingInterval` is an optional positive integer. It defaults to one (every step), and the CLI `--record-every N` flag overrides it.
-
-## Running and outputs
-
-Install, type-check/build, test, and run the smoke suite with:
-
-```bash
+```sh
 npm ci
-npm run build
 npm test
+npm run build
 npm run core:smoke
 ```
 
-Run a scenario headlessly with:
+Run a standalone scenario with:
 
-```bash
+```sh
 npm run core:run -- --scenario experiments/scenarios/pairwise-offset.json --out results/pairwise-offset
 ```
 
-The output directory contains:
+The runner writes a manifest, streamed trajectory JSONL, and summary diagnostics under the selected output directory. Generated `results/` content is not tracked.
 
-- `manifest.json`: scenario/controller identity, exact parameters, timestep, horizon, seed, Node and OS metadata, Git SHA when available, timestamp, arguments, and recording interval.
-- `trajectory.jsonl`: one object per recorded post-step state, with ID-sorted agents, position, realized and target velocities, arrival state, and pre/post correction totals.
-- `summary.json`: step count and duration, arrival count/fraction, separate agent and wall clearances/penetrations, overlap exposure in pair-seconds, penetration-depth exposure in meter-seconds, intended and correction displacement totals, correction ratio, finite-value status, and ID-sorted final states.
-
-These are infrastructure diagnostics and preliminary run outputs, not final paper metrics or experimental claims. Generated `results/` content is ignored by Git.
-
-Trajectory records are streamed incrementally through `trajectory.jsonl.tmp`; the runner does not retain the full trajectory in memory. After a successful simulation and metadata write, it closes the temporary file and atomically renames it to `trajectory.jsonl`. Failed runs remove temporary and finalized output artifacts when possible while preserving the original failure.
-
-The controller uses local spatial queries, but full contact measurement and positional correction have not been optimized with the same locality. They are not a basis for an $O(Nm)$ full-step performance claim. Later performance experiments must time the controller, diagnostics, and correction layers separately unless the latter layers are also optimized.
-
-## Paper reproduction
-
-The frozen four-method study uses this core plus native ORCA and JuPedSim
-adapters. See [reproduction.md](reproduction.md) and
-[experiment-protocol.md](experiment-protocol.md). The standalone core commands
-above remain diagnostic examples; use the frozen study for paper comparisons.
+For the generic generate → run → aggregate experiment layer, see [`experiment-protocol.md`](experiment-protocol.md). The publication-era evidence and external baselines are archived in the `paper-eumas-2026-v1.0` release/tag rather than current `main`.
