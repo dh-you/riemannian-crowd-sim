@@ -2,9 +2,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   base: '/riemannian-crowd-sim/',
-  test: {
-    exclude: ['tests/baselines/**', '**/node_modules/**', '**/dist/**'],
-  },
   build: {
     rollupOptions: {
       input: {

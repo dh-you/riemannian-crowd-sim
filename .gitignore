@@ -17,9 +17,6 @@ coverage/
 .env.*
 !.env.example
 *.local
-.venv/
-venv/
-env/
 *.tmp
 *.temp
 *.bak
@@ -28,13 +25,6 @@ env/
 /results/
 /experiments/tmp/
 /experiments/generated/
-/experiments/third_party/src/
-/experiments/third_party/build/
-/experiments/third_party/venv/
-/experiments/third_party/jupedsim-venv/
-/results/baseline-*/
-__pycache__/
-*.py[cod]
 
 # Editor directories and files
 .vscode/*
