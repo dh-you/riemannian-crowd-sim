@@ -133,6 +133,10 @@ def main():
         for viewer in ["viewer", "viewer-full-rate"]:
             for name in ["index.html", "review-data.js", "viewer.js", "viewer.css"]:
                 require((root / "audit" / viewer / name).is_file(), f"Missing {viewer}/{name}")
+        portable = root / "audit/viewer-full-rate-portable"
+        require((portable / "index.html").is_file(), "Portable full-rate viewer missing")
+        require(len(list((portable / "runs").glob("*.html"))) == 20, "Expected 20 portable full-rate pages")
+        require(len(list((portable / "runs").glob("*.js"))) == 20, "Expected 20 full-rate datasets")
     print(json.dumps({"status": "PASS", "checksummedFiles": checked, **report}, indent=2))
 
 

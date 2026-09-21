@@ -139,18 +139,18 @@
   function buildTransform(canvasWidth, canvasHeight) {
     const scenario = currentGroup().scenario;
     const run = currentRun();
-    const points = [];
-    for (const agent of scenario.agents) points.push(agent.position, agent.goal);
-    for (const wall of scenario.walls) points.push(wall.start, wall.end);
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    const includePoint = (point) => {
+      minX = Math.min(minX, point[0]); maxX = Math.max(maxX, point[0]);
+      minY = Math.min(minY, point[1]); maxY = Math.max(maxY, point[1]);
+    };
+    for (const agent of scenario.agents) { includePoint(agent.position); includePoint(agent.goal); }
+    for (const wall of scenario.walls) { includePoint(wall.start); includePoint(wall.end); }
     for (const step of run.steps) {
       for (const agent of step.agents) {
-        points.push(agent.preCorrectionPosition, agent.postCorrectionPosition);
+        includePoint(agent.preCorrectionPosition); includePoint(agent.postCorrectionPosition);
       }
     }
-    let minX = Math.min(...points.map((point) => point[0]));
-    let maxX = Math.max(...points.map((point) => point[0]));
-    let minY = Math.min(...points.map((point) => point[1]));
-    let maxY = Math.max(...points.map((point) => point[1]));
     const physicalMargin = Math.max(
       0.5,
       ...scenario.agents.map((agent) => agent.radius * 2),

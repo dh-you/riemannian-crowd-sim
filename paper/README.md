@@ -18,6 +18,9 @@ compared with Figures 1–2 in the author proof. No publisher proof is distribut
 Medians across 20 runs per pairwise setting and 10 per dense setting. Completion time
 is conditional on completion. Overlap is pair-seconds per agent-second; penetration is metres.
 
+The JuPedSim corridor completion-time median uses nine non-null runs out of ten;
+one run has no completed agents. The CSV preserves this conditional sample size.
+
 | Scenario | Method | Completion | T/T0 | Raw overlap | Raw penetration | RMS acc. |
 |---|---|---:|---:|---:|---:|---:|
 | head-on | Ours | 1.000 | 1.05 | .000 | .000 | 2.48 |
@@ -53,3 +56,17 @@ for the 20 full audit trajectories and both viewers. See
 The historical review record approves only the archived trajectories. New simulations
 require their own review. PySocialForce entries in original build manifests are retained
 as historical environment metadata; the published assignments use JuPedSim.
+
+## Publication cleanup checks
+
+`verification/scientific-regression.json` records agreement of all 20 seed-0
+trajectories (39,600 complete engine-step records) and scalar scientific metrics
+with the frozen reference. The report identifies the tested cleanup commit;
+subsequent publication changes concern viewer packaging and documentation.
+`verification/portable-viewer.json` records browser checks of all 20 full-rate
+pages, including pre/post selection and seeking to the final frame.
+
+The release additionally provides `audit/viewer-full-rate-portable/index.html`.
+It loads one trajectory per page and avoids the original viewer's large-array
+stack overflow. The original full-rate and sampled viewers remain unchanged
+inside the archive. Viewer checks do not grant human approval to new runs.

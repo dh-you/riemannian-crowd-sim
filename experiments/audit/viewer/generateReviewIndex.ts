@@ -108,6 +108,8 @@ export interface ReviewIndexOptions {
   auditRoot?: string;
   outputDirectory?: string;
   trajectoryFilename?: string;
+  /** One run per page avoids loading every full-rate trajectory into browser memory. */
+  splitRuns?: boolean;
 }
 
 export interface ReviewIndexResult {
@@ -248,6 +250,7 @@ export function generateReviewIndex(options: ReviewIndexOptions = {}): ReviewInd
   }
 
   const groups = new Map<string, ViewerScenarioGroup>();
+  const runPages: Array<{ path: string; label: string }> = [];
   let stepCount = 0;
   for (const trajectoryPath of trajectoryPaths) {
     const runDirectory = dirname(trajectoryPath);
@@ -309,6 +312,24 @@ export function generateReviewIndex(options: ReviewIndexOptions = {}): ReviewInd
       })),
     });
     groups.set(groupKey, group);
+    if (options.splitRuns) {
+      const run = group.runs[0];
+      const pageName = `run-${String(runPages.length + 1).padStart(2, "0")}`;
+      const pageDirectory = resolve(outputDirectory, "runs");
+      mkdirSync(pageDirectory, { recursive: true });
+      const staticDirectory = dirname(fileURLToPath(import.meta.url));
+      const html = readFileSync(resolve(staticDirectory, "index.html"), "utf8")
+        .replace('href="viewer.css"', 'href="../viewer.css"')
+        .replace('src="review-data.js"', `src="${pageName}.js"`)
+        .replace('src="viewer.js"', 'src="../viewer.js"')
+        .replace('<body>', '<body><a href="../index.html" style="padding:12px;display:block">All full-rate trajectories</a>');
+      writeFileSync(resolve(pageDirectory, `${pageName}.html`), html, "utf8");
+      writeFileSync(resolve(pageDirectory, `${pageName}.js`),
+        `globalThis.LEAN_REVIEW_DATA = ${JSON.stringify({ reviewDataVersion: 1, status: "PENDING HUMAN REVIEW", scenarios: [group] })};\n`, "utf8");
+      runPages.push({ path: `runs/${pageName}.html`, label: `${scenario.name} - ${run.methodLabel}` });
+      // Release trajectory references before the next run is parsed.
+      group.runs = [];
+    }
   }
 
   const scenarioGroups = [...groups.values()]
@@ -325,6 +346,15 @@ export function generateReviewIndex(options: ReviewIndexOptions = {}): ReviewInd
   const staticDirectory = dirname(fileURLToPath(import.meta.url));
   for (const name of ["index.html", "viewer.css", "viewer.js"] as const) {
     copyFileSync(resolve(staticDirectory, name), resolve(outputDirectory, name));
+  }
+  if (options.splitRuns) {
+    const escape = (value: string) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    writeFileSync(resolve(outputDirectory, "index.html"),
+      '<!doctype html><html lang="en"><meta charset="utf-8"><title>Full-rate paper trajectories</title>' +
+      '<body style="font-family:system-ui;max-width:1000px;margin:40px auto;padding:16px"><h1>Full-rate paper trajectories</h1>' +
+      '<p>Each page loads one original trajectory at its full recorded rate. Choose a run below. Viewing does not record human approval.</p><ul>' +
+      runPages.map(page => `<li><a href="${page.path}">${escape(page.label)}</a></li>`).join("\n") + '</ul></body></html>\n', "utf8");
+    return { indexPath: resolve(outputDirectory, "index.html"), scenarioCount: groups.size, runCount: runPages.length, stepCount };
   }
   const reviewData = {
     reviewDataVersion: 1,
@@ -440,6 +470,7 @@ function main(): void {
       auditRoot: parseOption("--audit-root"),
       outputDirectory: parseOption("--out"),
       trajectoryFilename: parseOption("--trajectory-file"),
+      splitRuns: process.argv.includes("--split-runs"),
     });
     console.log(
       `audit:viewer indexed ${result.runCount} runs across ${result.scenarioCount} scenarios (${result.stepCount} steps).`,

@@ -33,6 +33,9 @@ def main():
         shutil.copyfile(source / name, stage / name)
     shutil.copytree(source / "audit", stage / "audit")
     shutil.copytree(paper, stage / "paper")
+    subprocess.run(["node", "--import", "tsx", "experiments/audit/viewer/generateReviewIndex.ts",
+                    "--audit-root", str(stage / "audit"), "--out", str(stage / "audit/viewer-full-rate-portable"),
+                    "--trajectory-file", "engine-steps-full.jsonl", "--split-runs"], cwd=REPO, check=True)
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip()
     metadata = {"releaseTag": tag, "scientificReferenceCommit": REFERENCE,
                 "publicationCommit": commit, "historicalProvenancePreserved": True,
@@ -42,7 +45,8 @@ def main():
     (stage / "README.txt").write_text(
         "Paper evidence: Agent-Induced Riemannian Metric Fields for Crowd Simulation\n"
         "DOI: 10.1007/978-3-032-39395-1_42\n"
-        "Open audit/viewer/index.html or audit/viewer-full-rate/index.html locally.\n"
+        "Open audit/viewer/index.html or audit/viewer-full-rate-portable/index.html locally.\n"
+        "The original monolithic full-rate viewer is preserved at audit/viewer-full-rate but can exceed browser memory.\n"
         "Use the repository verifier: python experiments/paper/verify.py --archive-root <this-directory>\n"
         "Historical absolute paths are provenance only. The archive layout and SHA256SUMS locate portable copies.\n"
         "See paper/README.md for table/figure mapping and the repository docs/reproduction.md for new runs.\n",

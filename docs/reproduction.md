@@ -34,8 +34,10 @@ then use `Expand-Archive <archive.zip> <destination>`.
 
 Run `python experiments/paper/verify.py --archive-root <destination>/paper-eumas-2026-v1.0`
 to verify the extracted archive. Open `audit/viewer/index.html` inside that folder
-for sampled trajectories, or `audit/viewer-full-rate/index.html` for full-rate
-trajectories. Both viewers embed their data and work locally without a server.
+for sampled trajectories, or `audit/viewer-full-rate-portable/index.html` for
+full-rate trajectories, one run per page. Both work locally without a server.
+The original monolithic `audit/viewer-full-rate/` is preserved as evidence;
+loading all its data at once can exceed browser memory.
 The archive preserves original absolute provenance paths; the portable file
 layout and checksum inventory locate the distributed copies.
 

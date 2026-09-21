@@ -121,6 +121,27 @@ describe("camera-ready lean harness", () => {
     const viewer = generateReviewIndex({ auditRoot: resolve(root, "audit"), outputDirectory: resolve(root, "audit/viewer") });
     expect(viewer.runCount).toBe(1);
     expect(readFileSync(resolve(root, "audit/viewer/review-data.js"), "utf8")).toContain("free_space");
+    const portableRoot = resolve(root, "audit/portable");
+    const portable = generateReviewIndex({ auditRoot: resolve(root, "audit"), outputDirectory: portableRoot,
+      trajectoryFilename: "engine-steps-full.jsonl", splitRuns: true });
+    expect(portable.runCount).toBe(1);
+    expect(portable.stepCount).toBe(full.length);
+    expect(readFileSync(portable.indexPath, "utf8")).toContain('href="runs/run-01.html"');
+    const pageHtml = readFileSync(resolve(portableRoot, "runs/run-01.html"), "utf8");
+    expect(pageHtml).toContain('href="../viewer.css"');
+    expect(pageHtml).toContain('src="../viewer.js"');
+    const pageData = JSON.parse(readFileSync(resolve(portableRoot, "runs/run-01.js"), "utf8")
+      .replace(/^globalThis.LEAN_REVIEW_DATA = /u, "").replace(/;\s*$/u, ""));
+    expect(pageData.scenarios).toHaveLength(1);
+    expect(pageData.scenarios[0].runs).toHaveLength(1);
+    expect(pageData.scenarios[0].runs[0].steps).toEqual(full.map(line => {
+      const step = JSON.parse(line) as EngineStepRecord;
+      return { stepIndex: step.stepIndex, time: step.time, agents: step.agents.map(agent => ({
+        id: agent.id, preCorrectionPosition: agent.preCorrectionPosition,
+        postCorrectionPosition: agent.postCorrectionPosition, arrived: agent.arrived,
+      })) };
+    }));
+    expect(readFileSync(fullPath, "utf8")).toBe(fullSource);
     const python = process.platform === "win32" ? "python" : "python3";
     const verify = () => spawnSync(
       python,
