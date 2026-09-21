@@ -1,15 +1,13 @@
 import {
-  existsSync,
   mkdirSync,
   mkdtempSync,
-  readFileSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
 import { resolve } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { SimulatorCore } from "../../src/core/SimulatorCore";
-import { expandThickWall } from "../../experiments/baselines/common/wallGeometry";
+import { expandThickWall } from "../../experiments/geometry/wallGeometry";
 import { generateBidirectionalScenario } from "../../experiments/generation/bidirectional";
 import { generateBottleneckScenario } from "../../experiments/generation/bottleneck";
 import { generateCircleAntipodalScenario } from "../../experiments/generation/circleAntipodal";
@@ -21,11 +19,8 @@ import {
   validateEngineStepRecord,
   type EngineStepRecord,
 } from "../../experiments/engines/engineStep";
-import {
-  consumeNativeOutput,
-  runExternalProcess,
-} from "../../experiments/engines/externalProtocol";
 import { RunMetricsAccumulator } from "../../experiments/metrics/RunMetricsAccumulator";
+import { resolveProtocolTarget } from "../../experiments/protocol/completion";
 import { identifyMethod } from "../../experiments/protocol/methodIdentity";
 import {
   forEachJsonLineSync,
@@ -37,12 +32,13 @@ import {
   type ScientificMethodConfig,
 } from "../../experiments/protocol/methodConfig";
 import type { ExperimentScenario } from "../../experiments/protocol/schema";
-import { resolveProtocolTarget } from "../../experiments/protocol/completion";
 
 const temporaryDirectories: string[] = [];
 
 afterEach(() => {
-  for (const directory of temporaryDirectories.splice(0)) rmSync(directory, { recursive: true, force: true });
+  for (const directory of temporaryDirectories.splice(0)) {
+    rmSync(directory, { recursive: true, force: true });
+  }
 });
 
 describe("common engine-step protocol", () => {
@@ -70,21 +66,6 @@ describe("common engine-step protocol", () => {
     expect(() => expandThickWall({ id: 9, start: [0, 0], end: [1, 0], thickness: 0 })).toThrow(/positive/u);
   });
 
-  it("preserves external stderr and rejects unsuccessful partial output", () => {
-    mkdirSync(resolve("experiments", "tmp"), { recursive: true });
-    const directory = mkdtempSync(resolve("experiments", "tmp", "mock-engine-failure-"));
-    temporaryDirectories.push(directory);
-    expect(() => runExternalProcess({
-      executable: process.execPath,
-      arguments: ["-e", "process.stderr.write('mock native failure'); process.exit(7)"],
-      temporaryDirectory: directory,
-      outputPath: resolve(directory, "partial.jsonl"),
-    })).toThrow(/mock native failure/u);
-    const log = resolve(directory, "stderr.log");
-    expect(existsSync(log)).toBe(true);
-    expect(readFileSync(log, "utf8")).toContain("mock native failure");
-  });
-
   it("reads JSONL in bounded chunks across long records and CRLF boundaries", () => {
     const directory = temporaryDirectory("jsonl-reader-");
     const path = resolve(directory, "records.jsonl");
@@ -98,125 +79,6 @@ describe("common engine-step protocol", () => {
     const count = forEachJsonLineSync(path, (line) => parsed.push(JSON.parse(line) as unknown));
     expect(count).toBe(2);
     expect(parsed).toEqual([longRecord, { value: 2 }]);
-  });
-
-  it("accepts ordered native records with continuous positions", () => {
-    const scenario = shortened(generatePairwiseScenario("head_on", "test", 0), 2);
-    const directory = temporaryDirectory("native-continuity-valid-");
-    const outputPath = writeNativeOutput(directory, [
-      nativeRecord(scenario, 0),
-      nativeRecord(scenario, 1),
-    ]);
-    const records: EngineStepRecord[] = [];
-    const finalStates = consumeNativeOutput(scenario, outputPath, "mockNative", (record) => {
-      records.push(record);
-    });
-    expect(records).toHaveLength(2);
-    expect(records.every((record) => record.agents.map(({ id }) => id).join(",") === "0,1")).toBe(true);
-    expect(finalStates.map(({ id }) => id)).toEqual([0, 1]);
-  });
-
-  it("rejects native agents emitted out of ascending ID order", () => {
-    const scenario = shortened(generatePairwiseScenario("head_on", "test", 0), 1);
-    const record = nativeRecord(scenario, 0);
-    record.agents.reverse();
-    const outputPath = writeNativeOutput(temporaryDirectory("native-order-invalid-"), [record]);
-    expect(() => consumeNativeOutput(scenario, outputPath, "mockNative", () => undefined))
-      .toThrow(/sorted by unique ascending ID/u);
-  });
-
-  it("rejects initial-position and later position-continuity mismatches", () => {
-    const scenario = shortened(generatePairwiseScenario("head_on", "test", 0), 2);
-    const initialMismatch = nativeRecord(scenario, 0);
-    initialMismatch.agents[0].positionBefore[0] += 0.01;
-    const initialPath = writeNativeOutput(
-      temporaryDirectory("native-initial-invalid-"),
-      [initialMismatch, nativeRecord(scenario, 1)],
-    );
-    expect(() => consumeNativeOutput(scenario, initialPath, "mockNative", () => undefined))
-      .toThrow(/initial position mismatch/u);
-
-    const laterMismatch = nativeRecord(scenario, 1);
-    laterMismatch.agents[0].positionBefore[1] += 0.01;
-    const laterPath = writeNativeOutput(
-      temporaryDirectory("native-later-invalid-"),
-      [nativeRecord(scenario, 0), laterMismatch],
-    );
-    expect(() => consumeNativeOutput(scenario, laterPath, "mockNative", () => undefined))
-      .toThrow(/position continuity mismatch/u);
-  });
-
-  it("rejects native agent ID sets that change between steps", () => {
-    const scenario = shortened(generatePairwiseScenario("head_on", "test", 0), 2);
-    const changedIds = nativeRecord(scenario, 1);
-    changedIds.agents[1].id = 99;
-    const outputPath = writeNativeOutput(
-      temporaryDirectory("native-id-set-invalid-"),
-      [nativeRecord(scenario, 0), changedIds],
-    );
-    expect(() => consumeNativeOutput(scenario, outputPath, "mockNative", () => undefined))
-      .toThrow(/agent ID mismatch/u);
-  });
-
-  it("rejects incorrect reported targets, missing and duplicate agents, nonfinite state, and wrong step counts", () => {
-    const scenario = shortened(generatePairwiseScenario("head_on", "test", 0), 2);
-
-    const wrongTarget = nativeRecord(scenario, 0);
-    wrongTarget.agents[0].navigationTarget = [99, 99];
-    expect(() => consumeNativeOutput(
-      scenario,
-      writeNativeOutput(temporaryDirectory("native-target-invalid-"), [
-        wrongTarget,
-        nativeRecord(scenario, 1),
-      ]),
-      "mockNative",
-      () => undefined,
-    )).toThrow(/navigation target mismatch/u);
-
-    const missing = nativeRecord(scenario, 0);
-    missing.agents.pop();
-    expect(() => consumeNativeOutput(
-      scenario,
-      writeNativeOutput(temporaryDirectory("native-missing-invalid-"), [
-        missing,
-        nativeRecord(scenario, 1),
-      ]),
-      "mockNative",
-      () => undefined,
-    )).toThrow(/agent count mismatch/u);
-
-    const duplicate = nativeRecord(scenario, 0);
-    duplicate.agents[1].id = duplicate.agents[0].id;
-    expect(() => consumeNativeOutput(
-      scenario,
-      writeNativeOutput(temporaryDirectory("native-duplicate-invalid-"), [
-        duplicate,
-        nativeRecord(scenario, 1),
-      ]),
-      "mockNative",
-      () => undefined,
-    )).toThrow(/sorted by unique ascending ID/u);
-
-    const nonfinite = nativeRecord(scenario, 0);
-    nonfinite.agents[0].proposedPosition[0] = Number.POSITIVE_INFINITY;
-    expect(() => consumeNativeOutput(
-      scenario,
-      writeNativeOutput(temporaryDirectory("native-nonfinite-invalid-"), [
-        nonfinite,
-        nativeRecord(scenario, 1),
-      ]),
-      "mockNative",
-      () => undefined,
-    )).toThrow();
-
-    expect(() => consumeNativeOutput(
-      scenario,
-      writeNativeOutput(temporaryDirectory("native-short-invalid-"), [
-        nativeRecord(scenario, 0),
-      ]),
-      "mockNative",
-      () => undefined,
-    )).toThrow(/emitted 1 records; expected 2/u);
   });
 });
 
@@ -272,7 +134,9 @@ describe("Scientific Core engine adapter numerical parity", () => {
     });
     expect(adaptedRecords).toEqual(directRecords);
     expect(result.finalStates).toEqual(directSimulator.getAgents());
-    expect(adaptedMetrics.finish(result.finalStates)).toEqual(directMetrics.finish(directSimulator.getAgents()));
+    expect(adaptedMetrics.finish(result.finalStates)).toEqual(
+      directMetrics.finish(directSimulator.getAgents()),
+    );
   });
 });
 
@@ -336,41 +200,4 @@ function temporaryDirectory(prefix: string): string {
   const directory = mkdtempSync(resolve("experiments", "tmp", prefix));
   temporaryDirectories.push(directory);
   return directory;
-}
-
-function nativeRecord(scenario: ExperimentScenario, stepIndex: number) {
-  return {
-    nativeEngineStepVersion: 2,
-    stepIndex,
-    time: (stepIndex + 1) * scenario.simulation.dt,
-    agents: scenario.agents.map((agent) => ({
-      id: agent.id,
-      positionBefore: [...agent.position] as [number, number],
-      velocityBefore: [...agent.velocity] as [number, number],
-      proposedPosition: [...agent.position] as [number, number],
-      navigationTarget: [...agent.goal] as [number, number],
-      commandVelocity: [0, 0] as [number, number],
-      realizedVelocity: [0, 0] as [number, number],
-      arrived: false,
-    })),
-  };
-}
-
-function writeNativeOutput(
-  directory: string,
-  records: readonly ReturnType<typeof nativeRecord>[],
-): string {
-  const path = resolve(directory, "output.jsonl");
-  writeFileSync(path, `${records.map((record) => JSON.stringify(record)).join("\n")}\n`, "utf8");
-  return path;
-}
-
-function shortened(scenario: ExperimentScenario, steps: number): ExperimentScenario {
-  return {
-    ...scenario,
-    simulation: {
-      ...scenario.simulation,
-      horizonSeconds: scenario.simulation.dt * steps,
-    },
-  };
 }

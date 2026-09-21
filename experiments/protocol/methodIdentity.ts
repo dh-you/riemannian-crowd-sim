@@ -23,25 +23,17 @@ export function createMethodKey(methodId: string, canonicalSha256: string): stri
 }
 
 /**
- * Version-2 identity hashes validated semantics, not source formatting. Object
- * fields use the order below; parameter names are always lexicographically sorted.
+ * Version-2 identity hashes validated semantics, not source formatting.
+ * Parameter names are always lexicographically sorted.
  */
 export function canonicalMethodConfig(config: MethodConfig): Record<string, unknown> {
   const parameters = Object.fromEntries(
     Object.entries(config.parameters).sort(([first], [second]) => first.localeCompare(second)),
   );
-  if (config.methodConfigVersion === 1) {
-    return {
-      methodConfigVersion: config.methodConfigVersion,
-      id: config.id,
-      velocityTimeConstant: config.velocityTimeConstant,
-      parameters,
-    };
-  }
   return {
     methodConfigVersion: config.methodConfigVersion,
     id: config.id,
-    engine: config.engine,
+    velocityTimeConstant: config.velocityTimeConstant,
     parameters,
   };
 }

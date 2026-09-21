@@ -5,13 +5,6 @@ import {
 } from "../protocol/methodConfig";
 import type { ExperimentEngine } from "./ExperimentEngine";
 import { ScientificCoreEngine } from "./ScientificCoreEngine";
-import { OrcaRvo2Engine } from "./OrcaRvo2Engine";
-import { JuPedSimSfmEngine } from "./JuPedSimSfmEngine";
-import {
-  JUPEDSIM_SFM_METHOD_ID,
-  ORCA_METHOD_ID,
-  SOCIAL_FORCE_METHOD_ID,
-} from "../protocol/methodConfig";
 
 export function createExperimentEngine(
   method: MethodConfig,
@@ -19,11 +12,6 @@ export function createExperimentEngine(
 ): ExperimentEngine {
   if (isScientificMethod(method)) {
     return new ScientificCoreEngine(method.id, identity.methodKey);
-  }
-  if (method.id === ORCA_METHOD_ID) return new OrcaRvo2Engine(method.id, identity.methodKey);
-  if (method.id === SOCIAL_FORCE_METHOD_ID) throw new Error("PySocialForce is archived; use scientific reference commit 05241d55a90a7b873d0a403a30682e8577f8111d for historical runs");
-  if (method.id === JUPEDSIM_SFM_METHOD_ID) {
-    return new JuPedSimSfmEngine(method.id, identity.methodKey);
   }
   throw new Error("Unsupported experiment engine");
 }
