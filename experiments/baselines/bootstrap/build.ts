@@ -18,7 +18,6 @@ import {
   jupedSimWheelPath,
   lockSha256,
   orcaRunnerPath,
-  pythonExecutable,
   readThirdPartyLock,
   repositoryPath,
   type BaselineBuildManifest,
@@ -27,10 +26,8 @@ import {
 export function buildBaselines(): BaselineBuildManifest {
   const lock = readThirdPartyLock();
   const rvo2 = dependency(lock, "rvo2");
-  const pysocialforce = dependency(lock, "pysocialforce");
   const rvoSource = repositoryPath(rvo2.sourceDirectory);
-  const pySource = repositoryPath(pysocialforce.sourceDirectory);
-  if (gitHead(rvoSource) !== rvo2.commit || gitHead(pySource) !== pysocialforce.commit) {
+  if (gitHead(rvoSource) !== rvo2.commit) {
     throw new Error("Baseline source HEAD differs from the lock; rerun bootstrap");
   }
   const compiler = firstLine(assertTool("g++", ["--version"]));
@@ -47,15 +44,7 @@ export function buildBaselines(): BaselineBuildManifest {
   ]);
   command("cmake", ["--build", buildDirectory, "--config", "Release", "--target", "orca_runner", "--parallel", "1"]);
 
-  const python = pythonExecutable(lock);
-  const pythonVersion = command(python, ["--version"], { capture: true });
-  command(python, ["-c", "import numpy, toml, numba; print('PySocialForce runtime dependencies OK')"]);
-  const packages = command(python, ["-m", "pip", "freeze", "--all"], { capture: true })
-    .split(/\r?\n/u)
-    .filter(Boolean)
-    .sort();
   const orcaRunner = orcaRunnerPath(lock);
-  const socialRunner = repositoryPath(lock.runners.socialForce);
   const jupedsim = jupedSimPackage(lock);
   const jupedsimPython = jupedSimPythonExecutable(lock);
   const jupedsimRunner = jupedSimRunnerPath(lock);
@@ -85,14 +74,14 @@ export function buildBaselines(): BaselineBuildManifest {
     buildManifestVersion: 2,
     lockSha256: lockSha256(),
     adapterSourceSha256: adapterSourceSha256(),
-    upstreamCommits: { rvo2: rvo2.commit, pysocialforce: pysocialforce.commit },
+    upstreamCommits: { rvo2: rvo2.commit },
     compiler,
     cmake,
     buildType: "Release",
     openMpEnabled: false,
-    pythonExecutable: python,
-    pythonVersion,
-    pythonPackages: packages,
+    pythonExecutable: jupedsimPython,
+    pythonVersion: command(jupedsimPython, ["--version"], { capture: true }),
+    pythonPackages: jupedsimPackages,
     jupedsimPythonExecutable: jupedsimPython,
     jupedsimPythonVersion: jupedsimInfo.pythonVersion,
     jupedsimPythonPackages: jupedsimPackages,
@@ -103,10 +92,9 @@ export function buildBaselines(): BaselineBuildManifest {
     jupedsimInstallationCommand: jupedsim.installationCommand,
     platform: platform(),
     architecture: arch(),
-    runners: { orca: orcaRunner, socialForce: socialRunner, jupedsim: jupedsimRunner },
+    runners: { orca: orcaRunner, jupedsim: jupedsimRunner },
     runnerSha256: {
       orca: sha256File(orcaRunner),
-      socialForce: sha256File(socialRunner),
       jupedsim: sha256File(jupedsimRunner),
     },
     timestamp: new Date().toISOString(),
@@ -114,7 +102,6 @@ export function buildBaselines(): BaselineBuildManifest {
   mkdirSync(resolve(THIRD_PARTY_ROOT, "build"), { recursive: true });
   writeFileSync(BUILD_MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
   console.log(`baselines:build ORCA=${orcaRunner}`);
-  console.log(`baselines:build Python=${python}`);
   console.log(`baselines:build JuPedSim=${jupedsim.version} Python=${jupedsimPython}`);
   return manifest;
 }

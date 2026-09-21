@@ -16,7 +16,7 @@ export interface LockedPatch {
 }
 
 export interface LockedDependency {
-  id: "rvo2" | "pysocialforce";
+  id: "rvo2";
   project: string;
   repository: string;
   commit: string;
@@ -38,8 +38,8 @@ export interface ThirdPartyLock {
   };
   runners: {
     orca: string;
-    socialForce: string;
-    pythonEnvironment: string;
+    socialForce?: string;
+    pythonEnvironment?: string;
     jupedsim: string;
   };
 }
@@ -82,8 +82,8 @@ export interface BaselineBuildManifest {
   jupedsimInstallationCommand: string;
   platform: string;
   architecture: string;
-  runners: { orca: string; socialForce: string; jupedsim: string };
-  runnerSha256: { orca: string; socialForce: string; jupedsim: string };
+  runners: { orca: string; socialForce?: string; jupedsim: string };
+  runnerSha256: { orca: string; socialForce?: string; jupedsim: string };
   timestamp: string;
 }
 
@@ -92,8 +92,8 @@ export function readThirdPartyLock(): ThirdPartyLock {
   if (value.lockVersion !== 2 || value.adapterVersion !== "2" || !Array.isArray(value.dependencies)) {
     throw new Error("Unsupported or malformed third-party lock file");
   }
-  if (value.dependencies.length !== 2 || value.runners === undefined || value.pythonPackages === undefined) {
-    throw new Error("Third-party lock must contain both baseline dependencies and runners");
+  if (value.dependencies.length !== 1 || value.dependencies[0]?.id !== "rvo2" || value.runners === undefined || value.pythonPackages === undefined) {
+    throw new Error("Third-party lock must contain the pinned RVO2 source, JuPedSim package, and runners");
   }
   for (const dependency of value.dependencies) {
     if (!/^[a-f0-9]{40}$/u.test(dependency.commit)) {
@@ -133,13 +133,6 @@ export function repositoryPath(relativePath: string): string {
     throw new Error(`Locked path escapes the repository: ${relativePath}`);
   }
   return path;
-}
-
-export function pythonExecutable(lock = readThirdPartyLock()): string {
-  const environment = repositoryPath(lock.runners.pythonEnvironment);
-  return process.platform === "win32"
-    ? resolve(environment, "Scripts", "python.exe")
-    : resolve(environment, "bin", "python");
 }
 
 export function jupedSimPackage(lock = readThirdPartyLock()): LockedJuPedSimPackage {
@@ -208,9 +201,7 @@ export function adapterSourceSha256(): string {
   const roots = [
     resolve(REPOSITORY_ROOT, "experiments", "baselines", "common"),
     resolve(REPOSITORY_ROOT, "experiments", "baselines", "orca"),
-    resolve(REPOSITORY_ROOT, "experiments", "baselines", "social_force"),
     resolve(REPOSITORY_ROOT, "experiments", "baselines", "jupedsim"),
-    resolve(REPOSITORY_ROOT, "experiments", "baselines", "patches"),
     resolve(REPOSITORY_ROOT, "experiments", "engines"),
   ];
   const files = roots.flatMap(listFiles).sort();

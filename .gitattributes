@@ -11,3 +11,7 @@ CMakeLists.txt text eol=lf
 *.cmake text eol=lf
 # A unified diff represents a blank context line as one required space.
 *.patch text eol=lf -whitespace
+
+experiments/baselines/licenses/*.txt text eol=lf
+# Evidence hashes cover exact archived bytes.
+paper/** -text

@@ -1,0 +1,222 @@
+[
+  {
+    "scenario": "head-on",
+    "method": "riemannian",
+    "values": [
+      "1.000",
+      "1.05",
+      ".000",
+      ".000",
+      "2.48"
+    ]
+  },
+  {
+    "scenario": "head-on",
+    "method": "goal",
+    "values": [
+      "1.000",
+      "1.05",
+      ".008",
+      ".034",
+      "3.99"
+    ]
+  },
+  {
+    "scenario": "head-on",
+    "method": "orca",
+    "values": [
+      "1.000",
+      "1.00",
+      ".000",
+      ".000",
+      "2.41"
+    ]
+  },
+  {
+    "scenario": "head-on",
+    "method": "jupedsim-sfm",
+    "values": [
+      "1.000",
+      "1.17",
+      "<.001",
+      ".001",
+      "2.34"
+    ]
+  },
+  {
+    "scenario": "crossing",
+    "method": "riemannian",
+    "values": [
+      "1.000",
+      "1.07",
+      ".000",
+      ".000",
+      "2.40"
+    ]
+  },
+  {
+    "scenario": "crossing",
+    "method": "goal",
+    "values": [
+      "1.000",
+      "1.02",
+      ".008",
+      ".022",
+      "3.32"
+    ]
+  },
+  {
+    "scenario": "crossing",
+    "method": "orca",
+    "values": [
+      "1.000",
+      "1.01",
+      ".000",
+      ".000",
+      "2.46"
+    ]
+  },
+  {
+    "scenario": "crossing",
+    "method": "jupedsim-sfm",
+    "values": [
+      "1.000",
+      "1.07",
+      ".000",
+      ".000",
+      "1.35"
+    ]
+  },
+  {
+    "scenario": "circle",
+    "method": "riemannian",
+    "values": [
+      "1.000",
+      "1.84",
+      ".410",
+      ".062",
+      "2.79"
+    ]
+  },
+  {
+    "scenario": "circle",
+    "method": "goal",
+    "values": [
+      "1.000",
+      "1.96",
+      ".530",
+      ".081",
+      "3.37"
+    ]
+  },
+  {
+    "scenario": "circle",
+    "method": "orca",
+    "values": [
+      "1.000",
+      "1.59",
+      ".025",
+      ".006",
+      "2.52"
+    ]
+  },
+  {
+    "scenario": "circle",
+    "method": "jupedsim-sfm",
+    "values": [
+      ".960",
+      "2.58",
+      "<.001",
+      ".034",
+      "2.04"
+    ]
+  },
+  {
+    "scenario": "corridor",
+    "method": "riemannian",
+    "values": [
+      ".842",
+      "1.52",
+      ".485",
+      ".082",
+      "2.52"
+    ]
+  },
+  {
+    "scenario": "corridor",
+    "method": "goal",
+    "values": [
+      ".996",
+      "1.27",
+      ".599",
+      ".100",
+      "4.02"
+    ]
+  },
+  {
+    "scenario": "corridor",
+    "method": "orca",
+    "values": [
+      ".608",
+      "1.41",
+      ".145",
+      ".019",
+      ".84"
+    ]
+  },
+  {
+    "scenario": "corridor",
+    "method": "jupedsim-sfm",
+    "values": [
+      ".471",
+      "1.62",
+      "<.001",
+      ".018",
+      "1.97"
+    ]
+  },
+  {
+    "scenario": "bottleneck",
+    "method": "riemannian",
+    "values": [
+      "1.000",
+      "1.52",
+      ".922",
+      ".091",
+      "3.49"
+    ]
+  },
+  {
+    "scenario": "bottleneck",
+    "method": "goal",
+    "values": [
+      "1.000",
+      "1.17",
+      "1.080",
+      ".114",
+      "4.42"
+    ]
+  },
+  {
+    "scenario": "bottleneck",
+    "method": "orca",
+    "values": [
+      ".732",
+      "1.46",
+      ".253",
+      ".004",
+      ".86"
+    ]
+  },
+  {
+    "scenario": "bottleneck",
+    "method": "jupedsim-sfm",
+    "values": [
+      ".862",
+      "1.36",
+      "<.001",
+      ".022",
+      "2.38"
+    ]
+  }
+]

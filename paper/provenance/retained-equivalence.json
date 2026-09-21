@@ -1,0 +1,158 @@
+{
+  "equivalenceReportVersion": 1,
+  "status": "PASS",
+  "canonicalAuditRoot": "D:\\Research\\riemannian-crowd-sim\\results\\camera-ready-lean-worktree\\results\\lean\\audit",
+  "newAuditRoot": "D:\\Research\\riemannian-crowd-sim-jupedsim\\results\\final-camera-ready-jupedsim-v2\\audit",
+  "comparisons": [
+    {
+      "scenarioName": "bidirectional-corridor-lean-seed-0",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "tolerance": 1e-8,
+      "steps": 2100,
+      "newTrajectorySha256": "b2c9e459b209afaee9a9a7672e005fd00bd64fcefa5431b4ee8f402c47d852ff",
+      "retainedTrajectorySha256": "b2c9e459b209afaee9a9a7672e005fd00bd64fcefa5431b4ee8f402c47d852ff",
+      "newMetricsSha256": "b9c59a5d88e8d4ae9522dcfaa0b98ba6cb393c1a5c89ca5849cce4b559716239",
+      "retainedMetricsSha256": "b9c59a5d88e8d4ae9522dcfaa0b98ba6cb393c1a5c89ca5849cce4b559716239"
+    },
+    {
+      "scenarioName": "bidirectional-corridor-lean-seed-0",
+      "methodId": "euclidean_goal_steering_v1",
+      "tolerance": 1e-8,
+      "steps": 2100,
+      "newTrajectorySha256": "0495ec6a6026aca5f7f2637ef5de6b1296338dc4bae05c4b4ea9c9104cfc5373",
+      "retainedTrajectorySha256": "0495ec6a6026aca5f7f2637ef5de6b1296338dc4bae05c4b4ea9c9104cfc5373",
+      "newMetricsSha256": "1a682dc30c37a65d2641c99439d5ffb0c2403280c916b968723edb349ac19952",
+      "retainedMetricsSha256": "1a682dc30c37a65d2641c99439d5ffb0c2403280c916b968723edb349ac19952"
+    },
+    {
+      "scenarioName": "bidirectional-corridor-lean-seed-0",
+      "methodId": "orca_rvo2_v1",
+      "tolerance": 0.000001,
+      "steps": 2100,
+      "newTrajectorySha256": "374648f271e8f8720ee375a27f3f24acc71171188149055d4ff2200e44d6b000",
+      "retainedTrajectorySha256": "374648f271e8f8720ee375a27f3f24acc71171188149055d4ff2200e44d6b000",
+      "newMetricsSha256": "de8544816083d18616c68e7387f873eb23d5a4e0c3a77df16534a2cc66a9bcbe",
+      "retainedMetricsSha256": "de8544816083d18616c68e7387f873eb23d5a4e0c3a77df16534a2cc66a9bcbe"
+    },
+    {
+      "scenarioName": "bottleneck-central_opening-lean-seed-0",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "tolerance": 1e-8,
+      "steps": 2400,
+      "newTrajectorySha256": "81bd0a6bf72189fa8311497c2d7e7a8904a91f0a416d9e84ae2ff46631885686",
+      "retainedTrajectorySha256": "81bd0a6bf72189fa8311497c2d7e7a8904a91f0a416d9e84ae2ff46631885686",
+      "newMetricsSha256": "cbdf2c2b307c4fe66a6683ed496b63bf5810bce0697f6f02404cdf29741380b6",
+      "retainedMetricsSha256": "cbdf2c2b307c4fe66a6683ed496b63bf5810bce0697f6f02404cdf29741380b6"
+    },
+    {
+      "scenarioName": "bottleneck-central_opening-lean-seed-0",
+      "methodId": "euclidean_goal_steering_v1",
+      "tolerance": 1e-8,
+      "steps": 2400,
+      "newTrajectorySha256": "996bcc2b4065dff1412e5bf4a3dd980654539fc9b7326dff3c71ec0f821dceb8",
+      "retainedTrajectorySha256": "996bcc2b4065dff1412e5bf4a3dd980654539fc9b7326dff3c71ec0f821dceb8",
+      "newMetricsSha256": "1e3ee477b0186c0fdfc85fade3ac2e8775fd0204cda82e35aebb90cb98184526",
+      "retainedMetricsSha256": "1e3ee477b0186c0fdfc85fade3ac2e8775fd0204cda82e35aebb90cb98184526"
+    },
+    {
+      "scenarioName": "bottleneck-central_opening-lean-seed-0",
+      "methodId": "orca_rvo2_v1",
+      "tolerance": 0.000001,
+      "steps": 2400,
+      "newTrajectorySha256": "a08cd04e43697e29c0bb0db18aa90434426d72f207c896603a8ed83702022395",
+      "retainedTrajectorySha256": "a08cd04e43697e29c0bb0db18aa90434426d72f207c896603a8ed83702022395",
+      "newMetricsSha256": "ee87d33cf918f9396e3f057ef810d1cb1c7fdc61a4daa7e3f838476ec86f17e0",
+      "retainedMetricsSha256": "ee87d33cf918f9396e3f057ef810d1cb1c7fdc61a4daa7e3f838476ec86f17e0"
+    },
+    {
+      "scenarioName": "circle_antipodal-perturbed-lean-seed-0",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "tolerance": 1e-8,
+      "steps": 1800,
+      "newTrajectorySha256": "d56198e867f38f0639da6cffcc59caf8553684f70bbc6f96c24b0e5503941ee5",
+      "retainedTrajectorySha256": "d56198e867f38f0639da6cffcc59caf8553684f70bbc6f96c24b0e5503941ee5",
+      "newMetricsSha256": "42373b67a2882959fce31db37955f626224df75092c06ffff2a84c97f4fbbce6",
+      "retainedMetricsSha256": "42373b67a2882959fce31db37955f626224df75092c06ffff2a84c97f4fbbce6"
+    },
+    {
+      "scenarioName": "circle_antipodal-perturbed-lean-seed-0",
+      "methodId": "euclidean_goal_steering_v1",
+      "tolerance": 1e-8,
+      "steps": 1800,
+      "newTrajectorySha256": "ef49de5f34d8605f0bf1fcd642403dfe0c081e78d1e8611c6ca8f2889528f342",
+      "retainedTrajectorySha256": "ef49de5f34d8605f0bf1fcd642403dfe0c081e78d1e8611c6ca8f2889528f342",
+      "newMetricsSha256": "7aa2bc14c4d6bff5a90d8144af468c1833bbf9bc4b4f7913dc337f4c990078fa",
+      "retainedMetricsSha256": "7aa2bc14c4d6bff5a90d8144af468c1833bbf9bc4b4f7913dc337f4c990078fa"
+    },
+    {
+      "scenarioName": "circle_antipodal-perturbed-lean-seed-0",
+      "methodId": "orca_rvo2_v1",
+      "tolerance": 0.000001,
+      "steps": 1800,
+      "newTrajectorySha256": "18ca77063dcd877d3c50667fe3654c6b26f2096fb174ccf6e6592006567771b9",
+      "retainedTrajectorySha256": "18ca77063dcd877d3c50667fe3654c6b26f2096fb174ccf6e6592006567771b9",
+      "newMetricsSha256": "e60f5e34ba6c234fe6fc01941e603619caa001f3e2f95f981cef966623469e3f",
+      "retainedMetricsSha256": "e60f5e34ba6c234fe6fc01941e603619caa001f3e2f95f981cef966623469e3f"
+    },
+    {
+      "scenarioName": "pairwise-crossing-lean-seed-0",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "tolerance": 1e-8,
+      "steps": 1800,
+      "newTrajectorySha256": "ca8d01ad2d6679a8a6cf067341b1017e7665b80185e2d0bff1e8bf9e2b3ef3d5",
+      "retainedTrajectorySha256": "ca8d01ad2d6679a8a6cf067341b1017e7665b80185e2d0bff1e8bf9e2b3ef3d5",
+      "newMetricsSha256": "4fd6a5aac03b179eb4fc4934042b32102a5b299878d8a399be5e63d8bc3128dc",
+      "retainedMetricsSha256": "4fd6a5aac03b179eb4fc4934042b32102a5b299878d8a399be5e63d8bc3128dc"
+    },
+    {
+      "scenarioName": "pairwise-crossing-lean-seed-0",
+      "methodId": "euclidean_goal_steering_v1",
+      "tolerance": 1e-8,
+      "steps": 1800,
+      "newTrajectorySha256": "33eb9affa501cc45e5d3eeef8752b3cd2709d5a60ab3249fd112c73f3a55e3c8",
+      "retainedTrajectorySha256": "33eb9affa501cc45e5d3eeef8752b3cd2709d5a60ab3249fd112c73f3a55e3c8",
+      "newMetricsSha256": "c4cf191d29ac777ede579b2ee73de476f74a93f8ae209f4e94005805c2a97c0a",
+      "retainedMetricsSha256": "c4cf191d29ac777ede579b2ee73de476f74a93f8ae209f4e94005805c2a97c0a"
+    },
+    {
+      "scenarioName": "pairwise-crossing-lean-seed-0",
+      "methodId": "orca_rvo2_v1",
+      "tolerance": 0.000001,
+      "steps": 1800,
+      "newTrajectorySha256": "33b3a26333379ba313a8a94bbeda27cfff1c263819fcad892cfbd1580a244e61",
+      "retainedTrajectorySha256": "33b3a26333379ba313a8a94bbeda27cfff1c263819fcad892cfbd1580a244e61",
+      "newMetricsSha256": "bf523f84ef7b503f7bf646d2412cd753cd83a08f10753235f68c6729b410426a",
+      "retainedMetricsSha256": "bf523f84ef7b503f7bf646d2412cd753cd83a08f10753235f68c6729b410426a"
+    },
+    {
+      "scenarioName": "pairwise-head_on-lean-seed-0",
+      "methodId": "conditioned_riemannian_metric_v1",
+      "tolerance": 1e-8,
+      "steps": 1800,
+      "newTrajectorySha256": "80617afc8855f7e8bcb7bce594c99afae978b87421cb71682b6d4b573e2ddaef",
+      "retainedTrajectorySha256": "80617afc8855f7e8bcb7bce594c99afae978b87421cb71682b6d4b573e2ddaef",
+      "newMetricsSha256": "7a3c5548b8ec16f25ec5bad6241c6c401218b077de82cc82c1befc1db5c3ed21",
+      "retainedMetricsSha256": "7a3c5548b8ec16f25ec5bad6241c6c401218b077de82cc82c1befc1db5c3ed21"
+    },
+    {
+      "scenarioName": "pairwise-head_on-lean-seed-0",
+      "methodId": "euclidean_goal_steering_v1",
+      "tolerance": 1e-8,
+      "steps": 1800,
+      "newTrajectorySha256": "29a2c4a70da7c601058b851f4f029e0464404fd3df17eb0bfd5a9c28d20ce21f",
+      "retainedTrajectorySha256": "29a2c4a70da7c601058b851f4f029e0464404fd3df17eb0bfd5a9c28d20ce21f",
+      "newMetricsSha256": "6f703eb5a4111b1b8ed8cd2368c4eafe5cb305bf5f9c130c9fae95fc145fc302",
+      "retainedMetricsSha256": "6f703eb5a4111b1b8ed8cd2368c4eafe5cb305bf5f9c130c9fae95fc145fc302"
+    },
+    {
+      "scenarioName": "pairwise-head_on-lean-seed-0",
+      "methodId": "orca_rvo2_v1",
+      "tolerance": 0.000001,
+      "steps": 1800,
+      "newTrajectorySha256": "5571ae5d3febc2b5a31918ae1ee0e3b97794e32431e5f1d87ed35ba3f541cac5",
+      "retainedTrajectorySha256": "5571ae5d3febc2b5a31918ae1ee0e3b97794e32431e5f1d87ed35ba3f541cac5",
+      "newMetricsSha256": "f66f07666514bb5cd2b67f08f0bcb63657e58e2f8c701e94a857856aa54aa971",
+      "retainedMetricsSha256": "f66f07666514bb5cd2b67f08f0bcb63657e58e2f8c701e94a857856aa54aa971"
+    }
+  ]
+}

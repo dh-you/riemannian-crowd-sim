@@ -15,7 +15,6 @@ import {
   jupedSimWheelPath,
   lockSha256,
   orcaRunnerPath,
-  pythonExecutable,
   readBuildManifest,
   readThirdPartyLock,
   repositoryPath,
@@ -23,41 +22,35 @@ import {
 import {
   JUPEDSIM_SFM_ADAPTER_VERSION,
   ORCA_ADAPTER_VERSION,
-  SOCIAL_FORCE_ADAPTER_VERSION,
   type EngineProvenance,
 } from "./ExperimentEngine";
 import { serializeCanonicalMethodConfig } from "../protocol/methodIdentity";
 import type { JuPedSimSfmMethodConfig } from "../protocol/methodConfig";
 import type { ExperimentScenario } from "../protocol/schema";
 
-export function baselineProvenance(kind: "orca" | "pysocialforce"): EngineProvenance {
+export function baselineProvenance(_kind: "orca"): EngineProvenance {
   const lock = readThirdPartyLock();
   const build = readBuildManifest();
   if (build.lockSha256 !== lockSha256() || build.adapterSourceSha256 !== adapterSourceSha256()) {
     throw new Error("Baseline build provenance is stale; run npm run baselines:build");
   }
-  const entry = dependency(lock, kind === "orca" ? "rvo2" : "pysocialforce");
+  const entry = dependency(lock, "rvo2");
   assertPinnedSource(entry);
   if (build.upstreamCommits[entry.id] !== entry.commit) {
     throw new Error(`${entry.project} build provenance does not match the locked upstream commit`);
   }
-  const runner = kind === "orca" ? orcaRunnerPath(lock) : repositoryPath(lock.runners.socialForce);
-  const expectedRunnerHash = kind === "orca" ? build.runnerSha256.orca : build.runnerSha256.socialForce;
+  const runner = orcaRunnerPath(lock);
+  const expectedRunnerHash = build.runnerSha256.orca;
   if (!existsSync(runner) || sha256File(runner) !== expectedRunnerHash) {
     throw new Error(`Baseline runner is missing or stale: ${runner}`);
   }
-  if (kind === "pysocialforce" && !existsSync(pythonExecutable(lock))) {
-    throw new Error("PySocialForce environment is missing; run npm run baselines:bootstrap");
-  }
   return {
-    engineId: kind === "orca" ? "orca_rvo2_engine_v1" : "pysocialforce_engine_v1",
+    engineId: "orca_rvo2_engine_v1",
     engineAdapterVersion:
-      kind === "orca" ? ORCA_ADAPTER_VERSION : SOCIAL_FORCE_ADAPTER_VERSION,
+      ORCA_ADAPTER_VERSION,
     correctionMode: "native_none",
     commandVelocityMeaning:
-      kind === "orca"
-        ? "RVO2-selected velocity used for the native integration step"
-        : "native pre-position-update velocity after PySocialForce force integration",
+      "RVO2-selected velocity used for the native integration step",
     thirdPartyLockSha256: lockSha256(),
     upstreamProject: entry.project,
     upstreamRepository: entry.repository,
@@ -68,9 +61,7 @@ export function baselineProvenance(kind: "orca" | "pysocialforce"): EngineProven
     buildManifestSha256: sha256File(BUILD_MANIFEST_PATH),
     engineSpecificProvenance: {},
     limitations:
-      kind === "pysocialforce"
-        ? ["Pinned PySocialForce supports one scene-wide pedestrian radius; heterogeneous-radius scenarios are rejected."]
-        : ["RVO2 uses single-precision arithmetic; cross-compiler last-bit variation may occur."],
+      ["RVO2 uses single-precision arithmetic; cross-compiler last-bit variation may occur."],
   };
 }
 
@@ -197,10 +188,7 @@ export function baselineRuntimePaths() {
   return {
     repositoryRoot: REPOSITORY_ROOT,
     orcaRunner: orcaRunnerPath(lock),
-    python: pythonExecutable(lock),
-    socialRunner: repositoryPath(lock.runners.socialForce),
     rvoSource: repositoryPath(dependency(lock, "rvo2").sourceDirectory),
-    socialSource: repositoryPath(dependency(lock, "pysocialforce").sourceDirectory),
     jupedsimPython: jupedSimPythonExecutable(lock),
     jupedsimRunner: jupedSimRunnerPath(lock),
     jupedsimWheel: jupedSimWheelPath(lock),

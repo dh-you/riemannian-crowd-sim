@@ -1,0 +1,12 @@
+Human review approval: APPROVED
+
+The user explicitly accepted the two-versus-four numerical-sensitivity results
+and authorized the frozen production choice of two native 1/120-s JuPedSim
+substeps per common 1/60-s experiment step.
+
+Frozen implementation commit:
+05241d55a90a7b873d0a403a30682e8577f8111d
+
+The final four-method audit passed 28/28, sampled and full-rate viewers were
+generated, and all 15 retained Ours/Goal+Projection/ORCA equivalence checks
+passed before this gate was created.

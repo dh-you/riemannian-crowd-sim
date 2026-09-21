@@ -15,7 +15,6 @@ import {
   jupedSimWheelPath,
   lockSha256,
   orcaRunnerPath,
-  pythonExecutable,
   readBuildManifest,
   readThirdPartyLock,
   repositoryPath,
@@ -41,10 +40,12 @@ export function verifyBaselines(): void {
       "experiments",
       "baselines",
       "licenses",
-      entry.id === "rvo2" ? "RVO2-APACHE-2.0.txt" : "PySocialForce-MIT.txt",
+      "RVO2-APACHE-2.0.txt",
     );
     if (!existsSync(committedLicense)) throw new Error(`${entry.id} committed attribution license is missing`);
-    if (sha256File(upstreamLicense) !== sha256File(committedLicense)) {
+    // Git may convert upstream license newlines on Windows; compare its text.
+    if (readFileSync(upstreamLicense, "utf8").replaceAll("\r\n", "\n") !==
+        readFileSync(committedLicense, "utf8").replaceAll("\r\n", "\n")) {
       throw new Error(`${entry.id} committed license does not match the pinned upstream file`);
     }
     if (entry.patch !== null) {
@@ -122,29 +123,14 @@ export function verifyBaselines(): void {
     throw new Error("JuPedSim build manifest differs from the package lock");
   }
   const orca = orcaRunnerPath(lock);
-  const social = repositoryPath(lock.runners.socialForce);
   if (
     sha256File(orca) !== build.runnerSha256.orca
-    || sha256File(social) !== build.runnerSha256.socialForce
     || sha256File(jupedsimRunner) !== build.runnerSha256.jupedsim
   ) {
     throw new Error("Baseline runner hash differs from build manifest");
   }
   command(orca, ["--version"], { capture: true });
-  const python = pythonExecutable(lock);
-  command(python, [social, "--version"], { capture: true });
-  command(python, ["-c", "import numpy, toml, numba; print('imports OK')"], { capture: true });
-  const currentPythonVersion = command(python, ["--version"], { capture: true });
-  if (currentPythonVersion !== build.pythonVersion) throw new Error("Python version differs from build manifest");
-  const currentPackages = command(python, ["-m", "pip", "freeze", "--all"], { capture: true })
-    .split(/\r?\n/u)
-    .filter(Boolean)
-    .sort();
-  if (JSON.stringify(currentPackages) !== JSON.stringify(build.pythonPackages)) {
-    throw new Error("Python environment packages differ from build manifest");
-  }
-  if (build.upstreamCommits.rvo2 !== dependency(lock, "rvo2").commit ||
-      build.upstreamCommits.pysocialforce !== dependency(lock, "pysocialforce").commit) {
+  if (build.upstreamCommits.rvo2 !== dependency(lock, "rvo2").commit) {
     throw new Error("Build manifest upstream commits differ from lock");
   }
   console.log("baselines:verify PASS pinned sources, licenses, runners, environments, and build identity");

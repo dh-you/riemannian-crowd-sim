@@ -1,5 +1,5 @@
 {
-  "name": "finsler-crowd-sim",
+  "name": "riemannian-crowd-sim",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -25,7 +25,14 @@
     "protocol:audit": "tsx experiments/lean/completionAudit.ts",
     "lean:equivalence": "tsx experiments/lean/verifyFinalEvidence.ts --equivalence",
     "lean:verify": "tsx experiments/lean/verifyFinalEvidence.ts --final",
-    "lean": "tsx experiments/lean/run.ts"
+    "lean": "tsx experiments/lean/run.ts",
+    "paper:audit": "tsx experiments/lean/run.ts --phase audit",
+    "paper:test": "tsx experiments/lean/run.ts --phase test",
+    "paper:ablation": "tsx experiments/lean/run.ts --phase ablation",
+    "paper:runtime": "tsx experiments/lean/run.ts --phase runtime",
+    "paper:analyze": "tsx experiments/lean/run.ts --phase analyze",
+    "paper:verify": "python experiments/paper/verify.py",
+    "paper:regression": "tsx experiments/paper/regression.ts"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
@@ -37,5 +44,8 @@
   "dependencies": {
     "@types/three": "^0.183.1",
     "three": "^0.183.2"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

@@ -15,7 +15,6 @@ const METHODS = [
   "experiments/methods/riemannian-default.json",
   "experiments/methods/goal-projection.json",
   "experiments/methods/orca-default.json",
-  "experiments/methods/social-force-default.json",
   "experiments/methods/jupedsim-sfm-default.json",
 ] as const;
 

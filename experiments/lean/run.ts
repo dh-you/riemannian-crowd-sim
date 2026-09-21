@@ -1,6 +1,6 @@
 import { spawn, spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { existsSync, mkdirSync, readFileSync, realpathSync, renameSync, writeFileSync } from "node:fs";
+import { basename, dirname, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 import { generateReviewIndex } from "../audit/viewer/generateReviewIndex";
 export type ScenarioSpec = { family: string; variant: string; agentCount?: number };
@@ -26,6 +26,32 @@ export type LeanStudy = {
 };
 export function loadStudy(path = resolve("experiments/lean/study.json")): LeanStudy {
   return JSON.parse(readFileSync(path, "utf8")) as LeanStudy;
+}
+
+/** Relocate outputs and human approval together, without changing study identities. */
+export function reproductionStudy(study: LeanStudy, outputDirectory: string): LeanStudy {
+  const requested = resolve(outputDirectory);
+  let existing = requested;
+  while (!existsSync(existing)) existing = dirname(existing);
+  const root = resolve(realpathSync(existing), relative(existing, requested));
+  const repository = realpathSync(resolve("."));
+  const protectedRoots = [resolve(study.outputs.root), resolve(repository, "paper")];
+  if (root === repository || protectedRoots.some((path) => {
+    const protectedPath = existsSync(path) ? realpathSync(path) : path;
+    return root === protectedPath || root.startsWith(protectedPath + sep);
+  })) throw new Error("Output destination is reserved for the repository or archived paper evidence");
+  for (let ancestor = root; ; ancestor = dirname(ancestor)) {
+    if (basename(ancestor) === "final-camera-ready-jupedsim-v2" || existsSync(resolve(ancestor, "ARCHIVED-EVIDENCE"))) {
+      throw new Error("Output destination contains archived paper evidence");
+    }
+    if (dirname(ancestor) === ancestor) break;
+  }
+  return {
+    ...study,
+    outputs: { root, raw: resolve(root, "raw-runs.jsonl"), summary: resolve(root, "summary.csv"),
+      auditRoot: resolve(root, "audit"), benchmark: resolve(root, "concurrency-benchmark.json") },
+    humanReviewGate: resolve(root, "audit", "review-approved.txt"),
+  };
 }
 function matrix(study: LeanStudy, phase: string, spec: Matrix, visual = false): Assignment[] {
   return spec.scenarioTypes.flatMap((scenarioType) => spec.seeds.flatMap((seed) =>
@@ -209,10 +235,10 @@ async function runPhase(study: LeanStudy, phase: "audit" | "test" | "ablation" |
 async function main(): Promise<void> {
   const args = process.argv.slice(2); const phase = option(args, "--phase") ?? "";
   const jobs = Number(option(args, "--jobs") ?? "1"); const resume = args.includes("--resume");
-  const study = loadStudy();
+  const study = reproductionStudy(loadStudy(), option(args, "--out") ?? "results/reproduction");
   if (phase === "analyze") {
     const python = process.platform === "win32" ? "python" : "python3";
-    const result = spawnSync(python, [resolve("experiments/lean/analyze.py")], { stdio: "inherit" });
+    const result = spawnSync(python, [resolve("experiments/lean/analyze.py"), "--root", study.outputs.root], { stdio: "inherit" });
     if (result.status !== 0) throw new Error(`Lean analysis failed with exit ${result.status}`);
     return;
   }

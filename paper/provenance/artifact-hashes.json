@@ -1,0 +1,600 @@
+{
+  "artifactHashManifestVersion": 1,
+  "files": [
+    {
+      "path": "audit/review-approved.txt",
+      "bytes": 494,
+      "sha256": "887dd8f4facdb25e65fbceac9dccd1070d3dc424f9d63e249b06a8c8bdd8b882"
+    },
+    {
+      "path": "audit/viewer-full-rate/index.html",
+      "bytes": 4573,
+      "sha256": "705991c92e097c209efe1532f3f29dea7b0af1a76d269282554605c04aa354bc"
+    },
+    {
+      "path": "audit/viewer-full-rate/review-data.js",
+      "bytes": 368335290,
+      "sha256": "7665c3b35d2fb5e81869346c6e96fd1047dd67464dbbaa6d4dff70c0cfb23c9a"
+    },
+    {
+      "path": "audit/viewer-full-rate/viewer.css",
+      "bytes": 5265,
+      "sha256": "ec6fb8fa33897b31fd4461742ac5c9bc2da549e5e1d72dd0a132f77c2ddd1090"
+    },
+    {
+      "path": "audit/viewer-full-rate/viewer.js",
+      "bytes": 18394,
+      "sha256": "dfde9cff4869efb5bbbb75f4bc415c0cfef1b5876956a02f318d87473accca9c"
+    },
+    {
+      "path": "audit/viewer/index.html",
+      "bytes": 4573,
+      "sha256": "705991c92e097c209efe1532f3f29dea7b0af1a76d269282554605c04aa354bc"
+    },
+    {
+      "path": "audit/viewer/review-data.js",
+      "bytes": 32420344,
+      "sha256": "61b0b961c05e6dc6d38227e5da06b96c8b458a9ed8efa4aecac51d171b964912"
+    },
+    {
+      "path": "audit/viewer/viewer.css",
+      "bytes": 5265,
+      "sha256": "ec6fb8fa33897b31fd4461742ac5c9bc2da549e5e1d72dd0a132f77c2ddd1090"
+    },
+    {
+      "path": "audit/viewer/viewer.js",
+      "bytes": 18394,
+      "sha256": "dfde9cff4869efb5bbbb75f4bc415c0cfef1b5876956a02f318d87473accca9c"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/audit-manifest.json",
+      "bytes": 1443,
+      "sha256": "da14fe7f0e71eb4d8a326a2ec00349b34f86cab554930b7c78348763cf61774a"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/engine-steps-full.jsonl",
+      "bytes": 112132189,
+      "sha256": "b2c9e459b209afaee9a9a7672e005fd00bd64fcefa5431b4ee8f402c47d852ff"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/engine-steps.jsonl",
+      "bytes": 9396410,
+      "sha256": "aca268d1d0869fb994430ca03ad7de131a37d3bed03c183d7d15d880a9467af4"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/run-metrics.json",
+      "bytes": 55687,
+      "sha256": "b9c59a5d88e8d4ae9522dcfaa0b98ba6cb393c1a5c89ca5849cce4b559716239"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/summary.json",
+      "bytes": 42446,
+      "sha256": "1865c3b610b26e92035eec72a23c82978c577b2df959e94f5092d84adc3094ac"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/audit-manifest.json",
+      "bytes": 1419,
+      "sha256": "2b2e2cbd1304e2ae3f6a85535c8c6527dedd5b81b3c75c9c784e413861397425"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/engine-steps-full.jsonl",
+      "bytes": 110547415,
+      "sha256": "0495ec6a6026aca5f7f2637ef5de6b1296338dc4bae05c4b4ea9c9104cfc5373"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/engine-steps.jsonl",
+      "bytes": 9263921,
+      "sha256": "ee490703a1cecf6a87576f39dd22a21d5c67ebdcdcf381f20359ee2bf88889d1"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/run-metrics.json",
+      "bytes": 55709,
+      "sha256": "1a682dc30c37a65d2641c99439d5ffb0c2403280c916b968723edb349ac19952"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/summary.json",
+      "bytes": 42562,
+      "sha256": "cb379f6074b172d400b5bde98a9402a6a7447313bf1071233826da012e6c21c7"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/audit-manifest.json",
+      "bytes": 1847,
+      "sha256": "896fcc9753d64663de2ca70f06c0a42fe900060dbb013f7a282fd318b02f0d6a"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/engine-steps-full.jsonl",
+      "bytes": 86983327,
+      "sha256": "374648f271e8f8720ee375a27f3f24acc71171188149055d4ff2200e44d6b000"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/engine-steps.jsonl",
+      "bytes": 7289496,
+      "sha256": "445f1be7ad9d17b478e7568a0644876f686aca93cdbc6cd5a9e23a63ee709915"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/run-metrics.json",
+      "bytes": 53849,
+      "sha256": "de8544816083d18616c68e7387f873eb23d5a4e0c3a77df16534a2cc66a9bcbe"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/summary.json",
+      "bytes": 38441,
+      "sha256": "c8c11f69ad4e8c6fbaffd210b67e7b686b4e3f510c8d2f9a130b65c05cfdee69"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/audit-manifest.json",
+      "bytes": 20841,
+      "sha256": "f687f364072c1973f5c1a9b2720bb20797046f48480fcfe3c632f215d834a50d"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/engine-steps-full.jsonl",
+      "bytes": 112069214,
+      "sha256": "15046ba9233190ac71f305ad8becab1877e996b7b12a707da0091d08e4ca0f16"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/engine-steps.jsonl",
+      "bytes": 9390683,
+      "sha256": "cb87119a6e996ffd5ee74fc3b2baaddfd40e52b9c834b9e416a42592ad6a570e"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/run-metrics.json",
+      "bytes": 54007,
+      "sha256": "51f9db450349b2643ae88364d74404a5f19795285f49815c469135b0e175925f"
+    },
+    {
+      "path": "audit/visuals/runs/bidirectional-corridor-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/summary.json",
+      "bytes": 42333,
+      "sha256": "eaf31b752b39a85f33fc20a3de64994f50aff4c0e4949d6dca08755fb2be63c2"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/audit-manifest.json",
+      "bytes": 1451,
+      "sha256": "95dea5c3740410e78b3d7a707b1e89d02790851e96adeae45e95e09cbecfda4c"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/engine-steps-full.jsonl",
+      "bytes": 117244104,
+      "sha256": "81bd0a6bf72189fa8311497c2d7e7a8904a91f0a416d9e84ae2ff46631885686"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/engine-steps.jsonl",
+      "bytes": 9818749,
+      "sha256": "e16032ef6a2442b41962b83c7b233daf2a3a07160f1a15893b4ae44069e6c8b9"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/run-metrics.json",
+      "bytes": 52571,
+      "sha256": "cbdf2c2b307c4fe66a6683ed496b63bf5810bce0697f6f02404cdf29741380b6"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/summary.json",
+      "bytes": 39717,
+      "sha256": "9ec89ae4c3512f771ba09904302ba9d9204d62fd71ab488e7b21ce1e6560d02f"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/audit-manifest.json",
+      "bytes": 1427,
+      "sha256": "b1a870a82bdb04ec83c1fbd2da201ef0e0c4bd93a598a044862e72bfc196ac74"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/engine-steps-full.jsonl",
+      "bytes": 118424258,
+      "sha256": "996bcc2b4065dff1412e5bf4a3dd980654539fc9b7326dff3c71ec0f821dceb8"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/engine-steps.jsonl",
+      "bytes": 9916987,
+      "sha256": "8f99d79963bbafa139f89890ec5009698e75fe12bbcdd0f78e95ed48d983cc2d"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/run-metrics.json",
+      "bytes": 52357,
+      "sha256": "1e3ee477b0186c0fdfc85fade3ac2e8775fd0204cda82e35aebb90cb98184526"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/summary.json",
+      "bytes": 40064,
+      "sha256": "904d4ca37092a48ac48143ae9d8f08c2a8f43ec39416d5c98f8e4f619749fb9f"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/audit-manifest.json",
+      "bytes": 1855,
+      "sha256": "5b3f3b570cfef2e372ccfd9c247f306823c0f3009cbe13f3abb733fb81388718"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/engine-steps-full.jsonl",
+      "bytes": 91717773,
+      "sha256": "a08cd04e43697e29c0bb0db18aa90434426d72f207c896603a8ed83702022395"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/engine-steps.jsonl",
+      "bytes": 7680840,
+      "sha256": "1f4ff83f8a4655eae67c2fe892eb956a954d668338a885eccbad579891268c84"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/run-metrics.json",
+      "bytes": 51254,
+      "sha256": "ee87d33cf918f9396e3f057ef810d1cb1c7fdc61a4daa7e3f838476ec86f17e0"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/summary.json",
+      "bytes": 35867,
+      "sha256": "ccd5c011485fb1a1d4dc55a8d573ea2411eff465d44b1624c6519b8085bbf6a9"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/audit-manifest.json",
+      "bytes": 19739,
+      "sha256": "96ee70fd7ede261b82fe1b15baefbc677a1818c6322ec8621a61a9cfac39dafe"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/engine-steps-full.jsonl",
+      "bytes": 117688505,
+      "sha256": "3bc04f981aa9951e764cfb2b6ff57ca0b621bf9015afc0a0d77500f00170bbda"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/engine-steps.jsonl",
+      "bytes": 9855545,
+      "sha256": "faddda9612e6cb672117527e97efa3877b8837257a653628a4992e49ab37c84f"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/run-metrics.json",
+      "bytes": 52022,
+      "sha256": "7330a60c5e9b37c3fb946e05e3db6453de76a5c0d9fdf802d8d107943f0ecfcf"
+    },
+    {
+      "path": "audit/visuals/runs/bottleneck-central_opening-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/summary.json",
+      "bytes": 39571,
+      "sha256": "a881f65e88cb41149501a1029c739f2c058b40f072f30b2e8c60c80296c695dc"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/audit-manifest.json",
+      "bytes": 1443,
+      "sha256": "380d29f3aaa9b9682ea102bda83b671c8a95e288287921ad03f2aba11d2c4731"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/engine-steps-full.jsonl",
+      "bytes": 38263310,
+      "sha256": "d56198e867f38f0639da6cffcc59caf8553684f70bbc6f96c24b0e5503941ee5"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/engine-steps.jsonl",
+      "bytes": 3210295,
+      "sha256": "8143181687566061d6ee2a762ead1ecc76bfd0f97ce3bdcae5d78e1bdc3ca750"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/run-metrics.json",
+      "bytes": 25516,
+      "sha256": "42373b67a2882959fce31db37955f626224df75092c06ffff2a84c97f4fbbce6"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/summary.json",
+      "bytes": 16520,
+      "sha256": "bc2d4d1c87d7ca00e2ef86c73c05618b43f2db9d28a41292f98a21e4e44f4a64"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/audit-manifest.json",
+      "bytes": 1419,
+      "sha256": "12a9fd77dd2ade3e0126d87e1abef84541cbcceb6e4624625827e8b32fa5a6be"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/engine-steps-full.jsonl",
+      "bytes": 39589263,
+      "sha256": "ef49de5f34d8605f0bf1fcd642403dfe0c081e78d1e8611c6ca8f2889528f342"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/engine-steps.jsonl",
+      "bytes": 3320443,
+      "sha256": "c678380af0fc19dedfc22af323611c7c8d79f93d9be24a3fd2f4fa0a206bb646"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/run-metrics.json",
+      "bytes": 25168,
+      "sha256": "7aa2bc14c4d6bff5a90d8144af468c1833bbf9bc4b4f7913dc337f4c990078fa"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/summary.json",
+      "bytes": 16517,
+      "sha256": "cd5856c086e690c4cc6e21b8a4ed53791d43b3f989f76b39d9526748b32cfdda"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/audit-manifest.json",
+      "bytes": 1847,
+      "sha256": "ff1bdd5fe89a1cea3ec5896155a0d19ae6986ba1d65735ca263a93a676447149"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/engine-steps-full.jsonl",
+      "bytes": 29778738,
+      "sha256": "18ca77063dcd877d3c50667fe3654c6b26f2096fb174ccf6e6592006567771b9"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/engine-steps.jsonl",
+      "bytes": 2498664,
+      "sha256": "be546fc7914e2c60ab291ff6ede31cd47add8a8bcde048fd189a16da5fa62aab"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/run-metrics.json",
+      "bytes": 25540,
+      "sha256": "e60f5e34ba6c234fe6fc01941e603619caa001f3e2f95f981cef966623469e3f"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/summary.json",
+      "bytes": 15772,
+      "sha256": "07cd4b7555e02c43c3ddfa7078a6a479defcdd704f72922759b342b7b6c269b9"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/audit-manifest.json",
+      "bytes": 11222,
+      "sha256": "64ac414a929efb8251e093daa6c07b30bffde724aae4b20e2cc68154b48633ce"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/engine-steps-full.jsonl",
+      "bytes": 42266910,
+      "sha256": "8f72786f40dc29b4898c693e4c666aaadb771152ddde4157b4bfbfd27512298c"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/engine-steps.jsonl",
+      "bytes": 3546130,
+      "sha256": "b9b975ab418106b7452651b9a8adcaa884a31a900c7ff6db9a1ee4d96311da0b"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/run-metrics.json",
+      "bytes": 25924,
+      "sha256": "41f87313ea8044ab02fcecad445873b725028dfd974cc5f250de0d014f8a091c"
+    },
+    {
+      "path": "audit/visuals/runs/circle_antipodal-perturbed-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/summary.json",
+      "bytes": 18424,
+      "sha256": "6f40a93433964c6e7e69638916e2d1c8602e305a150a8cc5943540e5097fa11e"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/audit-manifest.json",
+      "bytes": 1438,
+      "sha256": "a42cbf98f38b60d575555404be88bf47431917320dbeadfc7b07558a62a3db63"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/engine-steps-full.jsonl",
+      "bytes": 2966904,
+      "sha256": "ca8d01ad2d6679a8a6cf067341b1017e7665b80185e2d0bff1e8bf9e2b3ef3d5"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/engine-steps.jsonl",
+      "bytes": 993240,
+      "sha256": "26431fd9b58f6cc4cfdd18c3407d01c9b129605cc7acb816a6ca471ea41c0070"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/run-metrics.json",
+      "bytes": 4149,
+      "sha256": "4fd6a5aac03b179eb4fc4934042b32102a5b299878d8a399be5e63d8bc3128dc"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/summary.json",
+      "bytes": 713,
+      "sha256": "723f7cf68e02185aee7d1f9773a943d8214fd7454d279d05f175e4410d9551d4"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/audit-manifest.json",
+      "bytes": 1414,
+      "sha256": "b40e58a8a7230e0858af3c4b4044cc90dcd8b539e3b13483f06d27e280954fb9"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/engine-steps-full.jsonl",
+      "bytes": 2881891,
+      "sha256": "33eb9affa501cc45e5d3eeef8752b3cd2709d5a60ab3249fd112c73f3a55e3c8"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/engine-steps.jsonl",
+      "bytes": 964702,
+      "sha256": "7dd582cee653c044524520d1c2f1302092f5c271ebd589a23bcd529ea245bb36"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/run-metrics.json",
+      "bytes": 4128,
+      "sha256": "c4cf191d29ac777ede579b2ee73de476f74a93f8ae209f4e94005805c2a97c0a"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/summary.json",
+      "bytes": 710,
+      "sha256": "45c09efdae2cabcac04fa690385c4888b0a1b2d0b807443d5284d251811ff492"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/audit-manifest.json",
+      "bytes": 1842,
+      "sha256": "2649729ce5140a6a2273258409fa7b474f942b18f00c8d94eeb86780223fb2bf"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/engine-steps-full.jsonl",
+      "bytes": 2599618,
+      "sha256": "33b3a26333379ba313a8a94bbeda27cfff1c263819fcad892cfbd1580a244e61"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/engine-steps.jsonl",
+      "bytes": 870525,
+      "sha256": "9c7844fef6df3198913123868e5979ed1551aee5d8c8af2501c05ce9af52de22"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/run-metrics.json",
+      "bytes": 4170,
+      "sha256": "bf523f84ef7b503f7bf646d2412cd753cd83a08f10753235f68c6729b410426a"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/summary.json",
+      "bytes": 681,
+      "sha256": "7bd3cee7fdb776c00b3eeecdf44a3e4139ba1768d3b94f6f44b599d771c1611c"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/audit-manifest.json",
+      "bytes": 4673,
+      "sha256": "cbc49fde6689fb26732318b461a72e6523a433ebe4d66e94c3ff80d2b012f501"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/engine-steps-full.jsonl",
+      "bytes": 3204574,
+      "sha256": "d25f67b0539b87ba68a007da5d31cd0c860d94a5bbf0d7fc049fff6902a9a385"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/engine-steps.jsonl",
+      "bytes": 1072497,
+      "sha256": "cdc35e1a5d8a594bd44e5c63da8e351f03ffcf2689e59e77831568b043aa8753"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/run-metrics.json",
+      "bytes": 4331,
+      "sha256": "57145e75f6a88e53aeae37780736bd9618cea69a640b36e8e9e7528b3798862b"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-crossing-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/summary.json",
+      "bytes": 790,
+      "sha256": "e71e6ac2774809db19e63850fbe9ba0beb24cf931138dc385270512bfc19c5b1"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/audit-manifest.json",
+      "bytes": 1435,
+      "sha256": "6b9b6ad38d5465965a530b3bb4af33bad5850cdc9c7daa1762e6d36777fad320"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/engine-steps-full.jsonl",
+      "bytes": 2955493,
+      "sha256": "80617afc8855f7e8bcb7bce594c99afae978b87421cb71682b6d4b573e2ddaef"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/engine-steps.jsonl",
+      "bytes": 989390,
+      "sha256": "3ed6529d90d2cf035b5c934b11bd5d0ca1344da735ffed93fba429dfd97329b5"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/run-metrics.json",
+      "bytes": 4148,
+      "sha256": "7a3c5548b8ec16f25ec5bad6241c6c401218b077de82cc82c1befc1db5c3ed21"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/conditioned_riemannian_metric_v1--cdbdc4822cf8/summary.json",
+      "bytes": 711,
+      "sha256": "6e5f40bab79af18da3ac5be70366d2850b3c717050466846d03138dbebdd5496"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/audit-manifest.json",
+      "bytes": 1411,
+      "sha256": "a7c5aebb692c3ade392ef783da997371766d6c66f21a1ed3e985a7799c0e3b55"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/engine-steps-full.jsonl",
+      "bytes": 2971127,
+      "sha256": "29a2c4a70da7c601058b851f4f029e0464404fd3df17eb0bfd5a9c28d20ce21f"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/engine-steps.jsonl",
+      "bytes": 994516,
+      "sha256": "c84a090caf90c76b7df1f1a01443995bd37a23af60c48974d856d811c8218ccf"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/run-metrics.json",
+      "bytes": 4110,
+      "sha256": "6f703eb5a4111b1b8ed8cd2368c4eafe5cb305bf5f9c130c9fae95fc145fc302"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/euclidean_goal_steering_v1--6a7f85849d78/summary.json",
+      "bytes": 712,
+      "sha256": "763de044c525c3c6aadbc28dfc33ddca5b2c38ab34196d69dfb7e06787357a80"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/audit-manifest.json",
+      "bytes": 1839,
+      "sha256": "4bf72ac741f2e89827074da0a622424852df9a7f326c1a2b0d0aa5a0f800d8cf"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/engine-steps-full.jsonl",
+      "bytes": 2589687,
+      "sha256": "5571ae5d3febc2b5a31918ae1ee0e3b97794e32431e5f1d87ed35ba3f541cac5"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/engine-steps.jsonl",
+      "bytes": 867262,
+      "sha256": "5d5dbf9265c105e7ff57a7c3d8076fe9c86e05f6a9297ab9e74c97e0292f5024"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/run-metrics.json",
+      "bytes": 4208,
+      "sha256": "f66f07666514bb5cd2b67f08f0bcb63657e58e2f8c701e94a857856aa54aa971"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/orca_rvo2_v1--9fba599d6fb2/summary.json",
+      "bytes": 679,
+      "sha256": "d819dc95c956bdd855f3f7eb8b631d3cc67748b3573b3d2605be30ea2dc2fb03"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/audit-manifest.json",
+      "bytes": 4666,
+      "sha256": "744449bc483f354cdf34e44e21c63bc2d1af74d88d658aa959213b1e602e2bb2"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/engine-steps-full.jsonl",
+      "bytes": 3202839,
+      "sha256": "f37fe9f7f0b537859039adf89c961c079e43b3f0704f90aa58dcbbe7a74cfa70"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/engine-steps.jsonl",
+      "bytes": 1071944,
+      "sha256": "49627ffaaebecce50faa855ded4b70ba673edf6e7dde7d66d2d8c3b3a828e9d3"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/run-metrics.json",
+      "bytes": 4370,
+      "sha256": "52395d3d32b229e5d7380ffb3ff32daa9b07988d54cbad40bd3bcdc70dfe2122"
+    },
+    {
+      "path": "audit/visuals/runs/pairwise-head_on-lean-seed-0/social_force_jupedsim_v1--f9cf07c9d252/summary.json",
+      "bytes": 787,
+      "sha256": "dc7274d2048ac1a1355026b91e661e30dc19b046e7b6462866a0a25b9b6971b8"
+    },
+    {
+      "path": "audit/visuals/scenarios/bidirectional-corridor-lean-seed-0.json",
+      "bytes": 65070,
+      "sha256": "6ad87d01a38b8bb6394ac8cf0ae083815f9c531df4bb3b03ec518425bc133d70"
+    },
+    {
+      "path": "audit/visuals/scenarios/bottleneck-central_opening-lean-seed-0.json",
+      "bytes": 46830,
+      "sha256": "91161f01be779e2ae2f70ecacb34e63fd21a02e95125f77234e0d4fde31d4496"
+    },
+    {
+      "path": "audit/visuals/scenarios/circle_antipodal-perturbed-lean-seed-0.json",
+      "bytes": 22391,
+      "sha256": "f723aed7c39c28b757c6c80a887853b7cf5750667463583b1ed3c54414c3dd4d"
+    },
+    {
+      "path": "audit/visuals/scenarios/pairwise-crossing-lean-seed-0.json",
+      "bytes": 1503,
+      "sha256": "aa9f55959b6a500a211a4b0e850d076c0d52331176b9b8b055a8173f319b148b"
+    },
+    {
+      "path": "audit/visuals/scenarios/pairwise-head_on-lean-seed-0.json",
+      "bytes": 1498,
+      "sha256": "4e8e7761977c2d867a863d218ea95ca58072c9d268536f1dec0189d8d414996c"
+    },
+    {
+      "path": "concurrency-benchmark.json",
+      "bytes": 314,
+      "sha256": "f0838a2cab8920f34c33c9fab8ccc848d4f16bc22da0939101cbdfb526bb5e5c"
+    },
+    {
+      "path": "paper-facing-summary.csv",
+      "bytes": 11721,
+      "sha256": "3b0031abf7f99acb923ec6f95ae8bc1cc951b726e98a28858bcb3b7d0cc98a8e"
+    },
+    {
+      "path": "raw-runs.jsonl",
+      "bytes": 668694,
+      "sha256": "91cec8a89d9c6f8ed03928a04f99c11d8b1e294670cdceabde008f27d0a3d7ed"
+    },
+    {
+      "path": "retained-equivalence.json",
+      "bytes": 8654,
+      "sha256": "40f30341029b4bf9e546793934d8eb9a5c44d4fff342da7a0c4e9087f80fb17d"
+    },
+    {
+      "path": "summary.csv",
+      "bytes": 78020,
+      "sha256": "de864851a7a744e80185b5f41153bd5c83a1ed2932c83f1ff3f40516a0219be1"
+    }
+  ]
+}

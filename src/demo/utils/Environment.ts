@@ -5,7 +5,7 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import type { MetricGrid } from "../sim/MetricGrid";
-import oipTextureUrl from '../../public/OIP.jpg?url';
+import oipTextureUrl from '../../../public/OIP.jpg?url';
 
 let renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera;
 let composer: EffectComposer;

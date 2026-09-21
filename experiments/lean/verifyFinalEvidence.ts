@@ -16,6 +16,7 @@ import {
   assignmentIdentity,
   buildAssignments,
   loadStudy,
+  reproductionStudy,
   runKey,
   validateWorkerRecord,
   type RunRecord,
@@ -130,7 +131,7 @@ export function compareScientificValues(
 export async function verifyRetainedEquivalence(
   canonicalAuditRootSource: string,
 ): Promise<string> {
-  const study = loadStudy();
+  const study = reproductionStudy(loadStudy(), option(process.argv.slice(2), "--out") ?? "results/reproduction");
   const newAuditRoot = resolve(study.outputs.auditRoot);
   const canonicalAuditRoot = resolve(canonicalAuditRootSource);
   const newRuns = auditRuns(newAuditRoot);
@@ -184,8 +185,8 @@ export async function verifyRetainedEquivalence(
   return reportPath;
 }
 
-export async function verifyFinalEvidence(): Promise<string> {
-  const study = loadStudy();
+export async function verifyFinalEvidence(outputDirectory = "results/reproduction"): Promise<string> {
+  const study = reproductionStudy(loadStudy(), outputDirectory);
   const outputRoot = resolve(study.outputs.root);
   const rawPath = resolve(study.outputs.raw);
   requireFrozenStudy(study);
@@ -580,7 +581,7 @@ async function main(): Promise<void> {
     return;
   }
   if (args.includes("--final")) {
-    console.log(`final evidence verification: PASS at ${await verifyFinalEvidence()}`);
+    console.log(`final evidence verification: PASS at ${await verifyFinalEvidence(option(args, "--out"))}`);
     return;
   }
   throw new Error("Use --equivalence --canonical-audit <path> or --final");

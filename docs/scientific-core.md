@@ -2,7 +2,7 @@
 
 ## Scope and separation
 
-`src/core` is the exact, pure numerical implementation used by headless scientific runs. It has no Three.js, DOM, mesh, animation-loop, or rendering dependencies. `src/sim` remains the legacy interactive browser demonstrator: its behavior is intentionally unchanged, and its parameters and implementation must not be interpreted as the paper method.
+`src/core` is the exact, pure numerical implementation used by headless scientific runs. It has no Three.js, DOM, mesh, animation-loop, or rendering dependencies. `src/demo/sim` remains the legacy interactive browser demonstrator: its behavior is intentionally unchanged, and its parameters and implementation must not be interpreted as the paper method.
 
 The stable scientific controller identifier is `conditioned_riemannian_metric_v1`. Position, radius, interaction range, and wall thickness use meters; velocity and preferred speed use meters per second; time and time constants use seconds.
 
@@ -156,6 +156,9 @@ Trajectory records are streamed incrementally through `trajectory.jsonl.tmp`; th
 
 The controller uses local spatial queries, but full contact measurement and positional correction have not been optimized with the same locality. They are not a basis for an $O(Nm)$ full-step performance claim. Later performance experiments must time the controller, diagnostics, and correction layers separately unless the latter layers are also optimized.
 
-## Baseline engines and deferred work
+## Paper reproduction
 
-ORCA/RVO2 and PySocialForce now run as engine-level adapters without changing this scientific core; see [baseline-engines.md](baseline-engines.md). Parameter tuning, parameter sweeps, frozen final experiments, confidence intervals, paper figures and tables, and any comparative or performance claims remain intentionally deferred.
+The frozen four-method study uses this core plus native ORCA and JuPedSim
+adapters. See [reproduction.md](reproduction.md) and
+[experiment-protocol.md](experiment-protocol.md). The standalone core commands
+above remain diagnostic examples; use the frozen study for paper comparisons.

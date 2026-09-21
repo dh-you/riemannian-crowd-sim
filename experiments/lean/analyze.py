@@ -242,7 +242,12 @@ def main():
     if len(sys.argv) == 4 and sys.argv[1] == "--paper-summary":
         count, rows = paper_summary(Path(sys.argv[2]).resolve(), Path(sys.argv[3]).resolve())
         print(f"paper summary: {count} headline runs, {rows} summary rows"); return
-    study = json.loads(Path("experiments/lean/study.json").read_text(encoding="utf-8")); outputs = study["outputs"]
+    root = Path(sys.argv[2] if len(sys.argv) == 3 and sys.argv[1] == "--root" else "results/reproduction").resolve()
+    if (root == Path.cwd() or root.is_relative_to(Path.cwd() / "paper")
+            or any(p.name == "final-camera-ready-jupedsim-v2" or (p / "ARCHIVED-EVIDENCE").exists()
+                   for p in [root, *root.parents])):
+        raise ValueError("Analysis destination is reserved for archived evidence")
+    outputs = {"root": str(root), "raw": str(root / "raw-runs.jsonl"), "summary": str(root / "summary.csv"), "auditRoot": str(root / "audit")}
     count, rows = summarize(Path(outputs["raw"]), Path(outputs["summary"]))
     paper_path = Path(outputs["root"]) / "paper-facing-summary.csv"
     paper_count, paper_rows = paper_summary(Path(outputs["raw"]), paper_path)
