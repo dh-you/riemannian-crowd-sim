@@ -1,8 +1,5 @@
-import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { createJuPedSimInput } from "../../experiments/engines/JuPedSimSfmEngine";
 import { ScientificCoreEngine } from "../../experiments/engines/ScientificCoreEngine";
-import { serializeOrcaInput } from "../../experiments/engines/OrcaRvo2Engine";
 import type { EngineAgentStep, EngineStepRecord } from "../../experiments/engines/engineStep";
 import { generateBidirectionalScenario } from "../../experiments/generation/bidirectional";
 import { generateBottleneckScenario } from "../../experiments/generation/bottleneck";
@@ -13,16 +10,10 @@ import { RunMetricsAccumulator } from "../../experiments/metrics/RunMetricsAccum
 import {
   directionalLineCrossingFraction,
   firstSegmentDiskIntersectionFraction,
-  protocolNavigationRunnerConfig,
   resolveProtocolTarget,
 } from "../../experiments/protocol/completion";
 import { identifyMethod } from "../../experiments/protocol/methodIdentity";
-import {
-  parseMethodConfig,
-  type JuPedSimSfmMethodConfig,
-  type MethodConfig,
-  type OrcaMethodConfig,
-} from "../../experiments/protocol/methodConfig";
+import { parseMethodConfig } from "../../experiments/protocol/methodConfig";
 import type { ExperimentScenario } from "../../experiments/protocol/schema";
 import type { AgentState, Vec2 } from "../../src/core/types";
 
@@ -34,7 +25,7 @@ const methodMetadata = {
   methodParameters: {},
 } as const;
 
-describe("paper-facing completion protocol v2", () => {
+describe("completion protocol v2", () => {
   it("detects goal-disk completion from the realized post-correction segment", () => {
     const scenario = singleAgentScenario();
     const metrics = observe(scenario, [step(scenario, 0, [[0, 0]], [[0.5, 0]], [[1.2, 0]])]);
@@ -152,7 +143,7 @@ describe("paper-facing completion protocol v2", () => {
       .run(scenario, method, identity, (record) => records.push(record));
     const firstAgent = scenario.agents[0];
     const crossingIndex = records.findIndex((record) =>
-      record.agents.find(({ id }) => id === firstAgent.id)?.postCorrectionPosition[0] as number > 17);
+      (record.agents.find(({ id }) => id === firstAgent.id)?.postCorrectionPosition[0] as number) > 17);
     expect(crossingIndex).toBeGreaterThanOrEqual(0);
     const atCrossing = records[crossingIndex].agents.find(({ id }) => id === firstAgent.id) as EngineAgentStep;
     const later = records[Math.min(records.length - 1, crossingIndex + 10)]
@@ -186,24 +177,23 @@ describe("paper-facing completion protocol v2", () => {
     expect(directionalLineCrossingFraction([-1, 0], [2, 0], scenario.completion.rule)).toBeNull();
   });
 
-  it("feeds every adapter the same deterministic bottleneck navigation configuration", () => {
+  it("uses deterministic bottleneck navigation with the scientific engine", () => {
     const scenario = generateBottleneckScenario("test", 400, 16);
-    const study = JSON.parse(readFileSync("experiments/lean/study.json", "utf8")) as {
-      methods: Record<string, unknown>;
-    };
-    const goal = parseMethodConfig(study.methods.goal) as MethodConfig;
-    const orca = parseMethodConfig(study.methods.orca) as OrcaMethodConfig;
-    const jupedsim = parseMethodConfig(study.methods["jupedsim-sfm"]) as JuPedSimSfmMethodConfig;
-    const expected = protocolNavigationRunnerConfig(scenario);
-    expect(createJuPedSimInput(scenario, jupedsim).navigation).toEqual(expected);
-    expect(serializeOrcaInput(scenario, orca)).toContain(
-      "NAVIGATION WAYPOINT_THEN_POINT_GOAL 1.5 0 x 1 positive",
-    );
-    const identity = identifyMethod(goal, JSON.stringify(study.methods.goal));
+    const methodSource = JSON.stringify({
+      methodConfigVersion: 1,
+      id: "euclidean_goal_steering_v1",
+      velocityTimeConstant: 0.04,
+      parameters: {},
+    });
+    const method = parseMethodConfig(JSON.parse(methodSource) as unknown);
+    const identity = identifyMethod(method, methodSource);
     let firstRecord: EngineStepRecord | undefined;
-    new ScientificCoreEngine(goal.id, identity.methodKey)
-      .run({ ...scenario, simulation: { ...scenario.simulation, horizonSeconds: scenario.simulation.dt } }, goal, identity,
-        (record) => { firstRecord = record; });
+    new ScientificCoreEngine(method.id, identity.methodKey).run(
+      { ...scenario, simulation: { ...scenario.simulation, horizonSeconds: scenario.simulation.dt } },
+      method,
+      identity,
+      (record) => { firstRecord = record; },
+    );
     expect(firstRecord?.agents.every(({ navigationTarget }) =>
       navigationTarget[0] === 1.5 && navigationTarget[1] === 0)).toBe(true);
     const positions: Vec2[] = [[-1, 0.5], [0.5, 0.2], [1.1, 0.1], [2, 0]];

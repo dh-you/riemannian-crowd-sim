@@ -1,5 +1,5 @@
-import { norm, sub } from "../../../src/core/math";
-import type { Vec2, WallSegment } from "../../../src/core/types";
+import { norm, sub } from "../../src/core/math";
+import type { Vec2, WallSegment } from "../../src/core/types";
 
 export interface ExpandedWallPolygon {
   wallId: number;
