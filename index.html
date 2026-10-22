@@ -84,6 +84,18 @@
   <script defer src="/static/js/bulma-slider.min.js"></script>
   <script defer src="/static/js/index.js"></script>
 
+  <!-- MathJax for LaTeX rendering -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
   <!-- Structured Data for Academic Papers -->
   <script type="application/ld+json">
   {
@@ -270,22 +282,37 @@
         <h2 class="title is-3 has-text-centered">Method</h2>
         <div class="content has-text-justified">
           <p>
-            Agent <em>i</em> has position <em>p<sub>i</sub></em> &isin; &Ropf;<sup>2</sup>, velocity <em>v<sub>i</sub></em> &isin; &Ropf;<sup>2</sup>, goal <em>q<sub>i</sub></em> &isin; &Ropf;<sup>2</sup>, preferred speed <em>s<sub>i</sub></em> &gt; 0, and goal tolerance &varepsilon;<sub><em>q</em></sub> &gt; 0. Rather than adding a repulsive force to the goal vector, each neighbor <em>j</em> raises the quadratic cost of radial approach more than tangential passage.
+            Agent $i$ has position $p_i \in \mathbb{R}^2$, velocity $v_i \in \mathbb{R}^2$, goal $q_i \in \mathbb{R}^2$, preferred speed $s_i > 0$, and goal tolerance $\varepsilon_q > 0$. Rather than adding a repulsive force to the goal vector, each neighbor $j$ raises the quadratic cost of radial approach more than tangential passage.
           </p>
           <p>
-            <strong>1. Anisotropic Agent Metric:</strong> For relative displacement <em>r<sub>ij</sub></em> = <em>p<sub>j</sub></em> &minus; <em>p<sub>i</sub></em>, distance <em>d<sub>ij</sub></em> = &Vert;<em>r<sub>ij</sub></em>&Vert;, and unit vector <em>r&#x0302;<sub>ij</sub></em> = <em>r<sub>ij</sub></em> / <em>d<sub>ij</sub></em>, neighbor <em>j</em> contributes
+            <strong>1. Anisotropic Agent Metric:</strong> For a non-coincident pair, define $r_{ij} = p_j - p_i$, $d_{ij} = \|r_{ij}\|$, and $\hat{r}_{ij} = r_{ij} / d_{ij}$. Agent $j$ contributes
           </p>
-          <pre style="text-align: center; font-size: 0.95rem;"><code>A_{ij} = &lambda;_t I + (&lambda;_r - &lambda;_t) r&#x0302;_{ij} r&#x0302;_{ij}&#x1D40;,    0 &lt; &lambda;_t &lt; &lambda;_r.</code></pre>
           <p>
-            <strong>2. Motion-Conditioned Aggregation:</strong> With goal direction <em>h<sub>i</sub></em> = (<em>q<sub>i</sub></em> &minus; <em>p<sub>i</sub></em>) / &Vert;<em>q<sub>i</sub></em> &minus; <em>p<sub>i</sub></em>&Vert;, range rate <em>d&#x0307;<sub>ij</sub></em> = <em>r&#x0302;<sub>ij</sub></em><sup>&#x1D40;</sup>(<em>v<sub>j</sub></em> &minus; <em>v<sub>i</sub></em>), compactly supported Wendland <em>C</em><sup>2</sup> kernel &phi;, and clamped cubic smoothstep <em>S</em><sub>[<em>a</em>,<em>b</em>]</sub>, the effective metric is
+            $$A_{ij} = \lambda_t I + (\lambda_r - \lambda_t)\hat{r}_{ij}\hat{r}_{ij}^\top, \qquad 0 < \lambda_t < \lambda_r.$$
           </p>
-          <pre style="text-align: center; font-size: 0.95rem;"><code>c_{ij} = S_{[0, s_i]}(-d&#x0307;_{ij}),    f_{ij} = S_{[-1, 1]}(h_i&#x1D40; r&#x0302;_{ij}),    G_i = I + &alpha; &Sigma;_{j &ne; i} &phi;(d_{ij} / &sigma;) c_{ij} f_{ij} A_{ij} &succ; 0.</code></pre>
           <p>
-            <strong>3. Inverse-Metric Steering:</strong> Letting <em>g<sub>i</sub></em> = <em>q<sub>i</sub></em> &minus; <em>p<sub>i</sub></em> and solving <em>G<sub>i</sub> u<sub>i</sub></em> = <em>g<sub>i</sub></em>, the commanded velocity is Riemannian steepest descent of &Phi;<sub><em>i</em></sub>(<em>x</em>) = &frac12;&Vert;<em>x</em> &minus; <em>q<sub>i</sub></em>&Vert;<sup>2</sup> normalized to metric speed <em>s<sub>i</sub></em>:
+            <strong>2. Motion-Conditioned Aggregation:</strong> Outside the goal region, let $h_i = (q_i - p_i) / \|q_i - p_i\|$ and $\dot{d}_{ij} = \hat{r}_{ij}^\top(v_j - v_i)$. With standard clamped cubic smoothstep $S_{[a,b]}$ and compactly supported Wendland $C^2$ kernel $\phi$, the closing gate $c_{ij}$, visibility gate $f_{ij}$, and effective metric $G_i$ are
           </p>
-          <pre style="text-align: center; font-size: 0.95rem;"><code>v_i^\star = s_i u_i / &radic;(u_i&#x1D40; G_i u_i)   for &Vert;g_i&Vert; &gt; &varepsilon;_q,   and   0   otherwise.</code></pre>
           <p>
-            Since <em>G<sub>i</sub></em> &#x227D; <em>I</em>, &Vert;<em>v<sub>i</sub></em><sup>&star;</sup>&Vert; &le; <em>s<sub>i</sub></em> and &nabla;&Phi;<sub><em>i</em></sub>(<em>p<sub>i</sub></em>)<sup>&#x1D40;</sup><em>v<sub>i</sub></em><sup>&star;</sup> &lt; 0 outside the goal region: interactions redirect descent without canceling it into a false equilibrium away from the target.
+            $$c_{ij} = S_{[0, s_i]}(-\dot{d}_{ij}), \qquad f_{ij} = S_{[-1, 1]}(h_i^\top \hat{r}_{ij}), \qquad G_i = I + \alpha \sum_{j \neq i} \phi\!\left(\frac{d_{ij}}{\sigma}\right) c_{ij} f_{ij} A_{ij}.$$
+          </p>
+          <p>
+            <strong>3. Inverse-Metric Steering:</strong> Let $g_i = q_i - p_i$ and solve $G_i u_i = g_i$. The commanded velocity is Riemannian steepest descent of $\Phi_i(x) = \frac{1}{2}\|x - q_i\|^2$ normalized to metric speed $s_i$:
+          </p>
+          <p>
+            $$v_i^\star = \begin{cases} s_i\, u_i \big/ \sqrt{u_i^\top G_i u_i}, & \|g_i\| > \varepsilon_q, \\ 0, & \text{otherwise.} \end{cases}$$
+          </p>
+          <p>
+            Since $G_i \succeq I$, $\|v_i^\star\| \le s_i$ and $\nabla \Phi_i(p_i)^\top v_i^\star = -s_i \sqrt{g_i^\top G_i^{-1} g_i} < 0$ outside the goal region: interactions redirect descent without canceling it into a false equilibrium away from the target.
+          </p>
+          <p>
+            <strong>4. Integration and Correction:</strong> With step $\Delta t$, smoothing time $\tau > 0$, and $\beta = 1 - e^{-\Delta t / \tau}$,
+          </p>
+          <p>
+            $$\bar{v}_i^{n+1} = (1 - \beta)v_i^n + \beta v_i^{\star,n}, \qquad \tilde{p}_i^{n+1} = p_i^n + \Delta t\,\bar{v}_i^{n+1}, \qquad p^{n+1} = \mathcal{P}(\tilde{p}^{n+1}),$$
+          </p>
+          <p>
+            where $\mathcal{P}$ applies fixed agent-separation and wall-projection sweeps.
           </p>
         </div>
       </div>
@@ -298,7 +325,7 @@
         <h2 class="title is-3 has-text-centered">Experimental Evaluation</h2>
         <div class="content has-text-justified">
           <p>
-            We compare the proposed controller (<strong>Ours</strong>) with Euclidean goal steering under identical smoothing and two-sweep positional correction (<strong>Goal+Proj.</strong>), <strong>ORCA/RVO2</strong>, and <strong>JuPedSim 1.4.2 SocialForceModel</strong> across five held-out settings: perturbed two-agent head-on and perpendicular-crossing encounters, a 50-agent antipodal circle, two opposing 60-agent corridor streams, and a 112-agent bottleneck.
+            We compare the proposed controller (<strong>Ours</strong>, $\alpha=20$, $\sigma=1.5\,\text{m}$, $\lambda_r/\lambda_t=20$, $\tau=0.04\,\text{s}$) with Euclidean goal steering under identical smoothing and two-sweep positional correction (<strong>Goal+Proj.</strong>), <strong>ORCA/RVO2</strong>, and <strong>JuPedSim 1.4.2 SocialForceModel</strong> across five held-out settings: perturbed two-agent head-on and perpendicular-crossing encounters, a 50-agent antipodal circle, two opposing 60-agent corridor streams, and a 112-agent bottleneck.
           </p>
         </div>
 
@@ -317,7 +344,7 @@
         <div class="content" style="margin-top: 2rem;">
           <h4 class="title is-5 has-text-centered">Table 1: Held-Out Medians Across Five Scenarios</h4>
           <p class="has-text-centered is-size-6 has-text-grey">
-            <em>T</em>/<em>T</em><sub>0</sub> is conditional on completion; <em>E</em><sub>ov</sub> is in pair-seconds per agent-second and <em>P</em><sub>max</sub> in metres. Lower is better except completion.
+            $T/T_0$ is conditional on completion; $E_{\mathrm{ov}}$ is in pair-seconds per agent-second and $P_{\max}$ in metres. Lower is better except completion.
           </p>
           <div class="table-container">
             <table class="table is-bordered is-striped is-hoverable is-fullwidth has-text-centered">
@@ -325,11 +352,11 @@
                 <tr>
                   <th>Scenario</th>
                   <th>Method</th>
-                  <th>Comp. &uarr;</th>
-                  <th><em>T</em> / <em>T</em><sub>0</sub> &darr;</th>
-                  <th><em>E</em><sub>ov</sub> &darr;</th>
-                  <th><em>P</em><sub>max</sub> &darr;</th>
-                  <th>RMS acc. &darr;</th>
+                  <th>Comp. $\uparrow$</th>
+                  <th>$T / T_0 \downarrow$</th>
+                  <th>$E_{\mathrm{ov}} \downarrow$</th>
+                  <th>$P_{\max} \downarrow$</th>
+                  <th>RMS acc. $\downarrow$</th>
                 </tr>
               </thead>
               <tbody>
