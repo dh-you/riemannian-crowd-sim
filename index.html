@@ -282,13 +282,13 @@
         <h2 class="title is-3 has-text-centered">Method</h2>
         <div class="content has-text-justified">
           <p>
-            Agent $i$ has position $p_i \in \mathbb{R}^2$, velocity $v_i \in \mathbb{R}^2$, goal $q_i \in \mathbb{R}^2$, preferred speed $s_i > 0$, and goal tolerance $\varepsilon_q > 0$. Rather than adding a repulsive force to the goal vector, each neighbor $j$ raises the quadratic cost of radial approach more than tangential passage.
+            Agent $i$ has position $p_i \in \mathbb{R}^2$, velocity $v_i \in \mathbb{R}^2$, goal $q_i \in \mathbb{R}^2$, preferred speed $s_i \gt 0$, and goal tolerance $\varepsilon_q \gt 0$. Rather than adding a repulsive force to the goal vector, each neighbor $j$ raises the quadratic cost of radial approach more than tangential passage.
           </p>
           <p>
             <strong>1. Anisotropic Agent Metric:</strong> For a non-coincident pair, define $r_{ij} = p_j - p_i$, $d_{ij} = \|r_{ij}\|$, and $\hat{r}_{ij} = r_{ij} / d_{ij}$. Agent $j$ contributes
           </p>
           <p>
-            $$A_{ij} = \lambda_t I + (\lambda_r - \lambda_t)\hat{r}_{ij}\hat{r}_{ij}^\top, \qquad 0 < \lambda_t < \lambda_r.$$
+            $$A_{ij} = \lambda_t I + (\lambda_r - \lambda_t)\hat{r}_{ij}\hat{r}_{ij}^\top, \qquad 0 \lt \lambda_t \lt \lambda_r.$$
           </p>
           <p>
             <strong>2. Motion-Conditioned Aggregation:</strong> Outside the goal region, let $h_i = (q_i - p_i) / \|q_i - p_i\|$ and $\dot{d}_{ij} = \hat{r}_{ij}^\top(v_j - v_i)$. With standard clamped cubic smoothstep $S_{[a,b]}$ and compactly supported Wendland $C^2$ kernel $\phi$, the closing gate $c_{ij}$, visibility gate $f_{ij}$, and effective metric $G_i$ are
@@ -300,13 +300,13 @@
             <strong>3. Inverse-Metric Steering:</strong> Let $g_i = q_i - p_i$ and solve $G_i u_i = g_i$. The commanded velocity is Riemannian steepest descent of $\Phi_i(x) = \frac{1}{2}\|x - q_i\|^2$ normalized to metric speed $s_i$:
           </p>
           <p>
-            $$v_i^\star = \begin{cases} s_i\, u_i \big/ \sqrt{u_i^\top G_i u_i}, & \|g_i\| > \varepsilon_q, \\ 0, & \text{otherwise.} \end{cases}$$
+            $$v_i^\star = \begin{cases} s_i\, u_i \big/ \sqrt{u_i^\top G_i u_i}, & \|g_i\| \gt \varepsilon_q, \\ 0, & \text{otherwise.} \end{cases}$$
           </p>
           <p>
-            Since $G_i \succeq I$, $\|v_i^\star\| \le s_i$ and $\nabla \Phi_i(p_i)^\top v_i^\star = -s_i \sqrt{g_i^\top G_i^{-1} g_i} < 0$ outside the goal region: interactions redirect descent without canceling it into a false equilibrium away from the target.
+            Since $G_i \succeq I$, $\|v_i^\star\| \le s_i$ and $\nabla \Phi_i(p_i)^\top v_i^\star = -s_i \sqrt{g_i^\top G_i^{-1} g_i} \lt 0$ outside the goal region: interactions redirect descent without canceling it into a false equilibrium away from the target.
           </p>
           <p>
-            <strong>4. Integration and Correction:</strong> With step $\Delta t$, smoothing time $\tau > 0$, and $\beta = 1 - e^{-\Delta t / \tau}$,
+            <strong>4. Integration and Correction:</strong> With step $\Delta t$, smoothing time $\tau \gt 0$, and $\beta = 1 - e^{-\Delta t / \tau}$,
           </p>
           <p>
             $$\bar{v}_i^{n+1} = (1 - \beta)v_i^n + \beta v_i^{\star,n}, \qquad \tilde{p}_i^{n+1} = p_i^n + \Delta t\,\bar{v}_i^{n+1}, \qquad p^{n+1} = \mathcal{P}(\tilde{p}^{n+1}),$$
