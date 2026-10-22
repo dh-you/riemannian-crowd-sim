@@ -6,6 +6,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'index.html',
+        demo: 'pages/demo.html',
         twoAgents: 'pages/two-agents.html',
         overtaking: 'pages/overtaking.html',
         bidirectional: 'pages/bidirectional.html',

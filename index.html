@@ -2,366 +2,604 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent-Induced Riemannian Metric Fields for Crowd Simulation</title>
-  <meta name="description" content="Nearby agents deform a local positive-definite metric. Inverse-metric descent steers each agent toward an unchanged goal. EUMAS 2026.">
-  <meta name="keywords" content="crowd simulation, Riemannian geometry, multi-agent systems, path planning, EUMAS">
-  <meta name="authors" content="Derek You">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="Agent-Induced Riemannian Metric Fields for Crowd Simulation - Derek You">
+  <meta name="description" content="An anisotropic Riemannian steering law in which nearby agents induce a local positive-definite metric and the commanded velocity is inverse-metric descent of an unchanged goal potential (EUMAS 2026).">
+  <meta name="keywords" content="crowd simulation, multi-agent systems, agent-based simulation, Riemannian metric fields, collision avoidance, EUMAS 2026">
+  <meta name="author" content="Derek You">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
 
-  <!-- Twitter Card -->
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="EUMAS 2026">
+  <meta property="og:title" content="Agent-Induced Riemannian Metric Fields for Crowd Simulation">
+  <meta property="og:description" content="An anisotropic Riemannian steering law in which nearby agents induce a local positive-definite metric and the commanded velocity is inverse-metric descent of an unchanged goal potential.">
+  <meta property="og:url" content="https://dh-you.github.io/riemannian-crowd-sim/">
+  <meta property="og:image" content="https://dh-you.github.io/riemannian-crowd-sim/static/images/figure-1.png">
+  <meta property="og:image:alt" content="Evaluation geometries and seed-0 trajectories">
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Agent-Induced Riemannian Metric Fields for Crowd Simulation">
-  <meta name="twitter:description" content="Nearby agents deform a local positive-definite metric. Inverse-metric descent steers each agent toward an unchanged goal.">
-  <meta name="twitter:image" content="https://dh-you.github.io/riemannian-crowd-sim/static/images/social_preview.png">
+  <meta name="twitter:description" content="An anisotropic Riemannian steering law in which nearby agents induce a local positive-definite metric and the commanded velocity is inverse-metric descent of an unchanged goal potential.">
+  <meta name="twitter:image" content="https://dh-you.github.io/riemannian-crowd-sim/static/images/figure-1.png">
+  <meta name="twitter:image:alt" content="Evaluation geometries and seed-0 trajectories">
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Agent-Induced Riemannian Metric Fields for Crowd Simulation">
-  <meta property="og:description" content="Nearby agents deform a local positive-definite metric. Inverse-metric descent steers each agent toward an unchanged goal.">
-  <meta property="og:image" content="https://dh-you.github.io/riemannian-crowd-sim/static/images/social_preview.png">
-  <meta property="og:url" content="https://dh-you.github.io/riemannian-crowd-sim/">
-
-  <!-- Google Scholar -->
-  <meta name="google-site-verification" content="">
+  <!-- Academic/Research Specific -->
   <meta name="citation_title" content="Agent-Induced Riemannian Metric Fields for Crowd Simulation">
-  <meta name="citation_author" content="Derek You">
+  <meta name="citation_author" content="You, Derek">
   <meta name="citation_publication_date" content="2026">
-  <meta name="citation_conference" content="European Conference on Multi-Agent Systems (EUMAS) 2026">
+  <meta name="citation_conference_title" content="European Conference on Multi-Agent Systems (EUMAS 2026)">
+  <meta name="citation_volume" content="16829">
+  <meta name="citation_firstpage" content="715">
+  <meta name="citation_lastpage" content="720">
   <meta name="citation_doi" content="10.1007/978-3-032-39395-1_42">
   <meta name="citation_pdf_url" content="https://doi.org/10.1007/978-3-032-39395-1_42">
 
-  <!-- Structured Data -->
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <title>Agent-Induced Riemannian Metric Fields for Crowd Simulation</title>
+
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/images/favicon.ico">
+
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="/static/css/bulma.min.css">
+  <link rel="stylesheet" href="/static/css/index.css">
+
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="/static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="/static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="/static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+  <noscript>
+    <link rel="stylesheet" href="/static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="/static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="/static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="/static/js/fontawesome.all.min.js"></script>
+  <script defer src="/static/js/bulma-carousel.min.js"></script>
+  <script defer src="/static/js/bulma-slider.min.js"></script>
+  <script defer src="/static/js/index.js"></script>
+
+  <!-- Structured Data for Academic Papers -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
     "headline": "Agent-Induced Riemannian Metric Fields for Crowd Simulation",
-    "author": {"@type": "Person", "name": "Derek You"},
+    "description": "An anisotropic Riemannian steering law in which nearby agents induce a local positive-definite metric and the commanded velocity is inverse-metric descent of an unchanged goal potential.",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Derek You",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Independent, Edison, NJ, USA"
+        }
+      }
+    ],
     "datePublished": "2026",
-    "description": "Nearby agents deform a local positive-definite metric. Inverse-metric descent steers each agent toward an unchanged goal.",
-    "url": "https://doi.org/10.1007/978-3-032-39395-1_42"
+    "publisher": {
+      "@type": "Organization",
+      "name": "Springer Nature Switzerland (EUMAS 2026, LNAI 16829)"
+    },
+    "url": "https://dh-you.github.io/riemannian-crowd-sim/",
+    "sameAs": "https://doi.org/10.1007/978-3-032-39395-1_42",
+    "image": "https://dh-you.github.io/riemannian-crowd-sim/static/images/figure-1.png",
+    "isAccessibleForFree": true
   }
   </script>
-
-  <style>
-    /* Reset */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Google Sans', 'Source Sans Pro', sans-serif;
-      color: #333;
-      background: #fff;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 60px 24px 80px;
-    }
-
-    /* Title */
-    h1 {
-      font-size: 2rem;
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 16px;
-      line-height: 1.3;
-    }
-
-    /* Authors */
-    .authors {
-      text-align: center;
-      font-size: 1.1rem;
-      margin-bottom: 24px;
-    }
-    .authors a {
-      color: #368be6;
-      text-decoration: none;
-    }
-    .authors a:hover { text-decoration: underline; }
-
-    /* Venue */
-    .venue {
-      text-align: center;
-      font-size: 1.05rem;
-      font-weight: 500;
-      color: #c40003;
-      margin-bottom: 24px;
-    }
-
-    /* Links */
-    .links {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 36px;
-      flex-wrap: wrap;
-    }
-    .link-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 18px;
-      border-radius: 8px;
-      background: #333;
-      color: #fff;
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: background 0.2s;
-    }
-    .link-btn:hover { background: #555; text-decoration: none; }
-    .link-btn svg { width: 16px; height: 16px; fill: currentColor; }
-
-    /* Teaser */
-    .teaser {
-      max-width: 900px;
-      margin: 0 auto 40px;
-    }
-    .teaser-placeholder {
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #9fc5ff;
-      font-size: 1rem;
-    }
-    .teaser-caption {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    /* Sections */
-    .section {
-      max-width: 800px;
-      margin: 0 auto 40px;
-    }
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
-    }
-    h3 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin: 24px 0 12px;
-    }
-    p { margin-bottom: 12px; }
-
-    /* Abstract */
-    .abstract {
-      font-size: 1.05rem;
-      line-height: 1.7;
-      text-align: justify;
-    }
-
-    /* Method overview */
-    .method-box {
-      background: #f8f9fa;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      padding: 16px 20px;
-      margin: 16px 0;
-    }
-    .method-box code {
-      background: #eee;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-size: 0.9em;
-    }
-
-    /* Demo card */
-    .demo-card {
-      display: block;
-      background: #161616;
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      padding: 24px;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.2s, background 0.2s;
-      margin: 16px 0;
-    }
-    .demo-card:hover {
-      border-color: #4488ff;
-      background: #1a1a2a;
-      text-decoration: none;
-    }
-    .demo-card h3 {
-      color: #fff;
-      margin: 0 0 8px;
-    }
-    .demo-card p {
-      color: #c8c8c8;
-      margin: 0;
-      font-size: 0.9rem;
-    }
-    .demo-badge {
-      display: inline-block;
-      font-size: 11px;
-      color: #4488ff;
-      background: #1a1a2e;
-      padding: 2px 10px;
-      border-radius: 4px;
-      margin-top: 12px;
-    }
-
-    /* BibTeX */
-    .bibtex {
-      background: #f8f8f8;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      padding: 16px;
-      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-      font-size: 0.85rem;
-      overflow-x: auto;
-      position: relative;
-    }
-    .bibtex-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      padding: 4px 12px;
-      border: none;
-      border-radius: 4px;
-      background: #333;
-      color: #fff;
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
-    .bibtex-btn:hover { background: #555; }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 1.5rem; }
-      .container { padding: 40px 16px 60px; }
-      .links { gap: 8px; }
-      .link-btn { padding: 6px 14px; font-size: 0.85rem; }
-    }
-  </style>
 </head>
 <body>
-  <div class="container">
 
-    <!-- Title -->
-    <h1>Agent-Induced Riemannian Metric Fields for Crowd Simulation</h1>
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
 
-    <!-- Authors -->
-    <div class="authors">
-      <a href="https://dh-you.github.io/">Derek You</a>
-    </div>
-
-    <!-- Venue -->
-    <div class="venue">European Conference on Multi-Agent Systems (EUMAS) 2026</div>
-
-    <!-- Links -->
-    <div class="links">
-      <a class="link-btn" href="https://doi.org/10.1007/978-3-032-39395-1_42" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm7 14l5-5h-3V9h-4v3H7l5 5z"/></svg>
-        Paper (DOI)
-      </a>
-      <a class="link-btn" href="https://github.com/dh-you/riemannian-crowd-sim/releases/tag/paper-eumas-2026-v1.0" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V9h7v5h5v6H6z"/></svg>
-        Evidence
-      </a>
-      <a class="link-btn" href="https://github.com/dh-you/riemannian-crowd-sim" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.026 2.747-1.026.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-        Code
-      </a>
-      <a class="link-btn" href="./pages/demo.html">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        Demo
-      </a>
-    </div>
-
-    <!-- Teaser -->
-    <div class="teaser">
-      <div class="teaser-placeholder">
-        <span>Teaser video / image — replace with your own</span>
+  <!-- More Works Dropdown -->
+  <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works">
+      <i class="fas fa-flask"></i>
+      More Works
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>More Works</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-      <p class="teaser-caption">Nearby agents deform a local positive-definite metric field. Each agent follows inverse-metric descent toward its unchanged goal.</p>
-    </div>
-
-    <!-- Abstract -->
-    <div class="section">
-      <h2>Abstract</h2>
-      <p class="abstract">
-        Nearby agents deform a local positive-definite metric. Inverse-metric descent steers each agent toward an unchanged goal.
-        This approach encodes agent-agent interactions directly into the geometry of the space, rather than through explicit collision avoidance or force-based repulsion.
-        The resulting trajectories emerge naturally from geodesic flow on the induced Riemannian manifold.
-        We evaluate the method on standard crowd simulation benchmarks and compare against ORCA/RVO2 and Social Force baselines.
-      </p>
-    </div>
-
-    <!-- Method -->
-    <div class="section">
-      <h2>Method</h2>
-      <div class="method-box">
-        <p>Each agent induces a local positive-definite metric field <code>g(x)</code> in its neighborhood. The combined metric tensor at any point is the superposition of all agent-induced fields. Agents then follow inverse-metric descent:</p>
-        <p style="margin-top: 8px; text-align: center; font-size: 1.1rem;"><code>x&#x0307; = −g⁻¹(x) ∇V(x)</code></p>
-        <p style="margin-top: 8px;">where <code>V(x)</code> is the goal potential. This guarantees geodesic-like paths that naturally avoid other agents through the metric deformation.</p>
-      </div>
-      <p>Full equations and metric definitions are in <a href="docs/scientific-core.md">docs/scientific-core.md</a>. The experiment protocol is detailed in <a href="docs/experiment-protocol.md">docs/experiment-protocol.md</a>.</p>
-    </div>
-
-    <!-- Interactive Demo -->
-    <div class="section">
-      <h2>Interactive Demo</h2>
-      <a class="demo-card" href="./pages/demo.html">
-        <h3>Browser Demo</h3>
-        <p>Explore multiple crowd simulation scenarios built with Three.js, including pairwise interactions, counter-flow, bottleneck, and large-scale benchmarks.</p>
-        <span class="demo-badge">Three.js / WebGL</span>
-      </a>
-      <p style="font-size: 0.9rem; color: #666; margin-top: 8px;">
-        Run locally: <code>npm ci && npm run dev</code>
-      </p>
-    </div>
-
-    <!-- Evidence -->
-    <div class="section">
-      <h2>Evidence Release</h2>
-      <p>The paper's scientific implementation, including ORCA/RVO2 and JuPedSim SocialForceModel baselines, is available as a tagged release:</p>
-      <p><a href="https://github.com/dh-you/riemannian-crowd-sim/releases/tag/paper-eumas-2026-v1.0">EUMAS 2026 Evidence (v1.0)</a></p>
-    </div>
-
-    <!-- Citation -->
-    <div class="section">
-      <h2>Citation</h2>
-      <div class="bibtex">
-        <button class="bibtex-btn" onclick="copyBibtex()">Copy</button>
-<pre id="bibtex">@inproceedings{you2026riemannian,
-  title={Agent-Induced {R}iemannian Metric Fields for Crowd Simulation},
-  author={You, Derek},
-  booktitle={European Conference on Multi-Agent Systems (EUMAS)},
-  year={2026},
-  doi={10.1007/978-3-032-39395-1_42},
-  publisher={Springer}
-}</pre>
+      <div class="works-list">
+        <a href="https://dh-you.github.io/hodge-morphology-degradation-RL/" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Higher-Order Morphology Priors for Quadruped RL Under Actuator Degradation</h5>
+            <p>Cell-complex representation and multi-rank Hodge message passing for fault-tolerant quadruped locomotion.</p>
+            <span class="work-venue">IROS 2026 Workshop BLPC (Spotlight Paper)</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
       </div>
     </div>
-
   </div>
 
-  <script>
-    function copyBibtex() {
-      const text = document.getElementById('bibtex').textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = document.querySelector('.bibtex-btn');
-        btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-      });
-    }
-  </script>
+  <main id="main-content">
+    <section class="hero publication-header">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">
+                Agent-Induced Riemannian Metric Fields for Crowd Simulation
+              </h1>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <a href="https://github.com/dh-you" target="_blank">Derek You</a>
+                </span>
+              </div>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  Independent, Edison, NJ, USA
+                </span>
+                <span class="eql-cntrb">
+                  <small><br><code>derekyou65@gmail.com</code></small>
+                </span>
+              </div>
+
+              <div class="is-size-5" style="margin-bottom: 1.25rem;">
+                <div class="publication-venue">
+                  European Conference on Multi-Agent Systems (EUMAS 2026) &middot; Springer LNAI 16829, pp. 715&ndash;720
+                </div>
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block">
+                    <a href="https://doi.org/10.1007/978-3-032-39395-1_42" target="_blank"
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Paper (DOI)</span>
+                    </a>
+                  </span>
+
+                  <span class="link-block">
+                    <a href="https://github.com/dh-you/riemannian-crowd-sim" target="_blank"
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fab fa-github"></i>
+                      </span>
+                      <span>Code</span>
+                    </a>
+                  </span>
+
+                  <span class="link-block">
+                    <a href="https://github.com/dh-you/riemannian-crowd-sim/releases/tag/paper-eumas-2026-v1.0" target="_blank"
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-archive"></i>
+                      </span>
+                      <span>Evidence Release</span>
+                    </a>
+                  </span>
+
+                  <span class="link-block">
+                    <a href="./pages/demo.html"
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-play"></i>
+                      </span>
+                      <span>Interactive Demo</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Teaser Figure -->
+    <section class="hero teaser">
+      <div class="container is-max-desktop">
+        <div class="hero-body">
+          <div class="columns is-centered">
+            <div class="column is-full has-text-centered publication-body">
+              <img src="/static/images/figure-1.png" alt="Evaluation geometries and seed-0 trajectories" style="width: 100%; max-width: 900px;" />
+              <h2 class="subtitle has-text-centered" style="margin-top: 1.25rem; font-size: 1rem; color: var(--text-secondary);">
+                <strong>Fig. 1: Evaluation geometries and seed-0 trajectories.</strong>
+                <strong>Top:</strong> crossing, circle, corridor, and bottleneck configurations.
+                <strong>Bottom:</strong> pre-correction head-on trajectories comparing Euclidean goal+projection, our anisotropic Riemannian controller, ORCA, and JuPedSim SFM.
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Teaser Figure -->
+
+    <!-- Paper Abstract -->
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Microscopic crowd controllers often encode avoidance either by adding repulsive interactions to goal-directed motion or by selecting a velocity from a collision-free set. In additive force and potential formulations, goal progress and avoidance can directly oppose one another, contributing to local minima, oscillation, and counterproductive reversals of motion. We propose instead an anisotropic Riemannian steering law in which nearby agents induce a local positive-definite metric and the commanded velocity is inverse-metric descent of an unchanged goal potential. This separates the navigation objective from the local descent geometry: the goal specifies where the agent should go, while the metric specifies which nearby directions have become costly. As a result, the commanded motion is uniquely defined, speed-bounded, and strictly decreases the goal potential. Held-out experiments show zero median pairwise penetration and completion of .84 and 1.00 in the dense corridor and bottleneck, respectively, compared with .61/.73 for ORCA and .47/.86 for JuPedSim.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Paper Abstract -->
+
+    <!-- Method Overview -->
+    <section class="section">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Method</h2>
+        <div class="content has-text-justified">
+          <p>
+            Agent <em>i</em> has position <em>p<sub>i</sub></em> &isin; &Ropf;<sup>2</sup>, velocity <em>v<sub>i</sub></em> &isin; &Ropf;<sup>2</sup>, goal <em>q<sub>i</sub></em> &isin; &Ropf;<sup>2</sup>, preferred speed <em>s<sub>i</sub></em> &gt; 0, and goal tolerance &varepsilon;<sub><em>q</em></sub> &gt; 0. Rather than adding a repulsive force to the goal vector, each neighbor <em>j</em> raises the quadratic cost of radial approach more than tangential passage.
+          </p>
+          <p>
+            <strong>1. Anisotropic Agent Metric:</strong> For relative displacement <em>r<sub>ij</sub></em> = <em>p<sub>j</sub></em> &minus; <em>p<sub>i</sub></em>, distance <em>d<sub>ij</sub></em> = &Vert;<em>r<sub>ij</sub></em>&Vert;, and unit vector <em>r&#x0302;<sub>ij</sub></em> = <em>r<sub>ij</sub></em> / <em>d<sub>ij</sub></em>, neighbor <em>j</em> contributes
+          </p>
+          <pre style="text-align: center; font-size: 0.95rem;"><code>A_{ij} = &lambda;_t I + (&lambda;_r - &lambda;_t) r&#x0302;_{ij} r&#x0302;_{ij}&#x1D40;,    0 &lt; &lambda;_t &lt; &lambda;_r.</code></pre>
+          <p>
+            <strong>2. Motion-Conditioned Aggregation:</strong> With goal direction <em>h<sub>i</sub></em> = (<em>q<sub>i</sub></em> &minus; <em>p<sub>i</sub></em>) / &Vert;<em>q<sub>i</sub></em> &minus; <em>p<sub>i</sub></em>&Vert;, range rate <em>d&#x0307;<sub>ij</sub></em> = <em>r&#x0302;<sub>ij</sub></em><sup>&#x1D40;</sup>(<em>v<sub>j</sub></em> &minus; <em>v<sub>i</sub></em>), compactly supported Wendland <em>C</em><sup>2</sup> kernel &phi;, and clamped cubic smoothstep <em>S</em><sub>[<em>a</em>,<em>b</em>]</sub>, the effective metric is
+          </p>
+          <pre style="text-align: center; font-size: 0.95rem;"><code>c_{ij} = S_{[0, s_i]}(-d&#x0307;_{ij}),    f_{ij} = S_{[-1, 1]}(h_i&#x1D40; r&#x0302;_{ij}),    G_i = I + &alpha; &Sigma;_{j &ne; i} &phi;(d_{ij} / &sigma;) c_{ij} f_{ij} A_{ij} &succ; 0.</code></pre>
+          <p>
+            <strong>3. Inverse-Metric Steering:</strong> Letting <em>g<sub>i</sub></em> = <em>q<sub>i</sub></em> &minus; <em>p<sub>i</sub></em> and solving <em>G<sub>i</sub> u<sub>i</sub></em> = <em>g<sub>i</sub></em>, the commanded velocity is Riemannian steepest descent of &Phi;<sub><em>i</em></sub>(<em>x</em>) = &frac12;&Vert;<em>x</em> &minus; <em>q<sub>i</sub></em>&Vert;<sup>2</sup> normalized to metric speed <em>s<sub>i</sub></em>:
+          </p>
+          <pre style="text-align: center; font-size: 0.95rem;"><code>v_i^\star = s_i u_i / &radic;(u_i&#x1D40; G_i u_i)   for &Vert;g_i&Vert; &gt; &varepsilon;_q,   and   0   otherwise.</code></pre>
+          <p>
+            Since <em>G<sub>i</sub></em> &#x227D; <em>I</em>, &Vert;<em>v<sub>i</sub></em><sup>&star;</sup>&Vert; &le; <em>s<sub>i</sub></em> and &nabla;&Phi;<sub><em>i</em></sub>(<em>p<sub>i</sub></em>)<sup>&#x1D40;</sup><em>v<sub>i</sub></em><sup>&star;</sup> &lt; 0 outside the goal region: interactions redirect descent without canceling it into a false equilibrium away from the target.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- End Method Overview -->
+
+    <!-- Experimental Evaluation -->
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Experimental Evaluation</h2>
+        <div class="content has-text-justified">
+          <p>
+            We compare the proposed controller (<strong>Ours</strong>) with Euclidean goal steering under identical smoothing and two-sweep positional correction (<strong>Goal+Proj.</strong>), <strong>ORCA/RVO2</strong>, and <strong>JuPedSim 1.4.2 SocialForceModel</strong> across five held-out settings: perturbed two-agent head-on and perpendicular-crossing encounters, a 50-agent antipodal circle, two opposing 60-agent corridor streams, and a 112-agent bottleneck.
+          </p>
+        </div>
+
+        <div class="columns is-centered" style="margin-top: 1.5rem;">
+          <div class="column is-full has-text-centered publication-body">
+            <img src="/static/images/figure-2.png" alt="Component ablations and serial rollout runtime" style="width: 100%;" />
+            <p class="is-size-6 has-text-grey" style="margin-top: 0.75rem;">
+              <strong>Fig. 2: Component ablations and runtime.</strong>
+              <strong>Left:</strong> corridor completion versus raw overlap; marker area denotes median correction ratio.
+              <strong>Right:</strong> median serial runtime after warmup; error bars are IQRs over five seeds and three repetitions.
+            </p>
+          </div>
+        </div>
+
+        <!-- Table 1 -->
+        <div class="content" style="margin-top: 2rem;">
+          <h4 class="title is-5 has-text-centered">Table 1: Held-Out Medians Across Five Scenarios</h4>
+          <p class="has-text-centered is-size-6 has-text-grey">
+            <em>T</em>/<em>T</em><sub>0</sub> is conditional on completion; <em>E</em><sub>ov</sub> is in pair-seconds per agent-second and <em>P</em><sub>max</sub> in metres. Lower is better except completion.
+          </p>
+          <div class="table-container">
+            <table class="table is-bordered is-striped is-hoverable is-fullwidth has-text-centered">
+              <thead>
+                <tr>
+                  <th>Scenario</th>
+                  <th>Method</th>
+                  <th>Comp. &uarr;</th>
+                  <th><em>T</em> / <em>T</em><sub>0</sub> &darr;</th>
+                  <th><em>E</em><sub>ov</sub> &darr;</th>
+                  <th><em>P</em><sub>max</sub> &darr;</th>
+                  <th>RMS acc. &darr;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td rowspan="4" style="vertical-align: middle;"><strong>Head-on</strong></td>
+                  <td><strong>Ours</strong></td>
+                  <td><strong>1.000</strong></td>
+                  <td>1.05</td>
+                  <td><strong>.000</strong></td>
+                  <td><strong>.000</strong></td>
+                  <td>2.48</td>
+                </tr>
+                <tr>
+                  <td>Goal+Proj.</td>
+                  <td>1.000</td>
+                  <td>1.05</td>
+                  <td>.008</td>
+                  <td>.034</td>
+                  <td>3.99</td>
+                </tr>
+                <tr>
+                  <td>ORCA</td>
+                  <td>1.000</td>
+                  <td>1.00</td>
+                  <td>.000</td>
+                  <td>.000</td>
+                  <td>2.41</td>
+                </tr>
+                <tr>
+                  <td>JuPedSim SFM</td>
+                  <td>1.000</td>
+                  <td>1.17</td>
+                  <td>&lt;.001</td>
+                  <td>.001</td>
+                  <td>2.34</td>
+                </tr>
+                <tr>
+                  <td rowspan="4" style="vertical-align: middle;"><strong>Crossing</strong></td>
+                  <td><strong>Ours</strong></td>
+                  <td><strong>1.000</strong></td>
+                  <td>1.07</td>
+                  <td><strong>.000</strong></td>
+                  <td><strong>.000</strong></td>
+                  <td>2.40</td>
+                </tr>
+                <tr>
+                  <td>Goal+Proj.</td>
+                  <td>1.000</td>
+                  <td>1.02</td>
+                  <td>.008</td>
+                  <td>.022</td>
+                  <td>3.32</td>
+                </tr>
+                <tr>
+                  <td>ORCA</td>
+                  <td>1.000</td>
+                  <td>1.01</td>
+                  <td>.000</td>
+                  <td>.000</td>
+                  <td>2.46</td>
+                </tr>
+                <tr>
+                  <td>JuPedSim SFM</td>
+                  <td>1.000</td>
+                  <td>1.07</td>
+                  <td>.000</td>
+                  <td>.000</td>
+                  <td>1.35</td>
+                </tr>
+                <tr>
+                  <td rowspan="4" style="vertical-align: middle;"><strong>Circle</strong></td>
+                  <td><strong>Ours</strong></td>
+                  <td><strong>1.000</strong></td>
+                  <td>1.84</td>
+                  <td>.410</td>
+                  <td>.062</td>
+                  <td>2.79</td>
+                </tr>
+                <tr>
+                  <td>Goal+Proj.</td>
+                  <td>1.000</td>
+                  <td>1.96</td>
+                  <td>.530</td>
+                  <td>.081</td>
+                  <td>3.37</td>
+                </tr>
+                <tr>
+                  <td>ORCA</td>
+                  <td>1.000</td>
+                  <td>1.59</td>
+                  <td>.025</td>
+                  <td>.006</td>
+                  <td>2.52</td>
+                </tr>
+                <tr>
+                  <td>JuPedSim SFM</td>
+                  <td>.960</td>
+                  <td>2.58</td>
+                  <td>&lt;.001</td>
+                  <td>.034</td>
+                  <td>2.04</td>
+                </tr>
+                <tr>
+                  <td rowspan="4" style="vertical-align: middle;"><strong>Corridor</strong></td>
+                  <td><strong>Ours</strong></td>
+                  <td><strong>.842</strong></td>
+                  <td>1.52</td>
+                  <td>.485</td>
+                  <td>.082</td>
+                  <td>2.52</td>
+                </tr>
+                <tr>
+                  <td>Goal+Proj.</td>
+                  <td>.996</td>
+                  <td>1.27</td>
+                  <td>.599</td>
+                  <td>.100</td>
+                  <td>4.02</td>
+                </tr>
+                <tr>
+                  <td>ORCA</td>
+                  <td>.608</td>
+                  <td>1.41</td>
+                  <td>.145</td>
+                  <td>.019</td>
+                  <td>.84</td>
+                </tr>
+                <tr>
+                  <td>JuPedSim SFM</td>
+                  <td>.471</td>
+                  <td>1.62</td>
+                  <td>&lt;.001</td>
+                  <td>.018</td>
+                  <td>1.97</td>
+                </tr>
+                <tr>
+                  <td rowspan="4" style="vertical-align: middle;"><strong>Bottleneck</strong></td>
+                  <td><strong>Ours</strong></td>
+                  <td><strong>1.000</strong></td>
+                  <td>1.52</td>
+                  <td>.922</td>
+                  <td>.091</td>
+                  <td>3.49</td>
+                </tr>
+                <tr>
+                  <td>Goal+Proj.</td>
+                  <td>1.000</td>
+                  <td>1.17</td>
+                  <td>1.080</td>
+                  <td>.114</td>
+                  <td>4.42</td>
+                </tr>
+                <tr>
+                  <td>ORCA</td>
+                  <td>.732</td>
+                  <td>1.46</td>
+                  <td>.253</td>
+                  <td>.004</td>
+                  <td>.86</td>
+                </tr>
+                <tr>
+                  <td>JuPedSim SFM</td>
+                  <td>.862</td>
+                  <td>1.36</td>
+                  <td>&lt;.001</td>
+                  <td>.022</td>
+                  <td>2.38</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Experimental Evaluation -->
+
+    <!-- Interactive Demos -->
+    <section class="section">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 has-text-centered">Interactive Browser Demonstrations</h2>
+        <div class="content has-text-centered">
+          <p>
+            Explore the interactive Three.js / WebGL crowd simulation scenarios directly in your browser:
+          </p>
+        </div>
+        <div class="columns is-multiline is-centered">
+          <div class="column is-4">
+            <a class="box has-text-centered" href="./pages/two-agents.html" style="height: 100%; display: block;">
+              <p class="title is-5">Two Agents</p>
+              <p class="subtitle is-6 has-text-grey">Pairwise metric deformation and deflection</p>
+            </a>
+          </div>
+          <div class="column is-4">
+            <a class="box has-text-centered" href="./pages/overtaking.html" style="height: 100%; display: block;">
+              <p class="title is-5">Overtaking</p>
+              <p class="subtitle is-6 has-text-grey">Anisotropic passing interaction</p>
+            </a>
+          </div>
+          <div class="column is-4">
+            <a class="box has-text-centered" href="./pages/bidirectional.html" style="height: 100%; display: block;">
+              <p class="title is-5">Counter Flow</p>
+              <p class="subtitle is-6 has-text-grey">240 agents in opposing corridor streams</p>
+            </a>
+          </div>
+          <div class="column is-4">
+            <a class="box has-text-centered" href="./pages/bottleneck.html" style="height: 100%; display: block;">
+              <p class="title is-5">Bottleneck</p>
+              <p class="subtitle is-6 has-text-grey">224 agents funneling through a narrow opening</p>
+            </a>
+          </div>
+          <div class="column is-4">
+            <a class="box has-text-centered" href="./pages/circle-antipodal.html" style="height: 100%; display: block;">
+              <p class="title is-5">Circle Antipodal</p>
+              <p class="subtitle is-6 has-text-grey">100 agents steering to diametrically opposite goals</p>
+            </a>
+          </div>
+          <div class="column is-4">
+            <a class="box has-text-centered" href="./pages/fps-benchmark.html" style="height: 100%; display: block;">
+              <p class="title is-5">FPS Benchmark</p>
+              <p class="subtitle is-6 has-text-grey">Interactive scaling benchmark</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Interactive Demos -->
+
+    <!-- BibTeX Citation -->
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="bibtex-header">
+          <h2 class="title">BibTeX</h2>
+          <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+            <i class="fas fa-copy"></i>
+            <span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <pre id="bibtex-code"><code>@inproceedings{you2026riemannian,
+  author={You, Derek},
+  editor={Lorig, Fabian and others},
+  title={Agent-Induced {R}iemannian Metric Fields for Crowd Simulation},
+  booktitle={Multi-Agent Systems -- EUMAS 2026},
+  series={Lecture Notes in Computer Science},
+  volume={16829},
+  pages={715--720},
+  year={2027},
+  publisher={Springer Nature Switzerland},
+  doi={10.1007/978-3-032-39395-1_42},
+  url={https://doi.org/10.1007/978-3-032-39395-1_42}
+}</code></pre>
+      </div>
+    </section>
+    <!-- End BibTeX Citation -->
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+              You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 </body>
 </html>
