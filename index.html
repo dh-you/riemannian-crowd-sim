@@ -1,112 +1,367 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Riemannian Crowd Sim</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 60px 20px;
-        }
-        h1 {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #ffffff;
-        }
-        .subtitle {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 48px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-            max-width: 960px;
-            width: 100%;
-        }
-        a.card {
-            display: block;
-            background: #161616;
-            border: 1px solid #2a2a2a;
-            border-radius: 10px;
-            padding: 24px;
-            text-decoration: none;
-            color: inherit;
-            transition: border-color 0.2s, background 0.2s;
-        }
-        a.card:hover {
-            border-color: #4488ff;
-            background: #1a1a2a;
-        }
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #fff;
-        }
-        .card-description {
-            font-size: 13px;
-            line-height: 1.5;
-            color: #c8c8c8;
-            margin-top: 10px;
-        }
-        .card-tag {
-            display: inline-block;
-            font-size: 11px;
-            color: #4488ff;
-            background: #1a1a2e;
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-top: 12px;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent-Induced Riemannian Metric Fields for Crowd Simulation</title>
+  <meta name="description" content="Nearby agents deform a local positive-definite metric. Inverse-metric descent steers each agent toward an unchanged goal. EUMAS 2026.">
+  <meta name="keywords" content="crowd simulation, Riemannian geometry, multi-agent systems, path planning, EUMAS">
+  <meta name="authors" content="Derek You">
+
+  <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Agent-Induced Riemannian Metric Fields for Crowd Simulation">
+  <meta name="twitter:description" content="Nearby agents deform a local positive-definite metric. Inverse-metric descent steers each agent toward an unchanged goal.">
+  <meta name="twitter:image" content="https://dh-you.github.io/riemannian-crowd-sim/static/images/social_preview.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Agent-Induced Riemannian Metric Fields for Crowd Simulation">
+  <meta property="og:description" content="Nearby agents deform a local positive-definite metric. Inverse-metric descent steers each agent toward an unchanged goal.">
+  <meta property="og:image" content="https://dh-you.github.io/riemannian-crowd-sim/static/images/social_preview.png">
+  <meta property="og:url" content="https://dh-you.github.io/riemannian-crowd-sim/">
+
+  <!-- Google Scholar -->
+  <meta name="google-site-verification" content="">
+  <meta name="citation_title" content="Agent-Induced Riemannian Metric Fields for Crowd Simulation">
+  <meta name="citation_author" content="Derek You">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference" content="European Conference on Multi-Agent Systems (EUMAS) 2026">
+  <meta name="citation_doi" content="10.1007/978-3-032-39395-1_42">
+  <meta name="citation_pdf_url" content="https://doi.org/10.1007/978-3-032-39395-1_42">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Agent-Induced Riemannian Metric Fields for Crowd Simulation",
+    "author": {"@type": "Person", "name": "Derek You"},
+    "datePublished": "2026",
+    "description": "Nearby agents deform a local positive-definite metric. Inverse-metric descent steers each agent toward an unchanged goal.",
+    "url": "https://doi.org/10.1007/978-3-032-39395-1_42"
+  }
+  </script>
+
+  <style>
+    /* Reset */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Google Sans', 'Source Sans Pro', sans-serif;
+      color: #333;
+      background: #fff;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* Title */
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    /* Authors */
+    .authors {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 24px;
+    }
+    .authors a {
+      color: #368be6;
+      text-decoration: none;
+    }
+    .authors a:hover { text-decoration: underline; }
+
+    /* Venue */
+    .venue {
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #c40003;
+      margin-bottom: 24px;
+    }
+
+    /* Links */
+    .links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .link-btn:hover { background: #555; text-decoration: none; }
+    .link-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* Teaser */
+    .teaser {
+      max-width: 900px;
+      margin: 0 auto 40px;
+    }
+    .teaser-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9fc5ff;
+      font-size: 1rem;
+    }
+    .teaser-caption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    /* Sections */
+    .section {
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 24px 0 12px;
+    }
+    p { margin-bottom: 12px; }
+
+    /* Abstract */
+    .abstract {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      text-align: justify;
+    }
+
+    /* Method overview */
+    .method-box {
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+    .method-box code {
+      background: #eee;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    /* Demo card */
+    .demo-card {
+      display: block;
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s;
+      margin: 16px 0;
+    }
+    .demo-card:hover {
+      border-color: #4488ff;
+      background: #1a1a2a;
+      text-decoration: none;
+    }
+    .demo-card h3 {
+      color: #fff;
+      margin: 0 0 8px;
+    }
+    .demo-card p {
+      color: #c8c8c8;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+    .demo-badge {
+      display: inline-block;
+      font-size: 11px;
+      color: #4488ff;
+      background: #1a1a2e;
+      padding: 2px 10px;
+      border-radius: 4px;
+      margin-top: 12px;
+    }
+
+    /* BibTeX */
+    .bibtex {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 16px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      position: relative;
+    }
+    .bibtex-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 12px;
+      border: none;
+      border-radius: 4px;
+      background: #333;
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .bibtex-btn:hover { background: #555; }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.5rem; }
+      .container { padding: 40px 16px 60px; }
+      .links { gap: 8px; }
+      .link-btn { padding: 6px 14px; font-size: 0.85rem; }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+
+    <!-- Title -->
     <h1>Agent-Induced Riemannian Metric Fields for Crowd Simulation</h1>
-    <div class="subtitle">Derek You</div>
 
-    <p class="subtitle" style="max-width:700px;line-height:1.6;margin-bottom:24px">
-        Interactive legacy demonstrator. The paper uses a separate scientific implementation.
-        <a href="https://github.com/dh-you/riemannian-crowd-sim" style="color:#9fc5ff">Research code and evidence</a>
-    </p>
-    <div class="grid">
-        <a class="card" href="./pages/two-agents.html">
-            <div class="card-title">Two Agents</div>
-            <div class="card-description">Shows 2 agents moving through a shared space and how their paths respond to each other.</div>
-        </a>
-
-        <a class="card" href="./pages/overtaking.html">
-            <div class="card-title">Overtaking</div>
-            <div class="card-description">Demonstrates 2 agents in an overtaking interaction and how the motion adapts during the pass.</div>
-        </a>
-
-        <a class="card" href="./pages/bidirectional.html">
-            <div class="card-title">Counter Flow</div>
-            <div class="card-description">Visualizes 240 agents in opposing streams and how the crowd adjusts near the center of travel.</div>
-        </a>
-
-        <a class="card" href="./pages/bottleneck.html">
-            <div class="card-title">Bottleneck</div>
-            <div class="card-description">Models 224 agents funneling through a narrow opening and highlights congestion behavior.</div>
-        </a>
-
-        <a class="card" href="./pages/circle-antipodal.html">
-            <div class="card-title">Circle Antipodal</div>
-            <div class="card-description">Places 100 agents on opposite sides of a circle and shows how they steer toward one another.</div>
-        </a>
-
-        <a class="card" href="./pages/fps-benchmark.html">
-            <div class="card-title">FPS Benchmark</div>
-            <div class="card-description">Measures performance with a customizable number of agents and shows how the simulation scales.</div>
-        </a>
+    <!-- Authors -->
+    <div class="authors">
+      <a href="https://dh-you.github.io/">Derek You</a>
     </div>
+
+    <!-- Venue -->
+    <div class="venue">European Conference on Multi-Agent Systems (EUMAS) 2026</div>
+
+    <!-- Links -->
+    <div class="links">
+      <a class="link-btn" href="https://doi.org/10.1007/978-3-032-39395-1_42" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm7 14l5-5h-3V9h-4v3H7l5 5z"/></svg>
+        Paper (DOI)
+      </a>
+      <a class="link-btn" href="https://github.com/dh-you/riemannian-crowd-sim/releases/tag/paper-eumas-2026-v1.0" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V9h7v5h5v6H6z"/></svg>
+        Evidence
+      </a>
+      <a class="link-btn" href="https://github.com/dh-you/riemannian-crowd-sim" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.026 2.747-1.026.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        Code
+      </a>
+      <a class="link-btn" href="./pages/demo.html">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        Demo
+      </a>
+    </div>
+
+    <!-- Teaser -->
+    <div class="teaser">
+      <div class="teaser-placeholder">
+        <span>Teaser video / image — replace with your own</span>
+      </div>
+      <p class="teaser-caption">Nearby agents deform a local positive-definite metric field. Each agent follows inverse-metric descent toward its unchanged goal.</p>
+    </div>
+
+    <!-- Abstract -->
+    <div class="section">
+      <h2>Abstract</h2>
+      <p class="abstract">
+        Nearby agents deform a local positive-definite metric. Inverse-metric descent steers each agent toward an unchanged goal.
+        This approach encodes agent-agent interactions directly into the geometry of the space, rather than through explicit collision avoidance or force-based repulsion.
+        The resulting trajectories emerge naturally from geodesic flow on the induced Riemannian manifold.
+        We evaluate the method on standard crowd simulation benchmarks and compare against ORCA/RVO2 and Social Force baselines.
+      </p>
+    </div>
+
+    <!-- Method -->
+    <div class="section">
+      <h2>Method</h2>
+      <div class="method-box">
+        <p>Each agent induces a local positive-definite metric field <code>g(x)</code> in its neighborhood. The combined metric tensor at any point is the superposition of all agent-induced fields. Agents then follow inverse-metric descent:</p>
+        <p style="margin-top: 8px; text-align: center; font-size: 1.1rem;"><code>x&#x0307; = −g⁻¹(x) ∇V(x)</code></p>
+        <p style="margin-top: 8px;">where <code>V(x)</code> is the goal potential. This guarantees geodesic-like paths that naturally avoid other agents through the metric deformation.</p>
+      </div>
+      <p>Full equations and metric definitions are in <a href="docs/scientific-core.md">docs/scientific-core.md</a>. The experiment protocol is detailed in <a href="docs/experiment-protocol.md">docs/experiment-protocol.md</a>.</p>
+    </div>
+
+    <!-- Interactive Demo -->
+    <div class="section">
+      <h2>Interactive Demo</h2>
+      <a class="demo-card" href="./pages/demo.html">
+        <h3>Browser Demo</h3>
+        <p>Explore multiple crowd simulation scenarios built with Three.js, including pairwise interactions, counter-flow, bottleneck, and large-scale benchmarks.</p>
+        <span class="demo-badge">Three.js / WebGL</span>
+      </a>
+      <p style="font-size: 0.9rem; color: #666; margin-top: 8px;">
+        Run locally: <code>npm ci && npm run dev</code>
+      </p>
+    </div>
+
+    <!-- Evidence -->
+    <div class="section">
+      <h2>Evidence Release</h2>
+      <p>The paper's scientific implementation, including ORCA/RVO2 and JuPedSim SocialForceModel baselines, is available as a tagged release:</p>
+      <p><a href="https://github.com/dh-you/riemannian-crowd-sim/releases/tag/paper-eumas-2026-v1.0">EUMAS 2026 Evidence (v1.0)</a></p>
+    </div>
+
+    <!-- Citation -->
+    <div class="section">
+      <h2>Citation</h2>
+      <div class="bibtex">
+        <button class="bibtex-btn" onclick="copyBibtex()">Copy</button>
+<pre id="bibtex">@inproceedings{you2026riemannian,
+  title={Agent-Induced {R}iemannian Metric Fields for Crowd Simulation},
+  author={You, Derek},
+  booktitle={European Conference on Multi-Agent Systems (EUMAS)},
+  year={2026},
+  doi={10.1007/978-3-032-39395-1_42},
+  publisher={Springer}
+}</pre>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function copyBibtex() {
+      const text = document.getElementById('bibtex').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.bibtex-btn');
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+      });
+    }
+  </script>
+
 </body>
 </html>

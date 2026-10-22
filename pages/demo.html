@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Demo — Riemannian Crowd Simulation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 48px;
+        }
+        .back-link {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 10;
+            color: #9fc5ff;
+            text-decoration: none;
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            max-width: 960px;
+            width: 100%;
+        }
+        a.card {
+            display: block;
+            background: #161616;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        a.card:hover {
+            border-color: #4488ff;
+            background: #1a1a2a;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+        .card-description {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #c8c8c8;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <a class="back-link" href="../">← Project Page</a>
+    <h1>Interactive Demo — Riemannian Crowd Simulation</h1>
+    <p class="subtitle">Legacy demonstrator. The paper uses a separate scientific implementation.</p>
+    <div class="grid">
+        <a class="card" href="two-agents.html">
+            <div class="card-title">Two Agents</div>
+            <div class="card-description">Shows 2 agents moving through a shared space and how their paths respond to each other.</div>
+        </a>
+        <a class="card" href="overtaking.html">
+            <div class="card-title">Overtaking</div>
+            <div class="card-description">Demonstrates 2 agents in an overtaking interaction and how the motion adapts during the pass.</div>
+        </a>
+        <a class="card" href="bidirectional.html">
+            <div class="card-title">Counter Flow</div>
+            <div class="card-description">Visualizes 240 agents in opposing streams and how the crowd adjusts near the center of travel.</div>
+        </a>
+        <a class="card" href="bottleneck.html">
+            <div class="card-title">Bottleneck</div>
+            <div class="card-description">Models 224 agents funneling through a narrow opening and highlights congestion behavior.</div>
+        </a>
+        <a class="card" href="circle-antipodal.html">
+            <div class="card-title">Circle Antipodal</div>
+            <div class="card-description">Places 100 agents on opposite sides of a circle and shows how they steer toward one another.</div>
+        </a>
+        <a class="card" href="fps-benchmark.html">
+            <div class="card-title">FPS Benchmark</div>
+            <div class="card-description">Measures performance with a customizable number of agents and shows how the simulation scales.</div>
+        </a>
+    </div>
+</body>
+</html>
